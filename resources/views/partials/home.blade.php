@@ -93,7 +93,7 @@
             <div class="group">
                 <div id="campaigns-slider"
                     class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide scroll-smooth">
-                    @foreach (\App\Models\Campaign::published()->latest()->take(10)->get() as $campaign)
+                    @foreach (\App\Models\Campaign::active()->latest()->take(10)->get() as $campaign)
                         <div class="flex-shrink-0 w-72 snap-start">
                             <div
                                 class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 card-hover h-full flex flex-col">

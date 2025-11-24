@@ -1301,13 +1301,26 @@
                     // Set value if existing data
                     const savedVillage = `{!! $muzakki->village ?? '' !!}`;
                     if (savedVillage) {
-                        // Find the option with matching text content (trimmed for whitespace)
+                        // Try to match by value (ID) first
                         const options = villageSelect.options;
+                        let matched = false;
+                        
                         for (let i = 0; i < options.length; i++) {
-                            if (options[i].text.trim().toLowerCase() === savedVillage.trim()
-                                .toLowerCase()) {
+                            if (options[i].value === savedVillage) {
                                 villageSelect.selectedIndex = i;
+                                matched = true;
                                 break;
+                            }
+                        }
+                        
+                        // If no match by ID, try matching by name (for backward compatibility)
+                        if (!matched) {
+                            for (let i = 0; i < options.length; i++) {
+                                if (options[i].text.trim().toLowerCase() === savedVillage.trim()
+                                    .toLowerCase()) {
+                                    villageSelect.selectedIndex = i;
+                                    break;
+                                }
                             }
                         }
                     }

@@ -48,7 +48,7 @@ class DashboardController extends Controller
             'total_mustahik' => Mustahik::active()->count(),
             'total_payments_this_year' => ZakatPayment::completed()->byYear($currentYear)->sum('paid_amount'),
             'total_distributions_this_year' => ZakatDistribution::byYear($currentYear)->sum('amount'),
-            'pending_mustahik' => Mustahik::pending()->count(),
+
             'total_payments_this_month' => ZakatPayment::completed()->byMonth($currentMonth)->sum('paid_amount'),
             'total_distributions_this_month' => ZakatDistribution::byYear($currentYear)->whereMonth('distribution_date', $currentMonth)->sum('amount'),
         ];
@@ -93,7 +93,7 @@ class DashboardController extends Controller
 
         // Mustahik category distribution
         $mustahikCategoryStats = Mustahik::selectRaw('category, COUNT(*) as count')
-            ->verified()
+
             ->groupBy('category')
             ->get();
 

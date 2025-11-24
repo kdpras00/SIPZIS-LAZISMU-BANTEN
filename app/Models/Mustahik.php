@@ -26,17 +26,12 @@ class Mustahik extends Model
         'family_members',
         'monthly_income',
         'income_source',
-        'verification_status',
-        'verification_notes',
-        'verified_at',
-        'verified_by',
         'is_active'
     ];
 
     protected $casts = [
         'monthly_income' => 'decimal:2',
         'date_of_birth' => 'date',
-        'verified_at' => 'date',
         'is_active' => 'boolean',
     ];
 
@@ -53,11 +48,6 @@ class Mustahik extends Model
     ];
 
     // Relationships
-    public function verifiedBy()
-    {
-        return $this->belongsTo(User::class, 'verified_by');
-    }
-
     public function zakatDistributions()
     {
         return $this->hasMany(ZakatDistribution::class);
@@ -90,18 +80,8 @@ class Mustahik extends Model
         return $query->where('is_active', true);
     }
 
-    public function scopeVerified($query)
-    {
-        return $query->where('verification_status', 'verified');
-    }
-
     public function scopeByCategory($query, $category)
     {
         return $query->where('category', $category);
-    }
-
-    public function scopePending($query)
-    {
-        return $query->where('verification_status', 'pending');
     }
 }

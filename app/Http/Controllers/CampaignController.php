@@ -18,10 +18,10 @@ class CampaignController extends Controller
      */
     public function all()
     {
-        // Delete expired campaigns before fetching
-        $this->deleteExpiredCampaigns();
+        // Auto-complete expired or target-reached campaigns before fetching
+        $this->autoCompleteCampaigns();
         
-        $campaigns = Campaign::published()
+        $campaigns = Campaign::active()
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -46,10 +46,10 @@ class CampaignController extends Controller
      */
     public function index($category)
     {
-        // Delete expired campaigns before fetching
-        $this->deleteExpiredCampaigns();
+        // Auto-complete expired or target-reached campaigns before fetching
+        $this->autoCompleteCampaigns();
         
-        $campaigns = Campaign::published()
+        $campaigns = Campaign::active()
             ->byCategory($category)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -85,13 +85,15 @@ class CampaignController extends Controller
      */
     public function show($category, Campaign $campaign)
     {
-        // Check if campaign is expired and delete if so
-        if ($campaign->isExpired() && $campaign->status === 'published') {
-            if ($campaign->photo) {
-                Storage::disk('public')->delete($campaign->photo);
-            }
-            $campaign->delete();
-            abort(404, 'Campaign sudah berakhir dan telah dihapus.');
+        // Auto-complete if expired or target reached
+        $campaign->checkAndCompleteIfExpired();
+        
+        // Refresh campaign to get updated status
+        $campaign->refresh();
+        
+        // If campaign is completed, show 404
+        if ($campaign->status === 'completed') {
+            abort(404, 'Campaign sudah selesai.');
         }
 
         // Load related payments for this campaign and update collected amount
@@ -171,20 +173,23 @@ class CampaignController extends Controller
     // Admin methods
 
     /**
-     * Display a listing of all campaigns for admin.
-     */
-    public function adminIndex()
-    {
-        $campaigns = Campaign::orderBy('created_at', 'desc')->get();
+ * Display a listing of all campaigns for admin.
+ */
+public function adminIndex()
+{
+    // Auto-complete campaigns before displaying
+    $this->autoCompleteCampaigns();
+    
+    // Get ALL campaigns (including completed) for admin
+    $campaigns = Campaign::orderBy('created_at', 'desc')->get();
 
-        // Update collected amounts dynamically
-        foreach ($campaigns as $campaign) {
-            $campaign->display_collected_amount = $campaign->zakatPayments()->sum('paid_amount');
-        }
-
-        return view('admin.campaigns.index', compact('campaigns'));
+    // Update collected amounts dynamically
+    foreach ($campaigns as $campaign) {
+        $campaign->display_collected_amount = $campaign->zakatPayments()->sum('paid_amount');
     }
 
+    return view('admin.campaigns.index', compact('campaigns'));
+}
     /**
      * Show the form for creating a new campaign.
      */
@@ -405,27 +410,19 @@ class CampaignController extends Controller
     }
 
     /**
-     * Delete expired campaigns
+     * Auto-complete campaigns that are expired or reached their target
      */
-    private function deleteExpiredCampaigns()
+    private function autoCompleteCampaigns()
     {
-        $expiredCampaigns = Campaign::where('status', 'published')
-            ->whereNotNull('end_date')
-            ->where('end_date', '<', now()->startOfDay())
-            ->get();
+        $publishedCampaigns = Campaign::where('status', 'published')->get();
 
-        foreach ($expiredCampaigns as $campaign) {
+        foreach ($publishedCampaigns as $campaign) {
             try {
-                // Delete photo if exists
-                if ($campaign->photo) {
-                    Storage::disk('public')->delete($campaign->photo);
-                }
-                
-                // Delete the campaign
-                $campaign->delete();
+                // Check and complete if expired or target reached
+                $campaign->checkAndCompleteIfExpired();
             } catch (\Exception $e) {
                 // Log error but don't break the request
-                \Log::error("Failed to delete expired campaign", [
+                \Log::error("Failed to auto-complete campaign", [
                     'campaign_id' => $campaign->id,
                     'error' => $e->getMessage()
                 ]);

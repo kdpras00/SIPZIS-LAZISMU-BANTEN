@@ -32,14 +32,14 @@
             </a>
         </li>
 
-        @if ($user->role !== 'muzakki')
+        @if ($user->role === 'admin')
             {{-- Admin Menu --}}
             <li class="nav-item mb-1">
                 <a href="{{ route('muzakki.index') }}"
                     class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'muzakki.') && !str_contains($currentRoute, 'dashboard') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
                     style="padding-left: 0.75rem; padding-right: 0.75rem;">
                     <i class="bi bi-people mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Muzakki</span>
+                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Profile Akun Muzakki</span>
                 </a>
             </li>
 

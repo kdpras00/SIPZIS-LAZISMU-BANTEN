@@ -267,47 +267,6 @@
                             </div>
                         </div>
 
-                        <!-- Verification Section -->
-                        <div class="mb-6">
-                            <h6 class="text-blue-600 font-semibold mb-4 flex items-center">
-                                <i class="bi bi-shield-check mr-2"></i> Status Verifikasi
-                            </h6>
-
-                            <div class="md:w-1/2 mb-4">
-                                <label for="verification_status" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Status Verifikasi <span class="text-red-500">*</span>
-                                </label>
-                                <select
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white @error('verification_status') border-red-500 @enderror"
-                                    id="verification_status" name="verification_status" required>
-                                    <option value="pending"
-                                        {{ old('verification_status', $mustahik->verification_status) == 'pending' ? 'selected' : '' }}>
-                                        Menunggu Verifikasi</option>
-                                    <option value="verified"
-                                        {{ old('verification_status', $mustahik->verification_status) == 'verified' ? 'selected' : '' }}>
-                                        Terverifikasi</option>
-                                    <option value="rejected"
-                                        {{ old('verification_status', $mustahik->verification_status) == 'rejected' ? 'selected' : '' }}>
-                                        Ditolak</option>
-                                </select>
-                                @error('verification_status')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
-                                <label for="verification_notes"
-                                    class="block text-sm font-medium text-gray-700 mb-2">Catatan Verifikasi</label>
-                                <textarea
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('verification_notes') border-red-500 @enderror"
-                                    id="verification_notes" name="verification_notes" rows="3"
-                                    placeholder="Catatan atau alasan terkait status verifikasi...">{{ old('verification_notes', $mustahik->verification_notes) }}</textarea>
-                                @error('verification_notes')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-
                         <!-- Status Section -->
                         <div class="mb-6">
                             <h6 class="text-blue-600 font-semibold mb-4 flex items-center">
@@ -366,29 +325,6 @@
                                 class="px-2.5 py-0.5 text-xs font-medium rounded-full {{ $mustahik->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                 {{ $mustahik->is_active ? 'Aktif' : 'Non-aktif' }}
                             </span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Verifikasi</span>
-                            @switch($mustahik->verification_status)
-                                @case('pending')
-                                    <span
-                                        class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Menunggu</span>
-                                @break
-
-                                @case('verified')
-                                    <span
-                                        class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">Terverifikasi</span>
-                                @break
-
-                                @case('rejected')
-                                    <span
-                                        class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-800">Ditolak</span>
-                                @break
-
-                                @default
-                                    <span
-                                        class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">{{ $mustahik->verification_status }}</span>
-                            @endswitch
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-600">Terdaftar</span>

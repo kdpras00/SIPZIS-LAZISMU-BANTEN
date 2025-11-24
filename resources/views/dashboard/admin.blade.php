@@ -242,11 +242,7 @@
                                     </h3>
                                 </div>
                                 <small class="text-green-200 mt-2">
-                                    @if ($stats['pending_mustahik'] > 0)
-                                        {{ $stats['pending_mustahik'] }} menunggu verifikasi
-                                    @else
-                                        Semua terverifikasi
-                                    @endif
+                                        Total mustahik terdaftar
                                 </small>
                             </div>
                             <div

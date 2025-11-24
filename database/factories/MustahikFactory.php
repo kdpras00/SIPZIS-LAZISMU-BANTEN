@@ -32,10 +32,6 @@ class MustahikFactory extends Factory
             'family_members' => fake()->numberBetween(1, 10),
             'monthly_income' => fake()->numberBetween(500000, 5000000),
             'income_source' => fake()->sentence(),
-            'verification_status' => fake()->randomElement(['pending', 'verified', 'rejected']),
-            'verification_notes' => fake()->sentence(),
-            'verified_at' => fake()->dateTime(),
-            'verified_by' => User::factory(),
             'is_active' => true,
         ];
     }

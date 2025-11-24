@@ -15,7 +15,7 @@ class MustahikController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Mustahik::with(['verifiedBy', 'zakatDistributions']);
+        $query = Mustahik::with(['zakatDistributions']);
 
         // Search functionality
         if ($request->has('search')) {
@@ -32,11 +32,6 @@ class MustahikController extends Controller
             $query->where('category', $request->category);
         }
 
-        // Filter by verification status
-        if ($request->has('status') && $request->status != '') {
-            $query->where('verification_status', $request->status);
-        }
-
         // Filter by city
         if ($request->has('city') && $request->city != '') {
             $query->where('city', 'like', "%{$request->city}%");
@@ -49,9 +44,7 @@ class MustahikController extends Controller
         $cities = Mustahik::select('city')->distinct()->whereNotNull('city')->pluck('city');
         $stats = [
             'total' => Mustahik::count(),
-            'verified' => Mustahik::verified()->count(),
-            'pending' => Mustahik::pending()->count(),
-            'rejected' => Mustahik::where('verification_status', 'rejected')->count(),
+            'this_month' => Mustahik::where('created_at', '>=', now()->startOfMonth())->count(),
         ];
 
         return view('mustahik.index', compact('mustahik', 'categories', 'cities', 'stats'));
@@ -86,16 +79,9 @@ class MustahikController extends Controller
             'family_members' => 'required|integer|min:1',
             'monthly_income' => 'nullable|numeric|min:0',
             'income_source' => 'nullable|string',
-            'verification_status' => 'required|in:pending,verified,rejected',
-            'verification_notes' => 'nullable|string',
         ]);
 
         $data = $request->all();
-
-        if ($request->verification_status === 'verified') {
-            $data['verified_at'] = now();
-            $data['verified_by'] = auth()->id();
-        }
 
         Mustahik::create($data);
 
@@ -107,7 +93,7 @@ class MustahikController extends Controller
      */
     public function show(Mustahik $mustahik)
     {
-        $mustahik->load(['verifiedBy', 'zakatDistributions.distributedBy']);
+        $mustahik->load(['zakatDistributions.distributedBy']);
 
         $stats = [
             'total_received' => $mustahik->zakatDistributions()->sum('amount'),
@@ -153,21 +139,10 @@ class MustahikController extends Controller
             'family_members' => 'required|integer|min:1',
             'monthly_income' => 'nullable|numeric|min:0',
             'income_source' => 'nullable|string',
-            'verification_status' => 'required|in:pending,verified,rejected',
-            'verification_notes' => 'nullable|string',
             'is_active' => 'boolean',
         ]);
 
         $data = $request->all();
-
-        // Handle verification status changes
-        if ($request->verification_status === 'verified' && $mustahik->verification_status !== 'verified') {
-            $data['verified_at'] = now();
-            $data['verified_by'] = auth()->id();
-        } elseif ($request->verification_status !== 'verified') {
-            $data['verified_at'] = null;
-            $data['verified_by'] = null;
-        }
 
         $mustahik->update($data);
 
@@ -190,35 +165,6 @@ class MustahikController extends Controller
     }
 
     /**
-     * Verify mustahik
-     */
-    public function verify(Request $request, Mustahik $mustahik)
-    {
-        $request->validate([
-            'status' => 'required|in:verified,rejected',
-            'notes' => 'nullable|string',
-        ]);
-
-        $data = [
-            'verification_status' => $request->status,
-            'verification_notes' => $request->notes,
-        ];
-
-        if ($request->status === 'verified') {
-            $data['verified_at'] = now();
-            $data['verified_by'] = auth()->id();
-        } else {
-            $data['verified_at'] = null;
-            $data['verified_by'] = null;
-        }
-
-        $mustahik->update($data);
-
-        $statusText = $request->status === 'verified' ? 'diverifikasi' : 'ditolak';
-        return redirect()->route('mustahik.show', $mustahik)->with('success', "Mustahik berhasil {$statusText}.");
-    }
-
-    /**
      * Toggle mustahik status
      */
     public function toggleStatus(Mustahik $mustahik)
@@ -235,8 +181,7 @@ class MustahikController extends Controller
     public function getByCategory(Request $request)
     {
         $category = $request->get('category');
-        $mustahik = Mustahik::verified()
-            ->active()
+        $mustahik = Mustahik::active()
             ->where('category', $category)
             ->select('id', 'name', 'category', 'address')
             ->get();
@@ -249,7 +194,7 @@ class MustahikController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Mustahik::with(['verifiedBy', 'zakatDistributions']);
+        $query = Mustahik::with(['zakatDistributions']);
 
         // Search functionality
         if ($request->has('search') && $request->search != '') {
@@ -266,11 +211,6 @@ class MustahikController extends Controller
             $query->where('category', $request->category);
         }
 
-        // Filter by verification status
-        if ($request->has('status') && $request->status != '') {
-            $query->where('verification_status', $request->status);
-        }
-
         // Filter by city
         if ($request->has('city') && $request->city != '') {
             $query->where('city', 'like', "%{$request->city}%");
@@ -280,8 +220,6 @@ class MustahikController extends Controller
 
         // Calculate statistics
         $totalCount = Mustahik::count();
-        $verifiedCount = Mustahik::verified()->count();
-        $pendingCount = Mustahik::pending()->count();
         $thisMonthCount = Mustahik::where('created_at', '>=', now()->startOfMonth())->count();
 
         return response()->json([
@@ -298,8 +236,6 @@ class MustahikController extends Controller
                 ],
                 'statistics' => [
                     'total' => $totalCount,
-                    'verified' => $verifiedCount,
-                    'pending' => $pendingCount,
                     'this_month' => $thisMonthCount,
                 ],
             ]

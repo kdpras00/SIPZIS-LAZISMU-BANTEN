@@ -61,11 +61,6 @@ class User extends Authenticatable
         return $this->hasOne(Muzakki::class);
     }
 
-    public function verifiedMustahik()
-    {
-        return $this->hasMany(Mustahik::class, 'verified_by');
-    }
-
     public function receivedPayments()
     {
         return $this->hasMany(ZakatPayment::class, 'received_by');

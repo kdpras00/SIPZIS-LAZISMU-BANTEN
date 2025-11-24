@@ -178,46 +178,50 @@ Route::prefix('donasi')->name('guest.payment.')->group(function () {
 
 
 
-// Protected routes
+// ============================================================================
+// PROTECTED ROUTES (Requires Authentication)
+// ============================================================================
 Route::middleware('auth')->group(function () {
 
-    // Dashboard routes
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('dashboard.stats');
-
-    // Muzakki dashboard sections (without muzakki prefix)
-    Route::middleware('role:muzakki')->prefix('dashboard')->name('dashboard.')->group(function () {
-        Route::get('/transactions', [DashboardController::class, 'transactions'])->name('transactions');
-        Route::get('/recurring', [DashboardController::class, 'recurringDonations'])->name('recurring');
-        Route::get('/bank-accounts', [DashboardController::class, 'bankAccounts'])->name('bank-accounts');
-        Route::get('/bank-accounts/add', [BankAccountController::class, 'create'])->name('bank-accounts.create');
-        Route::get('/management', [DashboardController::class, 'accountManagement'])->name('management');
-        Route::get('/management/account/transfer-account', [DashboardController::class, 'transferAccount'])->name('management.transfer-account');
-        Route::get('/management/account/delete-account', [DashboardController::class, 'deleteAccount'])->name('management.delete-account');
-        Route::get('/recurring/create', [RecurringDonationController::class, 'create'])->name('recurring.create');
-        
-        // Two Factor Authentication routes
-        Route::get('/two-factor/setup', [App\Http\Controllers\TwoFactorController::class, 'showSetup'])->name('two-factor.setup');
-        Route::post('/two-factor/enable', [App\Http\Controllers\TwoFactorController::class, 'enable'])->name('two-factor.enable');
-        Route::post('/two-factor/disable', [App\Http\Controllers\TwoFactorController::class, 'disable'])->name('two-factor.disable');
-
-        Route::post('/bank-accounts', [BankAccountController::class, 'store'])->name('bank-accounts.store');
-        Route::delete('/bank-accounts/{bankAccount}', [BankAccountController::class, 'destroy'])->name('bank-accounts.destroy');
-        Route::post('/bank-accounts/{bankAccount}/set-primary', [BankAccountController::class, 'setPrimary'])->name('bank-accounts.set-primary');
-
-        Route::post('/recurring-donations', [RecurringDonationController::class, 'store'])->name('recurring-donations.store');
-        Route::patch('/recurring-donations/{recurringDonation}/toggle', [RecurringDonationController::class, 'toggle'])->name('recurring-donations.toggle');
-        Route::delete('/recurring-donations/{recurringDonation}', [RecurringDonationController::class, 'destroy'])->name('recurring-donations.destroy');
-    });
-
-    // Muzakki-specific routes (without muzakki prefix)
+    // ========================================================================
+    // SECTION 1: MUZAKKI-ONLY ROUTES
+    // Routes that can ONLY be accessed by users with role 'muzakki'
+    // ========================================================================
     Route::middleware('role:muzakki')->group(function () {
-        // Muzakki pages
+        
+        // Muzakki main pages
         Route::get('/donation', [DashboardController::class, 'donation'])->name('donation');
         Route::get('/fundraising', [DashboardController::class, 'fundraising'])->name('fundraising');
         Route::get('/amalanku', [DashboardController::class, 'amalanku'])->name('amalanku');
 
-        // Muzakki payments
+        // Muzakki dashboard sections
+        Route::prefix('dashboard')->name('dashboard.')->group(function () {
+            Route::get('/transactions', [DashboardController::class, 'transactions'])->name('transactions');
+            Route::get('/recurring', [DashboardController::class, 'recurringDonations'])->name('recurring');
+            Route::get('/bank-accounts', [DashboardController::class, 'bankAccounts'])->name('bank-accounts');
+            Route::get('/bank-accounts/add', [BankAccountController::class, 'create'])->name('bank-accounts.create');
+            Route::get('/management', [DashboardController::class, 'accountManagement'])->name('management');
+            Route::get('/management/account/transfer-account', [DashboardController::class, 'transferAccount'])->name('management.transfer-account');
+            Route::get('/management/account/delete-account', [DashboardController::class, 'deleteAccount'])->name('management.delete-account');
+            Route::get('/recurring/create', [RecurringDonationController::class, 'create'])->name('recurring.create');
+            
+            // Two Factor Authentication routes
+            Route::get('/two-factor/setup', [App\Http\Controllers\TwoFactorController::class, 'showSetup'])->name('two-factor.setup');
+            Route::post('/two-factor/enable', [App\Http\Controllers\TwoFactorController::class, 'enable'])->name('two-factor.enable');
+            Route::post('/two-factor/disable', [App\Http\Controllers\TwoFactorController::class, 'disable'])->name('two-factor.disable');
+
+            // Bank accounts management
+            Route::post('/bank-accounts', [BankAccountController::class, 'store'])->name('bank-accounts.store');
+            Route::delete('/bank-accounts/{bankAccount}', [BankAccountController::class, 'destroy'])->name('bank-accounts.destroy');
+            Route::post('/bank-accounts/{bankAccount}/set-primary', [BankAccountController::class, 'setPrimary'])->name('bank-accounts.set-primary');
+
+            // Recurring donations management
+            Route::post('/recurring-donations', [RecurringDonationController::class, 'store'])->name('recurring-donations.store');
+            Route::patch('/recurring-donations/{recurringDonation}/toggle', [RecurringDonationController::class, 'toggle'])->name('recurring-donations.toggle');
+            Route::delete('/recurring-donations/{recurringDonation}', [RecurringDonationController::class, 'destroy'])->name('recurring-donations.destroy');
+        });
+
+        // Muzakki payments (create and view own payments only)
         Route::prefix('payments')->name('payments.')->group(function () {
             Route::get('/', [ZakatPaymentController::class, 'index'])->name('index');
             Route::get('/create', [ZakatPaymentController::class, 'create'])->name('create');
@@ -232,21 +236,18 @@ Route::middleware('auth')->group(function () {
             Route::get('/ajax', [ZakatPaymentController::class, 'ajaxNotifications'])->name('ajax');
             Route::post('/mark-as-read', [ZakatPaymentController::class, 'markNotificationsAsRead'])->name('markAsRead');
         });
-
-        // Muzakki profile management
-        Route::prefix('profile')->name('profile.')->group(function () {
-            Route::get('/edit', [MuzakkiController::class, 'edit'])->name('edit');
-            Route::put('/', [MuzakkiController::class, 'update'])->name('update');
-        });
-
-        // Muzakki calculator (same as public calculator but with muzakki context)
-        // Note: Using public calculator route, no need for separate route
     });
 
-    // Admin only routes
+    // ========================================================================
+    // SECTION 2: ADMIN-ONLY ROUTES
+    // Routes that can ONLY be accessed by users with role 'admin'
+    // ========================================================================
     Route::middleware('role:admin')->group(function () {
+        
+        // Dashboard stats (admin only)
+        Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('dashboard.stats');
 
-        // Muzakki management (exclude routes that conflict with muzakki-specific routes)
+        // Muzakki management
         Route::resource('muzakki', MuzakkiController::class)->except(['show']);
         Route::get('/muzakki/{muzakki}', [MuzakkiController::class, 'show'])->name('muzakki.show')->where('muzakki', '[0-9]+');
         Route::patch('/muzakki/{muzakki}/toggle-status', [MuzakkiController::class, 'toggleStatus'])->name('muzakki.toggle-status')->where('muzakki', '[0-9]+');
@@ -254,14 +255,9 @@ Route::middleware('auth')->group(function () {
 
         // Mustahik management
         Route::resource('mustahik', MustahikController::class);
-        Route::patch('/mustahik/{mustahik}/verify', [MustahikController::class, 'verify'])->name('mustahik.verify');
         Route::patch('/mustahik/{mustahik}/toggle-status', [MustahikController::class, 'toggleStatus'])->name('mustahik.toggle-status');
         Route::get('/api/mustahik/by-category', [MustahikController::class, 'getByCategory'])->name('api.mustahik.by-category');
         Route::get('/api/mustahik/search', [MustahikController::class, 'search'])->name('api.mustahik.search');
-
-        // Zakat payments management (Admin can manage all)
-        Route::resource('payments', ZakatPaymentController::class)->except(['create', 'store']);
-        Route::get('/api/payments/search', [ZakatPaymentController::class, 'search'])->name('api.payments.search');
 
         // Zakat distributions management
         Route::resource('distributions', ZakatDistributionController::class);
@@ -269,20 +265,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/distributions-report/category', [ZakatDistributionController::class, 'reportByCategory'])->name('distributions.report.category');
         Route::get('/api/distributions/mustahik-by-category', [ZakatDistributionController::class, 'getMustahikByCategory'])->name('api.distributions.mustahik-by-category');
         Route::get('/api/distributions/search', [ZakatDistributionController::class, 'search'])->name('api.distributions.search');
-
-        // Receipt generation
-        Route::get('/payments/{payment}/receipt', [ZakatPaymentController::class, 'receipt'])->name('payments.receipt');
         Route::get('/distributions/{distribution}/receipt', [ZakatDistributionController::class, 'receipt'])->name('distributions.receipt');
 
         // Reports routes
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/incoming', [ReportsController::class, 'incoming'])->name('incoming');
-
             Route::get('/outgoing', [ReportsController::class, 'outgoing'])->name('outgoing');
         });
 
-        // News management
+        // Content management (News, Artikel, Campaigns, Programs)
         Route::prefix('admin')->name('admin.')->group(function () {
+            // News management
             Route::get('/news', [NewsController::class, 'adminIndex'])->name('news.index');
             Route::get('/news/create', [NewsController::class, 'create'])->name('news.create');
             Route::post('/news', [NewsController::class, 'store'])->name('news.store');
@@ -309,34 +302,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/campaigns/{campaign}/edit', [CampaignController::class, 'adminEdit'])->name('campaigns.edit');
             Route::put('/campaigns/{campaign}', [CampaignController::class, 'adminUpdate'])->name('campaigns.update');
             Route::delete('/campaigns/{campaign}', [CampaignController::class, 'adminDestroy'])->name('campaigns.destroy');
-        });
-    });
 
-    // Routes accessible by all authenticated users (including muzakki)
-    Route::group([], function () {
-
-        // Zakat payments (Muzakki can create their own payments)
-        Route::get('/payments/create', [ZakatPaymentController::class, 'create'])->name('payments.create');
-        Route::post('/payments', [ZakatPaymentController::class, 'store'])->name('payments.store');
-        Route::get('/payments/{payment}', [ZakatPaymentController::class, 'show'])->name('payments.show');
-        Route::get('/payments/{payment}/receipt', [ZakatPaymentController::class, 'receipt'])->name('payments.receipt');
-
-        // Zakat calculator for authenticated users
-        Route::get('/my-calculator', [ZakatCalculatorController::class, 'index'])->name('my-calculator');
-
-        // Dedicated profile routes for all authenticated users
-        Route::get('/profile', [MuzakkiController::class, 'edit'])->name('profile.show');
-        Route::put('/profile', [MuzakkiController::class, 'update'])->name('profile.update');
-    });
-
-    // Admin only routes
-    Route::middleware('role:admin')->group(function () {
-
-        // User management routes would go here
-        // Settings and configuration routes would go here
-
-        // Program management routes
-        Route::prefix('admin')->name('admin.')->group(function () {
+            // Program management
             Route::get('/programs', [ProgramController::class, 'adminIndex'])->name('programs.index');
             Route::get('/programs/create', [ProgramController::class, 'adminCreate'])->name('programs.create');
             Route::get('/programs/bulk-create', [ProgramController::class, 'adminBulkCreate'])->name('programs.bulk-create');
@@ -346,6 +313,27 @@ Route::middleware('auth')->group(function () {
             Route::put('/programs/{program}', [ProgramController::class, 'adminUpdate'])->name('programs.update');
             Route::delete('/programs/{program}', [ProgramController::class, 'adminDestroy'])->name('programs.destroy');
         });
+    });
+
+    // ========================================================================
+    // SECTION 3: SHARED ROUTES (Admin + Muzakki)
+    // Routes that can be accessed by BOTH admin and muzakki roles
+    // ========================================================================
+    Route::middleware('role:admin,muzakki')->group(function () {
+        
+        // Dashboard (controller decides which view based on role)
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // Profile management (both roles can manage their profile)
+        Route::get('/profile', [MuzakkiController::class, 'edit'])->name('profile.show');
+        Route::put('/profile', [MuzakkiController::class, 'update'])->name('profile.update');
+        Route::prefix('profile')->name('profile.')->group(function () {
+            Route::get('/edit', [MuzakkiController::class, 'edit'])->name('edit');
+            Route::put('/', [MuzakkiController::class, 'update'])->name('update');
+        });
+
+        // Zakat calculator for authenticated users
+        Route::get('/my-calculator', [ZakatCalculatorController::class, 'index'])->name('my-calculator');
     });
 });
 
@@ -433,8 +421,11 @@ Route::post('/firebase-login', function (Request $request) {
 
         // Handle 2FA requirement
         if ($user->hasTwoFactorEnabled()) {
-            $request->session()->put('login.id', $user->id);
-            Auth::logout();
+            Auth::logout(); // Logout first to clear any existing auth state
+            $request->session()->invalidate(); // Invalidate the session
+            $request->session()->regenerateToken(); // Regenerate CSRF token
+            
+            $request->session()->put('login.id', $user->id); // Store user ID for 2FA verification
 
             return response()->json([
                 'success' => true,

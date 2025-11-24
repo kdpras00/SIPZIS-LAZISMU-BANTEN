@@ -22,9 +22,6 @@
 
                         // Also count pending mustahik for admin
                         $pendingMustahik = 0;
-                        if ($user->role !== 'muzakki') {
-                            $pendingMustahik = \App\Models\Mustahik::pending()->count();
-                        }
                     @endphp
                     @if ($unreadCount > 0 || $pendingMustahik > 0)
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

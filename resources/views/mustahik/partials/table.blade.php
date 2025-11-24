@@ -7,7 +7,6 @@
                 <th scope="col" class="px-6 py-3">Kategori</th>
                 <th scope="col" class="px-6 py-3">Telepon</th>
                 <th scope="col" class="px-6 py-3">Kota</th>
-                <th scope="col" class="px-6 py-3">Status Verifikasi</th>
                 <th scope="col" class="px-6 py-3">Terdaftar</th>
                 <th scope="col" class="px-6 py-3">Aksi</th>
             </tr>
@@ -33,21 +32,6 @@
                 </td>
                 <td class="px-6 py-4">{{ $item->phone ?: '-' }}</td>
                 <td class="px-6 py-4">{{ $item->city ?: '-' }}</td>
-                <td class="px-6 py-4">
-                    @switch($item->verification_status)
-                        @case('pending')
-                            <span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Menunggu Verifikasi</span>
-                            @break
-                        @case('verified')
-                            <span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">Terverifikasi</span>
-                            @break
-                        @case('rejected')
-                            <span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-800">Ditolak</span>
-                            @break
-                        @default
-                            <span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">{{ $item->verification_status }}</span>
-                    @endswitch
-                </td>
                 <td class="px-6 py-4">{{ $item->created_at->format('d M Y') }}</td>
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-1">
@@ -57,11 +41,6 @@
                         <a href="{{ route('mustahik.edit', $item) }}" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
                             <i class="bi bi-pencil"></i>
                         </a>
-                        @if($item->verification_status === 'pending')
-                        <button type="button" class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors" title="Verifikasi" onclick="showVerifyModal({{ $item->id }}, '{{ $item->name }}')">
-                            <i class="bi bi-check-circle"></i>
-                        </button>
-                        @endif
                         <form action="{{ route('mustahik.toggle-status', $item) }}" method="POST" class="inline">
                             @csrf
                             @method('PATCH')
@@ -133,23 +112,5 @@
 @endif
 
 <script>
-// Verify modal function
-function showVerifyModal(id, name) {
-    if(confirm(`Verifikasi mustahik: ${name}?`)) {
-        // Create a form and submit
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = `/mustahik/${id}/verify`;
-        
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        form.innerHTML = `
-            <input type="hidden" name="_token" value="${csrfToken}">
-            <input type="hidden" name="_method" value="PATCH">
-            <input type="hidden" name="status" value="verified">
-        `;
-        
-        document.body.appendChild(form);
-        form.submit();
-    }
-}
+// No verification modal needed anymore
 </script>

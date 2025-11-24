@@ -28,10 +28,6 @@ class MustahikSeeder extends Seeder
                 'family_members' => 4,
                 'monthly_income' => 0.00,
                 'income_source' => 'Kadang meminta-minta',
-                'verification_status' => 'verified',
-                'verification_notes' => 'Telah disurvei dan memenuhi kriteria fakir',
-                'verified_at' => now(),
-                'verified_by' => 1, // Admin
                 'is_active' => true,
             ],
             [
@@ -91,10 +87,6 @@ class MustahikSeeder extends Seeder
                 'family_members' => 1,
                 'monthly_income' => 2500000.00,
                 'income_source' => 'Karyawan swasta',
-                'verification_status' => 'verified',
-                'verification_notes' => 'Baru masuk Islam 6 bulan yang lalu',
-                'verified_at' => now(),
-                'verified_by' => 1, // Admin
                 'is_active' => true,
             ],
             [
@@ -112,10 +104,6 @@ class MustahikSeeder extends Seeder
                 'family_members' => 5,
                 'monthly_income' => 4000000.00,
                 'income_source' => 'Wiraswasta',
-                'verification_status' => 'verified',
-                'verification_notes' => 'Berutang untuk biaya pengobatan keluarga',
-                'verified_at' => now(),
-                'verified_by' => 1, // Admin
                 'is_active' => true,
             ],
             [
@@ -133,10 +121,6 @@ class MustahikSeeder extends Seeder
                 'family_members' => 3,
                 'monthly_income' => 2000000.00,
                 'income_source' => 'Donasi untuk kegiatan dakwah',
-                'verification_status' => 'pending',
-                'verification_notes' => 'Sedang dalam proses verifikasi',
-                'verified_at' => null,
-                'verified_by' => null,
                 'is_active' => true,
             ],
             [

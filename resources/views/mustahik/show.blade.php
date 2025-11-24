@@ -223,40 +223,33 @@
                 </div>
             </div>
 
-            <!-- Verification Information Card -->
+            <!-- Additional Info -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                 <div class="px-6 py-4 border-b border-gray-200 bg-white">
                     <h5 class="text-lg font-semibold text-gray-900 mb-0 flex items-center">
-                        <i class="bi bi-shield-check mr-2"></i> Informasi Verifikasi
+                        <i class="bi bi-info-circle mr-2"></i> Informasi Lainnya
                     </h5>
                 </div>
                 <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-4">
                         <div>
-                            <label class="block text-xs text-gray-500 mb-1">Tanggal Verifikasi</label>
-                            <div class="font-semibold text-gray-900">
-                                @if ($mustahik->verified_at)
-                                    {{ $mustahik->verified_at->format('d M Y H:i') }}
-                                @else
-                                    -
-                                @endif
-                            </div>
+                            <label class="block text-xs text-gray-500 mb-1">Status Keaktifan</label>
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $mustahik->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ $mustahik->is_active ? 'Aktif' : 'Non-Aktif' }}
+                            </span>
                         </div>
-
                         <div>
-                            <label class="block text-xs text-gray-500 mb-1">Diverifikasi Oleh</label>
-                            <div class="font-semibold text-gray-900">
-                                @if ($mustahik->verifiedBy)
-                                    {{ $mustahik->verifiedBy->name }}
-                                @else
-                                    -
-                                @endif
-                            </div>
+                            <label class="block text-xs text-gray-500 mb-1">Terdaftar Sejak</label>
+                            <p class="font-semibold text-gray-900">
+                                {{ $mustahik->created_at->format('d F Y') }}
+                            </p>
                         </div>
-
-                        <div class="md:col-span-2">
-                            <label class="block text-xs text-gray-500 mb-1">Catatan Verifikasi</label>
-                            <div class="font-semibold text-gray-900">{{ $mustahik->verification_notes ?: '-' }}</div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1">Terakhir Diupdate</label>
+                            <p class="font-semibold text-gray-900">
+                                {{ $mustahik->updated_at->format('d F Y H:i') }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -321,14 +314,6 @@
                                     <div class="text-right">
                                         <div class="text-xs text-gray-500 mb-1">
                                             {{ $distribution->distributedBy->name ?? 'System' }}</div>
-                                        @if ($distribution->is_received)
-                                            <span
-                                                class="px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">Diterima</span>
-                                        @else
-                                            <span
-                                                class="px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Belum
-                                                Diterima</span>
-                                        @endif
                                     </div>
                                 </div>
                             @endforeach
@@ -356,19 +341,6 @@
                             <i class="bi bi-pencil mr-2"></i> Edit Data
                         </a>
 
-                        @if ($mustahik->verification_status === 'pending')
-                            <button type="button"
-                                class="w-full inline-flex items-center justify-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200"
-                                onclick="showVerifyModal('verified')">
-                                <i class="bi bi-check-circle mr-2"></i> Verifikasi
-                            </button>
-                            <button type="button"
-                                class="w-full inline-flex items-center justify-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors duration-200"
-                                onclick="showVerifyModal('rejected')">
-                                <i class="bi bi-x-circle mr-2"></i> Tolak
-                            </button>
-                        @endif
-
                         <form action="{{ route('mustahik.toggle-status', $mustahik) }}" method="POST">
                             @csrf
                             @method('PATCH')
@@ -384,78 +356,4 @@
         </div>
     </div>
 
-    <!-- Verification Modal -->
-    <div id="verifyModal" tabindex="-1" aria-hidden="true"
-        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-full max-w-md max-h-full">
-            <div class="relative bg-white rounded-lg shadow">
-                <form action="{{ route('mustahik.verify', $mustahik) }}" method="POST">
-                    @csrf
-                    @method('PATCH')
-                    <input type="hidden" name="status" id="verifyStatus">
-
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
-                        <h3 class="text-lg font-semibold text-gray-900" id="verifyModalLabel">Verifikasi Mustahik</h3>
-                        <button type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                            onclick="closeModal()">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    </div>
-
-                    <div class="p-4 md:p-5">
-                        <div class="mb-4">
-                            <label for="verification_notes" class="block text-sm font-medium text-gray-700 mb-2">Catatan
-                                Verifikasi</label>
-                            <textarea
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                id="verification_notes" name="notes" rows="3" placeholder="Tambahkan catatan verifikasi..."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
-                        <button type="button"
-                            class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 font-medium transition-colors duration-200"
-                            onclick="closeModal()">Batal</button>
-                        <button type="submit"
-                            class="ms-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-backdrop" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-40"></div>
 @endsection
-
-@push('scripts')
-    <script>
-        function showVerifyModal(status) {
-            const modal = document.getElementById('verifyModal');
-            const backdrop = document.getElementById('modal-backdrop');
-            const statusInput = document.getElementById('verifyStatus');
-            const modalTitle = document.getElementById('verifyModalLabel');
-
-            if (status === 'verified') {
-                statusInput.value = 'verified';
-                modalTitle.textContent = 'Verifikasi Mustahik';
-            } else {
-                statusInput.value = 'rejected';
-                modalTitle.textContent = 'Tolak Mustahik';
-            }
-
-            modal.classList.remove('hidden');
-            backdrop.classList.remove('hidden');
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('verifyModal');
-            const backdrop = document.getElementById('modal-backdrop');
-            modal.classList.add('hidden');
-            backdrop.classList.add('hidden');
-        }
-
-        // Close modal when clicking backdrop
-        document.getElementById('modal-backdrop').addEventListener('click', closeModal);
-    </script>
-@endpush

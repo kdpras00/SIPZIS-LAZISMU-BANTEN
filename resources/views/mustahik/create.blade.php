@@ -255,54 +255,14 @@
                             </div>
                         </div>
 
-                        <!-- Verification Section -->
-                        <div class="mb-6">
-                            <h6 class="text-blue-600 font-semibold mb-4 flex items-center">
-                                <i class="bi bi-shield-check mr-2"></i> Status Verifikasi
-                            </h6>
-
-                            <div class="md:w-1/2 mb-4">
-                                <label for="verification_status" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Status Verifikasi <span class="text-red-500">*</span>
-                                </label>
-                                <select
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white @error('verification_status') border-red-500 @enderror"
-                                    id="verification_status" name="verification_status" required>
-                                    <option value="pending"
-                                        {{ old('verification_status', 'pending') == 'pending' ? 'selected' : '' }}>Menunggu
-                                        Verifikasi</option>
-                                    <option value="verified"
-                                        {{ old('verification_status') == 'verified' ? 'selected' : '' }}>Terverifikasi
-                                    </option>
-                                    <option value="rejected"
-                                        {{ old('verification_status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
-                                </select>
-                                @error('verification_status')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
-                                <label for="verification_notes"
-                                    class="block text-sm font-medium text-gray-700 mb-2">Catatan Verifikasi</label>
-                                <textarea
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('verification_notes') border-red-500 @enderror"
-                                    id="verification_notes" name="verification_notes" rows="3"
-                                    placeholder="Catatan atau alasan terkait status verifikasi...">{{ old('verification_notes') }}</textarea>
-                                @error('verification_notes')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="flex justify-between items-center pt-4 border-t border-gray-200">
+                        <div class="flex justify-end gap-4 mt-8">
                             <a href="{{ route('mustahik.index') }}"
-                                class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium rounded-lg transition-colors duration-200">
-                                <i class="bi bi-arrow-left mr-2"></i> Batal
+                                class="px-6 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-100 transition-all">
+                                Batal
                             </a>
                             <button type="submit"
-                                class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
-                                <i class="bi bi-check-circle mr-2"></i> Simpan Mustahik
+                                class="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-all flex items-center">
+                                <i class="bi bi-save mr-2"></i> Simpan Data
                             </button>
                         </div>
                     </form>

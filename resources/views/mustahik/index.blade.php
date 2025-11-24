@@ -41,17 +41,6 @@
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                         placeholder="Kota" value="{{ request('city') }}">
                 </div>
-                <div class="w-[180px]">
-                    <select id="status-filter"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white">
-                        <option value="">Semua Status</option>
-                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Verifikasi
-                        </option>
-                        <option value="verified" {{ request('status') == 'verified' ? 'selected' : '' }}>Terverifikasi
-                        </option>
-                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
-                    </select>
-                </div>
                 <div class="flex items-center gap-2">
                     <button type="button" id="reset-filters"
                         class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium rounded-lg transition-colors duration-200 text-sm">
@@ -66,29 +55,13 @@
     </div>
 
     <!-- Statistics Cards -->
-    <div class="grid grid-cols-4 gap-4 mb-6"
-        style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem;">
+    <div class="grid grid-cols-2 gap-4 mb-6"
+        style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem;">
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
             <div class="p-6 text-center">
                 <i class="bi bi-person-hearts text-5xl text-blue-600 mb-3"></i>
                 <h4 class="text-2xl font-bold mb-0 text-gray-900" id="total-count">{{ $mustahik->total() }}</h4>
                 <small class="text-gray-500 text-sm">Total Mustahik</small>
-            </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div class="p-6 text-center">
-                <i class="bi bi-check-circle text-5xl text-green-600 mb-3"></i>
-                <h4 class="text-2xl font-bold mb-0 text-gray-900" id="verified-count">
-                    {{ $mustahik->where('verification_status', 'verified')->count() }}</h4>
-                <small class="text-gray-500 text-sm">Terverifikasi</small>
-            </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div class="p-6 text-center">
-                <i class="bi bi-clock text-5xl text-yellow-600 mb-3"></i>
-                <h4 class="text-2xl font-bold mb-0 text-gray-900" id="pending-count">
-                    {{ $mustahik->where('verification_status', 'pending')->count() }}</h4>
-                <small class="text-gray-500 text-sm">Menunggu Verifikasi</small>
             </div>
         </div>
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
@@ -127,7 +100,6 @@
                     search: document.getElementById('search-input').value,
                     category: document.getElementById('category-filter').value,
                     city: document.getElementById('city-filter').value,
-                    status: document.getElementById('status-filter').value,
                     page: page
                 };
 
@@ -178,7 +150,6 @@
                                 <th scope="col" class="px-6 py-3">Kategori</th>
                                 <th scope="col" class="px-6 py-3">Telepon</th>
                                 <th scope="col" class="px-6 py-3">Kota</th>
-                                <th scope="col" class="px-6 py-3">Status Verifikasi</th>
                                 <th scope="col" class="px-6 py-3">Terdaftar</th>
                                 <th scope="col" class="px-6 py-3">Aksi</th>
                             </tr>
@@ -205,19 +176,6 @@
                             'ibnu_sabil': 'Ibnu Sabil'
                         };
 
-                        // Status badge classes
-                        const statusClasses = {
-                            'pending': 'bg-yellow-100 text-yellow-800',
-                            'verified': 'bg-green-100 text-green-800',
-                            'rejected': 'bg-red-100 text-red-800'
-                        };
-
-                        const statusTexts = {
-                            'pending': 'Menunggu Verifikasi',
-                            'verified': 'Terverifikasi',
-                            'rejected': 'Ditolak'
-                        };
-
                         tableHtml += `
                     <tr class="bg-white border-b hover:bg-gray-50">
                         <td class="px-6 py-4">
@@ -236,11 +194,6 @@
                         </td>
                         <td class="px-6 py-4">${item.phone || '-'}</td>
                         <td class="px-6 py-4">${item.city || '-'}</td>
-                        <td class="px-6 py-4">
-                            <span class="px-2.5 py-0.5 text-xs font-medium rounded-full ${statusClasses[item.verification_status]}">
-                                ${statusTexts[item.verification_status]}
-                            </span>
-                        </td>
                         <td class="px-6 py-4">${createdAt}</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-1">
@@ -250,11 +203,6 @@
                                 <a href="/mustahik/${item.id}/edit" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                ${item.verification_status === 'pending' ? `
-                                                                                                            <button type="button" class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors" title="Verifikasi" onclick="showVerifyModal(${item.id}, '${item.name}')">
-                                                                                                                <i class="bi bi-check-circle"></i>
-                                                                                                            </button>
-                                                                                                            ` : ''}
                                 <form action="/mustahik/${item.id}/toggle-status" method="POST" class="inline">
                                     <input type="hidden" name="_token" value="${csrfToken}">
                                     <input type="hidden" name="_method" value="PATCH">
@@ -340,8 +288,6 @@
             // Update statistics
             function updateStatistics(stats) {
                 document.getElementById('total-count').textContent = stats.total.toLocaleString();
-                document.getElementById('verified-count').textContent = stats.verified.toLocaleString();
-                document.getElementById('pending-count').textContent = stats.pending.toLocaleString();
                 document.getElementById('thismonth-count').textContent = stats.this_month.toLocaleString();
             }
 
@@ -358,10 +304,6 @@
                 performSearch(1);
             });
 
-            document.getElementById('status-filter').addEventListener('change', function() {
-                performSearch(1);
-            });
-
             document.getElementById('city-filter').addEventListener('input', function() {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(function() {
@@ -374,7 +316,6 @@
                 document.getElementById('search-input').value = '';
                 document.getElementById('category-filter').value = '';
                 document.getElementById('city-filter').value = '';
-                document.getElementById('status-filter').value = '';
                 performSearch(1);
             });
 
@@ -391,30 +332,9 @@
                     document.getElementById('search-input').value = '';
                     document.getElementById('category-filter').value = '';
                     document.getElementById('city-filter').value = '';
-                    document.getElementById('status-filter').value = '';
                     performSearch(1);
                 }
             });
         });
-
-        // Verify modal function (if needed)
-        function showVerifyModal(id, name) {
-            if (confirm(`Verifikasi mustahik: ${name}?`)) {
-                // Create a form and submit
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = `/mustahik/${id}/verify`;
-
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                form.innerHTML = `
-            <input type="hidden" name="_token" value="${csrfToken}">
-            <input type="hidden" name="_method" value="PATCH">
-            <input type="hidden" name="status" value="verified">
-        `;
-
-                document.body.appendChild(form);
-                form.submit();
-            }
-        }
     </script>
 @endpush

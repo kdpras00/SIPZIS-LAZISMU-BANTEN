@@ -21,49 +21,58 @@ class UpdateCampaignStatuses extends Command
      *
      * @var string
      */
-    protected $description = 'Automatically delete expired campaigns when they reach their end date';
+    protected $description = 'Automatically mark campaigns as completed when they expire or reach their target amount';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $this->info('Deleting expired campaigns...');
+        $this->info('Updating campaign statuses...');
 
-        // Find all published campaigns that have ended
-        $expiredCampaigns = Campaign::where('status', 'published')
-            ->whereNotNull('end_date')
-            ->where('end_date', '<', Carbon::now())
-            ->get();
+        // Find all published campaigns
+        $publishedCampaigns = Campaign::where('status', 'published')->get();
 
-        $deletedCount = 0;
+        $completedCount = 0;
         $errorCount = 0;
 
-        foreach ($expiredCampaigns as $campaign) {
+        foreach ($publishedCampaigns as $campaign) {
             try {
-                $campaignTitle = $campaign->title;
-                
-                // Delete photo if exists
-                if ($campaign->photo) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->delete($campaign->photo);
-                }
-                
-                // Delete the campaign
-                $campaign->delete();
-                $deletedCount++;
+                // Check if campaign should be completed (expired OR target reached)
+                $shouldComplete = false;
+                $reason = '';
 
-                $this->info("Deleted expired campaign '{$campaignTitle}'.");
-                
-                // Log the deletion
-                Log::info("Expired campaign automatically deleted", [
-                    'campaign_id' => $campaign->id,
-                    'campaign_title' => $campaignTitle,
-                    'end_date' => $campaign->end_date
-                ]);
+                if ($campaign->isExpired()) {
+                    $shouldComplete = true;
+                    $reason = 'expired';
+                } elseif ($campaign->isTargetReached()) {
+                    $shouldComplete = true;
+                    $reason = 'target reached';
+                }
+
+                if ($shouldComplete) {
+                    $campaignTitle = $campaign->title;
+                    
+                    // Mark as completed
+                    $campaign->update(['status' => 'completed']);
+                    $completedCount++;
+
+                    $this->info("Marked campaign '{$campaignTitle}' as completed (Reason: {$reason}).");
+                    
+                    // Log the update
+                    Log::info("Campaign automatically marked as completed", [
+                        'campaign_id' => $campaign->id,
+                        'campaign_title' => $campaignTitle,
+                        'reason' => $reason,
+                        'end_date' => $campaign->end_date,
+                        'target_amount' => $campaign->target_amount,
+                        'collected_amount' => $campaign->collected_amount
+                    ]);
+                }
             } catch (\Exception $e) {
                 $errorCount++;
-                $this->error("Failed to delete campaign '{$campaign->title}': " . $e->getMessage());
-                Log::error("Failed to automatically delete expired campaign", [
+                $this->error("Failed to update campaign '{$campaign->title}': " . $e->getMessage());
+                Log::error("Failed to automatically update campaign status", [
                     'campaign_id' => $campaign->id,
                     'campaign_title' => $campaign->title,
                     'error' => $e->getMessage()
@@ -71,16 +80,16 @@ class UpdateCampaignStatuses extends Command
             }
         }
 
-        $this->info("Completed! Deleted {$deletedCount} expired campaigns.");
+        $this->info("Completed! Marked {$completedCount} campaigns as completed.");
         
         if ($errorCount > 0) {
             $this->warn("Encountered errors with {$errorCount} campaigns.");
         }
 
         // Also log for monitoring purposes
-        Log::info("Expired campaign deletion job completed", [
-            'total_expired' => $expiredCampaigns->count(),
-            'deleted_count' => $deletedCount,
+        Log::info("Campaign status update job completed", [
+            'total_checked' => $publishedCampaigns->count(),
+            'completed_count' => $completedCount,
             'error_count' => $errorCount
         ]);
 

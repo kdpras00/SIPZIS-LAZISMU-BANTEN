@@ -160,6 +160,11 @@ class Campaign extends Model
     // Scopes
     public function scopePublished($query)
     {
+        return $query->where('status', 'published');
+    }
+
+    public function scopeActive($query)
+    {
         return $query->where('status', 'published')
             ->where(function($q) {
                 $q->whereNull('end_date')
@@ -187,6 +192,18 @@ class Campaign extends Model
     }
 
     /**
+     * Check if campaign target has been reached
+     */
+    public function isTargetReached(): bool
+    {
+        if ($this->target_amount <= 0) {
+            return false;
+        }
+
+        return $this->collected_amount >= $this->target_amount;
+    }
+
+    /**
      * Mark campaign as completed
      */
     public function markAsCompleted(): bool
@@ -200,11 +217,17 @@ class Campaign extends Model
 
     /**
      * Check if campaign should be automatically completed and do so if needed
+     * This includes both expired campaigns AND campaigns that reached their target
      */
     public function checkAndCompleteIfExpired(): bool
     {
-        if ($this->isExpired() && $this->status === 'published') {
-            return $this->markAsCompleted();
+        if ($this->status !== 'published') {
+            return false;
+        }
+
+        // Check if expired OR target reached
+        if ($this->isExpired() || $this->isTargetReached()) {
+            return $this->update(['status' => 'completed']);
         }
 
         return false;

@@ -95,9 +95,9 @@ class ZakatDistributionController extends Controller
     public function create(Request $request)
     {
         $mustahikId = $request->get('mustahik_id');
-        $mustahik = $mustahikId ? Mustahik::verified()->findOrFail($mustahikId) : null;
+        $mustahik = $mustahikId ? Mustahik::findOrFail($mustahikId) : null;
 
-        $allMustahik = Mustahik::verified()->active()->orderBy('name')->get();
+        $allMustahik = Mustahik::active()->orderBy('name')->get();
         $categories = array_keys(Mustahik::CATEGORIES);
         $availableBalance = self::availableBalance();
 
@@ -130,7 +130,7 @@ class ZakatDistributionController extends Controller
             $amount = 0;
         }
 
-        $mustahik = Mustahik::verified()->active()->findOrFail($request->mustahik_id);
+        $mustahik = Mustahik::active()->findOrFail($request->mustahik_id);
 
         return DB::transaction(function () use ($request, $mustahik, $amount) {
 
@@ -199,7 +199,7 @@ class ZakatDistributionController extends Controller
      */
     public function edit(ZakatDistribution $distribution)
     {
-        $allMustahik = Mustahik::verified()->active()->orderBy('name')->get();
+        $allMustahik = Mustahik::active()->orderBy('name')->get();
         $categories = array_keys(Mustahik::CATEGORIES);
         $availableBalance = self::availableBalance();
 
