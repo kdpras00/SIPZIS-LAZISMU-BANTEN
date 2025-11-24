@@ -18,13 +18,14 @@
                 Kwitansi
             </a>
             @endif
-            @if(auth()->user()->role === 'admin' && $payment->status !== 'completed')
+            {{-- Edit button removed as payments.edit route was intentionally disabled --}}
+            {{-- @if(auth()->user()->role === 'admin' && $payment->status !== 'completed')
             <a href="{{ route('payments.edit', $payment) }}" 
                 class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                 <i class="bi bi-pencil mr-2"></i>
                 Edit
             </a>
-            @endif
+            @endif --}}
         </div>
     </div>
 

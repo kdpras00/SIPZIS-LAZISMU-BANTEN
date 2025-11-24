@@ -35,27 +35,57 @@
 
     <!-- Filter Section -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
-        <div class="p-5">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                    </svg>
+                    <h3 class="text-lg font-semibold text-gray-900">Filter & Pencarian</h3>
+                </div>
+                <button type="button" id="reset-filters"
+                    class="inline-flex items-center gap-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 rounded-lg px-4 py-2 transition-all duration-200 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    <span>Reset Filter</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-6">
             <!-- Search Input -->
-            <div class="mb-4">
+            <div class="mb-5">
+                <label for="search-input" class="block text-sm font-medium text-gray-700 mb-2">
+                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    Pencarian Cepat
+                </label>
                 <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-5">
-                        <i class="bi bi-search text-base text-gray-400"></i>
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
                     </span>
                     <input type="text" id="search-input"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full px-10 pr-4 py-2.5"
-                        placeholder="Cari kode bayar, kwitansi, nama..." value="{{ request('search') }}">
+                        class="w-full pl-12 pr-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 hover:bg-white"
+                        placeholder="Ketik kode pembayaran, nomor kwitansi, atau nama muzakki..." value="{{ request('search') }}">
                 </div>
             </div>
 
             <!-- Filters Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
-                <div class="lg:col-span-1">
-                    <label for="zakat-type-filter" class="block text-xs font-medium text-gray-700 mb-1.5">Jenis
-                        Zakat</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div>
+                    <label for="zakat-type-filter" class="block text-sm font-medium text-gray-700 mb-2">
+                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                        </svg>
+                        Jenis Zakat
+                    </label>
                     <select id="zakat-type-filter"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-2">
-                        <option value="">Semua</option>
+                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400">
+                        <option value="">Semua Jenis</option>
                         @foreach ($zakatTypes as $type)
                             <option value="{{ $type->id }}" {{ request('zakat_type') == $type->id ? 'selected' : '' }}>
                                 {{ $type->name }}
@@ -63,57 +93,65 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="lg:col-span-1">
-                    <label for="payment-method-filter" class="block text-xs font-medium text-gray-700 mb-1.5">Metode</label>
+                
+                <div>
+                    <label for="payment-method-filter" class="block text-sm font-medium text-gray-700 mb-2">
+                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                        </svg>
+                        Metode Pembayaran
+                    </label>
                     <select id="payment-method-filter"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-2">
-                        <option value="">Semua</option>
-                        <option value="cash" {{ request('payment_method') == 'cash' ? 'selected' : '' }}>Tunai</option>
-                        <option value="transfer" {{ request('payment_method') == 'transfer' ? 'selected' : '' }}>Transfer
-                        </option>
-                        <option value="check" {{ request('payment_method') == 'check' ? 'selected' : '' }}>Cek</option>
-                        <option value="online" {{ request('payment_method') == 'online' ? 'selected' : '' }}>Online</option>
-                        <option value="midtrans" {{ request('payment_method') == 'midtrans' ? 'selected' : '' }}>Midtrans
-                        </option>
+                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400">
+                        <option value="">Semua Metode</option>
+                        <option value="cash" {{ request('payment_method') == 'cash' ? 'selected' : '' }}>💵 Tunai</option>
+                        <option value="transfer" {{ request('payment_method') == 'transfer' ? 'selected' : '' }}>🏦 Transfer Bank</option>
+                        <option value="check" {{ request('payment_method') == 'check' ? 'selected' : '' }}>📝 Cek</option>
+                        <option value="online" {{ request('payment_method') == 'online' ? 'selected' : '' }}>🌐 Online</option>
+                        <option value="midtrans" {{ request('payment_method') == 'midtrans' ? 'selected' : '' }}>💳 Midtrans</option>
                     </select>
                 </div>
-                <div class="lg:col-span-1">
-                    <label for="status-filter" class="block text-xs font-medium text-gray-700 mb-1.5">Status</label>
+                
+                <div>
+                    <label for="status-filter" class="block text-sm font-medium text-gray-700 mb-2">
+                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Status
+                    </label>
                     <select id="status-filter"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-2">
-                        <option value="">Semua</option>
-                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu</option>
-                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
-                        <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Dibatalkan
-                        </option>
+                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400">
+                        <option value="">Semua Status</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>⏳ Menunggu</option>
+                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>✅ Selesai</option>
+                        <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>❌ Dibatalkan</option>
                     </select>
                 </div>
+                
                 <div class="lg:col-span-2">
-                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Rentang Tanggal</label>
-                    <div class="grid grid-cols-2 gap-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Rentang Tanggal
+                    </label>
+                    <div class="grid grid-cols-2 gap-3">
                         <input type="date" id="date-from"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-2"
-                            value="{{ request('date_from') }}">
+                            class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400"
+                            value="{{ request('date_from') }}" placeholder="Dari tanggal">
                         <input type="date" id="date-to"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-2"
-                            value="{{ request('date_to') }}">
+                            class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400"
+                            value="{{ request('date_to') }}" placeholder="Sampai tanggal">
                     </div>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="flex items-center justify-end gap-3 pt-3 border-t border-gray-200">
-                <div id="search-loading" class="hidden">
-                    <div class="flex items-center gap-2 text-sm text-gray-600">
-                        <div class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                        <span>Memproses...</span>
-                    </div>
+            <!-- Loading Indicator -->
+            <div id="search-loading" class="hidden mt-4 pt-4 border-t border-gray-200">
+                <div class="flex items-center justify-center gap-3 text-blue-600">
+                    <div class="inline-block animate-spin rounded-full h-5 w-5 border-3 border-blue-600 border-t-transparent"></div>
+                    <span class="text-sm font-medium">Memproses pencarian...</span>
                 </div>
-                <button type="button" id="reset-filters"
-                    class="inline-flex items-center gap-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-2 focus:ring-gray-200 rounded-lg px-4 py-2 transition-colors">
-                    <i class="bi bi-arrow-clockwise"></i>
-                    <span>Reset</span>
-                </button>
             </div>
         </div>
     </div>

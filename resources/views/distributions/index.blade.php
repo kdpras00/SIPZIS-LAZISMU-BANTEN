@@ -16,14 +16,57 @@
 </div>
 
 <!-- Filter Section -->
-<div class="bg-white rounded-lg shadow-sm mb-6 border border-gray-200">
-    <div class="p-6">
-        <div class="grid grid-cols-12 gap-3">
-            <div class="col-span-12 md:col-span-3">
-                <input type="text" id="search-input" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" placeholder="Cari kode distribusi, program, nama mustahik..." value="{{ request('search') }}">
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+    <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-green-50 to-emerald-50">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                </svg>
+                <h3 class="text-lg font-semibold text-gray-900">Filter & Pencarian</h3>
             </div>
-            <div class="col-span-12 md:col-span-2">
-                <select id="category-filter" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27currentColor%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e')] bg-[length:16px] bg-[right_8px_center] bg-no-repeat pr-8">
+            <button type="button" id="reset-filters"
+                class="inline-flex items-center gap-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-2 focus:ring-green-500 rounded-lg px-4 py-2 transition-all duration-200 shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                <span>Reset Filter</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="p-6">
+        <!-- Search Input -->
+        <div class="mb-5">
+            <label for="search-input" class="block text-sm font-medium text-gray-700 mb-2">
+                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                Pencarian Cepat
+            </label>
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-4">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </span>
+                <input type="text" id="search-input"
+                    class="w-full pl-12 pr-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50 hover:bg-white"
+                    placeholder="Ketik kode distribusi, nama program, atau nama mustahik..." value="{{ request('search') }}">
+            </div>
+        </div>
+
+        <!-- Filters Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div>
+                <label for="category-filter" class="block text-sm font-medium text-gray-700 mb-2">
+                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    </svg>
+                    Kategori Mustahik
+                </label>
+                <select id="category-filter"
+                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400">
                     <option value="">Semua Kategori</option>
                     @foreach($categories as $category)
                     <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
@@ -32,44 +75,74 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-span-12 md:col-span-2">
-                <select id="distribution-type-filter" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27currentColor%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e')] bg-[length:16px] bg-[right_8px_center] bg-no-repeat pr-8">
+            
+            <div>
+                <label for="distribution-type-filter" class="block text-sm font-medium text-gray-700 mb-2">
+                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Jenis Distribusi
+                </label>
+                <select id="distribution-type-filter"
+                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400">
                     <option value="">Semua Jenis</option>
-                    <option value="cash" {{ request('distribution_type') == 'cash' ? 'selected' : '' }}>Tunai</option>
-                    <option value="goods" {{ request('distribution_type') == 'goods' ? 'selected' : '' }}>Barang</option>
-                    <option value="voucher" {{ request('distribution_type') == 'voucher' ? 'selected' : '' }}>Voucher</option>
-                    <option value="service" {{ request('distribution_type') == 'service' ? 'selected' : '' }}>Layanan</option>
+                    <option value="cash" {{ request('distribution_type') == 'cash' ? 'selected' : '' }}>💵 Tunai</option>
+                    <option value="goods" {{ request('distribution_type') == 'goods' ? 'selected' : '' }}>📦 Barang</option>
+                    <option value="voucher" {{ request('distribution_type') == 'voucher' ? 'selected' : '' }}>🎫 Voucher</option>
+                    <option value="service" {{ request('distribution_type') == 'service' ? 'selected' : '' }}>🔧 Layanan</option>
                 </select>
             </div>
-            <div class="col-span-12 md:col-span-2">
-                <input type="text" id="program-filter" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" placeholder="Program" value="{{ request('program') }}">
+            
+            <div>
+                <label for="program-filter" class="block text-sm font-medium text-gray-700 mb-2">
+                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    </svg>
+                    Program
+                </label>
+                <input type="text" id="program-filter"
+                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400"
+                    placeholder="Nama program..." value="{{ request('program') }}">
             </div>
-            <div class="col-span-12 md:col-span-2">
-                <select id="received-status-filter" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27currentColor%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e')] bg-[length:16px] bg-[right_8px_center] bg-no-repeat pr-8">
+            
+            <div>
+                <label for="received-status-filter" class="block text-sm font-medium text-gray-700 mb-2">
+                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Status Penerimaan
+                </label>
+                <select id="received-status-filter"
+                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400">
                     <option value="">Semua Status</option>
-                    <option value="received" {{ request('received_status') == 'received' ? 'selected' : '' }}>Sudah Diterima</option>
-                    <option value="pending" {{ request('received_status') == 'pending' ? 'selected' : '' }}>Belum Diterima</option>
+                    <option value="received" {{ request('received_status') == 'received' ? 'selected' : '' }}>✅ Sudah Diterima</option>
+                    <option value="pending" {{ request('received_status') == 'pending' ? 'selected' : '' }}>⏳ Belum Diterima</option>
                 </select>
             </div>
-            <div class="col-span-12 md:col-span-1">
-                <button type="button" id="reset-filters" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-1 focus:ring-blue-500 flex items-center justify-center">
-                    <i class="bi bi-arrow-clockwise mr-1"></i>
-                    Reset
-                </button>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Rentang Tanggal
+                </label>
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="date" id="date-from"
+                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400"
+                        value="{{ request('date_from') }}" placeholder="Dari tanggal">
+                    <input type="date" id="date-to"
+                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400"
+                        value="{{ request('date_to') }}" placeholder="Sampai tanggal">
+                </div>
             </div>
         </div>
-        <div class="grid grid-cols-12 gap-3 mt-3">
-            <div class="col-span-12 md:col-span-3">
-                <input type="date" id="date-from" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" value="{{ request('date_from') }}">
-            </div>
-            <div class="col-span-12 md:col-span-3">
-                <input type="date" id="date-to" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500" value="{{ request('date_to') }}">
-            </div>
-            <div class="col-span-12 md:col-span-6 flex items-center">
-                <div id="search-loading" class="hidden flex items-center">
-                    <div class="animate-spin rounded-full h-4 w-4 border-2 border-blue-600 border-t-transparent"></div>
-                    <span class="ml-2 text-sm text-gray-600">Mencari...</span>
-                </div>
+
+        <!-- Loading Indicator -->
+        <div id="search-loading" class="hidden mt-4 pt-4 border-t border-gray-200">
+            <div class="flex items-center justify-center gap-3 text-green-600">
+                <div class="inline-block animate-spin rounded-full h-5 w-5 border-3 border-green-600 border-t-transparent"></div>
+                <span class="text-sm font-medium">Memproses pencarian...</span>
             </div>
         </div>
     </div>
@@ -142,16 +215,31 @@
 
         // Debounced search function
         function performSearch(page = 1) {
+            const searchInput = document.getElementById('search-input');
+            const categoryFilter = document.getElementById('category-filter');
+            const distributionTypeFilter = document.getElementById('distribution-type-filter');
+            const programFilter = document.getElementById('program-filter');
+            const receivedStatusFilter = document.getElementById('received-status-filter');
+            const dateFrom = document.getElementById('date-from');
+            const dateTo = document.getElementById('date-to');
+
             const searchData = {
-                search: document.getElementById('search-input').value,
-                category: document.getElementById('category-filter').value,
-                distribution_type: document.getElementById('distribution-type-filter').value,
-                program: document.getElementById('program-filter').value,
-                received_status: document.getElementById('received-status-filter').value,
-                date_from: document.getElementById('date-from').value,
-                date_to: document.getElementById('date-to').value,
+                search: searchInput ? searchInput.value.trim() : '',
+                category: categoryFilter ? categoryFilter.value : '',
+                distribution_type: distributionTypeFilter ? distributionTypeFilter.value : '',
+                program: programFilter ? programFilter.value.trim() : '',
+                received_status: receivedStatusFilter ? receivedStatusFilter.value : '',
+                date_from: dateFrom ? dateFrom.value : '',
+                date_to: dateTo ? dateTo.value : '',
                 page: page
             };
+
+            // Remove empty values from searchData
+            Object.keys(searchData).forEach(key => {
+                if (searchData[key] === '' || searchData[key] === null) {
+                    delete searchData[key];
+                }
+            });
 
             // Show loading indicator
             const loadingEl = document.getElementById('search-loading');
@@ -188,6 +276,8 @@
                         updateStatistics(response.data.statistics);
                         // Update current page
                         currentPage = response.data.pagination.current_page;
+                    } else {
+                        console.error('Search failed:', response);
                     }
                 })
                 .catch(error => {

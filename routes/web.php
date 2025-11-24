@@ -221,15 +221,6 @@ Route::middleware('auth')->group(function () {
             Route::delete('/recurring-donations/{recurringDonation}', [RecurringDonationController::class, 'destroy'])->name('recurring-donations.destroy');
         });
 
-        // Muzakki payments (create and view own payments only)
-        Route::prefix('payments')->name('payments.')->group(function () {
-            Route::get('/', [ZakatPaymentController::class, 'index'])->name('index');
-            Route::get('/create', [ZakatPaymentController::class, 'create'])->name('create');
-            Route::post('/', [ZakatPaymentController::class, 'store'])->name('store');
-            Route::get('/{payment}', [ZakatPaymentController::class, 'show'])->name('show');
-            Route::get('/{payment}/receipt', [ZakatPaymentController::class, 'receipt'])->name('receipt');
-        });
-
         // Muzakki notifications
         Route::prefix('notifications')->name('notifications.')->group(function () {
             Route::get('/', [ZakatPaymentController::class, 'notifications'])->name('index');
@@ -334,6 +325,15 @@ Route::middleware('auth')->group(function () {
 
         // Zakat calculator for authenticated users
         Route::get('/my-calculator', [ZakatCalculatorController::class, 'index'])->name('my-calculator');
+
+        // Payments (both admin and muzakki can access)
+        Route::prefix('payments')->name('payments.')->group(function () {
+            Route::get('/', [ZakatPaymentController::class, 'index'])->name('index');
+            Route::get('/create', [ZakatPaymentController::class, 'create'])->name('create');
+            Route::post('/', [ZakatPaymentController::class, 'store'])->name('store');
+            Route::get('/{payment}', [ZakatPaymentController::class, 'show'])->name('show');
+            Route::get('/{payment}/receipt', [ZakatPaymentController::class, 'receipt'])->name('receipt');
+        });
     });
 });
 
