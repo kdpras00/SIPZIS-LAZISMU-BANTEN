@@ -18,7 +18,7 @@ class MuzakkiController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Muzakki::with('user');
+        $query = Muzakki::with('user')->withCount('zakatPayments');
 
         // Search functionality
         if ($request->has('search')) {
@@ -203,14 +203,14 @@ class MuzakkiController extends Controller
             }
         }
 
-        // Check if this is admin editing (route has muzakki parameter)
-        if (request()->route()->hasParameter('muzakki')) {
-            // Admin editing - use admin-specific view
-            return view('muzakki.edit-admin', compact('muzakki'));
-        }
+        // Check if the current user is an admin
+    if (Auth::user()->role === 'admin') {
+        // Admin always sees the admin-specific view, whether editing their own profile or others
+        return view('muzakki.edit-admin', compact('muzakki'));
+    }
 
-        // Muzakki editing their own profile - use profile edit view
-        return view('muzakki.edit', compact('muzakki'));
+    // Regular muzakki editing their own profile - use profile edit view
+    return view('muzakki.edit', compact('muzakki'));
     }
 
     /**
@@ -242,6 +242,24 @@ class MuzakkiController extends Controller
             ]);
 
             return back()->with('success', 'Password berhasil diperbarui.');
+        }
+
+        // Admin Password Reset (no current_password required)
+        if (Auth::user()->role === 'admin' && $request->filled('new_password')) {
+            $request->validate([
+                'new_password' => 'required|string|min:8|confirmed',
+            ]);
+
+            if ($muzakki->user) {
+                $muzakki->user->update([
+                    'password' => Hash::make($request->new_password)
+                ]);
+            }
+
+            // If only updating password, return early
+            if (count($request->all()) <= 4) { // _token, _method, new_password, new_password_confirmation
+                 return redirect()->route('muzakki.index')->with('success', 'Password berhasil diperbarui.');
+            }
         }
 
         // Validation rules
@@ -286,6 +304,13 @@ class MuzakkiController extends Controller
         $request->validate($rules, [
             'postal_code.max' => 'Kode pos maksimal 10 karakter.',
         ]);
+
+        // Construct date_of_birth from parts if available
+        if ($request->filled(['birth_year', 'birth_month', 'birth_day'])) {
+            $request->merge([
+                'date_of_birth' => $request->birth_year . '-' . str_pad($request->birth_month, 2, '0', STR_PAD_LEFT) . '-' . str_pad($request->birth_day, 2, '0', STR_PAD_LEFT)
+            ]);
+        }
 
         // Prepare update data - START WITH EXISTING DATA
         $updateData = $muzakki->toArray();
@@ -447,7 +472,7 @@ class MuzakkiController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Muzakki::with('user');
+        $query = Muzakki::with('user')->withCount('zakatPayments');
 
         // Search functionality
         if ($request->has('search') && $request->search != '') {

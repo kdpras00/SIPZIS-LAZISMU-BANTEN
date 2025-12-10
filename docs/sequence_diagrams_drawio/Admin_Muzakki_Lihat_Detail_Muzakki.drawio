@@ -1,0 +1,25 @@
+<mxfile host="Electron" modified="2023-10-01T00:00:00.000Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="12345" version="21.6.8" type="device">
+  <diagram name="Page-1" id="diagram_id">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="sequenceDiagram
+    actor Admin
+    participant Index as View (Index)
+    participant Controller as MuzakkiController
+    participant View as View (Detail)
+    participant Model as Muzakki
+
+    Admin-&gt;&gt;Index: Klik Nama/Detail Muzakki
+    Index-&gt;&gt;Controller: GET /muzakki/{id} (show)
+    Controller-&gt;&gt;Model: FindOrFail(id) with Relations
+    Model--&gt;&gt;Controller: Return Data
+    Controller-&gt;&gt;View: Return View(&#x27;muzakki.show&#x27;, data)
+    View--&gt;&gt;Admin: Tampilkan Detail Muzakki" style="shape=mxgraph.mermaid.mermaid;html=1;verticalLabelPosition=bottom;verticalAlign=top;align=center;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="600" height="400" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

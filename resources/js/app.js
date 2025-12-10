@@ -3,11 +3,15 @@ import "./bootstrap";
 // Import Bootstrap JavaScript
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
+// Import SweetAlert2
+import Swal from "sweetalert2";
+window.Swal = Swal;
+
 // Zakat System JavaScript
 document.addEventListener("DOMContentLoaded", function () {
   // Initialize tooltips
   var tooltipTriggerList = [].slice.call(
-    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    document.querySelectorAll('[data-bs-toggle="tooltip"]'),
   );
   var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl);
@@ -15,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize popovers
   var popoverTriggerList = [].slice.call(
-    document.querySelectorAll('[data-bs-toggle="popover"]')
+    document.querySelectorAll('[data-bs-toggle="popover"]'),
   );
   var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
     return new bootstrap.Popover(popoverTriggerEl);
@@ -179,7 +183,7 @@ function displayZakatResult(data) {
   html += `<div class="row mb-3">`;
   html += `<div class="col-md-6"><strong>Jenis Zakat:</strong> ${data.zakat_type}</div>`;
   html += `<div class="col-md-6"><strong>Jumlah Harta:</strong> ${formatCurrency(
-    data.wealth_amount
+    data.wealth_amount,
   )}</div>`;
   html += `</div>`;
 
@@ -187,7 +191,7 @@ function displayZakatResult(data) {
     html += '<div class="alert alert-success">';
     html += '<i class="bi bi-check-circle"></i> <strong>Wajib Zakat</strong>';
     html += `<br>Jumlah zakat yang harus dibayar: <strong>${formatCurrency(
-      data.zakat_amount
+      data.zakat_amount,
     )}</strong>`;
     html += "</div>";
   } else {

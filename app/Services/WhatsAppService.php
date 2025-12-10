@@ -270,26 +270,40 @@ class WhatsAppService
             }
 
             // Try method 1: Using URL (works if URL is publicly accessible)
-            $response = Http::withHeaders([
-                'Authorization' => $this->token,
-            ])->post($this->apiUrl, [
-                'target' => $formattedPhone,
-                'message' => $message,
-                'type' => 'document',
-                'document' => $publicUrl,
-                'filename' => $filename,
-            ]);
-
-            $result = $response->json();
-
-            // If URL method fails (likely because URL is not publicly accessible),
-            // try base64 method as fallback
-            if (!$response->successful()) {
-                Log::channel('whatsapp')->warning('URL method failed, trying base64 method', [
-                    'error' => $result['message'] ?? 'Unknown error',
-                    'payment_code' => $payment->payment_code,
-                    'url_tried' => $publicUrl,
+            // But if we are on localhost, skip URL method and go straight to base64
+            $isLocalhost = str_contains($publicUrl, 'localhost') || str_contains($publicUrl, '127.0.0.1');
+            
+            if (!$isLocalhost) {
+                $response = Http::withHeaders([
+                    'Authorization' => $this->token,
+                ])->post($this->apiUrl, [
+                    'target' => $formattedPhone,
+                    'message' => $message,
+                    'type' => 'document',
+                    'document' => $publicUrl,
+                    'filename' => $filename,
                 ]);
+
+                $result = $response->json();
+            } else {
+                // Determine it as failed initially to trigger fallback logic below
+                $response = isset($response) ? $response : null; 
+            }
+
+            // If URL method fails or we are on localhost,
+            // try base64 method as fallback
+            if ($isLocalhost || !$response || !$response->successful()) {
+                if (!$isLocalhost) {
+                     Log::channel('whatsapp')->warning('URL method failed, trying base64 method', [
+                        'error' => $result['message'] ?? 'Unknown error',
+                        'payment_code' => $payment->payment_code,
+                        'url_tried' => $publicUrl,
+                    ]);
+                } else {
+                     Log::channel('whatsapp')->info('Localhost detected, using base64 method immediately', [
+                        'payment_code' => $payment->payment_code,
+                    ]);
+                }
 
                 // Convert PDF to base64 for Fonnte API
                 $base64Pdf = base64_encode($pdfContent);

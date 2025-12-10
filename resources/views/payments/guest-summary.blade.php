@@ -1,466 +1,290 @@
 @extends('layouts.main')
 
-@section('title', 'Ringkasan Pembayaran - SIPZIS')
+@section('title', 'Ringkasan Pembayaran - SIPZIS Lazismu')
 
-@section('content')
-    <div class="bg-gray-100 min-h-screen flex items-center justify-center py-12 px-4">
-        <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-
-            {{-- Logo --}}
-            <div class="text-center mb-6">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo" class="mx-auto h-12 mb-2">
-                <h2 class="text-gray-600 text-sm">Ringkasan Pembayaran</h2>
-            </div>
-
-            {{-- Notification Area --}}
-            <div id="notification-area" class="mb-4 hidden"></div>
-
-            {{-- Nominal --}}
-            <div class="text-center">
-                <h2 class="text-gray-500 text-lg">Total Pembayaran</h2>
-                <p class="text-4xl font-extrabold text-emerald-600 my-2">
-                    Rp {{ number_format($payment->paid_amount, 0, ',', '.') }}
-                </p>
-                <p class="text-sm text-gray-400">Kode: {{ $payment->payment_code }}</p>
-
-                {{-- Add additional payment information --}}
-                @if ($payment->program_category)
-                    <p class="text-sm text-gray-500 mt-2">
-                        Kategori: {{ ucfirst(str_replace('-', ' ', $payment->program_category)) }}
-                    </p>
-                @endif
-
-                @if ($payment->midtrans_order_id)
-                    <p class="text-xs text-gray-400 mt-1">
-                        Order ID: {{ $payment->midtrans_order_id }}
-                    </p>
-                @endif
-            </div>
-
-            {{-- Countdown --}}
-            @php $expiryTime = $payment->created_at->addHours(24); @endphp
-            <div class="mt-4 text-center text-sm text-gray-500">
-                <i class="far fa-clock mr-1"></i>
-                Selesaikan pembayaran sebelum <br>
-                <strong>{{ $expiryTime->isoFormat('dddd, D MMMM YYYY HH:mm') }}</strong>
-            </div>
-
-            {{-- Pilih Metode Pembayaran --}}
-            <div class="mt-8">
-                <h3 class="text-sm font-semibold text-gray-600 mb-2">Pilih metode pembayaran</h3>
-
-                <div class="space-y-2">
-                    {{-- ATM & VA --}}
-                    <p class="text-xs font-medium text-gray-400">ATM & Internet Banking</p>
-                    <div class="border rounded-lg divide-y">
-                        <button class="w-full flex items-center px-4 py-3 hover:bg-gray-50 payment-method"
-                            data-method="bca_va">
-                            <img src="https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BCA-PNG-1536x1152.png"
-                                class="h-5 mr-3">
-                            <span>BCA Virtual Account</span>
-                        </button>
-                        <button class="w-full flex items-center px-4 py-3 hover:bg-gray-50 payment-method"
-                            data-method="bri_va">
-                            <img src="https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-Bank-BRI.png"
-                                class="h-5 mr-3">
-                            <span>BRI Virtual Account</span>
-                        </button>
-                        <button class="w-full flex items-center px-4 py-3 hover:bg-gray-50 payment-method"
-                            data-method="bni_va">
-                            <img src="https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BNI.jpg" class="h-5 mr-3">
-                            <span>BNI Virtual Account</span>
-                        </button>
-                        <button class="w-full flex items-center px-4 py-3 hover:bg-gray-50 payment-method"
-                            data-method="mandiri_va">
-                            <img src="https://www.bankmandiri.co.id/documents/20143/44881086/ag-branding-logo-1.png/842d8cf8-b7fb-3014-9620-21f0f88d8377?t=1623309819034"
-                                class="h-5 mr-3">
-                            <span>Mandiri Virtual Account</span>
-                        </button>
-                    </div>
-
-                    {{-- E-Wallet --}}
-                    <p class="text-xs font-medium text-gray-400 mt-4">E-Wallet</p>
-                    <div class="border rounded-lg divide-y">
-                        <button class="w-full flex items-center px-4 py-3 hover:bg-gray-50 payment-method"
-                            data-method="gopay">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Logo_Gopay.svg" class="h-5 mr-3">
-                            <span>GoPay</span>
-                        </button>
-                        <button class="w-full flex items-center px-4 py-3 hover:bg-gray-50 payment-method"
-                            data-method="dana">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg"
-                                class="h-5 mr-3">
-                            <span>Dana</span>
-                        </button>
-                        <button class="w-full flex items-center px-4 py-3 hover:bg-gray-50 payment-method"
-                            data-method="shopeepay">
-                            <img src="https://images.seeklogo.com/logo-png/40/1/shopee-pay-logo-png_seeklogo-406839.png"
-                                class="h-5 mr-3">
-                            <span>ShopeePay</span>
-                        </button>
-                    </div>
-
-                    {{-- QRIS --}}
-                    <p class="text-xs font-medium text-gray-400 mt-4">QRIS</p>
-                    <div class="border rounded-lg">
-                        <button class="w-full flex items-center px-4 py-3 hover:bg-gray-50 payment-method"
-                            data-method="qris">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" class="h-5 mr-3">
-                            <span>QRIS</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Leave / Check --}}
-            <div class="mt-6 space-y-2">
-                <button id="pay-button"
-                    class="btn btn-success w-full bg-orange-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-orange-600 transition text-lg flex items-center justify-center gap-2"
-                    disabled>
-                    Bayar Sekarang
-                </button>
-                <div id="loadingSpinner" class="text-center mt-3 hidden">
-                    <div class="spinner-border text-success" role="status"></div>
-                    <p class="mt-2 text-gray-600">Menyiapkan pembayaran...</p>
-                </div>
-
-                <button id="leave-page-button"
-                    class="w-full bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 transition">
-                    Tinggalkan Halaman Ini
-                </button>
-            </div>
-        </div>
-    </div>
-
-    {{-- Midtrans Snap --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get configuration from data attributes
-            const isProduction = document.body.dataset.midtransProduction === 'true';
-            const clientKey = document.body.dataset.midtransClientKey;
-
-            const snapScript = document.createElement('script');
-            snapScript.src = isProduction ?
-                'https://app.midtrans.com/snap/snap.js' :
-                'https://app.sandbox.midtrans.com/snap/snap.js';
-            snapScript.setAttribute('data-client-key', clientKey);
-            snapScript.onload = function() {};
-            snapScript.onerror = function() {
-                showNotification('Gagal memuat sistem pembayaran. Silakan refresh halaman.', 'error');
-            };
-            document.head.appendChild(snapScript);
-        });
-    </script>
-    <script>
-        const notificationArea = document.getElementById('notification-area');
-        const checkStatusButton = document.getElementById('check-status');
-        const leavePageButton = document.getElementById('leave-page-button');
-        const payButton = document.getElementById('pay-button');
-        let selectedMethod = null;
-        let isProcessing = false; // Flag to prevent multiple calls
-
-        // checkPaymentStatus will be defined in the pending status script below
-
-        // Add event listeners to payment method buttons
-        document.querySelectorAll('.payment-method').forEach(button => {
-            button.addEventListener('click', function() {
-                // Remove active class from all buttons
-                document.querySelectorAll('.payment-method').forEach(btn => {
-                    btn.classList.remove('bg-blue-50', 'border-blue-500');
-                });
-
-                // Add active class to clicked button
-                this.classList.add('bg-blue-50', 'border-blue-500');
-
-                // Store selected method
-                selectedMethod = this.getAttribute('data-method');
-
-                // Enable pay button
-                payButton.disabled = false;
-                payButton.classList.remove('opacity-50', 'cursor-not-allowed');
-
-                // Show notification
-                // showNotification("Metode pembayaran " + selectedMethod + " dipilih. Klik 'Bayar Sekarang' untuk melanjutkan.", "info");
-            });
-        });
-
-        // Add event listener to pay button
-        payButton.addEventListener('click', function() {
-            if (selectedMethod) {
-                // Prevent multiple clicks
-                if (isProcessing) {
-                    showNotification('Pembayaran sedang diproses. Mohon tunggu sebentar.', 'warning');
-                    return;
-                }
-
-                isProcessing = true;
-                payButton.disabled = true;
-                payButton.textContent = 'Memproses...';
-
-                payWith(selectedMethod).finally(() => {
-                    // Reset processing state after payment attempt
-                    isProcessing = false;
-                    payButton.disabled = false;
-                    payButton.textContent = 'Bayar Sekarang';
-                });
-            } else {
-                showNotification('Silakan pilih metode pembayaran terlebih dahulu.', 'error');
-            }
-        });
-
-        function showNotification(message, type = 'info') {
-            notificationArea.innerHTML = '';
-            notificationArea.classList.remove('hidden');
-            let bgColor, textColor, icon;
-            switch (type) {
-                case 'success':
-                    bgColor = 'bg-green-100';
-                    textColor = 'text-green-800';
-                    icon = 'fa-check-circle';
-                    break;
-                case 'error':
-                    bgColor = 'bg-red-100';
-                    textColor = 'text-red-800';
-                    icon = 'fa-exclamation-circle';
-                    break;
-                case 'warning':
-                    bgColor = 'bg-yellow-100';
-                    textColor = 'text-yellow-800';
-                    icon = 'fa-exclamation-triangle';
-                    break;
-                default:
-                    bgColor = 'bg-blue-100';
-                    textColor = 'text-blue-800';
-                    icon = 'fa-info-circle';
-            }
-            notificationArea.innerHTML += `
-            <div class="flex items-center p-4 mb-2 rounded-lg ${bgColor} ${textColor}">
-                <i class="fas ${icon} text-xl mr-3"></i>
-                <div class="flex-1"><p class="font-medium">${message}</p></div>
-                <button onclick="this.parentElement.classList.add('hidden')" class="text-xl">&times;</button>
-            </div>`;
-            if (type === 'info') setTimeout(() => notificationArea.classList.add('hidden'), 5000);
-        }
-
-        async function payWith(method) {
-            showNotification("Memproses pembayaran dengan metode: " + method, "info");
-            try {
-                const res = await fetch('{{ route('guest.payment.getTokenCustom', $payment->payment_code) }}', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        method
-                    })
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.message || 'Gagal memuat Snap Token');
-
-                if (data.snap_token) {
-                    // Pastikan Snap.js sudah siap
-                    setTimeout(() => {
-                        if (typeof snap === 'undefined') {
-                            showNotification('Sistem pembayaran belum siap. Silakan coba lagi.', 'error');
-                            return;
-                        }
-
-                        // Jika popup sudah terbuka, cegah duplikasi
-                        if (window.snapIsOpen) {
-                            showNotification(
-                                'Popup pembayaran sudah terbuka. Silakan selesaikan pembayaran yang sedang berlangsung.',
-                                'warning');
-                            return;
-                        }
-
-                        // Tandai popup terbuka
-                        window.snapIsOpen = true;
-                        window.snapHandled = false;
-
-                        try {
-                            snap.pay(data.snap_token, {
-                                onSuccess: function(result) {
-                                    if (window.snapHandled) return;
-                                    window.snapHandled = true;
-                                    window.snapIsOpen = false;
-
-                                    // Show notification briefly then redirect immediately
-                                    showNotification('Pembayaran berhasil! Terima kasih.',
-                                        'success');
-                                    // Redirect immediately (minimal delay for UX)
-                                    setTimeout(() => {
-                                        window.location.href =
-                                            '{{ route('guest.payment.success', $payment->payment_code) }}';
-                                    }, 500); // Reduced to 500ms for faster redirect
-                                },
-                                onPending: function(result) {
-                                    if (window.snapHandled) return;
-                                    window.snapHandled = true;
-                                    window.snapIsOpen = false;
-
-                                    showNotification(
-                                        'Pembayaran sedang diproses. Silakan tunggu konfirmasi.',
-                                        'info');
-
-                                    // Immediately trigger status check after returning from payment page
-                                    // This helps catch payment that was completed while on payment page
-                                    // The checkPaymentStatus function will be available after page redirects back to summary
-
-                                    // Redirect immediately for faster response
-                                    setTimeout(() => {
-                                        window.location.href =
-                                            '{{ route('guest.payment.summary', $payment->payment_code) }}';
-                                    }, 300); // Reduced to 300ms for faster redirect
-                                },
-                                onError: function(result) {
-                                    if (window.snapHandled) return;
-                                    window.snapHandled = true;
-                                    window.snapIsOpen = false;
-
-                                    console.error('Snap error:', result);
-                                    showNotification('Terjadi kesalahan saat memproses pembayaran.',
-                                        'error');
-                                },
-                                onClose: function() {
-                                    if (window.snapHandled) return;
-                                    window.snapHandled = true;
-                                    window.snapIsOpen = false;
-
-                                    showNotification(
-                                        'Popup pembayaran ditutup. Jika sudah bayar, tunggu konfirmasi.',
-                                        'warning');
-                                }
-                            });
-                        } catch (error) {
-                            window.snapIsOpen = false;
-                            console.error('Snap.js error:', error);
-                            showNotification('Terjadi kesalahan pada sistem pembayaran. Silakan coba lagi.',
-                                'error');
-                        }
-                    }, 800); // Delay 800ms agar Snap.js benar-benar siap
-                }
-
-            } catch (err) {
-                showNotification('Error: ' + err.message, 'error');
-            }
-        }
-
-        // Check if elements exist before adding event listeners
-        if (checkStatusButton) {
-            checkStatusButton.addEventListener('click', async () => {
-                const res = await fetch('{{ route('guest.payment.checkStatus', $payment->payment_code) }}');
-                const data = await res.json();
-                if (data.success) showNotification(data.message, 'info');
-                else showNotification('Gagal cek status', 'error');
-            });
-        }
-
-        if (leavePageButton) {
-            leavePageButton.addEventListener('click', async () => {
-                if (confirm('Yakin ingin meninggalkan halaman ini?')) {
-                    const res = await fetch('{{ route('guest.payment.leavePage', $payment->payment_code) }}', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                    const data = await res.json();
-                    if (data.success) window.location.href = '{{ route('home') }}';
-                    else showNotification('Gagal memperbarui status.', 'error');
-                }
-            });
-        }
-    </script>
+@section('navbar')
+    @include('partials.navbarHome', ['activePage' => 'program'])
 @endsection
 
-@if ($payment->status === 'pending')
-    <script>
-        // Auto check every 200ms for ultra-fast detection
-        const paymentCode = "{{ $payment->payment_code }}";
-        const checkUrl = "{{ route('guest.payment.checkStatus', $payment->payment_code) }}";
-        let checkCount = 0;
-        const maxChecks = 1500; // Max ~5 minutes (1500 checks * 0.2 second)
+@section('content')
 
-        // Define checkPaymentStatus function in global scope
-        window.checkPaymentStatus = async function() {
-            try {
-                checkCount++;
 
-                // Add timestamp to URL to prevent browser/proxy caching
-                const urlWithTimestamp = checkUrl + (checkUrl.includes('?') ? '&' : '?') + '_t=' + Date.now();
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center font-sans">
+    {{-- Main Card: Changed max-w-md to max-w-2xl for wider layout --}}
+    <div class="max-w-2xl w-full space-y-6 bg-white p-8 rounded-2xl shadow-xl border-t-4 border-emerald-500 relative overflow-hidden">
+        
+        {{-- Decorative Background Elements --}}
+        <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-emerald-50 opacity-50 blur-xl"></div>
+        <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-32 h-32 rounded-full bg-yellow-50 opacity-50 blur-xl"></div>
 
-                const res = await fetch(urlWithTimestamp, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Cache-Control': 'no-cache, no-store, must-revalidate',
-                        'Pragma': 'no-cache',
-                        'Expires': '0',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    cache: 'no-store',
-                    credentials: 'same-origin'
+        <div class="relative z-10">
+            {{-- Header --}}
+                <!-- <div class="text-center mb-6">
+                    <img class="mx-auto h-14 w-auto object-contain mb-3" src="{{ asset('img/logo.png') }}" alt="Lazismu Logo">
+                </div> -->
+
+            {{-- Amount Card (Compact) --}}
+            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-100 shadow-sm mb-6 text-center transform transition-all hover:shadow-md">
+                <p class="text-xs font-bold text-emerald-600 uppercase tracking-widest mb-1">Total Pembayaran</p>
+                <div class="text-4xl font-extrabold text-gray-900 my-2 tracking-tight">
+                    Rp {{ number_format($payment->paid_amount, 0, ',', '.') }}
+                </div>
+                
+                {{-- Countdown Timer --}}
+                <div id="countdown-container" class="mt-3 inline-flex items-center justify-center text-xs font-semibold text-amber-600 bg-white px-4 py-1.5 rounded-full border border-amber-100 shadow-sm">
+                    <i class="far fa-clock mr-2 animate-pulse"></i>
+                    <span id="countdown-timer">Memuat waktu...</span>
+                </div>
+                 @php 
+                    $expiryTime = $payment->created_at->addHours(24); 
+                    $expiryTimestamp = $expiryTime->timestamp * 1000;
+                @endphp
+            </div>
+
+            {{-- Payment Methods --}}
+            <div class="space-y-5">
+                <h3 class="text-sm font-bold text-gray-800 flex items-center">
+                    <span class="w-1 h-5 bg-emerald-500 rounded-full mr-3"></span>
+                    Metode Pembayaran
+                </h3>
+
+                <div>
+                    {{-- Group: E-Wallet / QRIS --}}
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">QRIS & E-Wallet</p>
+                    {{-- Grid 4 Columns for Wallets --}}
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="qris">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" class="h-6 mb-2 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
+                            <span class="text-[10px] font-medium text-gray-500 group-hover:text-emerald-700 transition-colors">Scan QR</span>
+                        </button>
+                        <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="gopay">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Logo_Gopay.svg" class="h-4 mb-3 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
+                            <span class="text-[10px] font-medium text-gray-500 group-hover:text-emerald-700 transition-colors">GoPay</span>
+                        </button>
+                        <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="shopeepay">
+                            <img src="https://images.seeklogo.com/logo-png/40/1/shopee-pay-logo-png_seeklogo-406839.png" class="h-6 mb-2 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
+                            <span class="text-[10px] font-medium text-gray-500 group-hover:text-emerald-700 transition-colors">ShopeePay</span>
+                        </button>
+                        <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="dana">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" class="h-4 mb-3 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
+                            <span class="text-[10px] font-medium text-gray-500 group-hover:text-emerald-700 transition-colors">Dana (Link)</span>
+                        </button>
+                    </div>
+                </div>
+
+                {{-- Group: Banks --}}
+                <div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2 mt-4">Virtual Account</p>
+                    {{-- Grid 2 Columns for Banks --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                         @foreach(['bca_va' => ['BCA', 'https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BCA-PNG-1536x1152.png'], 
+                                   'mandiri_va' => ['Mandiri', 'https://www.bankmandiri.co.id/documents/20143/44881086/ag-branding-logo-1.png/842d8cf8-b7fb-3014-9620-21f0f88d8377?t=1623309819034'],
+                                   'bri_va' => ['BRI', 'https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-Bank-BRI.png'],
+                                   'bni_va' => ['BNI', 'https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BNI.jpg']] as $method => $details)
+                        <button class="flex items-center px-4 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-sm payment-method-btn transition-all text-left group" data-method="{{ $method }}">
+                            <img src="{{ $details[1] }}" class="h-5 w-10 object-contain mr-3 filter grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all">
+                            <span class="text-sm font-medium text-gray-600 group-hover:text-gray-900 transition-colors">{{ $details[0] }} VA</span>
+                        </button>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            {{-- Action Buttons --}}
+            <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-50 mt-6">
+                 <button id="leave-page-button"
+                    class="w-full sm:w-1/3 order-2 sm:order-1 bg-white border border-gray-200 text-gray-500 font-medium py-3 rounded-xl hover:text-emerald-600 hover:border-emerald-200 hover:bg-emerald-50 transition text-sm">
+                    Bayar Nanti
+                </button>
+                <button id="pay-button"
+                    class="w-full sm:w-2/3 order-1 sm:order-2 bg-emerald-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-emerald-700 transition shadow-lg shadow-emerald-200 disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] flex items-center justify-center text-base"
+                    disabled>
+                    Pilih Metode
+                </button>
+            </div>
+             <p class="text-xs text-center text-gray-400 mt-2">
+                Link pembayaran aman tersimpan di WhatsApp Anda.
+            </p>
+            
+            <p class="text-center text-[10px] text-gray-300 mt-6">
+                &copy; {{ date('Y') }} SIPZIS Lazismu.
+            </p>
+        </div>
+    </div>
+</div>
+
+{{-- Midtrans Snap --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configuration
+        const isProduction = {{ config('midtrans.is_production') ? 'true' : 'false' }};
+        const clientKey = '{{ config('midtrans.client_key') }}';
+
+        const snapScript = document.createElement('script');
+        snapScript.src = isProduction ?
+            'https://app.midtrans.com/snap/snap.js' :
+            'https://app.sandbox.midtrans.com/snap/snap.js';
+        snapScript.setAttribute('data-client-key', clientKey);
+        snapScript.onload = function() { console.log('Snap loaded'); };
+        snapScript.onerror = function() {
+            Swal.fire('Error', 'Gagal memuat sistem pembayaran. Silakan refresh.', 'error');
+        };
+        document.head.appendChild(snapScript);
+
+        // Countdown Logic
+        const expiryTimestamp = {{ $expiryTimestamp }};
+        const countdownEl = document.getElementById('countdown-timer');
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = expiryTimestamp - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                countdownEl.innerHTML = "WAKTU HABIS";
+                countdownEl.parentElement.classList.add('bg-red-50', 'border-red-100', 'text-red-700');
+                countdownEl.parentElement.classList.remove('bg-amber-50', 'border-amber-100', 'text-amber-600');
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Waktu Habis',
+                    text: 'Batas waktu pembayaran telah habis.',
+                    confirmButtonText: 'Kembali',
+                    allowOutsideClick: false
+                }).then(() => {
+                    window.location.reload();
                 });
-
-                if (!res.ok) {
-                    console.error('Check status failed:', res.status);
-                    return;
-                }
-
-                const data = await res.json();
-
-                if (data.status === 'completed') {
-                    // Clear interval immediately to prevent multiple redirects
-                    if (statusCheckInterval) clearInterval(statusCheckInterval);
-                    // Immediate redirect to success page (no delay)
-                    window.location.href = "{{ route('guest.payment.success', $payment->payment_code) }}";
-                    return;
-                } else if (data.status === 'cancelled' || data.status === 'failed') {
-                    if (statusCheckInterval) clearInterval(statusCheckInterval);
-                    window.location.href = "{{ route('guest.payment.failed', $payment->payment_code) }}";
-                    return;
-                } else if (checkCount >= maxChecks) {
-                    // Stop checking after max attempts
-                    if (statusCheckInterval) clearInterval(statusCheckInterval);
-                    showNotification(
-                        'Pembayaran masih pending. Silakan refresh halaman atau hubungi support jika sudah bayar.',
-                        'warning');
-                }
-            } catch (e) {
-                console.error('Error checking payment status:', e);
-                // Don't stop checking on error, just log it
+                return;
             }
+
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownEl.innerHTML = `Sisa ${hours}j ${minutes}m ${seconds}s`;
         }
 
-        let statusCheckInterval;
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
 
-        // Initial check immediately for fastest response
-        window.checkPaymentStatus();
+        // Payment Logic
+        const payButton = document.getElementById('pay-button');
+        let selectedMethod = null;
+        let isProcessing = false;
 
-        // Then check every 200ms (ultra-aggressive for fastest detection)
-        statusCheckInterval = setInterval(window.checkPaymentStatus, 200);
+        document.querySelectorAll('.payment-method-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Reset styles
+                document.querySelectorAll('.payment-method-btn').forEach(btn => {
+                    btn.classList.remove('border-emerald-500', 'bg-emerald-50', 'ring-2', 'ring-emerald-100', 'shadow-md');
+                    btn.classList.add('border-gray-200');
+                    const img = btn.querySelector('img');
+                    if(img) {
+                        img.classList.add('grayscale', 'opacity-70');
+                        img.classList.remove('grayscale-0', 'opacity-100');
+                    }
+                });
 
-        // Also check immediately after user returns from payment page (e.g., after closing Snap.js)
-        // This helps catch payment status changes that happened while user was on payment page
-        window.addEventListener('focus', function() {
-            // Immediately check status when window gains focus
-            if (window.checkPaymentStatus) {
-                window.checkPaymentStatus();
-            }
-            if (!statusCheckInterval) {
-                statusCheckInterval = setInterval(window.checkPaymentStatus, 200);
-            }
+                // Set Active
+                this.classList.remove('border-gray-200');
+                this.classList.add('border-emerald-500', 'bg-emerald-50', 'ring-2', 'ring-emerald-100', 'shadow-md');
+                const img = this.querySelector('img');
+                if(img) {
+                    img.classList.remove('grayscale', 'opacity-70');
+                    img.classList.add('grayscale-0', 'opacity-100');
+                }
+
+                selectedMethod = this.getAttribute('data-method');
+                payButton.disabled = false;
+                payButton.innerHTML = `Bayar Sekarang <i class="fas fa-chevron-right ml-2 text-xs"></i>`;
+            });
         });
 
-        // Also check when page becomes visible (user switches back to tab)
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden && window.checkPaymentStatus) {
-                window.checkPaymentStatus();
+        payButton.addEventListener('click', function() {
+            if (!selectedMethod) {
+                Swal.fire('Pilih Metode', 'Silakan pilih metode pembayaran.', 'warning');
+                return;
             }
+            if (isProcessing) return;
+
+            isProcessing = true;
+            const originalText = payButton.innerHTML;
+            payButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Memproses...';
+            payButton.disabled = true;
+
+            fetch('{{ route('guest.payment.getTokenCustom', $payment->payment_code) }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ method: selectedMethod })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.snap_token) {
+                     if (typeof snap === 'undefined') {
+                        throw new Error('Snap belum siap');
+                     }
+                     snap.pay(data.snap_token, {
+                        onSuccess: function(result) {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Pembayaran Berhasil!',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = '{{ route('guest.payment.success', $payment->payment_code) }}';
+                            });
+                        },
+                        onPending: function(result) {
+                            Swal.fire('Pending', 'Menunggu pembayaran...', 'info').then(() => {
+                                window.location.reload();
+                            });
+                        },
+                        onError: function(result) {
+                            Swal.fire('Gagal', 'Pembayaran gagal.', 'error');
+                        },
+                        onClose: function() {
+                            // User closed popup
+                        }
+                     });
+                } else {
+                    throw new Error(data.message || 'Gagal mendapatkan token');
+                }
+            })
+            .catch(err => {
+                Swal.fire('Error', err.message, 'error');
+            })
+            .finally(() => {
+                isProcessing = false;
+                payButton.disabled = false;
+                payButton.innerHTML = originalText;
+            });
         });
-    </script>
-@endif
+
+        const leavePageButton = document.getElementById('leave-page-button');
+        if(leavePageButton) {
+            leavePageButton.addEventListener('click', function() {
+                 fetch('{{ route('guest.payment.leavePage', $payment->payment_code) }}', {
+                    method: 'POST',
+                    headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}
+                 });
+                 Swal.fire({
+                     icon: 'info',
+                     title: 'Link Tersimpan',
+                     text: 'Silakan cek WhatsApp/Email untuk melanjutkan nanti.',
+                     showConfirmButton: false,
+                     timer: 2000
+                 }).then(() => {
+                     window.location.href = '{{ route('home') }}';
+                 });
+            });
+        }
+    });
+</script>
+@endsection

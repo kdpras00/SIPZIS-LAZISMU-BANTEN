@@ -15,7 +15,7 @@ class MustahikController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Mustahik::with(['zakatDistributions']);
+        $query = Mustahik::with(['zakatDistributions'])->withCount('zakatDistributions');
 
         // Search functionality
         if ($request->has('search')) {
@@ -194,7 +194,7 @@ class MustahikController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Mustahik::with(['zakatDistributions']);
+        $query = Mustahik::with(['zakatDistributions'])->withCount('zakatDistributions');
 
         // Search functionality
         if ($request->has('search') && $request->search != '') {

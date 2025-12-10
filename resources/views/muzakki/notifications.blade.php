@@ -8,6 +8,14 @@
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <!-- Header -->
             <div class="bg-white px-6 py-4 border-b border-gray-200">
+                <div class="mb-4">
+                    <a href="{{ route('dashboard') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Kembali ke Dashboard
+                    </a>
+                </div>
                 <div class="flex items-center justify-between">
                     <h1 class="text-2xl font-bold text-gray-800">Notifikasi</h1>
                     <div class="text-sm text-gray-500">

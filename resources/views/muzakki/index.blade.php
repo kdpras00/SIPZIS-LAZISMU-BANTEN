@@ -9,10 +9,7 @@
             <p class="text-gray-600">Kelola data muzakki yang terdaftar dalam sistem</p>
         </div>
         <div>
-            <a href="{{ route('muzakki.create') }}"
-                class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
-                <i class="bi bi-plus-circle mr-2"></i> Tambah Muzakki
-            </a>
+            <!-- Button removed as per user request (Muzakki creation is automated) -->
         </div>
     </div>
 
@@ -241,13 +238,14 @@
                                         <i class="bi bi-toggle-${item.is_active ? 'on' : 'off'}"></i>
                                     </button>
                                 </form>
+                                ${item.zakat_payments_count == 0 ? `
                                 <form action="/muzakki/${item.id}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                     <input type="hidden" name="_token" value="${csrfToken}">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
                                         <i class="bi bi-trash"></i>
                                     </button>
-                                </form>
+                                </form>` : ''}
                             </div>
                         </td>
                     </tr>

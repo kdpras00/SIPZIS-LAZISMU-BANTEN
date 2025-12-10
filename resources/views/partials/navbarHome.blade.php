@@ -59,16 +59,19 @@
             <!-- Navigation Links - Center -->
             <div class="hidden md:flex items-center justify-center flex-1">
                 <div class="flex items-center space-x-8" id="href-navbar">
-                    <!-- <a href="{{ route('home') }}"
-                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link">Home</a> -->
+                    {{-- Logic for active state: Check Route or $activePage variable --}}
+                    @php $isActive = fn($route, $page) => request()->routeIs($route) || (isset($activePage) && $activePage === $page); @endphp
+                    
+                    {{-- <a href="{{ route('home') }}"
+                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link {{ $isActive('home', 'home') ? 'border-b-2 border-white' : '' }}">Home</a> --}}
                     <a href="{{ route('tentang') }}"
-                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link">Tentang</a>
+                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link {{ $isActive('tentang*', 'tentang') ? 'border-b-2 border-white' : '' }}">Tentang</a>
                     <a href="{{ route('program') }}"
-                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link">Program</a>
+                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link {{ $isActive('program*', 'program') ? 'border-b-2 border-white' : '' }}">Program</a>
                     <a href="{{ route('berita') }}"
-                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link">Berita</a>
+                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link {{ $isActive('berita*', 'berita') ? 'border-b-2 border-white' : '' }}">Berita</a>
                     <a href="{{ route('artikel.all') }}"
-                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link">Artikel</a>
+                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link {{ $isActive('artikel*', 'artikel') ? 'border-b-2 border-white' : '' }}">Artikel</a>
                 </div>
             </div>
 
@@ -133,7 +136,7 @@
                         @else
                             <div class="border-t border-green-700 mt-4 pt-4">
                                 <a href="{{ route('login') }}"
-                                    class="block px-4 py-2 text-white hover:bg-green-700 transition duration-300">
+                                    class="block px-4 py-2 text-white border-2 border-white rounded-lg hover:bg-green-700 transition duration-300 text-center mx-4 mb-2" style="border: 2px solid white;">
                                     Masuk
                                 </a>
                                 <a href="{{ route('register') }}"
@@ -258,7 +261,7 @@
                     <!-- Login/Register Buttons -->
                     <div class="flex items-center space-x-4">
                         <a href="{{ route('login') }}"
-                            class="text-white hover:text-green-200 transition duration-300 font-medium">
+                            class="text-white border border-white px-4 py-2 rounded-full hover:bg-white hover:text-green-800 transition duration-300 font-medium">
                             Masuk
                         </a>
                         <a href="{{ route('register') }}"

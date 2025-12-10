@@ -82,6 +82,13 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
+            // Check if email is verified
+            if (!$user->hasVerifiedEmail()) {
+                // Keep user logged in but redirect to verification notice
+                return redirect()->route('verification.notice')
+                    ->with('warning', 'Silakan verifikasi email Anda terlebih dahulu untuk melanjutkan.');
+            }
+
             if (!$user->is_active) {
                 Auth::logout();
                 return back()->withErrors(['email' => 'Akun Anda tidak aktif. Silakan hubungi administrator.']);
@@ -167,12 +174,19 @@ class AuthController extends Controller
                 return back()->withErrors(['email' => 'Anda tidak memiliki akses ke halaman admin.']);
             }
 
-            $request->session()->regenerate();
-
-            // Redirect to appropriate dashboard based on role
-            if ($user->role === 'admin') {
-                return redirect()->route('dashboard');
+            // Enforce 2FA for Admin
+            if ($user->hasTwoFactorEnabled()) {
+                // 2FA Enabled: Redirect to Verify Page
+                $request->session()->put('login.id', $user->id);
+                $request->session()->save(); // Explicitly save session
+                Auth::logout();
+                return redirect()->route('two-factor.verify');
             }
+
+            // 2FA Disabled: Force Setup
+            $request->session()->regenerate();
+            return redirect()->route('dashboard.two-factor.setup')
+                ->with('warning', 'Keamanan Wajib: Mohon aktifkan Autentikasi Dua Faktor (2FA) untuk melanjutkan akses admin.');
         }
 
         return back()->withErrors([
@@ -313,9 +327,21 @@ class AuthController extends Controller
                 ]);
             }
 
+            // Send email verification notification
+            try {
+                $user->sendEmailVerificationNotification();
+                Log::info('Email verification sent to: ' . $user->email);
+            } catch (\Exception $e) {
+                Log::error('Failed to send verification email: ' . $e->getMessage());
+            }
+
+            // Login user temporarily to access verification page
+            Auth::login($user);
+
             session(['registered_email' => $request->email]);
 
-            return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan cek email Anda untuk konfirmasi.');
+            return redirect()->route('verification.notice')
+                ->with('success', 'Registrasi berhasil! Silakan cek email Anda untuk verifikasi akun.');
         } catch (\Exception $e) {
             if (isset($user)) {
                 $user->delete();

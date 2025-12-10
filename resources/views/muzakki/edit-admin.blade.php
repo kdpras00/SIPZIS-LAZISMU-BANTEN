@@ -3,7 +3,13 @@
 @section('page-title', 'Edit Muzakki - ' . $muzakki->name)
 
 @section('content')
+    @php
+        // Check if we are editing our own profile (no 'muzakki' route parameter)
+        $isOwnProfile = !request()->route()->hasParameter('muzakki');
+    @endphp
+
     <div class="mb-6">
+        @if(!$isOwnProfile)
         <a href="{{ route('muzakki.index') }}"
             class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 mb-4 transition-colors">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -11,9 +17,22 @@
             </svg>
             Kembali ke Daftar Muzakki
         </a>
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900 mb-1">Edit Muzakki</h2>
-            <p class="text-gray-600">Edit data muzakki: {{ $muzakki->name }}</p>
+        @endif
+        
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="flex items-center gap-3 mb-1">
+                    <h2 class="text-2xl font-bold text-gray-900">{{ $isOwnProfile ? 'Edit Profil Admin' : 'Edit Muzakki' }}</h2>
+                </div>
+                <p class="text-gray-600">{{ $isOwnProfile ? 'Kelola informasi akun administrator Anda' : 'Edit data muzakki: ' }} <span class="font-semibold">{{ $isOwnProfile ? '' : $muzakki->name }}</span></p>
+            </div>
+            @if(!$isOwnProfile)
+            <div>
+                <span class="px-3 py-1 text-xs font-bold text-blue-700 bg-blue-100 rounded-full border border-blue-200">
+                    ADMIN MODE
+                </span>
+            </div>
+            @endif
         </div>
     </div>
 
@@ -23,7 +42,7 @@
         @method('PUT')
 
         <!-- Informasi Dasar Card -->
-        <div class="mb-6 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div class="mb-6 p-6 bg-white border-l-4 border-blue-500 rounded-lg shadow-sm">
             <h3 class="mb-6 text-lg font-semibold text-gray-900">Informasi Dasar</h3>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <!-- Nama -->
@@ -52,6 +71,7 @@
                     @enderror
                 </div>
 
+                @if(!$isOwnProfile)
                 <!-- Telepon -->
                 <div>
                     <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">
@@ -166,11 +186,13 @@
                         <label for="is_active" class="ml-2 text-sm font-medium text-gray-900">Aktif</label>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
 
+        @if(!$isOwnProfile)
         <!-- Alamat Card -->
-        <div class="mb-6 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div class="mb-6 p-6 bg-white border-l-4 border-blue-500 rounded-lg shadow-sm">
             <h3 class="mb-6 text-lg font-semibold text-gray-900">Alamat</h3>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <!-- Negara -->
@@ -245,7 +267,7 @@
         </div>
 
         <!-- Informasi Tambahan Card -->
-        <div class="mb-6 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div class="mb-6 p-6 bg-white border-l-4 border-blue-500 rounded-lg shadow-sm">
             <h3 class="mb-6 text-lg font-semibold text-gray-900">Informasi Tambahan</h3>
             <div class="space-y-6">
                 <!-- Biodata -->
@@ -266,6 +288,33 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-12 px-3 cursor-not-allowed"
                         value="{{ old('campaign_url', $muzakki->campaign_url) }}" readonly>
                     <p class="mt-2 text-sm text-gray-500">URL ini dibuat otomatis oleh sistem</p>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <!-- Keamanan Card (Password Reset) -->
+        <div class="mb-6 p-6 bg-white border-l-4 border-red-500 rounded-lg shadow-sm">
+            <h3 class="mb-6 text-lg font-semibold text-gray-900">Keamanan (Reset Password)</h3>
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div>
+                    <label for="new_password" class="block mb-2 text-sm font-medium text-gray-900">
+                        Password Baru
+                    </label>
+                    <input type="password" id="new_password" name="new_password"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-12 px-3 @error('new_password') border-red-500 @enderror"
+                        placeholder="Kosongkan jika tidak ingin mengubah password">
+                    @error('new_password')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="new_password_confirmation" class="block mb-2 text-sm font-medium text-gray-900">
+                        Konfirmasi Password Baru
+                    </label>
+                    <input type="password" id="new_password_confirmation" name="new_password_confirmation"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-12 px-3"
+                        placeholder="Ulangi password baru">
                 </div>
             </div>
         </div>

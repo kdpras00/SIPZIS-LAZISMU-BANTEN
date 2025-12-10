@@ -152,10 +152,37 @@ class Notification extends Model
 
     protected function paymentActionUrl(): string
     {
-        $paymentId = $this->data['payment_id'] ?? $this->notifiable_id;
+        $code = null;
+        $status = $this->data['status'] ?? null;
 
-        if ($paymentId) {
-            return route('payments.show', $paymentId);
+        // Try to get payment_code from data
+        if (!empty($this->data['payment_code'])) {
+            $code = $this->data['payment_code'];
+        }
+
+        // If code or status is missing, we might need to fetch the payment
+        if (!$code || !$status) {
+            $paymentId = $this->data['payment_id'] ?? $this->notifiable_id;
+            if ($paymentId) {
+                $payment = ZakatPayment::find($paymentId);
+                if ($payment) {
+                    $code = $payment->payment_code;
+                    $status = $payment->status;
+                }
+            } elseif ($code && !$status) {
+                 // We have code but no status
+                 $payment = ZakatPayment::where('payment_code', $code)->first();
+                 if ($payment) {
+                     $status = $payment->status;
+                 }
+            }
+        }
+
+        if ($code) {
+            if ($status === 'completed') {
+                return route('payments.receipt', $code);
+            }
+            return route('payments.show', $code);
         }
 
         return route('dashboard.transactions');
@@ -282,6 +309,7 @@ class Notification extends Model
             'notifiable_id' => $payment->id,
             'data' => [
                 'payment_id' => $payment->id,
+                'payment_code' => $payment->payment_code, // Add payment_code
                 'status' => $status,
                 'amount' => $payment->paid_amount,
                 'program_category' => $payment->program_category,

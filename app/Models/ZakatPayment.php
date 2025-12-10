@@ -266,4 +266,8 @@ class ZakatPayment extends Model
             }
         });
     }
+    public function getRouteKeyName()
+    {
+        return 'payment_code';
+    }
 }

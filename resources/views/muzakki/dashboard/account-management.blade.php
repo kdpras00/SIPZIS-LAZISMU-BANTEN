@@ -12,6 +12,9 @@
         <h5 class="text-xl font-semibold text-gray-900 mb-0">Manajemen akun</h5>
     </div>
 
+    <!-- 2FA Reminder Banner -->
+
+
     <!-- Account Settings Menu -->
     <div class="bg-white rounded-xl shadow-md mb-6 overflow-hidden">
         <div class="divide-y divide-gray-100">

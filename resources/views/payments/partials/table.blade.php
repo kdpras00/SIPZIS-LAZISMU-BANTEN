@@ -7,15 +7,9 @@
                     @if (auth()->user()->role !== 'muzakki')
                         <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Muzakki</th>
                     @endif
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Jenis Zakat</th>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Jumlah Bayar</th>
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Metode</th>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Tanggal</th>
-                    @if (auth()->user()->role !== 'muzakki')
-                        <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Referensi</th>
-                        <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Midtrans</th>
-                    @endif
                     <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
                 </tr>
             </thead>
@@ -43,37 +37,11 @@
                                 @endif
                             </td>
                         @endif
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-100 text-cyan-800">
-                                {{ $payment->programType ? $payment->programType->name : 'Donasi Umum' }}
-                            </span>
-                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-center">
                             <div class="text-sm font-bold text-gray-900">Rp {{ number_format($payment->paid_amount, 0, ',', '.') }}</div>
                             @if ($payment->zakat_amount)
                                 <div class="text-xs text-gray-500">Zakat: Rp {{ number_format($payment->zakat_amount, 0, ',', '.') }}</div>
                             @endif
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-center">
-                            @switch($payment->payment_method)
-                                @case('cash')
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Tunai</span>
-                                @break
-                                @case('transfer')
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Transfer</span>
-                                @break
-                                @case('check')
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Cek</span>
-                                @break
-                                @case('online')
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Online</span>
-                                @break
-                                @case('midtrans')
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Midtrans</span>
-                                @break
-                                @default
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{{ ucwords($payment->payment_method) }}</span>
-                            @endswitch
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-center">
                             @switch($payment->status)
@@ -93,27 +61,6 @@
                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900">
                             {{ $payment->payment_date->format('d M Y') }}
                         </td>
-
-                        @if (auth()->user()->role !== 'muzakki')
-                            <td class="px-6 py-4 whitespace-nowrap text-center">
-                                @if ($payment->payment_reference)
-                                    <span class="font-mono text-xs text-gray-600">{{ Str::limit($payment->payment_reference, 15) }}</span>
-                                @else
-                                    <span class="text-gray-400">-</span>
-                                @endif
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-center">
-                                @if ($payment->midtrans_payment_method)
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                        {{ Str::limit($payment->midtrans_payment_method, 10) }}
-                                    </span>
-                                @elseif($payment->midtrans_order_id)
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Ya</span>
-                                @else
-                                    <span class="text-gray-400">-</span>
-                                @endif
-                            </td>
-                        @endif
 
                         <td class="px-6 py-4 whitespace-nowrap text-center">
                             <div class="flex items-center justify-center space-x-2">

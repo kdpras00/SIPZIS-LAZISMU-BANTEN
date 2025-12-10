@@ -69,6 +69,8 @@
     {{-- Script Tambahan --}}
     @yield('scripts')
     
+    @include('components.two-factor-reminder')
+    
     {{-- Additional Scripts from Pages --}}
     @stack('scripts')
 

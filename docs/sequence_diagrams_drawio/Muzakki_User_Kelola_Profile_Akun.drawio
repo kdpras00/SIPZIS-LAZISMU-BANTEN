@@ -1,0 +1,42 @@
+<mxfile host="Electron" modified="2023-10-01T00:00:00.000Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="12345" version="21.6.8" type="device">
+  <diagram name="Page-1" id="diagram_id">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="sequenceDiagram
+    actor Muzakki
+    participant Menu as View (Menu)
+    participant Controller as MuzakkiController
+    participant View as View (Profile Edit)
+    participant Model as Muzakki
+    participant DB as Database
+
+    Muzakki-&gt;&gt;Menu: Klik Menu Profile
+    Menu-&gt;&gt;Controller: GET /profile/edit (edit)
+    Controller-&gt;&gt;Model: Get Current User Profile
+    Model--&gt;&gt;Controller: Return Data
+    Controller-&gt;&gt;View: Return View(&#x27;muzakki.edit&#x27;, data)
+    View--&gt;&gt;Muzakki: Tampilkan Form Profile
+
+    Muzakki-&gt;&gt;View: Update Data / Password
+    Muzakki-&gt;&gt;View: Klik Simpan
+    View-&gt;&gt;Controller: PUT /profile (update)
+    Controller-&gt;&gt;Controller: Validasi Input
+    alt Validasi Sukses
+        Controller-&gt;&gt;Model: Update Data
+        Model-&gt;&gt;DB: Save Changes
+        DB--&gt;&gt;Model: Changes Saved
+        Model--&gt;&gt;Controller: Return Success
+        Controller-&gt;&gt;View: Redirect Back with Success Message
+        View--&gt;&gt;Muzakki: Tampilkan Pesan Sukses
+    else Validasi Gagal
+        Controller--&gt;&gt;View: Redirect Back with Errors
+        View--&gt;&gt;Muzakki: Tampilkan Pesan Error
+    end" style="shape=mxgraph.mermaid.mermaid;html=1;verticalLabelPosition=bottom;verticalAlign=top;align=center;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="600" height="400" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

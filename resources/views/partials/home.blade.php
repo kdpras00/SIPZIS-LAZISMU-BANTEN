@@ -1,65 +1,292 @@
-<div class="relative bg-gradient-to-br from-green-900 via-green-800 to-emerald-700 min-h-screen flex items-center justify-center overflow-hidden"
-    id="beranda">
-    <!-- Mosque Background Image Overlay -->
-    <div class="absolute inset-0 opacity-90"
-        style="background-image: url('{{ asset('img/masjid.webp') }}'); background-size: cover; background-position: center; background-repeat: no-repeat; will-change: transform;">
-    </div>
-    <!-- Green Gradient Overlay for blending -->
-    <div class="absolute inset-0 bg-gradient-to-br from-green-900/80 via-green-800/70 to-emerald-700/80"></div>
+@php
+    $activeCampaigns = \App\Models\Campaign::active()->take(5)->get();
+    $activePrograms = \App\Models\Program::active()->take(5)->get();
+    
+    // Merge and sort by latest created
+    $heroSlides = $activeCampaigns->concat($activePrograms)->sortByDesc('created_at')->take(8);
+@endphp
 
-    <!-- Additional Dark Overlay for text readability -->
-    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+<div class="relative bg-gray-900 min-h-screen flex items-center justify-center overflow-hidden" id="beranda">
+    <!-- Slider Container -->
+    <div id="hero-slider" class="absolute inset-0 w-full h-full">
+        
+        <!-- Slide 1: Quran Quote (Static) -->
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-10 opacity-100" data-slide="0">
+            <!-- Background Image -->
+            <div class="absolute inset-0"
+                style="background-image: url('{{ asset('img/masjid.webp') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            </div>
+            <!-- Overlays (Lighter) -->
+            <div class="absolute inset-0 bg-gradient-to-br from-green-900/60 via-green-800/50 to-emerald-700/60"></div>
+            <div class="absolute inset-0 bg-black/20"></div>
 
-    <!-- Main Content -->
-    <div class="relative max-w-6xl mx-auto px-4 py-20 md:py-32 text-center text-white z-10">
+            <!-- Content -->
+            <div class="relative max-w-6xl mx-auto px-4 h-full flex flex-col justify-center items-center text-center text-white z-10 pt-20">
+                <!-- 2FA Reminder Banner -->
+                @if(Auth::check() && !Auth::user()->two_factor_enabled)
+                <div class="mb-8 text-left w-full"></div>
+                @endif
 
-        <!-- Main Heading -->
-        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight animate-fadeInUp">
-            <span class="bg-gradient-to-r from-white via-green-100 to-white bg-clip-text text-transparent">
-                "Dan laksanakanlah salat, tunaikanlah zakat, dan rukuklah beserta orang yang rukuk."
-            </span>
-        </h1>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight animate-fadeInUp">
+                    <span class="bg-gradient-to-r from-white via-green-100 to-white bg-clip-text text-transparent">
+                        "Dan laksanakanlah salat, tunaikanlah zakat, dan rukuklah beserta orang yang rukuk."
+                    </span>
+                </h1>
 
-        <!-- Subtitle -->
-        <p class="text-2xl md:text-3xl font-light mb-4 text-green-100 animate-fadeInUp delay-500">
-            (QS. Al-Baqarah: 43)
-        </p>
+                <p class="text-2xl md:text-3xl font-light mb-4 text-green-100 animate-fadeInUp delay-500">
+                    (QS. Al-Baqarah: 43)
+                </p>
 
-        <!-- Description -->
-        <p class="text-lg md:text-xl max-w-3xl mx-auto mb-12 text-green-100 leading-relaxed animate-fadeInUp delay-700">
-            Tunaikan kewajiban zakat Anda dengan mudah, transparan, dan sesuai syariat Islam melalui platform digital
-            yang terpercaya.
-        </p>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-12 text-green-100 leading-relaxed animate-fadeInUp delay-700">
+                    Tunaikan kewajiban zakat Anda dengan mudah, transparan, dan sesuai syariat Islam melalui platform digital yang terpercaya.
+                </p>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fadeInUp delay-1000">
-            <a href="{{ route('calculator.index') }}"
-                class="no-underline group bg-white hover:bg-green-600 text-green-800 hover:text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-3 min-w-[250px]">
-                <svg class="w-6 h-6 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                        d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h10V4H7zm2 2h6v2H9V6zm0 4h6v2H9v-2zm0 4h6v2H9v-2z" />
-                </svg>
-                <span class="font-semibold tracking-wide">KALKULATOR ZAKAT</span>
-            </a>
-            <a href="{{ route('program') }}"
-                class="no-underline group bg-white hover:bg-green-600 text-green-800 hover:text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-3 min-w-[250px]">
-                <svg class="w-6 h-6 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L3.09 8.26L12 22L20.91 8.26L12 2Z" />
-                </svg>
-                <span class="font-semibold tracking-wide">DONASI SEKARANG</span>
-            </a>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fadeInUp delay-1000">
+                    <a href="{{ route('calculator.index') }}"
+                        class="no-underline group bg-white hover:bg-green-600 text-green-800 hover:text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-3 min-w-[250px]">
+                        <svg class="w-6 h-6 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h10V4H7zm2 2h6v2H9V6zm0 4h6v2H9v-2zm0 4h6v2H9v-2z" />
+                        </svg>
+                        <span class="font-semibold tracking-wide">KALKULATOR ZAKAT</span>
+                    </a>
+                    <a href="{{ route('program') }}"
+                        class="no-underline group bg-white hover:bg-green-600 text-green-800 hover:text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-3 min-w-[250px]">
+                        <svg class="w-6 h-6 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L3.09 8.26L12 22L20.91 8.26L12 2Z" />
+                        </svg>
+                        <span class="font-semibold tracking-wide">DONASI SEKARANG</span>
+                    </a>
+                </div>
+            </div>
         </div>
 
+        <!-- Dynamic Slides (Campaigns & Programs) -->
+        @php $slideIndex = 1; @endphp
+        @foreach($heroSlides as $item)
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-0" data-slide="{{ $slideIndex++ }}">
+            @php
+                $isCampaign = $item instanceof \App\Models\Campaign;
+                
+                // Determine Image
+                if ($isCampaign) {
+                    $rawImage = trim($item->photo ?? '');
+                    $isFullUrl = filter_var($rawImage, FILTER_VALIDATE_URL);
+                    $imageUrl = $isFullUrl ? $rawImage : asset('storage/' . $item->photo);
+                    if (!$item->photo) $imageUrl = asset('img/masjid.webp');
+                } else {
+                    // Program uses getImageUrlAttribute accessor which handles logic
+                    $imageUrl = $item->image_url; 
+                }
+
+                // Determine Title & Category
+                $title = $isCampaign ? $item->title : $item->name;
+                $category = $isCampaign ? ($item->program_category ?? 'Program Unggulan') : ($item->category ?? 'Program Lazismu');
+                
+                // Determine Link
+                $link = $isCampaign 
+                    ? route('campaigns.show', [$item->program_category, $item]) 
+                    : route('program.show', $item->slug);
+
+                // Determine Progress Data
+                $collected = $isCampaign ? $item->collected_amount : $item->total_collected;
+                $percentage = $item->progress_percentage;
+            @endphp
+
+            <!-- 1. Blurred Background (Full Screen) -->
+            <div class="absolute inset-0 bg-cover bg-center blur-xl scale-110 brightness-50"
+                style="background-image: url('{{ $imageUrl }}');">
+            </div>
+            
+            <!-- 2. Centered Box (The "Versi Kotak") -->
+            <div class="relative z-10 w-full h-full flex items-center justify-center px-4 md:px-8 pt-16 pb-8">
+                <div class="relative w-full max-w-5xl bg-gray-900 rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] md:aspect-[21/9] group border border-white/10">
+                    <!-- Box Background (Clear Image) -->
+                    <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
+                         style="background-image: url('{{ $imageUrl }}');">
+                    </div>
+                    
+                    <!-- Box Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+
+                    <!-- Box Content -->
+                    <div class="absolute inset-0 flex flex-col justify-center items-center text-center p-6 md:p-12 text-white">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-green-600/90 text-white text-sm font-semibold mb-4 md:mb-6 animate-fadeInUp border border-green-400/30 shadow-lg">
+                            {{ $category }}
+                        </span>
+
+                        <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight max-w-4xl animate-fadeInUp delay-100 drop-shadow-lg">
+                            {{ $title }}
+                        </h1>
+
+                        <p class="text-base md:text-lg max-w-2xl mx-auto mb-6 md:mb-8 text-gray-100 leading-relaxed line-clamp-2 md:line-clamp-3 animate-fadeInUp delay-200 drop-shadow-md hidden md:block">
+                            {{ Str::limit(strip_tags($item->description), 150) }}
+                        </p>
+
+                        <!-- Progress Bar -->
+                        <div class="w-full max-w-md mb-8 animate-fadeInUp delay-300">
+                            <div class="flex justify-between text-sm text-white mb-2 font-medium drop-shadow-md">
+                                <span>Terkumpul: <span class="font-bold">Rp {{ number_format($collected, 0, ',', '.') }}</span></span>
+                                <span>{{ number_format($percentage, 0) }}%</span>
+                            </div>
+                            <div class="w-full bg-white/30 rounded-full h-3 border border-white/40 backdrop-blur-sm">
+                                <div class="bg-green-500 h-3 rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(34,197,94,0.8)]" style="width: {{ min($percentage, 100) }}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center animate-fadeInUp delay-500 w-full">
+                            <a href="{{ $link }}"
+                                class="no-underline group bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 md:py-4 md:px-10 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-2 md:gap-3 min-w-[200px] shadow-lg shadow-green-900/20 text-sm md:text-base">
+                                <span class="font-semibold tracking-wide">DONASI SEKARANG</span>
+                                <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </a>
+                            <a href="{{ $link }}"
+                                class="no-underline group bg-white/20 hover:bg-white/30 text-white border border-white/50 font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center gap-2 md:gap-3 text-sm md:text-base backdrop-blur-sm">
+                                <span class="font-semibold tracking-wide">LIHAT PROGRAM</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
 
     </div>
 
-    <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <svg class="w-6 h-6 text-white opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+    <!-- Navigation Arrows -->
+    <button id="hero-prev" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-green-600 text-white p-3 md:p-4 rounded-full transition-all duration-300 hover:scale-110 group border border-white/20">
+        <svg class="w-6 h-6 md:w-8 md:h-8 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
+    </button>
+    <button id="hero-next" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-green-600 text-white p-3 md:p-4 rounded-full transition-all duration-300 hover:scale-110 group border border-white/20">
+        <svg class="w-6 h-6 md:w-8 md:h-8 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+    </button>
+
+    <!-- Pagination Dots -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3" id="hero-dots">
+        <!-- Dots will be generated by JS -->
     </div>
+
+    <!-- Scroll Indicator (Only on first slide) -->
+    <!-- <div id="scroll-indicator" class="absolute bottom-8 left-8 animate-bounce z-20 hidden md:block transition-opacity duration-300">
+        <div class="flex items-center gap-2 text-white/70 text-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+            <span>Scroll ke bawah</span>
+        </div>
+    </div> -->
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slider = document.getElementById('hero-slider');
+        const prevBtn = document.getElementById('hero-prev');
+        const nextBtn = document.getElementById('hero-next');
+        const dotsContainer = document.getElementById('hero-dots');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+        
+        // Get all slides by data attribute
+        const slides = slider.querySelectorAll('[data-slide]');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+        let autoSlideInterval;
+
+        // Create dots
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('button');
+            dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${i === 0 ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/80'}`;
+            dot.ariaLabel = `Go to slide ${i + 1}`;
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = dotsContainer.children;
+
+        function updateSlider() {
+            // Update slides opacity
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.remove('opacity-0', 'z-0');
+                    slide.classList.add('opacity-100', 'z-10');
+                } else {
+                    slide.classList.remove('opacity-100', 'z-10');
+                    slide.classList.add('opacity-0', 'z-0');
+                }
+            });
+            
+            // Update dots
+            Array.from(dots).forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.className = 'w-8 h-3 rounded-full bg-white transition-all duration-300';
+                } else {
+                    dot.className = 'w-3 h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300';
+                }
+            });
+
+            // Toggle scroll indicator (only show on first slide)
+            if (scrollIndicator) {
+                scrollIndicator.style.opacity = currentSlide === 0 ? '1' : '0';
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            if (currentSlide < 0) currentSlide = totalSlides - 1;
+            if (currentSlide >= totalSlides) currentSlide = 0;
+            updateSlider();
+            resetAutoSlide();
+        }
+
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            goToSlide(currentSlide - 1);
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 6000); // 6 seconds per slide
+        }
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+
+        // Event Listeners
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        // Touch support for swipe
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        slider.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        slider.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) nextSlide();
+            if (touchEndX > touchStartX + 50) prevSlide();
+        }
+
+        // Initialize
+        startAutoSlide();
+    });
+</script>
+@endpush
 
 <!-- Campaigns Terbaru Section -->
 <div class="py-16 bg-gradient-to-br from-gray-50 via-white to-green-50">

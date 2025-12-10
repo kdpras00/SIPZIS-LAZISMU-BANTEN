@@ -210,13 +210,14 @@
                                         <i class="bi bi-toggle-${item.is_active ? 'on' : 'off'}"></i>
                                     </button>
                                 </form>
+                                ${item.zakat_distributions_count == 0 ? `
                                 <form action="/mustahik/${item.id}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                     <input type="hidden" name="_token" value="${csrfToken}">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
                                         <i class="bi bi-trash"></i>
                                     </button>
-                                </form>
+                                </form>` : ''}
                             </div>
                         </td>
                     </tr>

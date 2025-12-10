@@ -307,9 +307,7 @@
                             <tr>
                                 <th scope="col" class="px-6 py-3">Kode Pembayaran</th>
                                 ${config.isNotMuzakki ? '<th scope="col" class="px-6 py-3">Muzakki</th>' : ''}
-                                <th scope="col" class="px-6 py-3">Jenis Zakat</th>
                                 <th scope="col" class="px-6 py-3">Jumlah Bayar</th>
-                                <th scope="col" class="px-6 py-3">Metode</th>
                                 <th scope="col" class="px-6 py-3">Status</th>
                                 <th scope="col" class="px-6 py-3">Tanggal</th>
                                 <th scope="col" class="px-6 py-3">Aksi</th>
@@ -375,14 +373,8 @@
                         </td>
                         ${muzakkiCell}
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-100 text-cyan-800">${zakatTypeName}</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
                             <div class="font-bold text-gray-900">Rp ${payment.paid_amount ? parseInt(payment.paid_amount).toLocaleString('id-ID') : '0'}</div>
                             ${payment.zakat_amount ? '<small class="text-gray-500">Zakat: Rp ' + parseInt(payment.zakat_amount).toLocaleString('id-ID') + '</small>' : ''}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">${paymentMethods[payment.payment_method] || payment.payment_method || 'Tidak Diketahui'}</span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusClasses[payment.status] || 'bg-gray-100 text-gray-800'}">
@@ -392,7 +384,7 @@
                         <td class="px-6 py-4 whitespace-nowrap text-gray-900">${paymentDate}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-center">
                             <div class="flex items-center justify-center space-x-2">
-                                <a href="/payments/${payment.id}" 
+                                <a href="/payments/${payment.payment_code}" 
                                    class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200" 
                                    title="Lihat Detail">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

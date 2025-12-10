@@ -88,7 +88,9 @@ class TwoFactorController extends Controller
         $user->two_factor_confirmed_at = now();
         $user->save();
 
-        return redirect()->route('dashboard.management')
+        $redirectRoute = $user->role === 'admin' ? 'dashboard' : 'dashboard.management';
+
+        return redirect()->route($redirectRoute)
             ->with('success', 'Autentikasi dua faktor berhasil diaktifkan!');
     }
 
@@ -123,7 +125,9 @@ class TwoFactorController extends Controller
         $user->two_factor_confirmed_at = null;
         $user->save();
 
-        return redirect()->route('dashboard.management')
+        $redirectRoute = $user->role === 'admin' ? 'dashboard' : 'dashboard.management';
+
+        return redirect()->route($redirectRoute)
             ->with('success', 'Autentikasi dua faktor berhasil dinonaktifkan!');
     }
 
@@ -137,6 +141,9 @@ class TwoFactorController extends Controller
         if (!$userId) {
             return redirect()->route('login')->withErrors(['message' => 'Sesi login tidak ditemukan.']);
         }
+
+        // Regenerate CSRF token to prevent 419 Page Expired
+        $request->session()->regenerateToken();
 
         return view('auth.two-factor-verify');
     }
@@ -172,6 +179,11 @@ class TwoFactorController extends Controller
         // Log in the user
         Auth::login($user);
         $request->session()->regenerate();
+
+        // Redirect based on role
+        if ($user->role === 'admin') {
+            return redirect()->route('dashboard');
+        }
 
         return redirect()->intended('/');
     }

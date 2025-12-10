@@ -142,6 +142,28 @@ Route::get('/password/reset/{token}', [AuthController::class, 'showResetPassword
 Route::post('/password/reset', [AuthController::class, 'resetPassword'])->name('password.update');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Email Verification Routes
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
+Route::middleware('auth')->group(function () {
+    // Verification notice page
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->name('verification.notice');
+    
+    // Handle verification link click
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect('/dashboard')->with('success', 'Email berhasil diverifikasi!');
+    })->middleware(['signed'])->name('verification.verify');
+    
+    // Resend verification email
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('success', 'Link verifikasi telah dikirim ulang ke email Anda!');
+    })->middleware(['throttle:6,1'])->name('verification.send');
+});
+
 // Two Factor Authentication verification (public route for login)
 Route::get('/two-factor/verify', [App\Http\Controllers\TwoFactorController::class, 'showVerify'])->name('two-factor.verify');
 Route::post('/two-factor/verify', [App\Http\Controllers\TwoFactorController::class, 'verify'])->name('two-factor.verify.post');
@@ -184,6 +206,16 @@ Route::prefix('donasi')->name('guest.payment.')->group(function () {
 Route::middleware('auth')->group(function () {
 
     // ========================================================================
+    // SHARED ROUTES (Accessible by all authenticated users)
+    // ========================================================================
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        // Two Factor Authentication routes (Shared)
+        Route::get('/two-factor/setup', [App\Http\Controllers\TwoFactorController::class, 'showSetup'])->name('two-factor.setup');
+        Route::post('/two-factor/enable', [App\Http\Controllers\TwoFactorController::class, 'enable'])->name('two-factor.enable');
+        Route::post('/two-factor/disable', [App\Http\Controllers\TwoFactorController::class, 'disable'])->name('two-factor.disable');
+    });
+
+    // ========================================================================
     // SECTION 1: MUZAKKI-ONLY ROUTES
     // Routes that can ONLY be accessed by users with role 'muzakki'
     // ========================================================================
@@ -205,11 +237,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/management/account/delete-account', [DashboardController::class, 'deleteAccount'])->name('management.delete-account');
             Route::get('/recurring/create', [RecurringDonationController::class, 'create'])->name('recurring.create');
             
-            // Two Factor Authentication routes
-            Route::get('/two-factor/setup', [App\Http\Controllers\TwoFactorController::class, 'showSetup'])->name('two-factor.setup');
-            Route::post('/two-factor/enable', [App\Http\Controllers\TwoFactorController::class, 'enable'])->name('two-factor.enable');
-            Route::post('/two-factor/disable', [App\Http\Controllers\TwoFactorController::class, 'disable'])->name('two-factor.disable');
-
             // Bank accounts management
             Route::post('/bank-accounts', [BankAccountController::class, 'store'])->name('bank-accounts.store');
             Route::delete('/bank-accounts/{bankAccount}', [BankAccountController::class, 'destroy'])->name('bank-accounts.destroy');
@@ -332,6 +359,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/create', [ZakatPaymentController::class, 'create'])->name('create');
             Route::post('/', [ZakatPaymentController::class, 'store'])->name('store');
             Route::get('/{payment}', [ZakatPaymentController::class, 'show'])->name('show');
+            Route::put('/{payment}', [ZakatPaymentController::class, 'update'])->name('update');
             Route::get('/{payment}/receipt', [ZakatPaymentController::class, 'receipt'])->name('receipt');
         });
     });

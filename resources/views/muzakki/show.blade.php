@@ -24,13 +24,7 @@
                 </svg>
                 Edit
             </a>
-            <a href="{{ route('payments.create', ['muzakki_id' => $muzakki->id]) }}"
-                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Tambah Pembayaran
-            </a>
+
         </div>
     </div>
 
@@ -430,14 +424,7 @@
                             </svg>
                             <h5 class="text-lg font-medium text-gray-900 mb-2">Belum Ada Pembayaran</h5>
                             <p class="text-gray-500 mb-4">Muzakki ini belum memiliki riwayat pembayaran zakat</p>
-                            <a href="{{ route('payments.create', ['muzakki_id' => $muzakki->id]) }}"
-                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 4v16m8-8H4" />
-                                </svg>
-                                Tambah Pembayaran Pertama
-                            </a>
+
                         </div>
                     @endif
                 </div>

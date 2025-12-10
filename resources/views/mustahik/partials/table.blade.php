@@ -48,13 +48,18 @@
                                 <i class="bi bi-toggle-{{ $item->is_active ? 'on' : 'off' }}"></i>
                             </button>
                         </form>
-                        <form action="{{ route('mustahik.destroy', $item) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </form>
+                        @if ($item->zakat_distributions_count == 0)
+                            <form action="{{ route('mustahik.destroy', $item->id) }}" method="POST"
+                                class="inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                    title="Hapus">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </td>
             </tr>

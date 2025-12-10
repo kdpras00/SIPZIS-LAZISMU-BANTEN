@@ -125,8 +125,11 @@ class ZakatPaymentController extends Controller
                     break;
                 case 'qris':
                 case 'midtrans-qris':
-                    $params['payment_type'] = 'qris';
-                    $params['enabled_payments'] = ['qris'];
+                    // User requested direct QR display without menu.
+                    // Using 'gopay' exclusively forces Snap to show the QR code immediately.
+                    // This QR is QRIS-compatible.
+                    $params['payment_type'] = 'gopay';
+                    $params['enabled_payments'] = ['gopay'];
                     break;
                 default:
                     // For unrecognized methods, we'll try to map them
@@ -714,7 +717,8 @@ class ZakatPaymentController extends Controller
 
         // Check permission for muzakki role
         if (Auth::check() && Auth::user()->role === 'muzakki') {
-            if ($payment->muzakki->user_id !== Auth::id()) {
+            // Ensure payment has a muzakki and it belongs to the authenticated user
+            if (!$payment->muzakki || $payment->muzakki->user_id !== Auth::id()) {
                 abort(403, 'Anda tidak memiliki akses ke pembayaran ini.');
             }
             // Return muzakki-specific view
@@ -1218,12 +1222,23 @@ class ZakatPaymentController extends Controller
     {
         // First, check status quickly without loading relationships
         $payment = ZakatPayment::where('payment_code', $paymentCode)
-            ->select('id', 'payment_code', 'status')
+            ->select('id', 'payment_code', 'status', 'created_at')
             ->firstOrFail();
 
         // If payment is already completed, redirect immediately to success page
         if ($payment->status === 'completed') {
             return redirect()->route('guest.payment.success', $payment->payment_code);
+        }
+
+        // Check for expiry (24 hours)
+        $expiryTime = $payment->created_at->addHours(24);
+        if ($payment->status === 'pending' && now()->greaterThan($expiryTime)) {
+             // Mark as cancelled/expired
+             $payment->update(['status' => 'cancelled']);
+             
+             // Redirect to failed/expired page
+             return redirect()->route('guest.payment.failed', $payment->payment_code)
+                 ->with('error', 'Waktu pembayaran telah habis.');
         }
 
         // Only load relationships if status is not completed (needed for view)

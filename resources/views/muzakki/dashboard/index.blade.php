@@ -6,21 +6,6 @@
 <div class="mb-6">
     <div class="flex justify-between items-center">
         <div>
-            <h2 class="text-2xl font-bold mb-1">Assalamualaikum, {{ $muzakki->name }}!</h2>
-            <p class="text-gray-600">Selamat datang di dashboard muzakki Anda</p>
-        </div>
-        <div class="text-right">
-            <small class="text-gray-500">{{ now()->format('d F Y') }}</small>
-        </div>
-    </div>
-</div>
-
-<!-- Statistics Cards -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-    <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg text-white p-6">
-        <div class="flex justify-between items-start">
-            <div>
-                <h6 class="text-green-100 text-xs font-semibold uppercase mb-1">Total Zakat</h6>
                 <h4 class="text-2xl font-bold mb-0">Rp {{ number_format($stats['total_zakat_paid'], 0, ',', '.') }}</h4>
                 <small class="text-green-100">Sepanjang masa</small>
             </div>

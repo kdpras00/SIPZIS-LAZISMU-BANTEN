@@ -49,22 +49,22 @@
                             <i class="fas fa-sync me-1 mr-2"></i> Reset
                             </a>
                             <!-- Export Buttons -->
-                        <div class="relative">
-                            <button type="button" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" @click.outside="open = false" type="button" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
                                 <i class="fas fa-download me-1 mr-2"></i> Export
-                                </button>
-                            <ul class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden dropdown-menu">
-                                    <li>
+                            </button>
+                            <ul x-show="open" x-transition style="display: none;" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                                <li>
                                     <button type="button" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="exportReport('pdf')">
-                                            PDF
-                                        </button>
-                                    </li>
-                                    <li>
+                                        PDF
+                                    </button>
+                                </li>
+                                <li>
                                     <button type="button" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="exportReport('excel')">
-                                            Excel (CSV)
-                                        </button>
-                                    </li>
-                                </ul>
+                                        Excel (CSV)
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -226,13 +226,7 @@
         window.location.href = "{{ route('reports.incoming') }}?" + params.toString();
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Ensure dropdown functionality works
-        var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
-        var dropdownList = dropdownElementList.map(function(dropdownToggleEl) {
-            return new bootstrap.Dropdown(dropdownToggleEl);
-        });
-    });
+    // Bootstrap dropdown initialization removed in favor of Alpine.js
 </script>
 @endpush
 @endsection

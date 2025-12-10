@@ -11,11 +11,11 @@
 
 <div id="sidebar" class="sidebar flex flex-col h-screen" style="padding: 1rem 0.5rem 1rem 0.75rem;">
     {{-- SIPZIS Logo --}}
-    <div class="flex justify-center items-center mb-4 px-2">
+    <div class="logo-container flex justify-start items-center mb-4 px-4 transition-all duration-300">
         <a href="{{ route('dashboard') }}"
             class="flex items-center text-white no-underline">
-            <i class="fas fa-mosque mr-2 text-white text-2xl"></i>
-            <span class="font-bold text-xl text-white" style="font-family: 'Poppins', sans-serif;">SIPZIS</span>
+            <i class="fas fa-mosque mr-2 text-white text-2xl logo-icon transition-all duration-300"></i>
+            <span class="logo-text font-bold text-xl text-white whitespace-nowrap overflow-hidden transition-all duration-300" style="font-family: 'Poppins', sans-serif;">SIPZIS</span>
         </a>
     </div>
 
@@ -39,7 +39,7 @@
                     class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'muzakki.') && !str_contains($currentRoute, 'dashboard') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
                     style="padding-left: 0.75rem; padding-right: 0.75rem;">
                     <i class="bi bi-people mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Profile Akun Muzakki</span>
+                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Muzakki</span>
                 </a>
             </li>
 
@@ -57,7 +57,7 @@
                     class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'payments.') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
                     style="padding-left: 0.75rem; padding-right: 0.75rem;">
                     <i class="bi bi-credit-card mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Pembayaran Zakat</span>
+                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Pembayaran ZIS</span>
                 </a>
             </li>
 
@@ -66,7 +66,7 @@
                     class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'distributions.') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
                     style="padding-left: 0.75rem; padding-right: 0.75rem;">
                     <i class="bi bi-box-seam mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Distribusi Zakat</span>
+                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Distribusi ZIS</span>
                 </a>
             </li>
 
@@ -96,7 +96,7 @@
                     aria-expanded="{{ str_starts_with($currentRoute, 'reports.') ? 'true' : 'false' }}"
                     aria-controls="reportsSubmenu" id="reportsDropdown">
                     <i class="bi bi-file-earmark-text mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Laporan</span>
+                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Laporan Keuangan</span>
                     <i class="bi bi-chevron-down ml-auto mr-2 text-sm chevron-icon"
                         style="transition: transform 0.3s ease; transform-origin: center; display: inline-block;"></i>
                 </a>
@@ -407,17 +407,57 @@
 
     /* Desktop collapse */
     aside.sidebar-collapsed {
-        width: 0 !important;
-        overflow: hidden !important;
+        width: 80px !important;
+        overflow: visible !important;
         transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         will-change: width;
     }
 
     main.sidebar-collapsed {
         margin-left: 0 !important;
-        width: 100% !important;
+        width: calc(100% - 80px) !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         will-change: margin, width;
+    }
+
+    /* Mini Sidebar Styling */
+    aside.sidebar-collapsed .logo-text,
+    aside.sidebar-collapsed .nav-link span,
+    aside.sidebar-collapsed .chevron-icon,
+    aside.sidebar-collapsed .reports-dropdown-toggle::after {
+        display: none !important;
+        opacity: 0;
+        width: 0;
+    }
+
+    aside.sidebar-collapsed .logo-container {
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    aside.sidebar-collapsed .logo-icon {
+        margin-right: 0 !important;
+        font-size: 1.75rem;
+    }
+
+    aside.sidebar-collapsed .nav-link {
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        text-align: center;
+    }
+
+    aside.sidebar-collapsed .nav-link i {
+        margin-right: 0 !important;
+        font-size: 1.25rem;
+    }
+
+    /* Hide submenus in collapsed mode unless we want hover menu (complex) */
+    /* For now, hiding submenus or handling them might be tricky. 
+       Let's hide the dropdown arrow and maybe the submenu itself if it's open */
+    aside.sidebar-collapsed #reportsSubmenu {
+        display: none !important;
     }
 
     /* Mobile overlay behavior */

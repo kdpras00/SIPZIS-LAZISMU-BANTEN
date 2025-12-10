@@ -34,156 +34,167 @@
         <div class="lg:col-span-2 space-y-6">
             <!-- Payment Information Card -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
                         <i class="bi bi-credit-card mr-2"></i>
                         Informasi Pembayaran
                     </h2>
                 </div>
                 <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-4">
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Kode Pembayaran</label>
-                                <p class="text-gray-900 font-semibold mt-1">{{ $payment->payment_code }}</p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">No. Kwitansi</label>
-                                <p class="text-gray-900 mt-1">{{ $payment->receipt_number ?: '-' }}</p>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Jenis Zakat</label>
-                                <div class="mt-1">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                        {{ $payment->zakatType->name ?? 'Donasi Umum' }}
-                                    </span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        <!-- Left Column -->
+                        <div class="space-y-6">
+                            <div class="border-b border-gray-100 pb-4">
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Kode Pembayaran</label>
+                                <div class="flex items-center mt-1">
+                                    <p class="text-xl font-bold text-gray-900 font-mono">{{ $payment->payment_code }}</p>
+                                    <button class="ml-2 text-gray-400 hover:text-blue-600 transition-colors" onclick="navigator.clipboard.writeText('{{ $payment->payment_code }}')" title="Salin Kode">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
                                 </div>
                             </div>
+
                             <div>
-                                <label class="text-sm font-medium text-gray-500">Tanggal Pembayaran</label>
-                                <p class="text-gray-900 mt-1">{{ $payment->payment_date->format('d F Y, H:i') }} WIB</p>
-                            </div>
-                            @if($payment->hijri_year)
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Tahun Hijriyah</label>
-                                <p class="text-gray-900 mt-1">{{ $payment->hijri_year }} H</p>
-                            </div>
-                            @endif
-                        </div>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Status</label>
-                                <div class="mt-1">
-                                    @switch($payment->status)
-                                    @case('completed')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                        Selesai
-                                    </span>
-                                    @break
-                                    @case('pending')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-                                        Pending
-                                    </span>
-                                    @break
-                                    @case('cancelled')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                                        Dibatalkan
-                                    </span>
-                                    @break
-                                    @default
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                                        {{ ucfirst($payment->status) }}
-                                    </span>
-                                    @endswitch
-                                </div>
-                            </div>
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Metode Pembayaran</label>
-                                <div class="mt-1">
-                                    @switch($payment->payment_method)
-                                    @case('cash')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                        <i class="bi bi-cash mr-1"></i>Tunai
-                                    </span>
-                                    @break
-                                    @case('transfer')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                        <i class="bi bi-bank mr-1"></i>Transfer Bank
-                                    </span>
-                                    @break
-                                    @case('online')
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-                                        <i class="bi bi-globe mr-1"></i>Online
-                                    </span>
-                                    @break
-                                    @default
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                                        {{ ucfirst($payment->payment_method) }}
-                                    </span>
-                                    @endswitch
-                                </div>
-                            </div>
-                            @if($payment->payment_reference)
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Referensi</label>
-                                <p class="text-gray-900 font-mono text-sm mt-1">{{ $payment->payment_reference }}</p>
-                            </div>
-                            @endif
-                            @if($payment->midtrans_order_id)
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Midtrans Order ID</label>
-                                <p class="text-gray-900 font-mono text-sm mt-1">{{ $payment->midtrans_order_id }}</p>
-                            </div>
-                            @endif
-                            @if($payment->program_category)
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Kategori Program</label>
-                                <div class="mt-1">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
-                                        {{ ucfirst(str_replace('-', ' ', $payment->program_category)) }}
-                                    </span>
-                                </div>
-                            </div>
-                            @endif
-                            @php
-                                $campaign = $payment->campaign;
-                            @endphp
-                            @if($campaign || $payment->program || $payment->programType)
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Program/Campaign</label>
-                                <div class="mt-1">
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Program / Peruntukan</label>
+                                <div class="mt-2">
+                                    @php
+                                        $campaign = $payment->campaign;
+                                    @endphp
                                     @if($campaign)
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
-                                        {{ $campaign->title }}
-                                    </span>
+                                        <div class="flex items-start p-3 bg-blue-50 rounded-lg border border-blue-100">
+                                            <i class="bi bi-heart-fill text-blue-600 mt-1 mr-3"></i>
+                                            <div>
+                                                <p class="font-semibold text-blue-900">{{ $campaign->title }}</p>
+                                                <p class="text-xs text-blue-700 mt-1">Campaign</p>
+                                            </div>
+                                        </div>
                                     @elseif($payment->program)
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
-                                        {{ $payment->program->name }}
-                                    </span>
+                                        <div class="flex items-start p-3 bg-blue-50 rounded-lg border border-blue-100">
+                                            <i class="bi bi-box-seam text-blue-600 mt-1 mr-3"></i>
+                                            <div>
+                                                <p class="font-semibold text-blue-900">{{ $payment->program->name }}</p>
+                                                <p class="text-xs text-blue-700 mt-1">Program Lazismu</p>
+                                            </div>
+                                        </div>
                                     @elseif($payment->programType)
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
-                                        {{ $payment->programType->name }}
-                                    </span>
+                                        <div class="flex items-start p-3 bg-blue-50 rounded-lg border border-blue-100">
+                                            <i class="bi bi-tag-fill text-blue-600 mt-1 mr-3"></i>
+                                            <div>
+                                                <p class="font-semibold text-blue-900">{{ $payment->programType->name }}</p>
+                                                <p class="text-xs text-blue-700 mt-1">Tipe Program</p>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                            <i class="bi bi-wallet2 text-gray-500 mt-1 mr-3"></i>
+                                            <div>
+                                                <p class="font-semibold text-gray-900">Donasi Umum</p>
+                                                <p class="text-xs text-gray-500 mt-1">Tidak ada program spesifik</p>
+                                            </div>
+                                        </div>
                                     @endif
                                 </div>
                             </div>
-                            @endif
-                            @if($payment->receivedBy)
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Diterima oleh</label>
-                                <p class="text-gray-900 mt-1">{{ $payment->receivedBy->name }}</p>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Jenis Zakat</label>
+                                    <p class="text-gray-900 font-medium mt-1">{{ $payment->zakatType->name ?? 'Donasi Umum' }}</p>
+                                </div>
+                                @if($payment->program_category)
+                                <div>
+                                    <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Kategori</label>
+                                    <p class="text-gray-900 font-medium mt-1">{{ ucfirst(str_replace('-', ' ', $payment->program_category)) }}</p>
+                                </div>
+                                @endif
                             </div>
-                            @endif
-                            @if($payment->is_guest_payment)
-                            <div>
-                                <label class="text-sm font-medium text-gray-500">Tipe Pembayaran</label>
-                                <div class="mt-1">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                                        <i class="bi bi-person-badge mr-1"></i>Guest Payment
-                                    </span>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Status</label>
+                                    <div class="mt-1">
+                                        @switch($payment->status)
+                                        @case('completed')
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            <i class="bi bi-check-circle-fill mr-1.5"></i> Selesai
+                                        </span>
+                                        @break
+                                        @case('pending')
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                            <i class="bi bi-hourglass-split mr-1.5"></i> Menunggu
+                                        </span>
+                                        @break
+                                        @case('cancelled')
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            <i class="bi bi-x-circle-fill mr-1.5"></i> Dibatalkan
+                                        </span>
+                                        @break
+                                        @default
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                            {{ ucfirst($payment->status) }}
+                                        </span>
+                                        @endswitch
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Metode Bayar</label>
+                                    <div class="mt-1">
+                                        @switch($payment->payment_method)
+                                        @case('cash')
+                                        <span class="inline-flex items-center text-sm font-medium text-gray-900">
+                                            <i class="bi bi-cash text-green-600 mr-2"></i>Tunai
+                                        </span>
+                                        @break
+                                        @case('transfer')
+                                        <span class="inline-flex items-center text-sm font-medium text-gray-900">
+                                            <i class="bi bi-bank text-blue-600 mr-2"></i>Transfer Bank
+                                        </span>
+                                        @break
+                                        @case('online')
+                                        <span class="inline-flex items-center text-sm font-medium text-gray-900">
+                                            <i class="bi bi-globe text-indigo-600 mr-2"></i>Online
+                                        </span>
+                                        @break
+                                        @default
+                                        <span class="inline-flex items-center text-sm font-medium text-gray-900">
+                                            <i class="bi bi-credit-card text-gray-600 mr-2"></i>{{ ucfirst($payment->payment_method) }}
+                                        </span>
+                                        @endswitch
+                                    </div>
                                 </div>
                             </div>
-                            @endif
+
+                            <div>
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Waktu Transaksi</label>
+                                <div class="flex items-center mt-1 text-gray-900">
+                                    <i class="bi bi-calendar3 text-gray-400 mr-2"></i>
+                                    <span>{{ $payment->payment_date->format('d F Y') }}</span>
+                                    <span class="mx-2 text-gray-300">|</span>
+                                    <i class="bi bi-clock text-gray-400 mr-2"></i>
+                                    <span>{{ $payment->created_at->format('H:i') }} WIB</span>
+                                </div>
+                                @if($payment->hijri_year)
+                                <p class="text-xs text-gray-500 mt-1 ml-6">Tahun Hijriyah: {{ $payment->hijri_year }} H</p>
+                                @endif
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-100">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">No. Kwitansi</label>
+                                        <p class="text-sm font-mono text-gray-900 mt-1">{{ $payment->receipt_number ?: '-' }}</p>
+                                    </div>
+                                    @if($payment->receivedBy)
+                                    <div>
+                                        <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Petugas</label>
+                                        <p class="text-sm text-gray-900 mt-1">{{ $payment->receivedBy->name }}</p>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -256,7 +267,7 @@
             <!-- Notes Section -->
             @if($payment->notes)
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="bg-gradient-to-r from-yellow-600 to-yellow-700 px-6 py-4">
+                <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
                         <i class="bi bi-sticky mr-2"></i>
                         Catatan
@@ -273,7 +284,7 @@
         <div class="space-y-6">
             <!-- Muzakki Information Card -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-4">
+                <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
                         <i class="bi bi-person-circle mr-2"></i>
                         Informasi Muzakki
@@ -281,8 +292,8 @@
                 </div>
                 <div class="p-6">
                     <div class="text-center mb-4">
-                        <div class="bg-purple-100 rounded-full p-4 inline-flex items-center justify-center mb-3">
-                            <i class="bi bi-person-fill text-3xl text-purple-600"></i>
+                        <div class="bg-green-100 rounded-full p-4 inline-flex items-center justify-center mb-3">
+                            <i class="bi bi-person-fill text-3xl text-green-600"></i>
                         </div>
                         <h5 class="font-semibold text-gray-900 mb-2">{{ $payment->muzakki->name }}</h5>
                         @if(!$payment->is_guest_payment)
@@ -337,7 +348,7 @@
                     @if(auth()->user()->role === 'admin')
                     <div class="border-t pt-4 mt-4">
                         <a href="{{ route('muzakki.show', $payment->muzakki) }}" 
-                            class="w-full inline-flex justify-center items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm">
+                            class="w-full inline-flex justify-center items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm">
                             <i class="bi bi-eye mr-2"></i> Lihat Detail Muzakki
                         </a>
                     </div>
@@ -347,7 +358,7 @@
 
             <!-- Payment Timeline Card -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="bg-gradient-to-r from-cyan-600 to-cyan-700 px-6 py-4">
+                <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
                         <i class="bi bi-clock-history mr-2"></i>
                         Timeline Pembayaran
@@ -358,7 +369,7 @@
                         <!-- Created -->
                         <div class="flex items-start mb-6">
                             <div class="flex-shrink-0">
-                                <div class="w-3 h-3 rounded-full bg-blue-600 border-2 border-white shadow"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-600 border-2 border-white shadow"></div>
                             </div>
                             <div class="ml-4 flex-1">
                                 <h6 class="text-sm font-semibold text-gray-900">Pembayaran Dibuat</h6>
@@ -406,42 +417,7 @@
         </div>
     </div>
 
-    <!-- Payment Actions (Admin Only) -->
-    @if(auth()->user()->role === 'admin' && $payment->status !== 'completed')
-    <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-        <h3 class="text-lg font-semibold text-yellow-900 mb-4 flex items-center">
-            <i class="bi bi-tools mr-2"></i>
-            Aksi Pembayaran
-        </h3>
-        <div class="flex gap-3">
-            @if($payment->status === 'pending')
-            <form action="{{ route('payments.update', $payment) }}" method="POST" class="inline">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="status" value="completed">
-                <button type="submit" 
-                    onclick="return confirm('Konfirmasi pembayaran ini sebagai selesai?')"
-                    class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                    <i class="bi bi-check-circle mr-2"></i>
-                    Konfirmasi Pembayaran
-                </button>
-            </form>
-
-            <form action="{{ route('payments.update', $payment) }}" method="POST" class="inline">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="status" value="cancelled">
-                <button type="submit" 
-                    onclick="return confirm('Batalkan pembayaran ini?')"
-                    class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                    <i class="bi bi-x-circle mr-2"></i>
-                    Batalkan Pembayaran
-                </button>
-            </form>
-            @endif
-        </div>
-    </div>
-    @endif
+    {{-- Payment Actions removed as per user request (handled automatically) --}}
 </div>
 @endsection
 

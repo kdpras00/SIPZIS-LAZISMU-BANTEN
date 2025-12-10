@@ -6,7 +6,10 @@
 <div class="py-4 px-4 max-w-4xl mx-auto">
     <!-- Header -->
     <div class="flex items-center mb-6">
-        <a href="{{ route('dashboard.management') }}" class="text-gray-700 mr-3 hover:text-gray-900">
+        @php
+            $backRoute = auth()->user()->role === 'admin' ? route('dashboard') : route('dashboard.management');
+        @endphp
+        <a href="{{ $backRoute }}" class="text-gray-700 mr-3 hover:text-gray-900">
             <i class="bi bi-arrow-left text-xl"></i>
         </a>
         <h5 class="text-xl font-semibold text-gray-900 mb-0">Setup Autentikasi Dua Faktor</h5>
@@ -66,27 +69,56 @@
                 </div>
             </div>
 
-            <!-- QR Code -->
+            <!-- QR Code Section - PROMINENT -->
             <div class="text-center mb-6">
-                <div class="inline-block p-4 bg-white border-2 border-gray-200 rounded-lg">
-                    <img src="{{ $qrCode }}" alt="QR Code" class="mx-auto" style="max-width: 300px; height: auto;">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    📱 Scan QR Code Ini
+                </h3>
+                
+                <!-- Larger QR Code with better styling -->
+                <div class="inline-block p-6 bg-white border-4 border-green-500 rounded-2xl shadow-lg">
+                    <img src="{{ $qrCode }}" 
+                         alt="QR Code" 
+                         class="mx-auto" 
+                         style="width: 350px; height: 350px;">
                 </div>
-                <p class="text-sm text-gray-600 mt-4">Scan QR Code ini dengan aplikasi Google Authenticator</p>
+                
+                <p class="text-sm text-gray-600 mt-4 font-medium">
+                    Gunakan aplikasi <strong>Google Authenticator</strong> untuk scan
+                </p>
+                
+                <!-- App Download Links -->
+                <div class="flex justify-center gap-4 mt-4 flex-wrap">
+                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" 
+                       target="_blank" 
+                       class="text-xs text-blue-600 hover:underline inline-flex items-center gap-1">
+                        <i class="bi bi-google-play"></i> Download untuk Android
+                    </a>
+                    <a href="https://apps.apple.com/app/google-authenticator/id388497605" 
+                       target="_blank" 
+                       class="text-xs text-blue-600 hover:underline inline-flex items-center gap-1">
+                        <i class="bi bi-apple"></i> Download untuk iOS
+                    </a>
+                </div>
             </div>
 
-            <!-- Manual Entry -->
-            <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                <p class="text-sm font-semibold text-gray-700 mb-2">Tidak bisa scan QR Code?</p>
-                <p class="text-xs text-gray-600 mb-2">Masukkan kode berikut secara manual:</p>
-                <div class="flex items-center justify-between bg-white p-3 rounded border border-gray-300">
-                    <code class="text-sm font-mono text-gray-900">{{ $secret }}</code>
-                    <button type="button" 
-                            class="ml-2 px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition-colors"
-                            onclick="copyToClipboard('{{ $secret }}')">
-                        <i class="bi bi-copy"></i> Copy
-                    </button>
+            <!-- Manual Entry - Secondary Option (Collapsible) -->
+            <details class="bg-gray-50 rounded-lg p-4 mb-6">
+                <summary class="cursor-pointer text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors">
+                    ⚙️ Tidak bisa scan? Klik untuk manual entry
+                </summary>
+                <div class="mt-3">
+                    <p class="text-xs text-gray-600 mb-2">Masukkan kode berikut secara manual:</p>
+                    <div class="flex items-center justify-between bg-white p-3 rounded border border-gray-300">
+                        <code class="text-sm font-mono text-gray-900">{{ $secret }}</code>
+                        <button type="button" 
+                                class="ml-2 px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                                onclick="copyToClipboard('{{ $secret }}')">
+                            <i class="bi bi-copy"></i> Copy
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </details>
 
             <!-- Verification Form -->
             <form method="POST" action="{{ route('dashboard.two-factor.enable') }}">

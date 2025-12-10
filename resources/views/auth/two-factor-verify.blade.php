@@ -62,16 +62,6 @@
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
-        // Auto-submit when 6 digits entered
-        codeInput.addEventListener('input', function(e) {
-            if (this.value.length === 6) {
-                // Auto-submit after a short delay
-                setTimeout(() => {
-                    document.getElementById('verifyForm').submit();
-                }, 300);
-            }
-        });
-
         // Focus on input
         codeInput.focus();
     });
