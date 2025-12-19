@@ -3,237 +3,237 @@
 @section('page-title', 'Detail Berita - ' . $news->title)
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h2 class="mb-1">Detail Berita</h2>
-        <p class="text-muted">{{ $news->title }}</p>
-    </div>
-    <div class="btn-group">
-        <a href="{{ route('admin.news.index') }}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Kembali
-        </a>
-        <a href="{{ route('admin.news.edit', $news) }}" class="btn btn-outline-primary">
-            <i class="bi bi-pencil"></i> Edit
-        </a>
-        <a href="{{ route('news.show', $news->slug) }}" class="btn btn-outline-success" target="_blank">
-            <i class="bi bi-eye"></i> Lihat Publik
-        </a>
-        @if(!$news->is_published)
-        <form action="{{ route('admin.news.toggle-publish', $news) }}" method="POST" class="d-inline">
-            @csrf
-            @method('PATCH')
-            <button type="submit" class="btn btn-outline-warning">
-                <i class="bi bi-check-circle"></i> Publikasikan
-            </button>
-        </form>
-        @endif
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-8">
-        <!-- News Content Card -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="bi bi-newspaper"></i> Konten Berita</h5>
-                    @if($news->is_published)
-                    <span class="badge bg-success fs-6">Published</span>
-                    @else
-                    <span class="badge bg-warning fs-6">Draft</span>
-                    @endif
-                </div>
+<div class="min-h-screen bg-gray-50/50">
+    <!-- Header Section -->
+    <div class="mb-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Detail Berita</h1>
+                <nav class="flex text-sm text-gray-500 mt-1">
+                    <ol class="flex items-center space-x-2">
+                        <li><a href="{{ route('dashboard') }}" class="hover:text-emerald-600 transition-colors">Dashboard</a></li>
+                        <li><span class="text-gray-400">/</span></li>
+                        <li><a href="{{ route('admin.news.index') }}" class="hover:text-emerald-600 transition-colors">Berita</a></li>
+                        <li><span class="text-gray-400">/</span></li>
+                        <li class="text-gray-900 font-medium truncate max-w-[200px]">{{ $news->title }}</li>
+                    </ol>
+                </nav>
             </div>
-            <div class="card-body">
-                <!-- Featured Image -->
-                @if($news->image)
-                <div class="mb-4">
-                    @php
-                    $rawImage = trim($news->image ?? '');
-                    // Cek apakah image adalah URL penuh (CDN)
-                    $isFullUrl = filter_var($rawImage, FILTER_VALIDATE_URL);
-                    // Tentukan URL akhir
-                    $imageUrl = $isFullUrl
-                    ? $rawImage
-                    : Storage::url($news->image);
-                    @endphp
-                    <img src="{{ $imageUrl }}"
-                        alt="{{ $news->title }}"
-                        class="img-fluid rounded shadow-sm"
-                        style="max-height: 400px; width: 100%; object-fit: cover;">
-                </div>
-                @endif
+            
+            <div class="flex items-center gap-3">
+                <a href="{{ route('admin.news.index') }}" 
+                   class="inline-flex items-center justify-center px-4 py-2 rounded-xl border border-gray-200 bg-white text-gray-700 font-medium hover:bg-gray-50 hover:text-gray-900 transition-all shadow-sm">
+                    <i class="bi bi-arrow-left mr-2"></i> Kembali
+                </a>
+                <a href="{{ route('news.show', $news->slug) }}" target="_blank"
+                   class="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-50 text-emerald-700 font-medium border border-emerald-100 hover:bg-emerald-100 transition-all hover:shadow-sm">
+                    <i class="bi bi-eye mr-2"></i> Lihat Publik
+                </a>
+            </div>
+        </div>
+    </div>
 
-                <!-- Title and Meta -->
-                <div class="mb-4">
-                    <h1 class="display-6 fw-bold text-dark mb-3">{{ $news->title }}</h1>
-
-                    <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
-                        <div class="text-muted">
-                            <i class="bi bi-person"></i> {{ $news->author->name }}
-                        </div>
-
-                        <div class="text-muted">
-                            <i class="bi bi-calendar"></i> {{ $news->formatted_date }}
-                        </div>
-
-                        @if($news->created_at != $news->updated_at)
-                        <div class="text-muted">
-                            <i class="bi bi-pencil"></i> Diperbarui {{ $news->updated_at->format('d M Y H:i') }}
-                        </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content Column -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Content Card -->
+            <div class="bg-white rounded-3xl shadow-lg shadow-gray-100 overflow-hidden border border-gray-100">
+                <!-- Status Badge (Mobile Only) -->
+                <div class="lg:hidden p-4 border-b border-gray-100 bg-gray-50">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-gray-500">Status Publikasi</span>
+                        @if($news->is_published)
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                                Published
+                            </span>
+                        @else
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                                Draft
+                            </span>
                         @endif
                     </div>
                 </div>
 
-                <!-- Excerpt -->
-                @if($news->excerpt)
-                <div class="mb-4">
-                    <div class="alert alert-info">
-                        <h6 class="mb-2"><i class="bi bi-info-circle"></i> Ringkasan</h6>
-                        <p class="mb-0">{{ $news->excerpt }}</p>
+                <!-- Featured Image -->
+                @if($news->image)
+                    <div class="relative w-full h-64 md:h-96 bg-gray-100 group overflow-hidden">
+                        @php
+                            $rawImage = trim($news->image ?? '');
+                            $isFullUrl = filter_var($rawImage, FILTER_VALIDATE_URL);
+                            $imageUrl = $isFullUrl ? $rawImage : Storage::url($news->image);
+                        @endphp
+                        <img src="{{ $imageUrl }}" 
+                             alt="{{ $news->title }}" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
+                            <h2 class="text-2xl md:text-3xl font-bold leading-tight mb-2 drop-shadow-sm">{{ $news->title }}</h2>
+                            <div class="flex items-center gap-4 text-sm md:text-base text-gray-200">
+                                <span class="flex items-center gap-1"><i class="bi bi-person"></i> {{ $news->author->name }}</span>
+                                <span class="flex items-center gap-1"><i class="bi bi-calendar"></i> {{ $news->formatted_date }}</span>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="p-8 border-b border-gray-100">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ $news->title }}</h2>
+                        <div class="flex items-center gap-4 text-gray-500 text-sm">
+                            <span class="flex items-center gap-1"><i class="bi bi-person"></i> {{ $news->author->name }}</span>
+                            <span class="flex items-center gap-1"><i class="bi bi-calendar"></i> {{ $news->formatted_date }}</span>
+                        </div>
+                    </div>
+                @endif
+                
+                <!-- Content Body -->
+                <div class="p-6 md:p-8">
+                    @if($news->excerpt)
+                        <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-8">
+                            <h3 class="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                <i class="bi bi-info-circle text-blue-500"></i> Ringkasan
+                            </h3>
+                            <p class="text-blue-800 leading-relaxed">{{ $news->excerpt }}</p>
+                        </div>
+                    @endif
+
+                    <div class="prose prose-lg max-w-none text-gray-600 prose-headings:text-gray-900 prose-a:text-emerald-600 hover:prose-a:text-emerald-500 prose-img:rounded-2xl prose-img:shadow-md">
+                        {!! nl2br(e($news->content)) !!}
+                    </div>
+                    
+                    @if($news->created_at != $news->updated_at)
+                        <div class="mt-8 pt-6 border-t border-gray-100 text-sm text-gray-400 italic flex items-center gap-2">
+                            <i class="bi bi-pencil-square"></i>
+                            Diperbarui terakhir pada {{ $news->updated_at->format('d M Y H:i') }}
+                        </div>
+                    @endif
+                </div>
+            </div>
+            
+             <!-- SEO & Metadata Card -->
+             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                    <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                        <i class="bi bi-search text-purple-500"></i> Metadata & SEO
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid gap-4">
+                        <div class="group">
+                            <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Slug URL</label>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100 group-hover:border-purple-200 transition-colors">
+                                <code class="text-sm text-purple-700 font-mono break-all">{{ $news->slug }}</code>
+                            </div>
+                        </div>
+                        
+                        <div class="group">
+                            <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Link Publik</label>
+                            <div class="flex items-center gap-2">
+                                <div class="flex-1 p-3 bg-gray-50 rounded-xl border border-gray-100 text-gray-600 text-sm truncate">
+                                    {{ route('news.show', $news->slug) }}
+                                </div>
+                                <button onclick="copyToClipboard()" class="p-3 text-gray-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl border border-gray-100 transition-all" title="Salin Link">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                                <a href="{{ route('news.show', $news->slug) }}" target="_blank" class="p-3 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-xl border border-gray-100 transition-all" title="Buka Link">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                @endif
-
-                <!-- Content -->
-                <div class="article-content">
-                    {!! nl2br(e($news->content)) !!}
-                </div>
             </div>
         </div>
 
-        <!-- SEO Information Card -->
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h6 class="mb-0"><i class="bi bi-search"></i> Informasi SEO</h6>
-            </div>
-            <div class="card-body">
-                <table class="table table-borderless table-sm">
-                    <tr>
-                        <td class="text-muted" style="width: 25%;">Slug URL:</td>
-                        <td class="fw-semibold">{{ $news->slug }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-muted">Link Publik:</td>
-                        <td>
-                            <a href="{{ route('news.show', $news->slug) }}" target="_blank" class="text-decoration-none">
-                                {{ route('news.show', $news->slug) }}
-                                <i class="bi bi-box-arrow-up-right ms-1"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-muted">Preview:</td>
-                        <td>{{ Str::limit($news->excerpt ?: $news->content, 150) }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-        <!-- Publication Status Card -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-{{ $news->is_published ? 'success' : 'warning' }} text-white">
-                <h6 class="mb-0">
-                    <i class="bi bi-{{ $news->is_published ? 'check-circle' : 'clock' }}"></i>
-                    Status Publikasi
-                </h6>
-            </div>
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    @if($news->is_published)
-                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
-                    <h4 class="text-success mt-2">Telah Dipublikasikan</h4>
-                    <p class="text-muted">Berita ini sudah dapat dilihat publik</p>
-                    @else
-                    <i class="bi bi-clock-fill text-warning" style="font-size: 3rem;"></i>
-                    <h4 class="text-warning mt-2">Draft</h4>
-                    <p class="text-muted">Berita ini belum dipublikasikan</p>
-                    @endif
+        <!-- Right Sidebar -->
+        <div class="space-y-6">
+            <!-- Status Card -->
+            <div class="bg-white rounded-3xl shadow-lg shadow-gray-100 border border-gray-100 overflow-hidden">
+                <div class="p-6 text-center border-b border-gray-100 {{ $news->is_published ? 'bg-emerald-50/50' : 'bg-amber-50/50' }}">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full {{ $news->is_published ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600' }} mb-4">
+                        <i class="bi {{ $news->is_published ? 'bi-check-circle-fill' : 'bi-clock-fill' }} text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold {{ $news->is_published ? 'text-emerald-900' : 'text-amber-900' }} mb-1">
+                        {{ $news->is_published ? 'Terpublikasi' : 'Draft' }}
+                    </h3>
+                    <p class="{{ $news->is_published ? 'text-emerald-600' : 'text-amber-600' }} text-sm">
+                        {{ $news->is_published ? 'Berita ini dapat diakses publik' : 'Berita belum dipublikasikan' }}
+                    </p>
                 </div>
-
-                <div class="d-grid gap-2">
-                    @if($news->is_published)
+                
+                <div class="p-6 space-y-3">
                     <form action="{{ route('admin.news.toggle-publish', $news) }}" method="POST">
                         @csrf
                         @method('PATCH')
-                        <button type="submit" class="btn btn-outline-warning btn-sm w-100">
-                            <i class="bi bi-eye-slash"></i> Batalkan Publikasi
-                        </button>
+                        @if($news->is_published)
+                            <button type="submit" class="w-full py-3 px-4 rounded-xl bg-white border-2 border-amber-100 text-amber-700 font-semibold hover:bg-amber-50 hover:border-amber-200 transition-all flex items-center justify-center gap-2 group">
+                                <i class="bi bi-eye-slash-fill group-hover:scale-110 transition-transform"></i>
+                                Batalkan Publikasi
+                            </button>
+                        @else
+                            <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold shadow-lg shadow-emerald-200 hover:shadow-emerald-300 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                                <i class="bi bi-rocket-takeoff-fill"></i>
+                                Publikasikan Sekarang
+                            </button>
+                        @endif
                     </form>
-                    <a href="{{ route('news.show', $news->slug) }}" class="btn btn-success btn-sm" target="_blank">
-                        <i class="bi bi-eye"></i> Lihat di Situs Publik
-                    </a>
-                    @else
-                    <form action="{{ route('admin.news.toggle-publish', $news) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <button type="submit" class="btn btn-success btn-sm w-100">
-                            <i class="bi bi-check-circle"></i> Publikasikan Sekarang
-                        </button>
-                    </form>
-                    @endif
                 </div>
             </div>
-        </div>
 
-        <!-- Article Statistics Card -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-info text-white">
-                <h6 class="mb-0"><i class="bi bi-bar-chart"></i> Statistik Artikel</h6>
+            <!-- Stats Card -->
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                    <h3 class="font-semibold text-gray-900 text-sm uppercase tracking-wider">Statistik</h3>
+                </div>
+                <div class="divide-y divide-gray-100">
+                    <div class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
+                        <span class="text-gray-500 text-sm flex items-center gap-2"><i class="bi bi-fonts"></i> Kata</span>
+                        <span class="font-mono font-medium text-gray-900">{{ str_word_count(strip_tags($news->content)) }}</span>
+                    </div>
+                    <div class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
+                        <span class="text-gray-500 text-sm flex items-center gap-2"><i class="bi bi-keyboard"></i> Karakter</span>
+                        <span class="font-mono font-medium text-gray-900">{{ strlen(strip_tags($news->content)) }}</span>
+                    </div>
+                    <div class="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
+                        <span class="text-gray-500 text-sm flex items-center gap-2"><i class="bi bi-eye"></i> Dilihat</span>
+                        <span class="font-mono font-medium text-gray-900">-</span> 
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <table class="table table-borderless table-sm">
-                    <tr>
-                        <td class="text-muted">Jumlah Kata:</td>
-                        <td class="fw-semibold">{{ str_word_count(strip_tags($news->content)) }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-muted">Jumlah Karakter:</td>
-                        <td class="fw-semibold">{{ strlen(strip_tags($news->content)) }}</td>
-                    </tr>
-                    <tr>
-                        <td class="text-muted">Dibuat:</td>
-                        <td class="fw-semibold">{{ $news->created_at->format('d M Y H:i') }}</td>
-                    </tr>
-                    @if($news->created_at != $news->updated_at)
-                    <tr>
-                        <td class="text-muted">Diperbarui:</td>
-                        <td class="fw-semibold">{{ $news->updated_at->format('d M Y H:i') }}</td>
-                    </tr>
-                    @endif
-                </table>
-            </div>
-        </div>
 
-        <!-- Quick Actions Card -->
-        <div class="card shadow-sm">
-            <div class="card-header bg-secondary text-white">
-                <h6 class="mb-0"><i class="bi bi-lightning"></i> Aksi Cepat</h6>
-            </div>
-            <div class="card-body">
-                <div class="d-grid gap-2">
-                    <a href="{{ route('admin.news.edit', $news) }}" class="btn btn-primary btn-sm">
-                        <i class="bi bi-pencil"></i> Edit Berita
+            <!-- Actions Card -->
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                    <h3 class="font-semibold text-gray-900 text-sm uppercase tracking-wider">Aksi</h3>
+                </div>
+                <div class="p-6 space-y-3">
+                    <a href="{{ route('admin.news.edit', $news) }}" class="w-full flex items-center justify-center px-4 py-3 rounded-xl bg-gray-900 text-white font-medium hover:bg-gray-800 transition-all shadow-md shadow-gray-200">
+                        <i class="bi bi-pencil-square mr-2"></i> Edit Berita
                     </a>
-
-                    <a href="{{ route('admin.news.create') }}" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-plus-circle"></i> Buat Berita Baru
+                    
+                    <a href="{{ route('admin.news.create') }}" class="w-full flex items-center justify-center px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 transition-colors">
+                        <i class="bi bi-plus-lg mr-2"></i> Buat Baru
                     </a>
-
-                    <button type="button" class="btn btn-outline-info btn-sm" onclick="copyToClipboard()">
-                        <i class="bi bi-clipboard"></i> Salin Link Publik
-                    </button>
-
-                    <hr>
+                    
+                    <hr class="border-gray-100 my-2">
+                    
                     <form action="{{ route('admin.news.destroy', $news) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus berita ini? Tindakan ini tidak dapat dibatalkan!')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-outline-danger btn-sm w-100">
-                            <i class="bi bi-trash"></i> Hapus Berita
+                        <button type="submit" class="w-full flex items-center justify-center px-4 py-3 rounded-xl bg-red-50 text-red-600 font-medium border border-transparent hover:bg-red-100 hover:border-red-200 transition-all">
+                            <i class="bi bi-trash mr-2"></i> Hapus Berita
                         </button>
                     </form>
+                </div>
+            </div>
+            
+            <!-- Timestamp Info -->
+            <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100 text-xs text-gray-500 space-y-2">
+                <div class="flex justify-between">
+                    <span>Dibuat:</span>
+                    <span class="font-medium">{{ $news->created_at->format('d/m/Y H:i') }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Oleh:</span>
+                    <span class="font-medium">{{ $news->author->name }}</span>
                 </div>
             </div>
         </div>
@@ -243,47 +243,14 @@
 
 @push('styles')
 <style>
-    .article-content {
-        line-height: 1.8;
-        font-size: 16px;
-    }
-
-    .article-content p {
-        margin-bottom: 1.5rem;
-    }
-
-    .article-content img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        margin: 1.5rem 0;
-    }
-
-    .article-content h1,
-    .article-content h2,
-    .article-content h3 {
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        color: #2d3748;
-    }
-
-    .article-content blockquote {
-        border-left: 4px solid #10b981;
-        background: #f0fdf4;
-        padding: 1rem 1.5rem;
-        margin: 1.5rem 0;
-        border-radius: 0 8px 8px 0;
-    }
-
-    .article-content ul,
-    .article-content ol {
-        margin: 1rem 0;
-        padding-left: 2rem;
-    }
-
-    .article-content li {
-        margin-bottom: 0.5rem;
+    /* Custom override for prose if needed */
+    .prose blockquote {
+        font-style: normal;
+        border-left-color: #10b981;
+        background-color: #f0fdf4;
+        padding: 1rem;
+        border-radius: 0 0.5rem 0.5rem 0;
+        color: #065f46;
     }
 </style>
 @endpush
@@ -293,28 +260,23 @@
     function copyToClipboard() {
         const url = "{{ route('news.show', $news->slug) }}";
         navigator.clipboard.writeText(url).then(function() {
-            // Create a temporary alert
-            const alert = document.createElement('div');
-            alert.className = 'alert alert-success alert-dismissible fade show position-fixed';
-            alert.style.top = '20px';
-            alert.style.right = '20px';
-            alert.style.zIndex = '9999';
-            alert.innerHTML = `
-            <i class="bi bi-check-circle"></i> Link berhasil disalin ke clipboard!
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
-
-            document.body.appendChild(alert);
-
-            // Auto remove after 3 seconds
-            setTimeout(() => {
-                if (alert.parentNode) {
-                    alert.parentNode.removeChild(alert);
-                }
-            }, 3000);
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil Disalin!',
+                text: 'Link berita publik telah disalin ke clipboard.',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
         }).catch(function(err) {
             console.error('Could not copy text: ', err);
-            alert('Gagal menyalin link. Silakan salin manual.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: 'Gagal menyalin link. Silakan salin manual.',
+            });
         });
     }
 </script>

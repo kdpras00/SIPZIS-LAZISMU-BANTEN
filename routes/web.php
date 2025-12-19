@@ -197,6 +197,9 @@ Route::prefix('donasi')->name('guest.payment.')->group(function () {
     Route::get('/{slug}', [DonationController::class, 'show'])->name('show');
 });
 
+// Route for Guest Account Claiming
+Route::post('/account/claim', [App\Http\Controllers\AccountClaimController::class, 'claim'])->name('guest.account.claim');
+
 
 
 
@@ -250,9 +253,8 @@ Route::middleware('auth')->group(function () {
 
         // Muzakki notifications
         Route::prefix('notifications')->name('notifications.')->group(function () {
-            Route::get('/', [ZakatPaymentController::class, 'notifications'])->name('index');
+            // Route::get('/', [ZakatPaymentController::class, 'notifications'])->name('index'); // Moved to shared
             Route::get('/ajax', [ZakatPaymentController::class, 'ajaxNotifications'])->name('ajax');
-            Route::post('/mark-as-read', [ZakatPaymentController::class, 'markNotificationsAsRead'])->name('markAsRead');
         });
     });
 
@@ -362,6 +364,10 @@ Route::middleware('auth')->group(function () {
             Route::put('/{payment}', [ZakatPaymentController::class, 'update'])->name('update');
             Route::get('/{payment}/receipt', [ZakatPaymentController::class, 'receipt'])->name('receipt');
         });
+
+        // Notifications (Shared)
+        Route::get('/notifications', [ZakatPaymentController::class, 'notifications'])->name('notifications.index');
+        Route::post('/notifications/mark-as-read', [ZakatPaymentController::class, 'markNotificationsAsRead'])->name('notifications.markAsRead');
     });
 });
 
@@ -397,7 +403,8 @@ Route::post('/firebase-login', function (Request $request) {
             return response()->json(['success' => false, 'message' => 'Aktivitas mencurigakan terdeteksi.'], 422);
         }
     } catch (\Throwable $e) {
-        return response()->json(['success' => false, 'message' => 'Layanan reCAPTCHA tidak tersedia.'], 503);
+        \Illuminate\Support\Facades\Log::error('Firebase Login reCAPTCHA Error: ' . $e->getMessage());
+        return response()->json(['success' => false, 'message' => 'Layanan reCAPTCHA tidak tersedia: ' . $e->getMessage()], 503);
     }
     $request->validate([
         'email' => 'required|email',
@@ -504,5 +511,7 @@ Route::post('/resend-otp', [OTPController::class, 'resendOTP'])->name('otp.resen
 // Personal campaign URL based on email
 Route::get('/campaigner/{email}', [CampaignController::class, 'showPersonalCampaign'])
     ->name('campaigner.personal');
+
+
 
 

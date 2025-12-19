@@ -12,10 +12,10 @@
                     Platform digital zakat, infaq, dan sedekah yang transparan, aman, dan sesuai syariat Islam.
                 </p>
                 <div class="flex space-x-4 pt-2">
-                    <a href="#" class="text-green-300 hover:text-white transition-colors" aria-label="Facebook"><i class="fab fa-facebook-f text-lg"></i></a>
-                    <a href="#" class="text-green-300 hover:text-white transition-colors" aria-label="Twitter"><i class="fab fa-twitter text-lg"></i></a>
-                    <a href="#" class="text-green-300 hover:text-white transition-colors" aria-label="Instagram"><i class="fab fa-instagram text-lg"></i></a>
-                    <a href="#" class="text-green-300 hover:text-white transition-colors" aria-label="YouTube"><i class="fab fa-youtube text-lg"></i></a>
+                    <a href="https://www.facebook.com/LazismuOfficial" class="text-green-300 hover:text-white transition-colors" aria-label="Facebook"><i class="fab fa-facebook-f text-lg"></i></a>
+                    <a href="https://x.com/lazismu" class="text-green-300 hover:text-white transition-colors" aria-label="Twitter"><i class="fab fa-twitter text-lg"></i></a>
+                    <a href="https://www.instagram.com/lazismupusat/#" class="text-green-300 hover:text-white transition-colors" aria-label="Instagram"><i class="fab fa-instagram text-lg"></i></a>
+                    <a href="https://www.youtube.com/@LazismuPusat62" class="text-green-300 hover:text-white transition-colors" aria-label="YouTube"><i class="fab fa-youtube text-lg"></i></a>
                 </div>
             </div>
 
@@ -46,15 +46,11 @@
                     </li>
                     <li class="flex items-center">
                         <i class="fas fa-phone-alt mr-3 text-green-300"></i>
-                        <span class="text-green-100">(0254) 221179</span>
+                        <span class="text-green-100">0856-1626-222</span>
                     </li>
                     <li class="flex items-center">
                         <i class="fas fa-envelope mr-3 text-green-300"></i>
-                        <span class="text-green-100">info@sipzis.or.id</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-clock mr-3 text-green-300"></i>
-                        <span class="text-green-100">Senin - Jumat: 08.00 - 17.00 WIB</span>
+                        <span class="text-green-100">info@lazismu.org</span>
                     </li>
                 </ul>
             </div>

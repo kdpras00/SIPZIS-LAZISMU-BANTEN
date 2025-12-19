@@ -113,6 +113,32 @@
                     Anda dapat mengunduh atau mencetak kwitansi pembayaran di bawah ini.
                 </div>
 
+                <!-- Account Claiming Section (Inserted) -->
+                @if (!Auth::check() && $payment->muzakki && $payment->muzakki->user && !$payment->muzakki->user->is_active)
+                <div class="bg-yellow-50 border border-yellow-200 rounded-3xl p-8 mb-8 text-center sm:text-left max-w-4xl mx-auto shadow-sm">
+                    <div class="flex flex-col sm:flex-row items-center gap-6">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 text-yellow-600">
+                             <i class="fas fa-user-plus text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-yellow-800 mb-2">Simpan Akun Anda?</h3>
+                            <p class="text-yellow-700 mb-4">Email <strong>{{ $payment->muzakki->email }}</strong> sudah terdaftar. Buat password untuk melihat riwayat donasi Anda di masa depan.</p>
+                            
+                            <form action="{{ route('guest.account.claim') }}" method="POST" class="flex flex-col sm:flex-row gap-3">
+                                @csrf
+                                <input type="hidden" name="payment_code" value="{{ $payment->payment_code }}">
+                                <input type="hidden" name="email" value="{{ $payment->muzakki->email }}">
+                                <input type="password" name="password" placeholder="Buat Password" class="flex-1 px-4 py-3 rounded-xl border border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400" required>
+                                <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" class="flex-1 px-4 py-3 rounded-xl border border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400" required>
+                                <button type="submit" class="bg-yellow-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-yellow-700 transition shadow-md whitespace-nowrap">
+                                    Simpan Akun
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <a href="{{ route('guest.payment.receipt.download', $payment->payment_code) }}"

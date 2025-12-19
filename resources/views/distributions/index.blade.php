@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page-title', 'Manajemen Distribusi Zakat')
+@section('page-title', 'Manajemen Distribusi ZIS')
 
 @section('content')
 <div class="flex justify-between items-center mb-6">

@@ -33,7 +33,7 @@
                     <div style="display: flex;">
                         <div style="width: 180px; color: #666; flex-shrink: 0;">Untuk pembayaran</div>
                         <div style="flex: 1; font-weight: 500; color: #333;">
-                            {{ $payment->programType ? $payment->programType->name : ($payment->program_category ? ucfirst(str_replace('-', ' ', $payment->program_category)) : 'Donasi Umum') }}
+                            {{ $payment->campaign ? $payment->campaign->title : ($payment->programType ? $payment->programType->name : ($payment->program_category ? ucfirst(str_replace('-', ' ', $payment->program_category)) : 'Donasi Umum')) }}
                             @if($payment->notes)
                             <span style="font-size: 12px; color: #666;"> ({{ $payment->notes }})</span>
                             @endif

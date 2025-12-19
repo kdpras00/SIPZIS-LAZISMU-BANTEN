@@ -1,60 +1,70 @@
 @php
-    $activeCampaigns = \App\Models\Campaign::active()->take(5)->get();
-    $activePrograms = \App\Models\Program::active()->take(5)->get();
+    // Ambil kandidat terbaru (ditingkatkan limitnya)
+    $activeCampaigns = \App\Models\Campaign::active()->latest()->take(10)->get();
+    $activePrograms = \App\Models\Program::active()->latest()->take(10)->get();
     
-    // Merge and sort by latest created
-    $heroSlides = $activeCampaigns->concat($activePrograms)->sortByDesc('created_at')->take(8);
+    // Merge, urutkan dari yang terbaru, dan ambil 15 teratas
+    // Logika: Item yang lebih baru (created_at desc) akan berada di atas, sehingga item lama otomatis tergeser/hilang jika > 15
+    $heroSlides = $activeCampaigns->concat($activePrograms)->sortByDesc('created_at')->take(15);
 @endphp
 
-<div class="relative bg-gray-900 min-h-screen flex items-center justify-center overflow-hidden" id="beranda">
+<div class="relative w-full h-[85vh] md:h-screen bg-gray-900 overflow-hidden" id="beranda">
     <!-- Slider Container -->
     <div id="hero-slider" class="absolute inset-0 w-full h-full">
-        
+
         <!-- Slide 1: Quran Quote (Static) -->
-        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-10 opacity-100" data-slide="0">
-            <!-- Background Image -->
-            <div class="absolute inset-0"
-                style="background-image: url('{{ asset('img/masjid.webp') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-10 opacity-100 bg-gray-900" data-slide="0">
+            <!-- Background Image with Zoom Effect -->
+            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] scale-100 hover:scale-110"
+                style="background-image: url('{{ asset('img/masjid.webp') }}');">
             </div>
-            <!-- Overlays (Lighter) -->
-            <div class="absolute inset-0 bg-gradient-to-br from-green-900/60 via-green-800/50 to-emerald-700/60"></div>
+            
+            <!-- Modern Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-br from-emerald-950/90 via-emerald-900/70 to-emerald-900/30 mix-blend-multiply"></div>
             <div class="absolute inset-0 bg-black/20"></div>
 
             <!-- Content -->
-            <div class="relative max-w-6xl mx-auto px-4 h-full flex flex-col justify-center items-center text-center text-white z-10 pt-20">
+            <div class="relative container h-full mx-auto px-6 md:px-12 flex flex-col justify-center items-center text-center z-10 pt-20">
                 <!-- 2FA Reminder Banner -->
                 @if(Auth::check() && !Auth::user()->two_factor_enabled)
-                <div class="mb-8 text-left w-full"></div>
+                <div class="mb-8 w-full"></div>
                 @endif
 
-                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight animate-fadeInUp">
-                    <span class="bg-gradient-to-r from-white via-green-100 to-white bg-clip-text text-transparent">
-                        "Dan laksanakanlah salat, tunaikanlah zakat, dan rukuklah beserta orang yang rukuk."
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-emerald-100 text-sm font-medium mb-8 animate-fadeInUp shadow-lg">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Mari Berbagi Kebaikan</span>
+                </div>
+
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight animate-fadeInUp delay-100">
+                    <span class="text-white drop-shadow-lg">
+                        "Dan laksanakanlah salat, <br class="hidden md:block"/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-teal-100">tunaikanlah zakat</span>."
                     </span>
                 </h1>
 
-                <p class="text-2xl md:text-3xl font-light mb-4 text-green-100 animate-fadeInUp delay-500">
-                    (QS. Al-Baqarah: 43)
+                <p class="text-xl md:text-2xl font-light mb-8 text-emerald-50 italic animate-fadeInUp delay-200 relative inline-block">
+                    <span class="absolute -left-4 -top-2 text-4xl text-emerald-500 opacity-50 font-serif">"</span>
+                     (QS. Al-Baqarah: 43) 
+                    <span class="absolute -right-4 -bottom-4 text-4xl text-emerald-500 opacity-50 font-serif">"</span>
                 </p>
 
-                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-12 text-green-100 leading-relaxed animate-fadeInUp delay-700">
+                <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-10 leading-relaxed animate-fadeInUp delay-300 drop-shadow-md">
                     Tunaikan kewajiban zakat Anda dengan mudah, transparan, dan sesuai syariat Islam melalui platform digital yang terpercaya.
                 </p>
 
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fadeInUp delay-1000">
+                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fadeInUp delay-500 w-full md:w-auto">
                     <a href="{{ route('calculator.index') }}"
-                        class="no-underline group bg-white hover:bg-green-600 text-green-800 hover:text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-3 min-w-[250px]">
-                        <svg class="w-6 h-6 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h10V4H7zm2 2h6v2H9V6zm0 4h6v2H9v-2zm0 4h6v2H9v-2z" />
-                        </svg>
-                        <span class="font-semibold tracking-wide">KALKULATOR ZAKAT</span>
+                        class="group relative px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-full transition-all duration-300 shadow-[0_10px_20px_-10px_rgba(16,185,129,0.5)] hover:shadow-[0_20px_30px_-10px_rgba(16,185,129,0.6)] hover:-translate-y-1 flex items-center gap-3 min-w-[200px] justify-center overflow-hidden">
+                        <div class="absolute inset-0 w-full h-full bg-white/20 skew-x-12 -translate-x-full group-hover:animate-[shimmer_1s_infinite]"></div>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        <span class="relative">KALKULATOR ZAKAT</span>
                     </a>
                     <a href="{{ route('program') }}"
-                        class="no-underline group bg-white hover:bg-green-600 text-green-800 hover:text-white font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-3 min-w-[250px]">
-                        <svg class="w-6 h-6 transition-transform group-hover:rotate-12" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L3.09 8.26L12 22L20.91 8.26L12 2Z" />
+                        class="group px-8 py-4 bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md font-bold rounded-full transition-all duration-300 hover:-translate-y-1 flex items-center gap-3 min-w-[200px] justify-center">
+                        <span>DONASI SEKARANG</span>
+                        <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
-                        <span class="font-semibold tracking-wide">DONASI SEKARANG</span>
                     </a>
                 </div>
             </div>
@@ -63,7 +73,7 @@
         <!-- Dynamic Slides (Campaigns & Programs) -->
         @php $slideIndex = 1; @endphp
         @foreach($heroSlides as $item)
-        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-0" data-slide="{{ $slideIndex++ }}">
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-0 bg-gray-900" data-slide="{{ $slideIndex++ }}">
             @php
                 $isCampaign = $item instanceof \App\Models\Campaign;
                 
@@ -74,78 +84,78 @@
                     $imageUrl = $isFullUrl ? $rawImage : asset('storage/' . $item->photo);
                     if (!$item->photo) $imageUrl = asset('img/masjid.webp');
                 } else {
-                    // Program uses getImageUrlAttribute accessor which handles logic
                     $imageUrl = $item->image_url; 
                 }
 
-                // Determine Title & Category
                 $title = $isCampaign ? $item->title : $item->name;
                 $category = $isCampaign ? ($item->program_category ?? 'Program Unggulan') : ($item->category ?? 'Program Lazismu');
                 
-                // Determine Link
                 $link = $isCampaign 
                     ? route('campaigns.show', [$item->program_category, $item]) 
                     : route('program.show', $item->slug);
 
-                // Determine Progress Data
                 $collected = $isCampaign ? $item->collected_amount : $item->total_collected;
                 $percentage = $item->progress_percentage;
             @endphp
 
-            <!-- 1. Blurred Background (Full Screen) -->
-            <div class="absolute inset-0 bg-cover bg-center blur-xl scale-110 brightness-50"
+            <!-- Background Image -->
+            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] ease-linear scale-100 group-hover:scale-105"
                 style="background-image: url('{{ $imageUrl }}');">
             </div>
             
-            <!-- 2. Centered Box (The "Versi Kotak") -->
-            <div class="relative z-10 w-full h-full flex items-center justify-center px-4 md:px-8 pt-16 pb-8">
-                <div class="relative w-full max-w-5xl bg-gray-900 rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] md:aspect-[21/9] group border border-white/10">
-                    <!-- Box Background (Clear Image) -->
-                    <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
-                         style="background-image: url('{{ $imageUrl }}');">
-                    </div>
+            <!-- Immersive Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-r from-gray-950/95 via-gray-900/60 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-900/40 to-transparent md:hidden"></div>
+
+            <!-- Content Container -->
+            <div class="relative container h-full mx-auto px-6 md:px-12 flex items-center z-10">
+                <div class="max-w-xl lg:max-w-2xl pt-24 md:pt-0">
                     
-                    <!-- Box Overlay -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+                    <!-- Category Badge -->
+                    <span class="inline-block px-4 py-1.5 rounded-full bg-emerald-600/90 hover:bg-emerald-500 text-white text-xs md:text-sm font-bold tracking-wide mb-6 animate-fadeInUp border border-emerald-400/30 shadow-lg backdrop-blur-sm uppercase">
+                        {{ $category }}
+                    </span>
 
-                    <!-- Box Content -->
-                    <div class="absolute inset-0 flex flex-col justify-center items-center text-center p-6 md:p-12 text-white">
-                        <span class="inline-block px-4 py-1.5 rounded-full bg-green-600/90 text-white text-sm font-semibold mb-4 md:mb-6 animate-fadeInUp border border-green-400/30 shadow-lg">
-                            {{ $category }}
-                        </span>
+                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white animate-fadeInUp delay-100 drop-shadow-xl">
+                        {{ \Illuminate\Support\Str::limit($title, 60) }}
+                    </h1>
 
-                        <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight max-w-4xl animate-fadeInUp delay-100 drop-shadow-lg">
-                            {{ $title }}
-                        </h1>
+                    <p class="text-base md:text-lg text-gray-200 mb-8 line-clamp-3 leading-relaxed animate-fadeInUp delay-200 drop-shadow-md hidden md:block">
+                        {{ Str::limit(strip_tags($item->description), 180) }}
+                    </p>
 
-                        <p class="text-base md:text-lg max-w-2xl mx-auto mb-6 md:mb-8 text-gray-100 leading-relaxed line-clamp-2 md:line-clamp-3 animate-fadeInUp delay-200 drop-shadow-md hidden md:block">
-                            {{ Str::limit(strip_tags($item->description), 150) }}
-                        </p>
-
-                        <!-- Progress Bar -->
-                        <div class="w-full max-w-md mb-8 animate-fadeInUp delay-300">
-                            <div class="flex justify-between text-sm text-white mb-2 font-medium drop-shadow-md">
-                                <span>Terkumpul: <span class="font-bold">Rp {{ number_format($collected, 0, ',', '.') }}</span></span>
-                                <span>{{ number_format($percentage, 0) }}%</span>
-                            </div>
-                            <div class="w-full bg-white/30 rounded-full h-3 border border-white/40 backdrop-blur-sm">
-                                <div class="bg-green-500 h-3 rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(34,197,94,0.8)]" style="width: {{ min($percentage, 100) }}%"></div>
+                    <!-- Glass Progress Card -->
+                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 md:p-6 mb-8 w-full max-w-md animate-fadeInUp delay-300 shadow-2xl">
+                        <div class="flex justify-between text-sm text-gray-300 mb-2 font-medium">
+                            <span class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Terkumpul
+                            </span>
+                            <span class="text-white font-bold">{{ number_format($percentage, 0) }}%</span>
+                        </div>
+                        <div class="w-full bg-gray-700/50 rounded-full h-2.5 mb-3 overflow-hidden border border-white/5">
+                            <div class="bg-gradient-to-r from-emerald-500 to-green-400 h-full rounded-full transition-all duration-1000 relative shadow-[0_0_15px_rgba(16,185,129,0.6)]" style="width: {{ min($percentage, 100) }}%">
+                                <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
                             </div>
                         </div>
-
-                        <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center animate-fadeInUp delay-500 w-full">
-                            <a href="{{ $link }}"
-                                class="no-underline group bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 md:py-4 md:px-10 rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-2 md:gap-3 min-w-[200px] shadow-lg shadow-green-900/20 text-sm md:text-base">
-                                <span class="font-semibold tracking-wide">DONASI SEKARANG</span>
-                                <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </a>
-                            <a href="{{ $link }}"
-                                class="no-underline group bg-white/20 hover:bg-white/30 text-white border border-white/50 font-bold py-3 px-6 md:py-4 md:px-8 rounded-full transition-all duration-300 transform hover:scale-105 flex items-center gap-2 md:gap-3 text-sm md:text-base backdrop-blur-sm">
-                                <span class="font-semibold tracking-wide">LIHAT PROGRAM</span>
-                            </a>
+                        <div class="text-2xl font-bold text-white tracking-tight">
+                            Rp {{ number_format($collected, 0, ',', '.') }}
                         </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="flex flex-wrap gap-4 animate-fadeInUp delay-500">
+                        <a href="{{ $link }}"
+                            class="group bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-8 rounded-full transition-all duration-300 shadow-lg shadow-emerald-900/40 flex items-center gap-2 transform hover:-translate-y-1">
+                            <span>DONASI SEKARANG</span>
+                            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </a>
+                        <a href="{{ $link }}"
+                            class="group bg-transparent hover:bg-white/10 text-white border border-white/30 hover:border-white/60 font-semibold py-3.5 px-8 rounded-full transition-all duration-300 backdrop-blur-sm flex items-center gap-2">
+                            <span>Pelajari Selengkapnya</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -155,31 +165,21 @@
     </div>
 
     <!-- Navigation Arrows -->
-    <button id="hero-prev" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-green-600 text-white p-3 md:p-4 rounded-full transition-all duration-300 hover:scale-110 group border border-white/20">
+    <button id="hero-prev" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full bg-black/20 hover:bg-emerald-600/90 text-white border border-white/10 hover:border-emerald-500/50 backdrop-blur-md transition-all duration-300 group hover:scale-110 hidden md:flex">
         <svg class="w-6 h-6 md:w-8 md:h-8 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
     </button>
-    <button id="hero-next" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-green-600 text-white p-3 md:p-4 rounded-full transition-all duration-300 hover:scale-110 group border border-white/20">
+    <button id="hero-next" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full bg-black/20 hover:bg-emerald-600/90 text-white border border-white/10 hover:border-emerald-500/50 backdrop-blur-md transition-all duration-300 group hover:scale-110 hidden md:flex">
         <svg class="w-6 h-6 md:w-8 md:h-8 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
     </button>
 
     <!-- Pagination Dots -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3" id="hero-dots">
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3 p-3 rounded-full backdrop-blur-sm bg-black/10 border border-white/5" id="hero-dots">
         <!-- Dots will be generated by JS -->
     </div>
-
-    <!-- Scroll Indicator (Only on first slide) -->
-    <!-- <div id="scroll-indicator" class="absolute bottom-8 left-8 animate-bounce z-20 hidden md:block transition-opacity duration-300">
-        <div class="flex items-center gap-2 text-white/70 text-sm">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-            <span>Scroll ke bawah</span>
-        </div>
-    </div> -->
 </div>
 
 @push('scripts')
@@ -692,11 +692,22 @@
             </div>
         </div>
 
-        <!-- Tombol Chat -->
-        <button id="chatbot-button"
-            class="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full p-4 shadow-lg transition">
-            💬
-        </button>
+        <!-- Tombol Action Container -->
+        <div class="flex items-center gap-3">
+            <!-- WhatsApp Button -->
+            <a href="https://api.whatsapp.com/send/?phone=628561626222&text=Assalamu%E2%80%99alaikum+Warahmatullahi+Wabarakatuh%2C+hallo+tim+Lazismu+%5Bwebsite%5D&type=phone_number&app_absent=0" 
+               target="_blank" 
+               class="bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition transform hover:scale-110 flex items-center justify-center w-14 h-14"
+               aria-label="Chat WhatsApp">
+                <i class="fab fa-whatsapp text-2xl"></i>
+            </a>
+
+            <!-- Tombol Chat -->
+            <button id="chatbot-button"
+                class="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full p-4 shadow-lg transition transform hover:scale-110 flex items-center justify-center w-14 h-14">
+                <span class="text-2xl">💬</span>
+            </button>
+        </div>
     </div>
 
     <!-- Marked.js untuk format markdown di chatbot -->

@@ -77,10 +77,10 @@
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2 mt-4">Virtual Account</p>
                     {{-- Grid 2 Columns for Banks --}}
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                         @foreach(['bca_va' => ['BCA', 'https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BCA-PNG-1536x1152.png'], 
-                                   'mandiri_va' => ['Mandiri', 'https://www.bankmandiri.co.id/documents/20143/44881086/ag-branding-logo-1.png/842d8cf8-b7fb-3014-9620-21f0f88d8377?t=1623309819034'],
-                                   'bri_va' => ['BRI', 'https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-Bank-BRI.png'],
-                                   'bni_va' => ['BNI', 'https://buatlogoonline.com/wp-content/uploads/2022/10/Logo-BNI.jpg']] as $method => $details)
+                         @foreach(['bca_va' => ['BCA', 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg'], 
+                                   'mandiri_va' => ['Mandiri', 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg'],
+                                   'bri_va' => ['BRI', 'https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg'],
+                                   'bni_va' => ['BNI', 'https://upload.wikimedia.org/wikipedia/id/5/55/BNI_logo.svg']] as $method => $details)
                         <button class="flex items-center px-4 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-sm payment-method-btn transition-all text-left group" data-method="{{ $method }}">
                             <img src="{{ $details[1] }}" class="h-5 w-10 object-contain mr-3 filter grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all">
                             <span class="text-sm font-medium text-gray-600 group-hover:text-gray-900 transition-colors">{{ $details[0] }} VA</span>

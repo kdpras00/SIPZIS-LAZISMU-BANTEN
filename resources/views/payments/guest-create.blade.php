@@ -70,27 +70,23 @@
 @endpush
 
 @section('content')
-    <div
-        class="relative bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 overflow-hidden min-h-screen flex items-center justify-center">
-        {{-- Background decorative blobs --}}
-        <div class="absolute inset-0">
-            <div
-                class="absolute top-0 left-0 w-40 h-40 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse">
-            </div>
-            <div
-                class="absolute top-0 right-0 w-40 h-40 bg-teal-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-2000">
-            </div>
-            <div
-                class="absolute -bottom-8 left-20 w-40 h-40 bg-cyan-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-4000">
+    <div class="min-h-screen bg-gray-50 pb-32 sm:pb-12 font-sans">
+        {{-- Top Navigation / Header --}}
+        <div class="bg-emerald-600 pb-32 pt-8 px-4 shadow-sm">
+            <div class="max-w-2xl mx-auto">
+                <a href="{{ route('home') }}" class="inline-flex items-center text-emerald-100 hover:text-white mb-6 transition-colors font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali
+                </a>
+                <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Mulai Berbagi Kebaikan</h1>
+                <p class="text-emerald-100 mt-2 text-sm sm:text-base">Lengkapi formulir di bawah untuk berdonasi.</p>
             </div>
         </div>
 
-        <div class="relative container mx-auto px-4 py-16">
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/50 p-8">
-
-                    {{-- Program Information Header --}}
-                    <div class="flex items-start sm:items-center gap-4 border-b border-gray-200 pb-6 mb-6">
+        <div class="max-w-2xl mx-auto px-4 -mt-24 relative z-10">
+            {{-- Campaign Info Card --}}
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-6 transition-transform hover:scale-[1.01] duration-300">
+                <div class="p-6">
+                    <div class="flex flex-col sm:flex-row gap-5 items-start">
                         @php
                             if (isset($campaign)) {
                                 $imageUrl = $campaign->image_url;
@@ -101,171 +97,291 @@
                                 $imageUrl = $categoryProgram ? $categoryProgram->image_url : asset('img/masjid.webp');
                             }
                         @endphp
-                        <img src="{{ $imageUrl }}" alt="Program {{ $displayTitle }}"
-                            class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg shadow-md flex-shrink-0">
+                        
+                        <div class="relative w-full sm:w-auto">
+                            <img src="{{ $imageUrl }}" alt="Program {{ $displayTitle }}"
+                                class="w-full sm:w-28 sm:h-28 h-48 object-cover rounded-xl shadow-sm">
+                            <div class="absolute top-2 right-2 sm:hidden bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold text-emerald-700 shadow-sm border border-emerald-100">
+                                <i class="fas fa-check-circle mr-1"></i> Official
+                            </div>
+                        </div>
 
-                        <div>
-                            <p class="text-sm text-gray-600 mb-1">Anda akan berdonasi untuk:</p>
-                            <h2 class="text-lg sm:text-xl font-bold {{ $textColor }} leading-tight">
+                        <div class="flex-1 w-full">
+                            <div class="hidden sm:inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full mb-3 border border-emerald-100">
+                                <i class="fas fa-check-circle mr-1"></i> Program Resmi Lazismu
+                            </div>
+                            <h2 class="text-xl font-bold text-gray-900 leading-tight mb-2">
                                 {{ $displayTitle }}
                             </h2>
-                            <p class="text-sm text-gray-600 mt-1">{{ $displaySubtitle }}</p>
+                            <p class="text-sm text-gray-500 leading-relaxed mb-1">{{ $displaySubtitle }}</p>
                         </div>
                     </div>
 
-                    <form id="donation-form" class="space-y-6" autocomplete="off">
-                        @csrf
+                    @php
+                        $targetAmount = 0;
+                        $collectedAmount = 0;
+                        
+                        if (isset($campaign)) {
+                            $targetAmount = $campaign->target_amount;
+                            $collectedAmount = $campaign->collected_amount;
+                        } elseif (isset($program)) {
+                            $targetAmount = $program->target_amount;
+                            $collectedAmount = $program->collected_amount;
+                        }
+                        
+                        $percentage = ($targetAmount > 0) ? min(100, round(($collectedAmount / $targetAmount) * 100)) : 0;
+                    @endphp
 
-                        {{-- Hidden inputs --}}
-                        <input type="hidden" name="program_category" value="{{ $programCategory }}" autocomplete="off">
-                        @if (isset($program))
-                            <input type="hidden" name="program_id" value="{{ $program->id }}" autocomplete="off">
-                        @endif
-                        <input type="hidden" name="zakat_type_id"
-                            value="{{ request()->query('type') === 'profesi' ? 3 : (request()->query('type') === 'harta' ? 1 : (request()->query('type') === 'mal' ? 2 : '')) }}"
-                            autocomplete="off">
-                        <input type="hidden" name="program_type_id" id="program_type_id"
-                            value="{{ request()->query('program_type_id') }}" autocomplete="off">
-                        <input type="hidden" name="zakat_amount" id="zakat_amount" value="0" autocomplete="off">
-                        <input type="hidden" name="paid_amount" id="paid_amount" value="0" autocomplete="off">
-
-                        {{-- Hidden field untuk menyimpan nomor lengkap dengan country code --}}
-                        <input type="hidden" name="donor_phone" id="donor_phone_full" autocomplete="off">
-
-                        {{-- Nominal Donasi dengan Pilihan Cepat --}}
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih Nominal Donasi *</label>
-
-                            <div class="mb-6">
-                                <h3 class="text-gray-700 font-semibold mb-3">Nominal Donasi</h3>
-                                <div class="flex flex-wrap gap-3 justify-center">
-                                    <button type="button"
-                                        class="quick-amount-btn bg-white text-green-800 border border-black-600 rounded-full px-6 py-3 font-semibold shadow-sm hover:bg-black-50 hover:shadow-md transition-all duration-200 ease-in-out"
-                                        data-amount="10000">Rp 10.000</button>
-                                    <button type="button"
-                                        class="quick-amount-btn bg-white text-green-800 border border-black-600 rounded-full px-6 py-3 font-semibold shadow-sm hover:bg-black-50 hover:shadow-md transition-all duration-200 ease-in-out"
-                                        data-amount="20000">Rp 20.000</button>
-                                    <button type="button"
-                                        class="quick-amount-btn bg-white text-green-800 border border-black-600 rounded-full px-6 py-3 font-semibold shadow-sm hover:bg-black-50 hover:shadow-md transition-all duration-200 ease-in-out"
-                                        data-amount="50000">Rp 50.000</button>
-                                    <button type="button"
-                                        class="quick-amount-btn bg-white text-green-800 border border-black-600 rounded-full px-6 py-3 font-semibold shadow-sm hover:bg-black-50 hover:shadow-md transition-all duration-200 ease-in-out"
-                                        data-amount="100000">Rp 100.000</button>
-                                    <button type="button"
-                                        class="quick-amount-btn bg-white text-green-800 border border-black rounded-full px-6 py-3 font-semibold shadow-sm hover:bg-gray-50 hover:shadow-md transition-all duration-200 ease-in-out"
-                                        data-amount="custom">Lainnya</button>
+                    @if($targetAmount > 0)
+                        <div class="mt-6 pt-5 border-t border-gray-50">
+                            <div class="flex justify-between items-end mb-2">
+                                <div>
+                                    <span class="text-xs text-gray-500 font-medium uppercase tracking-wider">Terkumpul</span>
+                                    <div class="text-emerald-700 font-bold text-lg">Rp {{ number_format($collectedAmount, 0, ',', '.') }}</div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs text-gray-400">dari target</span>
+                                    <div class="text-gray-600 font-semibold text-sm">Rp {{ number_format($targetAmount, 0, ',', '.') }}</div>
                                 </div>
                             </div>
-
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">Rp.</span>
-                                <input type="text" id="donation_amount_display" inputmode="numeric"
-                                    oninput="formatAndSetValues(this)"
-                                    class="w-full border-2 border-gray-200 rounded-xl pl-12 pr-4 py-3 focus:border-emerald-500 focus:outline-none transition-colors"
-                                    placeholder="Masukkan nominal lain" required autocomplete="off">
+                            <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+                                <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-3 rounded-full transition-all duration-1000 ease-out" 
+                                     style="width: 0%" onload="this.style.width='{{ $percentage }}%'"></div>
+                                     <script>setTimeout(() => document.querySelector('.bg-gradient-to-r').style.width = '{{ $percentage }}%', 100);</script>
                             </div>
-                            <p class="text-sm text-gray-500 mt-1">Minimal donasi Rp 10.000</p>
+                            <div class="text-right mt-1">
+                                <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">{{ $percentage }}% Tercapai</span>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            {{-- Donation Form Card --}}
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-8 relative">
+                <form id="donation-form" class="space-y-8" autocomplete="off">
+                    @csrf
+                    
+                    {{-- Hidden inputs --}}
+                    <input type="hidden" name="program_category" value="{{ $programCategory }}" autocomplete="off">
+                    @if (isset($program))
+                        <input type="hidden" name="program_id" value="{{ $program->id }}" autocomplete="off">
+                    @endif
+                    <input type="hidden" name="zakat_type_id"
+                        value="{{ request()->query('type') === 'profesi' ? 3 : (request()->query('type') === 'harta' ? 1 : (request()->query('type') === 'mal' ? 2 : '')) }}"
+                        autocomplete="off">
+                    <input type="hidden" name="program_type_id" id="program_type_id"
+                        value="{{ request()->query('program_type_id') }}" autocomplete="off">
+                    <input type="hidden" name="zakat_amount" id="zakat_amount" value="0" autocomplete="off">
+                    <input type="hidden" name="paid_amount" id="paid_amount" value="0" autocomplete="off">
+                    <input type="hidden" name="donor_phone" id="donor_phone_full" autocomplete="off">
+                    <input type="hidden" name="payment_method" value="" autocomplete="off">
+
+                    {{-- Section: Nominal Donasi --}}
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mr-3 font-bold text-sm">1</div>
+                            <h3 class="text-gray-800 font-bold text-lg">Pilih Nominal Donasi</h3>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+                            @foreach([10000, 20000, 50000, 100000] as $amt)
+                            <button type="button"
+                                class="quick-amount-btn group relative flex flex-col items-center justify-center p-4 border-2 border-gray-100 rounded-xl hover:border-emerald-500 hover:bg-emerald-50 transition-all duration-200"
+                                data-amount="{{ $amt }}">
+                                <span class="text-emerald-600 font-bold text-lg group-[.selected]:scale-110 transition-transform">Rp {{ number_format($amt / 1000, 0) }}k</span>
+                                <span class="text-xs text-gray-400 mt-1 font-medium group-hover:text-emerald-600">Rp {{ number_format($amt, 0, ',', '.') }}</span>
+                                {{-- Checkmark Icon for Active State --}}
+                                <div class="absolute top-2 right-2 w-5 h-5 bg-emerald-500 rounded-full text-white text-xs flex items-center justify-center opacity-0 scale-0 transition-all duration-200 check-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </button>
+                            @endforeach
+                            
+                            {{-- Custom Amount Button --}}
+                            <button type="button"
+                                class="quick-amount-btn col-span-2 sm:col-span-1 group relative flex flex-col items-center justify-center p-4 border-2 border-gray-100 rounded-xl hover:border-emerald-500 hover:bg-emerald-50 transition-all duration-200"
+                                data-amount="custom">
+                                <span class="text-gray-600 font-bold text-lg group-hover:text-emerald-600">Nominal Lain</span>
+                                <span class="text-xs text-gray-400 mt-1 font-medium">Isi Manual</span>
+                                <div class="absolute top-2 right-2 w-5 h-5 bg-emerald-500 rounded-full text-white text-xs flex items-center justify-center opacity-0 scale-0 transition-all duration-200 check-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </button>
                         </div>
 
-                        <input type="hidden" name="payment_method" value="" autocomplete="off">
+                        {{-- Custom Input (Initially Hidden or Subtle) --}}
+                        <div class="relative transition-all duration-300 transform origin-top" id="custom-amount-container">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400 font-bold">Rp</span>
+                            <input type="text" id="donation_amount_display" inputmode="numeric"
+                                oninput="formatAndSetValues(this)"
+                                class="w-full border-2 border-gray-200 rounded-xl pl-12 pr-4 py-4 font-bold text-lg text-gray-800 placeholder-gray-300 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-50 focus:outline-none transition-all"
+                                placeholder="Masukkan nominal donasi (Min. Rp 10.000)" required autocomplete="off">
+                        </div>
+                    </div>
+
+                    {{-- Section: Data Donatur --}}
+                    <div class="pt-2">
+                        <div class="flex items-center mb-4">
+                            <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mr-3 font-bold text-sm">2</div>
+                            <h3 class="text-gray-800 font-bold text-lg">Data Hamba Allah</h3>
+                        </div>
 
                         {{-- Donor Information Fields --}}
-                        @if (!isset($loggedInMuzakki))
-                            {{-- Guest User Form Fields --}}
-                            <div>
-                                <label for="donor_name" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Nama Lengkap <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" id="donor_name" name="donor_name"
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-emerald-500 focus:outline-none transition-colors"
-                                    placeholder="Masukkan nama lengkap Anda" required autocomplete="off">
-                            </div>
-
-                            <div>
-                                <label for="phone_input" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Nomor HP/WhatsApp <span class="text-red-500">*</span>
-                                    <span class="text-xs text-gray-500 font-normal">(untuk notifikasi)</span>
-                                </label>
-                                <input type="tel" id="phone_input" placeholder="81234567890" required
-                                    autocomplete="off">
-                                <p class="text-xs text-gray-500 mt-1" id="phone_error"></p>
-                            </div>
-
-                            <div>
-                                <label for="donor_email" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Email <span class="text-red-500">*</span>
-                                </label>
-                                <input type="email" id="donor_email" name="donor_email"
-                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-emerald-500 focus:outline-none transition-colors"
-                                    placeholder="email@contoh.com" required autocomplete="off">
-                            </div>
-                        @else
-                            {{-- Logged in users --}}
-                            @if (!$loggedInMuzakki->phone)
-                                <div class="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-4 mb-4">
-                                    <div class="flex items-start gap-3">
-                                        <svg class="w-6 h-6 text-yellow-600 flex-shrink-0 mt-0.5" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                        </svg>
-                                        <div class="flex-1">
-                                            <h4 class="font-semibold text-yellow-800 mb-1">Nomor HP Belum Terdaftar</h4>
-                                            <p class="text-sm text-yellow-700 mb-2">
-                                                Untuk menerima notifikasi WhatsApp, silakan isi nomor HP di bawah atau
-                                                <a href="{{ route('muzakki.edit', $loggedInMuzakki->id) }}"
-                                                    class="underline font-semibold hover:text-yellow-900">
-                                                    lengkapi profile Anda
-                                                </a>
-                                            </p>
-                                        </div>
+                        <div class="space-y-4">
+                            @if (!isset($loggedInMuzakki))
+                                {{-- Guest User Form Fields --}}
+                                <div>
+                                    <label for="donor_name" class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
+                                    <input type="text" id="donor_name" name="donor_name"
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-emerald-500 focus:outline-none transition-colors"
+                                        placeholder="Nama Lengkap" required autocomplete="off">
+                                </div>
+    
+                                <div>
+                                    <label for="phone_input" class="block text-sm font-semibold text-gray-700 mb-2">Nomor WhatsApp <span class="text-red-500">*</span></label>
+                                    <input type="tel" id="phone_input" placeholder="81234567890" required autocomplete="off" class="w-full">
+                                    <p class="text-xs text-gray-500 mt-1" id="phone_error"></p>
+                                </div>
+    
+                                <div>
+                                    <label for="donor_email" class="block text-sm font-semibold text-gray-700 mb-2">Email <span class="text-red-500">*</span></label>
+                                    <input type="email" id="donor_email" name="donor_email"
+                                        class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-emerald-500 focus:outline-none transition-colors"
+                                        placeholder="email@contoh.com" required autocomplete="off">
+                                </div>
+                            @else
+                                {{-- Logged in Users --}}
+                                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-lg cursor-default">
+                                        {{ substr($loggedInMuzakki->name, 0, 1) }}
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm text-gray-500">Masuk sebagai:</p>
+                                        <p class="font-bold text-gray-800">{{ $loggedInMuzakki->name }}</p>
+                                        <p class="text-xs text-gray-500">{{ $loggedInMuzakki->email }}</p>
                                     </div>
                                 </div>
 
-                                <div>
-                                    <label for="phone_input_optional"
-                                        class="block text-sm font-semibold text-gray-700 mb-2">
-                                        Nomor HP/WhatsApp <span class="text-gray-500 text-xs font-normal">(opsional)</span>
-                                    </label>
-                                    <input type="tel" id="phone_input_optional" placeholder="81234567890 (opsional)"
-                                        autocomplete="off">
-                                    <p class="text-xs text-gray-500 mt-1">
-                                        Lewati jika tidak ingin notifikasi WhatsApp (notifikasi tetap dikirim via email)
-                                    </p>
-                                </div>
-
-                                <input type="hidden" name="donor_name" value="{{ $loggedInMuzakki->name }}"
-                                    autocomplete="off">
-                                <input type="hidden" name="donor_email" value="{{ $loggedInMuzakki->email }}"
-                                    autocomplete="off">
-                            @else
-                                <input type="hidden" name="donor_name" value="{{ $loggedInMuzakki->name }}"
-                                    autocomplete="off">
-                                <input type="hidden" id="donor_phone_hidden" value="{{ $loggedInMuzakki->phone }}"
-                                    autocomplete="off">
-                                <input type="hidden" name="donor_email" value="{{ $loggedInMuzakki->email }}"
-                                    autocomplete="off">
+                                {{-- Optional Phone logic for logged in users --}}
+                                @if (!$loggedInMuzakki->phone)
+                                    <div class="mt-4">
+                                        <label for="phone_input_optional" class="block text-sm font-semibold text-gray-700 mb-2">
+                                            Nomor WhatsApp <span class="text-gray-500 text-xs font-normal">(Kami sarankan diisi)</span>
+                                        </label>
+                                        <input type="tel" id="phone_input_optional" placeholder="81234567890" autocomplete="off">
+                                    </div>
+                                    <input type="hidden" name="donor_name" value="{{ $loggedInMuzakki->name }}" autocomplete="off">
+                                    <input type="hidden" name="donor_email" value="{{ $loggedInMuzakki->email }}" autocomplete="off">
+                                @else
+                                    <input type="hidden" name="donor_name" value="{{ $loggedInMuzakki->name }}" autocomplete="off">
+                                    <input type="hidden" id="donor_phone_hidden" value="{{ $loggedInMuzakki->phone }}" autocomplete="off">
+                                    <input type="hidden" name="donor_email" value="{{ $loggedInMuzakki->email }}" autocomplete="off">
+                                @endif
                             @endif
-                        @endif
 
-                        {{-- Message/Doa field --}}
-                        <div>
-                            <label for="notes" class="block text-sm font-semibold text-gray-700 mb-2">Tulis pesan atau
-                                doa</label>
-                            <textarea name="notes" rows="4"
-                                class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-emerald-500 focus:outline-none transition-colors"
-                                placeholder="Tulis pesan atau doa Anda di sini..." autocomplete="off"></textarea>
+                            {{-- Message/Doa --}}
+                            <div class="pt-2">
+                                <label for="notes" class="block text-sm font-semibold text-gray-700 mb-2">Pesan / Doa <span class="font-normal text-gray-400">(Opsional)</span></label>
+                                <textarea name="notes" rows="3"
+                                    class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-emerald-500 focus:outline-none transition-colors"
+                                    placeholder="Tulis doa untuk Anda dan Keluarga..." autocomplete="off"></textarea>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="pt-4">
-                            <button type="submit"
-                                class="w-full bg-yellow-500 text-white px-8 py-4 rounded-xl hover:bg-yellow-600 font-bold text-lg">
-                                SELANJUTNYA
-                            </button>
+                    {{-- Desktop Submit Button --}}
+                    <div class="pt-6 border-t border-gray-100 hidden sm:block">
+                        <button type="submit"
+                            class="w-full bg-yellow-500 text-white px-8 py-4 rounded-xl hover:bg-yellow-600 font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all flex items-center justify-center group">
+                            <span>Lanjut Pembayaran</span>
+                            <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                        
+                        {{-- Trust Signals --}}
+                        <div class="flex items-center justify-center gap-6 mt-6">
+                             <div class="flex items-center gap-2 text-gray-400">
+                                <i class="fas fa-lock text-emerald-500"></i>
+                                <span class="text-xs font-medium">Pembayaran Aman</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-gray-400">
+                                <i class="fas fa-check-circle text-blue-500"></i>
+                                <span class="text-xs font-medium">Terverifikasi</span>
+                            </div>
                         </div>
-                    </form>
-                </div>
-            </div>
+                    </div>
+                        {{-- Doa Ticker (Social Proof) --}}
+                        <div class="mt-8 bg-gray-50 rounded-xl p-5 border border-gray-100">
+                             <div class="flex items-center gap-2 mb-3">
+                                <i class="fas fa-praying-hands text-emerald-500"></i>
+                                <h4 class="font-bold text-gray-700 text-sm">Doa-doa Orang Baik</h4>
+                            </div>
+                            <div class="relative h-32 overflow-hidden mx-auto">
+                                <div class="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-gray-50 to-transparent z-10"></div>
+                                <div class="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-gray-50 to-transparent z-10"></div>
+                                
+                                <div class="animate-marquee-vertical space-y-3">
+                                    {{-- Mock Data - In real app, loop from DB --}}
+                                    @foreach([
+                                        ["Hamba Allah", "Semoga berkah untuk semua penerima."],
+                                        ["Rizky", "Bismillah, semoga dilancarkan rezekinya."],
+                                        ["Aisyah", "Ya Allah, sehatkanlah orang tua saya."],
+                                        ["Abdullah", "Semoga menjadi amal jariyah."],
+                                        ["Hamba Allah", "Untuk kesembuhan keluarga."],
+                                        ["Siti", "Semoga bermanfaat bagi umat."]
+                                    ] as $doa)
+                                    <div class="text-sm bg-white p-2 rounded-lg shadow-sm border border-gray-100">
+                                        <span class="font-bold text-gray-800 mr-1">{{ $doa[0] }}:</span>
+                                        <span class="text-gray-600 italic">"{{ $doa[1] }}"</span>
+                                    </div>
+                                    @endforeach
+                                    {{-- Duplicate for smooth loop --}}
+                                    @foreach([
+                                        ["Hamba Allah", "Semoga berkah untuk semua penerima."],
+                                        ["Rizky", "Bismillah, semoga dilancarkan rezekinya."],
+                                        ["Aisyah", "Ya Allah, sehatkanlah orang tua saya."],
+                                        ["Abdullah", "Semoga menjadi amal jariyah."],
+                                        ["Hamba Allah", "Untuk kesembuhan keluarga."],
+                                        ["Siti", "Semoga bermanfaat bagi umat."]
+                                    ] as $doa)
+                                    <div class="text-sm bg-white p-2 rounded-lg shadow-sm border border-gray-100">
+                                        <span class="font-bold text-gray-800 mr-1">{{ $doa[0] }}:</span>
+                                        <span class="text-gray-600 italic">"{{ $doa[1] }}"</span>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div> {{-- End Card --}}
+        </div> {{-- End Container --}}
+    </div>
+    
+    <style>
+    @keyframes marquee-vertical {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-50%); }
+    }
+    .animate-marquee-vertical {
+        animation: marquee-vertical 20s linear infinite;
+    }
+    .animate-marquee-vertical:hover {
+        animation-play-state: paused;
+    }
+    </style>
+
+    {{-- Mobile Sticky Bottom Bar --}}
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] sm:hidden z-50">
+        <div class="flex items-center gap-3">
+             <div class="flex-1">
+                 <p class="text-xs text-gray-500 mb-0.5">Total Donasi</p>
+                 <p class="font-bold text-emerald-600 text-lg leading-none" id="mobile-amount-display">Rp 0</p>
+             </div>
+             <button type="button" onclick="document.querySelector('#donation-form').requestSubmit()"
+                class="bg-yellow-500 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:bg-yellow-600 active:scale-95 transition-all">
+                Lanjut Bayar
+            </button>
         </div>
     </div>
 @endsection
@@ -423,9 +539,22 @@
             const numericValue = parseInt(raw) || 0;
 
             document.getElementById('paid_amount').value = numericValue;
+            
+            // Update Mobile Display
+            document.getElementById('mobile-amount-display').textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(numericValue);
+
             if (raw) {
                 el.value = new Intl.NumberFormat('id-ID').format(raw);
-                document.querySelectorAll('.quick-amount-btn').forEach(b => b.classList.remove('selected'));
+                // Helper to remove selected state from all
+                document.querySelectorAll('.quick-amount-btn').forEach(b => {
+                    b.classList.remove('border-emerald-500', 'bg-emerald-50', 'selected');
+                    b.classList.add('border-gray-100');
+                    const icon = b.querySelector('.check-icon');
+                    if(icon) {
+                        icon.classList.remove('opacity-100', 'scale-100');
+                        icon.classList.add('opacity-0', 'scale-0');
+                    }
+                });
             } else {
                 el.value = '';
             }
@@ -434,15 +563,38 @@
         document.querySelectorAll('.quick-amount-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const amount = this.dataset.amount;
+                
+                // Reset all buttons
+                document.querySelectorAll('.quick-amount-btn').forEach(b => {
+                    b.classList.remove('border-emerald-500', 'bg-emerald-50', 'selected');
+                    b.classList.add('border-gray-100');
+                    const icon = b.querySelector('.check-icon');
+                    if(icon) {
+                        icon.classList.remove('opacity-100', 'scale-100');
+                        icon.classList.add('opacity-0', 'scale-0');
+                    }
+                });
+
+                // Set Active State
+                this.classList.remove('border-gray-100');
+                this.classList.add('border-emerald-500', 'bg-emerald-50', 'selected');
+                const icon = this.querySelector('.check-icon');
+                if(icon) {
+                    icon.classList.remove('opacity-0', 'scale-0');
+                    icon.classList.add('opacity-100', 'scale-100');
+                }
+
                 if (amount === 'custom') {
                     document.getElementById('donation_amount_display').focus();
+                    // Don't clear value if it's already there
                     return;
                 }
-                document.getElementById('donation_amount_display').value = new Intl.NumberFormat('id-ID')
-                    .format(amount);
+                
+                document.getElementById('donation_amount_display').value = new Intl.NumberFormat('id-ID').format(amount);
                 document.getElementById('paid_amount').value = amount;
-                document.querySelectorAll('.quick-amount-btn').forEach(b => b.classList.remove('selected'));
-                this.classList.add('selected');
+                
+                // Update Mobile Display
+                document.getElementById('mobile-amount-display').textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(amount);
             });
         });
 

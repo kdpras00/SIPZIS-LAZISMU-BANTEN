@@ -29,102 +29,115 @@
                         </span>
                     @endif
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" style="min-width: 300px;">
-                    <li class="dropdown-header fw-bold">Notifikasi</li>
-                    @php
-                        $notifications = collect();
-                        if ($user->role === 'muzakki' && $user->muzakki) {
-                            $notifications = $user->muzakki->notifications()->latest()->limit(5)->get();
-                        } else {
-                            $notifications = $user->notifications()->latest()->limit(5)->get();
-                            // For admin, also include pending mustahik as a notification
-                            if ($pendingMustahik > 0) {
-                                $mustahikNotification = new \stdClass();
-                                $mustahikNotification->id = 'mustahik_pending';
-                                $mustahikNotification->title = 'Mustahik Menunggu Verifikasi';
-                                $mustahikNotification->message = $pendingMustahik . ' mustahik menunggu verifikasi';
-                                $mustahikNotification->type = 'account';
-                                $mustahikNotification->created_at = now();
-                                $mustahikNotification->is_read = false;
-                                $notifications->prepend($mustahikNotification);
-                            }
-                        }
-                    @endphp
+                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" style="min-width: 320px; max-width: 350px;">
+                    <li class="dropdown-header fw-bold d-flex justify-content-between align-items-center border-bottom py-2">
+                        <span>Notifikasi</span>
+                        <form action="{{ route('notifications.markAsRead') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-link btn-sm p-0 text-decoration-none" style="font-size: 0.8rem;">
+                                Tandai semua dibaca
+                            </button>
+                        </form>
+                    </li>
+                    
+                    <li>
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            <ul class="list-unstyled mb-0">
+                                @php
+                                    $notifications = collect();
+                                    $limit = 10; // Menampilkan 10 notifikasi terbaru (bisa di-scroll)
+                                    
+                                    if ($user->role === 'muzakki' && $user->muzakki) {
+                                        $notifications = $user->muzakki->notifications()->latest()->limit($limit)->get();
+                                    } else {
+                                        $notifications = $user->notifications()->latest()->limit($limit)->get();
+                                        // For admin, also include pending mustahik as a notification
+                                        if ($pendingMustahik > 0) {
+                                            $mustahikNotification = new \stdClass();
+                                            $mustahikNotification->id = 'mustahik_pending';
+                                            $mustahikNotification->title = 'Mustahik Menunggu Verifikasi';
+                                            $mustahikNotification->message = $pendingMustahik . ' mustahik menunggu verifikasi';
+                                            $mustahikNotification->type = 'account';
+                                            $mustahikNotification->created_at = now();
+                                            $mustahikNotification->is_read = false;
+                                            $notifications->prepend($mustahikNotification);
+                                        }
+                                    }
+                                @endphp
 
-                    @if ($notifications->count() > 0)
-                        @foreach ($notifications as $notification)
-                            @if (isset($notification->id) && $notification->id === 'mustahik_pending')
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-start py-2"
-                                        href="{{ route('mustahik.index', ['status' => 'pending']) }}">
-                                        <div class="me-2 mt-1">
-                                            <i class="bi bi-person-exclamation-fill text-warning"></i>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <div class="d-flex justify-content-between">
-                                                <strong>{{ $notification->title }}</strong>
-                                            </div>
-                                            <small class="text-muted">{{ $notification->message }}</small>
-                                            <div class="small text-muted">
-                                                {{ $notification->created_at->diffForHumans() }}</div>
-                                        </div>
-                                    </a>
-                                </li>
-                            @else
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-start py-2" href="#">
-                                        <div class="me-2 mt-1">
-                                            @switch($notification->type)
-                                                @case('payment')
-                                                    <i class="bi bi-credit-card text-success"></i>
-                                                @break
-
-                                                @case('distribution')
-                                                    <i class="bi bi-box-seam text-primary"></i>
-                                                @break
-
-                                                @case('program')
-                                                    <i class="bi bi-calendar-event text-purple"></i>
-                                                @break
-
-                                                @case('account')
-                                                    <i class="bi bi-person-circle text-warning"></i>
-                                                @break
-
-                                                @case('reminder')
-                                                    <i class="bi bi-alarm text-orange"></i>
-                                                @break
-
-                                                @default
-                                                    <i class="bi bi-bell text-secondary"></i>
-                                            @endswitch
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <div class="d-flex justify-content-between">
-                                                <strong>{{ $notification->title }}</strong>
-                                                @if (!$notification->is_read)
-                                                    <span class="badge bg-danger rounded-pill">baru</span>
-                                                @endif
-                                            </div>
-                                            <small class="text-muted">{{ $notification->message }}</small>
-                                            <div class="small text-muted">
-                                                {{ $notification->created_at->diffForHumans() }}</div>
-                                        </div>
-                                    </a>
-                                </li>
-                            @endif
-                        @endforeach
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item text-center"
-                                href="{{ $user->role === 'muzakki' ? route('notifications.index') : '#' }}">Lihat
-                                semua notifikasi</a>
-                        </li>
-                    @else
-                        <li><span class="dropdown-item text-muted text-center">Tidak ada notifikasi</span></li>
-                    @endif
+                                @if ($notifications->count() > 0)
+                                    @foreach ($notifications as $notification)
+                                        @if (isset($notification->id) && $notification->id === 'mustahik_pending')
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-start py-2 border-bottom"
+                                                    href="{{ route('mustahik.index', ['status' => 'pending']) }}" style="white-space: normal;">
+                                                    <div class="me-2 mt-1">
+                                                        <i class="bi bi-person-exclamation-fill text-warning"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="d-flex justify-content-between">
+                                                            <strong>{{ $notification->title }}</strong>
+                                                        </div>
+                                                        <small class="text-muted d-block text-wrap">{{ $notification->message }}</small>
+                                                        <div class="small text-muted">
+                                                            {{ $notification->created_at->diffForHumans() }}
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @else
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-start py-2 border-bottom" href="#" style="white-space: normal;">
+                                                    <div class="me-2 mt-1">
+                                                        @switch($notification->type)
+                                                            @case('payment')
+                                                                <i class="bi bi-credit-card text-success"></i>
+                                                            @break
+                                                            @case('distribution')
+                                                                <i class="bi bi-box-seam text-primary"></i>
+                                                            @break
+                                                            @case('program')
+                                                                <i class="bi bi-calendar-event text-purple"></i>
+                                                            @break
+                                                            @case('account')
+                                                                <i class="bi bi-person-circle text-warning"></i>
+                                                            @break
+                                                            @case('reminder')
+                                                                <i class="bi bi-alarm text-orange"></i>
+                                                            @break
+                                                            @default
+                                                                <i class="bi bi-bell text-secondary"></i>
+                                                        @endswitch
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="d-flex justify-content-between">
+                                                            <strong>{{ $notification->title }}</strong>
+                                                            @if (!$notification->is_read)
+                                                                <span class="badge bg-danger rounded-pill">baru</span>
+                                                            @endif
+                                                        </div>
+                                                        <small class="text-muted d-block text-wrap">{{ $notification->message }}</small>
+                                                        <div class="small text-muted">
+                                                            {{ $notification->created_at->diffForHumans() }}
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <li><span class="dropdown-item text-muted text-center py-3">Tidak ada notifikasi</span></li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <a class="dropdown-item text-center py-2 fw-bold text-primary"
+                            href="{{ route('notifications.index') }}" style="border-top: 1px solid #e9ecef;">
+                            Lihat semua notifikasi
+                        </a>
+                    </li>
                 </ul>
             </div>
 

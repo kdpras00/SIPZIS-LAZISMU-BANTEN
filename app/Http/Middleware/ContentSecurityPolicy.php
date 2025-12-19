@@ -25,7 +25,7 @@ class ContentSecurityPolicy
         // Tentukan nilai COOP khusus halaman login (butuh akses pop-up)
         $coopValue = 'unsafe-none';
         if ($request->is('login') || $request->is('login/*')) {
-            $coopValue = 'same-origin-allow-popups';
+            $coopValue = 'unsafe-none';
         }
 
         // Tambahkan header CSP

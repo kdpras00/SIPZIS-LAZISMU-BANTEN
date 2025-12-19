@@ -1,194 +1,192 @@
 @extends('layouts.main')
 
+@section('title', $news->title . ' - SIPZIS')
+
 @section('navbar')
-@include('partials.navbarHome')
+    @include('partials.navbarHome')
 @endsection
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-4xl mx-auto">
-        <a href="{{ route('berita') }}" class="inline-flex items-center text-green-600 hover:text-green-800 mb-6 transition-colors">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Kembali ke Berita
-        </a>
-
-        <article class="bg-white rounded-xl shadow-md overflow-hidden">
-            {{-- Header with Image --}}
-            <header class="relative">
-                @if($news->image)
-                @php
-                // Jika link sudah URL penuh (misal dari CDN), langsung pakai
-                $imageUrl = Str::startsWith($news->image, ['http://', 'https://'])
-                ? $news->image
-                : Storage::url($news->image);
-                @endphp
-                <img src="{{ $imageUrl }}" alt="{{ $news->title }}" class="w-full h-96 object-cover">
-                @else
-                <div class="w-full h-96 bg-gray-200 flex items-center justify-center">
-                    <i class="fas fa-image text-gray-400 text-6xl"></i>
-                </div>
-                @endif
-
-
-                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
-                    <div class="flex items-center text-white mb-3">
-                        <span class="text-sm">{{ $news->formatted_date }}</span>
-                    </div>
-                    <h1 class="text-3xl md:text-4xl font-bold text-white leading-tight">{{ $news->title }}</h1>
-                </div>
-            </header>
-
-            {{-- Author Info --}}
-            <div class="px-8 pt-8 pb-6 border-b border-gray-200">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mr-4 shadow-sm">
-                        <i class="fas fa-user text-white"></i>
-                    </div>
-                    <div>
-                        <p class="font-semibold text-gray-900">{{ $news->author->name ?? 'Admin' }}</p>
-                        <p class="text-sm text-gray-500">Penulis</p>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Content --}}
-            <div class="px-10 md:px-16 lg:px-20 py-12">
-                <div class="article-content text-gray-700 text-base leading-loose text-justify">
-                    @foreach(preg_split('/\r\n|\r|\n/', $news->content) as $paragraph)
-                    @if(trim($paragraph) !== '')
-                    <p>{{ $paragraph }}</p>
-                    @endif
-                    @endforeach
-                </div>
-            </div>
-
-        </article>
-
-        {{-- Navigation --}}
-        <div class="mt-8 flex justify-between items-center">
-            <a href="{{ route('berita') }}" class="inline-flex items-center px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg transition-colors shadow-sm">
-                <i class="fas fa-arrow-left mr-2"></i>
-                Berita Lainnya
+<div class="min-h-screen bg-gray-50 pb-16 pt-8">
+    
+    <div class="container mx-auto px-4 max-w-7xl">
+        
+        <!-- Breadcrumb -->
+        <div class="mb-6">
+            <a href="{{ route('berita') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-green-600 transition-colors">
+                <i class="bi bi-arrow-left mr-2"></i>
+                Kembali ke Berita
             </a>
+        </div>
 
-            {{-- Share Buttons (Optional) --}}
-            <div class="flex gap-3">
-                <a 
-                    href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::url()) }}" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    class="w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center transition-colors shadow-sm"
-                    title="Share to Facebook"
-                >
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a 
-                    href="https://api.whatsapp.com/send?text={{ urlencode($news->title . ' ' . Request::url()) }}" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    class="w-10 h-10 rounded-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center transition-colors shadow-sm"
-                    title="Share to WhatsApp"
-                >
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-                <a 
-                    href="https://twitter.com/intent/tweet?url={{ urlencode(Request::url()) }}&text={{ urlencode($news->title) }}" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    class="w-10 h-10 rounded-full bg-sky-500 hover:bg-sky-600 text-white flex items-center justify-center transition-colors shadow-sm"
-                    title="Share to Twitter"
-                >
-                    <i class="fab fa-twitter"></i>
-                </a>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            
+            <!-- LEFT COLUMN: Main Content (2/3) -->
+            <div class="lg:col-span-2">
+                
+                <!-- Article Header -->
+                <div class="mb-8">
+                    <span class="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold uppercase tracking-wider mb-4">
+                        Berita
+                    </span>
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
+                        {{ $news->title }}
+                    </h1>
+                    
+                    <div class="flex items-center text-sm text-gray-500 space-x-4 border-b border-gray-200 pb-6">
+                        <div class="flex items-center">
+                            @php
+                                $authorInitial = substr($news->author->name ?? 'A', 0, 1);
+                            @endphp
+                            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-600 mr-2">
+                                {{ $authorInitial }}
+                            </div>
+                            <span class="font-medium text-gray-900">{{ $news->author->name ?? 'Admin Lazismu' }}</span>
+                        </div>
+                        <span class="text-gray-300">|</span>
+                        <span class="flex items-center">
+                            <i class="bi bi-calendar3 mr-2"></i>
+                            {{ $news->formatted_date }}
+                        </span>
+                        <span class="text-gray-300">|</span>
+                        <span class="flex items-center">
+                            <i class="bi bi-clock mr-2"></i>
+                            {{ ceil(str_word_count(strip_tags($news->content)) / 200) }} menit baca
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Featured Image -->
+                <div class="bg-gray-100 rounded-2xl overflow-hidden mb-8 shadow-sm">
+                    @if($news->image)
+                        @php
+                            $imageUrl = Str::startsWith($news->image, ['http://', 'https://']) ? $news->image : Storage::url($news->image);
+                        @endphp
+                        <img src="{{ $imageUrl }}" alt="{{ $news->title }}" class="w-full h-auto object-cover">
+                    @else
+                        <div class="w-full h-96 flex items-center justify-center bg-gray-200 text-gray-400">
+                            <i class="bi bi-image text-6xl"></i>
+                        </div>
+                    @endif
+                    <div class="px-4 py-2 bg-gray-50 text-xs text-gray-500 italic text-center border-t border-gray-100">
+                        {{ $news->title }}
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                    <div class="article-content text-gray-800 leading-loose text-lg text-justify font-light font-sans">
+                        @foreach(preg_split('/\r\n|\r|\n/', $news->content) as $paragraph)
+                            @if(trim($paragraph) !== '')
+                                <p class="mb-6">{{ $paragraph }}</p>
+                            @endif
+                        @endforeach
+                    </div>
+                    
+                    <!-- Tags / Share Bottom -->
+                    <div class="mt-10 pt-8 border-t border-gray-100">
+                        <h4 class="text-sm font-bold text-gray-900 mb-4">Bagikan Artikel Ini:</h4>
+                        <div class="flex gap-3">
+                            <button onclick="window.open('https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::url()) }}', '_blank')" class="flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700 transition">
+                                <i class="bi bi-facebook mr-2"></i> Facebook
+                            </button>
+                            <button onclick="window.open('https://api.whatsapp.com/send?text={{ urlencode($news->title . ' ' . Request::url()) }}', '_blank')" class="flex items-center px-4 py-2 rounded-lg bg-green-500 text-white text-sm hover:bg-green-600 transition">
+                                <i class="bi bi-whatsapp mr-2"></i> WhatsApp
+                            </button>
+                            <button onclick="window.open('https://twitter.com/intent/tweet?url={{ urlencode(Request::url()) }}&text={{ urlencode($news->title) }}', '_blank')" class="flex items-center px-4 py-2 rounded-lg bg-black text-white text-sm hover:bg-gray-800 transition">
+                                <i class="bi bi-twitter-x mr-2"></i> Twitter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
+            <!-- RIGHT COLUMN: Sidebar (1/3) -->
+            <div class="lg:col-span-1">
+                <div class="sticky top-24 space-y-8">
+                    
+                    <!-- Search Widget -->
+                    <!-- <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                         Search logic here if needed 
+                    </div> -->
+
+                    <!-- Recent News Widget -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-900 mb-6 flex items-center">
+                            <span class="w-1 h-6 bg-green-600 rounded-full mr-3"></span>
+                            Berita Terbaru
+                        </h3>
+                        
+                        <div class="space-y-6">
+                            @php
+                                $sidebarNews = \App\Models\News::where('id', '!=', $news->id)
+                                                ->where('is_published', true)
+                                                ->latest()
+                                                ->take(4)
+                                                ->get();
+                            @endphp
+
+                            @forelse($sidebarNews as $item)
+                                <a href="{{ route('news.show', $item->slug) }}" class="group flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-gray-100 relative">
+                                        @if($item->image)
+                                            @php
+                                                $sImg = Str::startsWith($item->image, ['http','https']) ? $item->image : Storage::url($item->image);
+                                            @endphp
+                                            <img src="{{ $sImg }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                                        @else
+                                            <div class="w-full h-full flex items-center justify-center text-gray-300">
+                                                <i class="bi bi-image"></i>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-semibold text-gray-900 group-hover:text-green-600 transition-colors line-clamp-2 leading-snug mb-1">
+                                            {{ $item->title }}
+                                        </h4>
+                                        <span class="text-xs text-gray-400">
+                                            {{ $item->created_at->diffForHumans() }}
+                                        </span>
+                                    </div>
+                                </a>
+                            @empty
+                                <div class="text-center text-gray-500 text-sm py-4">
+                                    Belum ada berita lainnya.
+                                </div>
+                            @endforelse
+                        </div>
+                        
+                        <a href="{{ route('berita') }}" class="block mt-6 text-center text-sm font-semibold text-green-600 hover:text-green-700 transition-colors">
+                            Lihat Semua Berita <i class="bi bi-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+
+                    <!-- CTA Widget -->
+                    <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-2xl p-6 text-white text-center shadow-lg relative overflow-hidden">
+                        <div class="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
+                        <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
+                        
+                        <h3 class="text-xl font-bold mb-2 relative z-10">Dukung Program Kebaikan</h3>
+                        <p class="text-green-100 text-sm mb-6 relative z-10">Salurkan donasi Anda untuk membantu mereka yang membutuhkan.</p>
+                        
+                        <a href="{{ route('program') }}" class="inline-block w-full py-3 bg-white text-green-700 font-bold rounded-xl shadow-md hover:bg-green-50 transition-colors relative z-10">
+                            Donasi Sekarang
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 
-{{-- Custom Styles for Better Typography --}}
 <style>
-    .article-content {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 1.05rem;
-        line-height: 1.85;
-        color: #2d2d2d;
-        text-align: justify;
-        text-justify: inter-word;
-        word-spacing: 0.05em;
-    }
-
-    /* Paragraf umum */
+    /* Typography Overrides */
     .article-content p {
-        margin-bottom: 1rem;
-        line-height: 1.9;
-        text-align: justify;
-        text-indent: 2rem;
-        color: #374151;
-    }
-
-    /* Hanya paragraf pertama yang tanpa inden */
-    .article-content p:first-child {
-        text-indent: 0;
-    }
-
-    /* Hilangkan inden jika ada jeda topik (setelah elemen lain) */
-    .article-content h2+p,
-    .article-content h3+p,
-    .article-content blockquote+p,
-    .article-content ul+p,
-    .article-content ol+p {
-        text-indent: 0;
-    }
-
-    /* Heading */
-    .article-content h2,
-    .article-content h3,
-    .article-content h4,
-    .article-content h5,
-    .article-content h6 {
-        text-align: left !important;
-        text-indent: 0;
-        margin-top: 2.5rem;
-        margin-bottom: 1rem;
-        color: #111827;
-        font-weight: 700;
-        line-height: 1.3;
-    }
-
-    /* Penebalan & penekanan teks */
-    .article-content strong {
-        font-weight: 600;
-        color: #1f2937;
-    }
-
-    .article-content em {
-        font-style: italic;
-    }
-
-    /* Daftar (list) */
-    .article-content ul,
-    .article-content ol {
-        margin-left: 2.5rem;
         margin-bottom: 1.5rem;
-        text-indent: 0;
-    }
-
-    .article-content li {
-        margin-bottom: 0.75rem;
-        line-height: 1.8;
-        text-align: justify !important;
-    }
-
-    /* Kutipan (blockquote) */
-    .article-content blockquote {
-        border-left: 4px solid #10b981;
-        padding-left: 1.5rem;
-        margin: 2rem 0;
-        font-style: italic;
-        color: #4b5563;
-        background-color: #f9fafb;
-        text-align: justify !important;
+        /* text-align: justify; is handled by class="text-justify" in HTML, but redundancy is fine or remove if mapped */
     }
 </style>
-
 @endsection

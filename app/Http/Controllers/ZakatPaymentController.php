@@ -60,6 +60,18 @@ class ZakatPaymentController extends Controller
             \Midtrans\Config::$isProduction = config('midtrans.is_production', false);
             \Midtrans\Config::$isSanitized = true;
             \Midtrans\Config::$is3ds = true;
+            
+            // Hardcode curl options to force disable SSL verification
+            \Midtrans\Config::$curlOptions = [
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_HTTPHEADER => [] // Fix for Undefined array key error in ApiRequestor.php
+            ];
+
+            Log::info('Midtrans Config Set', [
+                'serverKey' => substr(\Midtrans\Config::$serverKey, 0, 5) . '...',
+                'curlOptions' => \Midtrans\Config::$curlOptions
+            ]);
 
             // Parameter dasar
             // Add timestamp and random string to make order_id unique for retry attempts
@@ -71,10 +83,18 @@ class ZakatPaymentController extends Controller
                     'gross_amount' => (int) $payment->paid_amount, // Pastikan integer
                 ],
                 'customer_details' => [
-                    'first_name' => $payment->muzakki->name,
-                    'email' => $payment->muzakki->email,
+                    'first_name' => $payment->muzakki ? $payment->muzakki->name : 'Guest',
+                    'email' => $payment->muzakki ? $payment->muzakki->email : 'guest@example.com', // Fallback if muzakki is missing
                 ],
             ];
+
+            // Validate gross_amount
+            if ($params['transaction_details']['gross_amount'] <= 0) {
+                 return response()->json([
+                    'success' => false,
+                    'message' => 'Jumlah pembayaran tidak valid.'
+                ], 400);
+            }
 
             // Mapping metode ke Midtrans channel dan enabled_payments
             // Handle both the old format (midtrans-*) and new format (direct method names)
@@ -264,6 +284,7 @@ class ZakatPaymentController extends Controller
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = true;
         Config::$is3ds = true;
+        Config::$curlOptions = config('midtrans.curl_options', []);
 
         // If payment already has a snap_token, return it
         if (!empty($payment->snap_token)) {
@@ -537,6 +558,7 @@ class ZakatPaymentController extends Controller
         Config::$isProduction = config('midtrans.is_production');
         Config::$isSanitized = config('midtrans.is_sanitized');
         Config::$is3ds = config('midtrans.is_3ds');
+        Config::$curlOptions = config('midtrans.curl_options', []);
 
         // Log the configuration for debugging
         Log::info('Midtrans Configuration:', [
@@ -1600,6 +1622,13 @@ class ZakatPaymentController extends Controller
         // Pastikan konfigurasi Midtrans
         \Midtrans\Config::$serverKey = config('midtrans.server_key');
         \Midtrans\Config::$isProduction = config('midtrans.is_production');
+        
+        // Hardcode curl options to force disable SSL verification (Fix for local environment)
+        \Midtrans\Config::$curlOptions = [
+            CURLOPT_SSL_VERIFYHOST => 0,
+            CURLOPT_SSL_VERIFYPEER => 0,
+            CURLOPT_HTTPHEADER => []
+        ];
 
         try {
             // Ambil status dari Midtrans menggunakan midtrans_order_id if available, otherwise payment_code
@@ -1946,28 +1975,53 @@ class ZakatPaymentController extends Controller
 
     public function notifications(Request $request)
     {
-        // Pastikan user adalah muzakki
-        if (!Auth::check() || Auth::user()->role !== 'muzakki') {
+        $user = Auth::user();
+        if (!$user) {
             abort(403, 'Unauthorized access');
         }
 
-        $muzakki = Auth::user()->muzakki;
-        if (!$muzakki) {
-            abort(404, 'Muzakki profile not found');
-        }
-
         $filter = $request->get('filter', 'all');
+        $notifications = collect();
+        $notificationTypes = collect();
+        $layout = 'layouts.main'; // Default layout
 
-        // 🟢 1️⃣ Tandai dulu semua notifikasi belum dibaca jadi dibaca
-        $muzakki->notifications()
-            ->where('is_read', false)
-            ->update([
-                'is_read' => true,
-                'read_at' => now(),
-            ]);
+        if ($user->role === 'muzakki') {
+            $muzakki = $user->muzakki;
+            if (!$muzakki) {
+                abort(404, 'Muzakki profile not found');
+            }
 
-        // 🟢 2️⃣ Setelah itu baru ambil notifikasi untuk ditampilkan
-        $query = $muzakki->notifications()->latest('created_at');
+            // 🟢 1️⃣ Tandai dulu semua notifikasi belum dibaca jadi dibaca
+            $muzakki->notifications()
+                ->where('is_read', false)
+                ->update([
+                    'is_read' => true,
+                    'read_at' => now(),
+                ]);
+
+            // 🟢 2️⃣ Ambil notifikasi
+            $query = $muzakki->notifications()->latest('created_at');
+            
+            // 🟢 3️⃣ Hitung jumlah notifikasi per tipe
+            $notificationTypes = Notification::getTypesWithCounts(null, $muzakki->id);
+            
+            $layout = 'layouts.main';
+        } else {
+            // Logic for Admin (and other roles)
+            $user->notifications()
+                ->where('is_read', false)
+                ->update([
+                    'is_read' => true,
+                    'read_at' => now(),
+                ]);
+
+            $query = $user->notifications()->latest('created_at');
+            
+            $notificationTypes = Notification::getTypesWithCounts($user->id, null);
+            
+            // Use admin layout
+            $layout = 'layouts.app'; 
+        }
 
         if ($filter !== 'all') {
             $query->byType($filter);
@@ -1975,19 +2029,21 @@ class ZakatPaymentController extends Controller
 
         $notifications = $query->paginate(10)->appends(['filter' => $filter]);
 
-        // 🟢 3️⃣ Hitung jumlah notifikasi per tipe
-        $notificationTypes = Notification::getTypesWithCounts(null, $muzakki->id);
-
-        return view('muzakki.notifications', compact('notifications', 'notificationTypes', 'filter'));
+        return view('muzakki.notifications', compact('notifications', 'notificationTypes', 'filter', 'layout'));
     }
 
 
     public function markNotificationsAsRead()
     {
-        $muzakki = Auth::user()->muzakki;
+        $user = Auth::user();
 
-        if ($muzakki) {
-            $muzakki->notifications()
+        if ($user->role === 'muzakki' && $user->muzakki) {
+            $user->muzakki->notifications()
+                ->where('is_read', false)
+                ->update(['is_read' => true, 'read_at' => now()]);
+        } else {
+            // For admin or other roles using the User model's notifications
+            $user->notifications()
                 ->where('is_read', false)
                 ->update(['is_read' => true, 'read_at' => now()]);
         }
