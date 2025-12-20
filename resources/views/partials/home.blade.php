@@ -543,7 +543,7 @@
             </div>
 
             <div class="text-center mt-10">
-                <a href="{{ route('news.all') }}"
+                <a href="{{ route('berita') }}"
                     class="inline-flex items-center gap-2 bg-white border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-bold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm group">
                     Lihat Semua Berita
                     <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">

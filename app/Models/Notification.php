@@ -154,10 +154,24 @@ class Notification extends Model
     {
         $code = null;
         $status = $this->data['status'] ?? null;
+        $isGuest = $this->data['is_guest_payment'] ?? false;
 
         // Try to get payment_code from data
         if (!empty($this->data['payment_code'])) {
             $code = $this->data['payment_code'];
+        }
+
+        // Robustness check: If we have a code but isGuest is false (potentially old notification),
+        // verify against the database to prevent 403 errors on guest payments.
+        if ($code && !$isGuest) {
+            $payment = ZakatPayment::where('payment_code', $code)->first();
+            if ($payment) {
+                $isGuest = $payment->is_guest_payment;
+                // Update status if missing
+                if (!$status) {
+                    $status = $payment->status;
+                }
+            }
         }
 
         // If code or status is missing, we might need to fetch the payment
@@ -168,17 +182,29 @@ class Notification extends Model
                 if ($payment) {
                     $code = $payment->payment_code;
                     $status = $payment->status;
+                    $isGuest = $payment->is_guest_payment;
                 }
             } elseif ($code && !$status) {
                  // We have code but no status
-                 $payment = ZakatPayment::where('payment_code', $code)->first();
-                 if ($payment) {
-                     $status = $payment->status;
-                 }
-            }
+                $payment = ZakatPayment::where('payment_code', $code)->first();
+                  if ($payment) {
+                      $status = $payment->status;
+                      $isGuest = $payment->is_guest_payment;
+                  }
+             }
         }
 
         if ($code) {
+            // Special handling for guest payments
+            if ($isGuest) {
+                if ($status === 'completed') {
+                    // Link to guest receipt or success page
+                    return route('guest.payment.receipt', $code);
+                }
+                // Link to guest summary page for tracking
+                return route('guest.payment.summary', $code);
+            }
+
             if ($status === 'completed') {
                 return route('payments.receipt', $code);
             }
@@ -313,7 +339,8 @@ class Notification extends Model
                 'status' => $status,
                 'amount' => $payment->paid_amount,
                 'program_category' => $payment->program_category,
-                'payment_type' => $paymentType
+                'payment_type' => $paymentType,
+                'is_guest_payment' => $payment->is_guest_payment // Add guest payment flag
             ]
         ]);
     }
