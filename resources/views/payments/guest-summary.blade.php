@@ -80,7 +80,7 @@
                          @foreach(['bca_va' => ['BCA', 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg'], 
                                    'mandiri_va' => ['Mandiri', 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg'],
                                    'bri_va' => ['BRI', 'https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg'],
-                                   'bni_va' => ['BNI', 'https://upload.wikimedia.org/wikipedia/id/5/55/BNI_logo.svg']] as $method => $details)
+                                   'bni_va' => ['BNI', 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg']] as $method => $details)
                         <button class="flex items-center px-4 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-sm payment-method-btn transition-all text-left group" data-method="{{ $method }}">
                             <img src="{{ $details[1] }}" class="h-5 w-10 object-contain mr-3 filter grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all">
                             <span class="text-sm font-medium text-gray-600 group-hover:text-gray-900 transition-colors">{{ $details[0] }} VA</span>

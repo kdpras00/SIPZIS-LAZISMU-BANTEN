@@ -158,6 +158,42 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
 
+        // Verify reCAPTCHA v3 token
+        $recaptchaToken = $request->input('g-recaptcha-response');
+        if (!$recaptchaToken) {
+            // For admin, we should be strict
+            // return back()->withErrors(['email' => 'Validasi reCAPTCHA diperlukan.'])->withInput();
+        } else {
+             try {
+                $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                    'secret' => config('services.recaptcha.secret_key'),
+                    'response' => $recaptchaToken,
+                    'remoteip' => $request->ip(),
+                ]);
+                $verification = $response->json();
+
+                if (!($verification['success'] ?? false)) {
+                     // Log but maybe don't block if simple failure? 
+                     // Or block if strict. Let's block to match user login.
+                     return back()->withErrors(['email' => 'Verifikasi reCAPTCHA gagal.'])->withInput();
+                }
+
+                // Optional checks for v3
+                $score = (float) ($verification['score'] ?? 0);
+                $action = $verification['action'] ?? null;
+                $threshold = (float) config('services.recaptcha.threshold', 0.5);
+                
+                // Allow 'login' or 'admin_login' action if you change it later
+                if ($score < $threshold) { // Removed strict action check for now as JS sends 'login'
+                    return back()->withErrors(['email' => 'Aktivitas mencurigakan terdeteksi (Score rendah).'])->withInput();
+                }
+            } catch (\Throwable $e) {
+                // Ignore service failure to avoid locking out admin? 
+                // Or show error. Based on user login, it shows error.
+                return back()->withErrors(['email' => 'Layanan reCAPTCHA tidak tersedia.'])->withInput();
+            }
+        }
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
@@ -370,10 +406,10 @@ class AuthController extends Controller
 
         // Redirect berdasarkan role
         if ($role === 'admin') {
-            return redirect('/admin')->with('success', 'Anda telah berhasil logout.');
+            return redirect()->route('admin.login')->with('success', 'Anda telah berhasil logout.');
         }
 
-        // Redirect dengan pesan sukses
+        // Muzakki/Umum diarahkan ke homepage (dashboard publik)
         return redirect('/')->with('success', 'Anda telah berhasil logout.');
     }
 

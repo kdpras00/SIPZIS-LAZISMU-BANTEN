@@ -26,7 +26,7 @@
                 </p>
             </div>
 
-            <form method="POST" action="{{ route('admin.login') }}" class="space-y-6">
+            <form method="POST" action="{{ route('admin.login') }}" class="space-y-6" id="adminLoginForm">
                 @csrf
 
                 <div class="animate-fadeInUp delay-500">
@@ -176,6 +176,9 @@
     }
 </style>
 
+<!-- Google reCAPTCHA v3 -->
+<script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const togglePassword = document.getElementById('togglePassword');
@@ -200,6 +203,52 @@
                     }
                 });
             }
+        }
+
+        // reCAPTCHA Logic
+        const loginForm = document.getElementById('adminLoginForm');
+        const recaptchaSiteKey = '{{ config('services.recaptcha.site_key') }}';
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!window.grecaptcha || !window.grecaptcha.execute) {
+                    alert('Memuat reCAPTCHA... silakan coba lagi.');
+                    return false;
+                }
+
+                window.grecaptcha.ready(function() {
+                    window.grecaptcha.execute(recaptchaSiteKey, {
+                            action: 'login'
+                        })
+                        .then(function(token) {
+                            let tokenInput = loginForm.querySelector('input[name="g-recaptcha-response"]');
+                            if (!tokenInput) {
+                                tokenInput = document.createElement('input');
+                                tokenInput.type = 'hidden';
+                                tokenInput.name = 'g-recaptcha-response';
+                                loginForm.appendChild(tokenInput);
+                            }
+                            tokenInput.value = token;
+
+                            let actionInput = loginForm.querySelector('input[name="g-recaptcha-action"]');
+                            if (!actionInput) {
+                                actionInput = document.createElement('input');
+                                actionInput.type = 'hidden';
+                                actionInput.name = 'g-recaptcha-action';
+                                loginForm.appendChild(actionInput);
+                            }
+                            actionInput.value = 'login'; // or 'admin_login' if you want to differentiate
+
+                            loginForm.submit();
+                        })
+                        .catch(function(err) {
+                            console.error('reCAPTCHA execute error:', err);
+                            alert('Validasi reCAPTCHA gagal. Coba lagi.');
+                        });
+                });
+            });
         }
     });
 </script>
