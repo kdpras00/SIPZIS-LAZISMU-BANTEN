@@ -28,9 +28,9 @@
                                 <small class="text-green-600 font-semibold">
                                     Terkumpul: Rp {{ number_format($program->net_total_collected ?? 0, 0, ',', '.') }}
                                 </small>
-                                <small class="text-gray-500">
+                                {{-- <small class="text-gray-500">
                                     Target: Rp {{ number_format($program->total_target ?? 0, 0, ',', '.') }}
-                                </small>
+                                </small> --}}
                             </div>
                         </div>
                         <i class="bi bi-chevron-right text-gray-400 ml-2 text-xl"></i>

@@ -5,8 +5,9 @@
         <div class="w-full max-w-md px-6">
             <div class="bg-white rounded-lg shadow-md p-8">
                 <!-- Logo & Title -->
+                <!-- Logo & Title -->
                 <div class="text-center mb-8">
-                    <h1 class="text-3xl font-bold text-gray-900 mb-2">SIPZIS</h1>
+                    <img src="{{ asset('storage/lazismu-icon.png') }}" alt="Lazismu" class="h-20 mx-auto mb-4">
                     <p class="text-gray-500 text-sm">Reset Password</p>
                 </div>
 

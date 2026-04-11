@@ -90,6 +90,7 @@
                                 <span class="fw-semibold text-dark">Transaksi saya</span>
                             </a>
 
+                            {{--
                             <a href="{{ route('dashboard.recurring') }}"
                                 class="list-group-item list-group-item-action d-flex align-items-center py-3 px-2 border-0">
                                 <svg class="w-5 h-5 text-green-600 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -97,7 +98,9 @@
                                 </svg>
                                 <span class="fw-semibold text-dark">Donasi rutin saya</span>
                             </a>
+                            --}}
 
+                            {{--
                             <a href="{{ route('dashboard.bank-accounts') }}"
                                 class="list-group-item list-group-item-action d-flex align-items-center py-3 px-2 border-0">
                                 <svg class="w-5 h-5 text-green-600 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -105,7 +108,9 @@
                                 </svg>
                                 <span class="fw-semibold text-dark">Akun bank</span>
                             </a>
+                            --}}
 
+                            {{--
                             <a href="{{ route('dashboard.management') }}"
                                 class="list-group-item list-group-item-action d-flex align-items-center py-3 px-2 border-0">
                                 <svg class="w-5 h-5 text-green-600 me-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -114,6 +119,7 @@
                                 </svg>
                                 <span class="fw-semibold text-dark">Manajemen akun</span>
                             </a>
+                            --}}
                         </div>
                     </div>
                 </div>
@@ -130,6 +136,7 @@
                                 <small>Home</small>
                             </a>
                         </div>
+                        {{--
                         <div class="flex-fill">
                             <a href="{{ route('donation') }}" class="text-decoration-none text-dark">
                                 <svg class="w-5 h-5 mx-auto mb-1 block text-green-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -138,6 +145,8 @@
                                 <small>Donasi</small>
                             </a>
                         </div>
+                        --}}
+                        {{--
                         <div class="flex-fill">
                             <a href="{{ route('fundraising') }}" class="text-decoration-none text-dark">
                                 <svg class="w-5 h-5 mx-auto mb-1 block text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -146,6 +155,7 @@
                                 <small>Galang Dana</small>
                             </a>
                         </div>
+                        --}}
                         <div class="flex-fill">
                             <a href="{{ route('amalanku') }}" class="text-decoration-none text-dark">
                                 <svg class="w-5 h-5 mx-auto mb-1 block text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

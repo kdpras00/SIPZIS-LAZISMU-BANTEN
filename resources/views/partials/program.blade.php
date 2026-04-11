@@ -67,6 +67,13 @@
                                         <div class="absolute top-4 left-4">
                                             <span class="inline-block bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full">Program Zakat</span>
                                         </div>
+                                        @if($program->isCompleted())
+                                        <div class="absolute top-4 right-4">
+                                            <span class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                                <i class="fas fa-check-circle mr-1"></i>Target Tercapai
+                                            </span>
+                                        </div>
+                                        @endif
                                     </div>
 
                                     <div class="p-6">
@@ -82,7 +89,7 @@
                                                 <div class="bg-amber-500 h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}"></div>
                                             </div>
                                             <div class="flex justify-between items-center">
-                                                <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span>
+                                                {{-- <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span> --}}
                                                 <span class="text-gray-700 font-semibold text-sm">{{ number_format($program->progress_percentage, 1) }}%</span>
                                             </div>
                                         </div>
@@ -116,6 +123,13 @@
                                         <div class="absolute top-4 left-4">
                                             <span class="inline-block bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">Infaq</span>
                                         </div>
+                                        @if($program->isCompleted())
+                                        <div class="absolute top-4 right-4">
+                                            <span class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                                <i class="fas fa-check-circle mr-1"></i>Target Tercapai
+                                            </span>
+                                        </div>
+                                        @endif
                                     </div>
 
                                     <div class="p-6">
@@ -131,7 +145,7 @@
                                                 <div class="bg-green-500 h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}"></div>
                                             </div>
                                             <div class="flex justify-between items-center">
-                                                <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span>
+                                                {{-- <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span> --}}
                                                 <span class="text-gray-700 font-semibold text-sm">{{ number_format($program->progress_percentage, 1) }}%</span>
                                             </div>
                                         </div>
@@ -165,6 +179,13 @@
                                         <div class="absolute top-4 left-4">
                                             <span class="inline-block bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">Shadaqah</span>
                                         </div>
+                                        @if($program->isCompleted())
+                                        <div class="absolute top-4 right-4">
+                                            <span class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                                <i class="fas fa-check-circle mr-1"></i>Target Tercapai
+                                            </span>
+                                        </div>
+                                        @endif
                                     </div>
 
                                     <div class="p-6">
@@ -180,7 +201,7 @@
                                                 <div class="bg-blue-500 h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}"></div>
                                             </div>
                                             <div class="flex justify-between items-center">
-                                                <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span>
+                                                {{-- <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span> --}}
                                                 <span class="text-gray-700 font-semibold text-sm">{{ number_format($program->progress_percentage, 1) }}%</span>
                                             </div>
                                         </div>
@@ -214,6 +235,13 @@
                                         <div class="absolute top-4 left-4">
                                             <span class="inline-block bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">Program Pilar</span>
                                         </div>
+                                        @if($program->isCompleted())
+                                        <div class="absolute top-4 right-4">
+                                            <span class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                                <i class="fas fa-check-circle mr-1"></i>Target Tercapai
+                                            </span>
+                                        </div>
+                                        @endif
                                     </div>
 
                                     <div class="p-6">
@@ -229,7 +257,7 @@
                                                 <div class="bg-purple-500 h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}"></div>
                                             </div>
                                             <div class="flex justify-between items-center">
-                                                <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span>
+                                                {{-- <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span> --}}
                                                 <span class="text-gray-700 font-semibold text-sm">{{ number_format($program->progress_percentage, 1) }}%</span>
                                             </div>
                                         </div>

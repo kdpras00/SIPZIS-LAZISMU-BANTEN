@@ -10,19 +10,50 @@ class RegionController extends Controller
     // Semua negara
     public function countries()
     {
-        $response = Http::get('https://restcountries.com/v3.1/all?fields=name,cca2');
-        if ($response->failed()) {
-            return response()->json([], 500);
+        // Use local data for faster response
+        $localCountries = [
+            ['id' => 'ID', 'name' => 'Indonesia'],
+            ['id' => 'MY', 'name' => 'Malaysia'],
+            ['id' => 'SG', 'name' => 'Singapore'],
+            ['id' => 'TH', 'name' => 'Thailand'],
+            ['id' => 'PH', 'name' => 'Philippines'],
+            ['id' => 'VN', 'name' => 'Vietnam'],
+            ['id' => 'BN', 'name' => 'Brunei'],
+            ['id' => 'KH', 'name' => 'Cambodia'],
+            ['id' => 'LA', 'name' => 'Laos'],
+            ['id' => 'MM', 'name' => 'Myanmar'],
+            ['id' => 'TL', 'name' => 'Timor-Leste'],
+            ['id' => 'US', 'name' => 'United States'],
+            ['id' => 'GB', 'name' => 'United Kingdom'],
+            ['id' => 'AU', 'name' => 'Australia'],
+            ['id' => 'JP', 'name' => 'Japan'],
+            ['id' => 'KR', 'name' => 'South Korea'],
+            ['id' => 'CN', 'name' => 'China'],
+            ['id' => 'IN', 'name' => 'India'],
+            ['id' => 'SA', 'name' => 'Saudi Arabia'],
+            ['id' => 'AE', 'name' => 'United Arab Emirates'],
+        ];
+
+        // Try to fetch from external API with timeout
+        try {
+            $response = Http::timeout(3)->get('https://restcountries.com/v3.1/all?fields=name,cca2');
+            
+            if ($response->successful()) {
+                $countries = collect($response->json())->map(function ($country) {
+                    return [
+                        'id' => $country['cca2'] ?? $country['name']['common'],
+                        'name' => $country['name']['common'],
+                    ];
+                })->sortBy('name')->values();
+
+                return response()->json($countries);
+            }
+        } catch (\Exception $e) {
+            // Fallback to local data if API fails
         }
 
-        $countries = collect($response->json())->map(function ($country) {
-            return [
-                'id' => $country['cca2'] ?? $country['name']['common'],
-                'name' => $country['name']['common'],
-            ];
-        })->sortBy('name')->values();
-
-        return response()->json($countries);
+        // Return local data if API fails or times out
+        return response()->json(collect($localCountries)->sortBy('name')->values());
     }
 
     // Provinsi berdasarkan negara
@@ -32,29 +63,49 @@ class RegionController extends Controller
             return response()->json([]);
         }
 
-        $response = Http::get('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
-        return response()->json($response->json());
+        // Cache for 24 hours
+        $provinces = cache()->remember('provinces_indonesia', 86400, function () {
+            $response = Http::timeout(5)->get('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
+            return $response->successful() ? $response->json() : [];
+        });
+
+        return response()->json($provinces);
     }
 
     // Kota berdasarkan provinsi
     public function cities($provinceId)
     {
-        $response = Http::get("https://www.emsifa.com/api-wilayah-indonesia/api/regencies/{$provinceId}.json");
-        return response()->json($response->json());
+        // Cache for 24 hours per province
+        $cities = cache()->remember("cities_province_{$provinceId}", 86400, function () use ($provinceId) {
+            $response = Http::timeout(5)->get("https://www.emsifa.com/api-wilayah-indonesia/api/regencies/{$provinceId}.json");
+            return $response->successful() ? $response->json() : [];
+        });
+
+        return response()->json($cities);
     }
 
     // Kecamatan berdasarkan kota
     public function districts($cityId)
     {
-        $response = Http::get("https://www.emsifa.com/api-wilayah-indonesia/api/districts/{$cityId}.json");
-        return response()->json($response->json());
+        // Cache for 24 hours per city
+        $districts = cache()->remember("districts_city_{$cityId}", 86400, function () use ($cityId) {
+            $response = Http::timeout(5)->get("https://www.emsifa.com/api-wilayah-indonesia/api/districts/{$cityId}.json");
+            return $response->successful() ? $response->json() : [];
+        });
+
+        return response()->json($districts);
     }
 
     // Kelurahan berdasarkan kecamatan
     public function villages($districtId)
     {
-        $response = Http::get("https://www.emsifa.com/api-wilayah-indonesia/api/villages/{$districtId}.json");
-        return response()->json($response->json());
+        // Cache for 24 hours per district
+        $villages = cache()->remember("villages_district_{$districtId}", 86400, function () use ($districtId) {
+            $response = Http::timeout(5)->get("https://www.emsifa.com/api-wilayah-indonesia/api/villages/{$districtId}.json");
+            return $response->successful() ? $response->json() : [];
+        });
+
+        return response()->json($villages);
     }
 
     // Validate postal code based on district and village

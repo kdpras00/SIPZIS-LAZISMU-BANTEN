@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="flex justify-between text-xs text-gray-500 mb-3">
                                     <span>Terkumpul</span>
-                                    <span>Target: {{ $campaign->formatted_target_amount }}</span>
+                                    {{-- <span>Target: {{ $campaign->formatted_target_amount }}</span> --}}
                                 </div>
                                 
                                 <div class="w-full bg-gray-100 rounded-full h-3">

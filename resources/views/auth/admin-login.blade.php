@@ -12,15 +12,13 @@
     <div class="relative z-10 w-full max-w-md mx-auto px-6">
         <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 animate-fadeInUp">
             <div class="text-center mb-8">
-                <div class="mx-auto w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mb-4 shadow-lg animate-fadeInDown">
-                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2L3.09 8.26L12 22L20.91 8.26L12 2Z" />
-                    </svg>
+                <div class="mx-auto w-32 h-32 mb-4 animate-fadeInDown">
+                    <img src="{{ asset('storage/lazismu-icon.png') }}" alt="Logo Lazismu" class="w-full h-full object-contain drop-shadow-lg">
                 </div>
 
-                <h1 class="text-3xl font-bold text-white mb-2 animate-fadeInDown delay-300">
+                {{-- <h1 class="text-3xl font-bold text-white mb-2 animate-fadeInDown delay-300">
                     SIPZIS
-                </h1>
+                </h1> --}}
                 <p class="text-green-200 text-xs mt-1 animate-fadeInDown delay-700">
                     Masuk ke dashboard administrasi
                 </p>

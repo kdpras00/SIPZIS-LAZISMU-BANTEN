@@ -226,6 +226,34 @@ class ProgramController extends Controller
     }
 
     /**
+     * Show program completed page with recommendations
+     */
+    public function completed($id)
+    {
+        $program = Program::findOrFail($id);
+        
+        // Get similar active programs for recommendations (same category)
+        $recommendedPrograms = Program::active()
+            ->where('id', '!=', $id)
+            ->where('category', $program->category)
+            ->limit(3)
+            ->get();
+        
+        // If no similar programs, get any active programs
+        if ($recommendedPrograms->count() < 3) {
+            $additionalPrograms = Program::active()
+                ->where('id', '!=', $id)
+                ->whereNotIn('id', $recommendedPrograms->pluck('id'))
+                ->limit(3 - $recommendedPrograms->count())
+                ->get();
+            
+            $recommendedPrograms = $recommendedPrograms->merge($additionalPrograms);
+        }
+        
+        return view('programs.completed', compact('program', 'recommendedPrograms'));
+    }
+
+    /**
      * Get available categories for programs (main categories only).
      */
     private function getAvailableCategories(): array

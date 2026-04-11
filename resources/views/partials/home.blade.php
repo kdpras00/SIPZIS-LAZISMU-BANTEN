@@ -405,8 +405,8 @@
                                                 style="width: <?php echo number_format($progress, 0); ?>%"></div>
                                         </div>
                                         <div class="flex justify-between text-xs text-gray-600 mt-1">
-                                            <span>Target:
-                                                {{ 'Rp ' . number_format($campaign->target_amount, 0, ',', '.') }}</span>
+                                            {{-- <span>Target:
+                                                {{ 'Rp ' . number_format($campaign->target_amount, 0, ',', '.') }}</span> --}}
                                             <span>{{ number_format($campaign->progress_percentage, 1) }}%</span>
                                         </div>
 

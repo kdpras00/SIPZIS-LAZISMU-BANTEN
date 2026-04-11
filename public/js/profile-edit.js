@@ -626,15 +626,40 @@ document.addEventListener("DOMContentLoaded", function () {
         if (savedCountry) {
           countrySelect.value = savedCountry;
           if (savedCountry.toLowerCase() === "indonesia") {
+            // Show Indonesia-specific fields
+            showIndonesiaFields();
             fetchProvinces();
+          } else {
+            // Hide Indonesia-specific fields for other countries
+            hideIndonesiaFields();
           }
         } else {
-          // Set default to Indonesia if no country is selected
-          countrySelect.value = "Indonesia";
-          fetchProvinces();
+          // No default country - hide Indonesia fields initially
+          hideIndonesiaFields();
         }
       })
       .catch((err) => console.error("Gagal memuat negara:", err));
+  }
+
+  // Helper functions to show/hide Indonesia-specific fields
+  function showIndonesiaFields() {
+    const fields = ["province", "city", "district", "village", "postal_code"];
+    fields.forEach((fieldId) => {
+      const field = document.getElementById(fieldId);
+      if (field && field.closest(".mb-5")) {
+        field.closest(".mb-5").style.display = "block";
+      }
+    });
+  }
+
+  function hideIndonesiaFields() {
+    const fields = ["province", "city", "district", "village", "postal_code"];
+    fields.forEach((fieldId) => {
+      const field = document.getElementById(fieldId);
+      if (field && field.closest(".mb-5")) {
+        field.closest(".mb-5").style.display = "none";
+      }
+    });
   }
 
   function fetchProvinces() {
@@ -807,29 +832,12 @@ document.addEventListener("DOMContentLoaded", function () {
       countryNameInput.value = this.value; // Save the actual country name
 
       if (val === "indonesia") {
-        // Show the province, city, district, village, and postal code dropdowns
-        document.querySelector("#province").closest(".mb-3").style.display =
-          "block";
-        document.querySelector("#city").closest(".mb-3").style.display =
-          "block";
-        document.querySelector("#district").closest(".mb-3").style.display =
-          "block";
-        document.querySelector("#village").closest(".mb-3").style.display =
-          "block";
-        document.querySelector("#postal_code").closest(".mb-3").style.display =
-          "block";
+        // Show Indonesia-specific fields
+        showIndonesiaFields();
         fetchProvinces();
       } else {
-        // Hide the province, city, district, village, and postal code dropdowns
-        document.querySelector("#province").closest(".mb-3").style.display =
-          "none";
-        document.querySelector("#city").closest(".mb-3").style.display = "none";
-        document.querySelector("#district").closest(".mb-3").style.display =
-          "none";
-        document.querySelector("#village").closest(".mb-3").style.display =
-          "none";
-        document.querySelector("#postal_code").closest(".mb-3").style.display =
-          "none";
+        // Hide Indonesia-specific fields
+        hideIndonesiaFields();
 
         // Reset dropdowns
         resetDropdown(provinceSelect, "Pilih Provinsi");

@@ -151,11 +151,56 @@ class Program extends Model
     }
 
     // ========================
+    // 🎯 Completion Methods
+    // ========================
+    
+    /**
+     * Check if program target has been reached
+     */
+    public function isTargetReached(): bool
+    {
+        if ($this->total_target <= 0) {
+            return false;
+        }
+        
+        return $this->net_total_collected >= $this->total_target;
+    }
+
+    /**
+     * Check if program is completed
+     */
+    public function isCompleted(): bool
+    {
+        return $this->status === 'completed';
+    }
+
+    /**
+     * Auto-complete program if target reached
+     */
+    public function checkAndCompleteIfTargetReached(): bool
+    {
+        if ($this->status !== 'active') {
+            return false;
+        }
+        
+        if ($this->isTargetReached()) {
+            return $this->update(['status' => 'completed']);
+        }
+        
+        return false;
+    }
+
+    // ========================
     // 🔍 Scopes
     // ========================
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
+    }
+    
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', 'completed');
     }
 
     public function scopeByCategory($query, $category)

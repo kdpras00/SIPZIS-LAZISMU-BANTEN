@@ -33,9 +33,9 @@
                             <small class="text-green-600 font-semibold">
                                 Terkumpul: Rp {{ number_format($campaign->collected_amount ?? $campaign->net_collected_amount ?? 0, 0, ',', '.') }}
                             </small>
-                            <small class="text-gray-500">
+                            {{-- <small class="text-gray-500">
                                 Target: Rp {{ number_format($campaign->target_amount ?? 0, 0, ',', '.') }}
-                            </small>
+                            </small> --}}
                         </div>
                         <div class="mt-2">
                             @if(isset($campaign->status) && $campaign->status === 'published')

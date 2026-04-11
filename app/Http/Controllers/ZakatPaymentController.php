@@ -802,6 +802,22 @@ class ZakatPaymentController extends Controller
                 // If program not found or inactive, redirect to program page
                 return redirect()->route('program')->with('error', 'Program tidak ditemukan atau tidak aktif.');
             }
+            
+            // Check if program is already completed
+            if ($program->isCompleted()) {
+                return redirect()->route('program.completed', $program->id)
+                    ->with('info', 'Program ini sudah mencapai target. Silakan pilih program lain.');
+            }
+            
+            // Auto-check if target reached and complete if needed
+            $program->checkAndCompleteIfTargetReached();
+            
+            // Re-check after auto-complete
+            if ($program->fresh()->isCompleted()) {
+                return redirect()->route('program.completed', $program->id)
+                    ->with('info', 'Program ini baru saja mencapai target. Silakan pilih program lain.');
+            }
+            
             $programCategory = $program->category;
         }
 

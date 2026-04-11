@@ -60,6 +60,9 @@ Route::get('/payment/{paymentCode}/failed', [ZakatPaymentController::class, 'gue
 // Uncommented to enable individual program display
 Route::get('/program/{slug}', [ProgramController::class, 'show'])->name('program.show');
 
+// Program completed page
+Route::get('/program/{id}/completed', [ProgramController::class, 'completed'])->name('program.completed');
+
 Route::get('/program', [HomeController::class, 'program'])->name('program');
 
 // Tab-specific routes for program categories

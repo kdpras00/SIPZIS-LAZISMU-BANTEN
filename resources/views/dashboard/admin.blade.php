@@ -119,6 +119,21 @@
                         <h1 class="text-3xl font-bold text-white mb-2">
                             Dashboard
                         </h1>
+                        <form action="{{ route('dashboard') }}" method="GET" class="inline-block">
+                            <div class="relative">
+                                <select name="year" onchange="this.form.submit()" 
+                                    class="block appearance-none w-full bg-white text-gray-900 border border-gray-300 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-green-500 text-sm font-semibold">
+                                    @foreach($availableYears as $year)
+                                        <option value="{{ $year }}" {{ $currentYear == $year ? 'selected' : '' }}>
+                                            Tahun {{ $year }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="text-right">
                         <div class="bg-white rounded-lg shadow-sm p-3 inline-block">
@@ -164,7 +179,7 @@
                         <div class="flex justify-between items-start h-full">
                             <div class="flex flex-col justify-between h-full">
                                 <div>
-                                    <p class="text-green-100 text-xs uppercase mb-2">Total Donasi {{ date('Y') }}</p>
+                                    <p class="text-green-100 text-xs uppercase mb-2">Total Donasi {{ $currentYear }}</p>
                                     <h3 class="text-white font-bold text-2xl mb-1">
                                         Rp {{ number_format($stats['total_payments_this_year'], 0, ',', '.') }}
                                     </h3>
@@ -188,7 +203,7 @@
                         <div class="flex justify-between items-start h-full">
                             <div class="flex flex-col justify-between h-full">
                                 <div>
-                                    <p class="text-green-100 text-xs uppercase mb-2">Distribusi {{ date('Y') }}</p>
+                                    <p class="text-green-100 text-xs uppercase mb-2">Distribusi {{ $currentYear }}</p>
                                     <h3 class="text-white font-bold text-2xl mb-1">
                                         Rp {{ number_format($stats['total_distributions_this_year'], 0, ',', '.') }}
                                     </h3>
@@ -264,7 +279,7 @@
                             <div class="bg-green-500 bg-opacity-75 p-3 rounded-xl mr-3">
                                 <i class="fas fa-chart-line text-white text-lg"></i>
                             </div>
-                            <h4 class="text-white font-bold mb-0 text-lg">Grafik Pembayaran Zakat {{ date('Y') }}</h4>
+                            <h4 class="text-white font-bold mb-0 text-lg">Grafik Pembayaran Zakat {{ $currentYear }}</h4>
                         </div>
                         <div class="bg-gray-900 bg-opacity-75 rounded-xl p-3">
                             <canvas id="paymentsChart" height="300"></canvas>

@@ -5,13 +5,14 @@
         <div class="w-full max-w-md px-6">
             <div class="bg-white rounded-lg shadow-md p-8">
                 <!-- Back Button & Title -->
-                <div class="mb-8">
-                    <a href="{{ route('login') }}" class="inline-flex items-center text-green-600 hover:text-green-700 mb-4">
+                <!-- Back Button & Logo -->
+                <div class="mb-8 text-center relative">
+                    <a href="{{ route('login') }}" class="absolute left-0 top-0 inline-flex items-center text-green-600 hover:text-green-700">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
                     </a>
-                    <h1 class="text-2xl font-bold text-gray-900 mb-2">Bergabung dengan SIPZIS</h1>
+                    <img src="{{ asset('storage/lazismu-icon.png') }}" alt="Lazismu" class="h-20 mx-auto mb-2">
                 </div>
 
                 <!-- Register Form -->

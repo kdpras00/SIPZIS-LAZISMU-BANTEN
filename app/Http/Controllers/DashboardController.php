@@ -16,14 +16,13 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     // Middleware is applied in routes
-
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
         // Ensure only admin can access admin dashboard
         if ($user->role === 'admin') {
-            return $this->adminDashboard();
+            return $this->adminDashboard($request);
         }
 
         // Ensure only muzakki can access muzakki dashboard
@@ -36,10 +35,23 @@ class DashboardController extends Controller
         return redirect('/');
     }
 
-    private function adminDashboard()
+    private function adminDashboard(Request $request)
     {
-        // Get current year and month
-        $currentYear = date('Y');
+        // Get available years for filter
+        $availableYears = ZakatPayment::selectRaw('YEAR(payment_date) as year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year')
+            ->toArray();
+
+        // Ensure current year is always available
+        if (!in_array(date('Y'), $availableYears)) {
+            array_unshift($availableYears, date('Y'));
+        }
+
+        // Get selected year or default to current year
+        $currentYear = $request->input('year', date('Y'));
+
         $currentMonth = date('m');
 
         // Dashboard statistics
@@ -103,7 +115,9 @@ class DashboardController extends Controller
             'recentDistributions',
             'chartData',
             'programTypeStats',
-            'mustahikCategoryStats'
+            'mustahikCategoryStats',
+            'availableYears',
+            'currentYear'
         ));
     }
 

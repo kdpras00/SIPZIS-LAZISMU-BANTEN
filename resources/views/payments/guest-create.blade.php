@@ -125,8 +125,8 @@
                             $targetAmount = $campaign->target_amount;
                             $collectedAmount = $campaign->collected_amount;
                         } elseif (isset($program)) {
-                            $targetAmount = $program->target_amount;
-                            $collectedAmount = $program->collected_amount;
+                            $targetAmount = $program->total_target;
+                            $collectedAmount = $program->net_total_collected;
                         }
                         
                         $percentage = ($targetAmount > 0) ? min(100, round(($collectedAmount / $targetAmount) * 100)) : 0;
@@ -139,10 +139,10 @@
                                     <span class="text-xs text-gray-500 font-medium uppercase tracking-wider">Terkumpul</span>
                                     <div class="text-emerald-700 font-bold text-lg">Rp {{ number_format($collectedAmount, 0, ',', '.') }}</div>
                                 </div>
-                                <div class="text-right">
+                                {{-- <div class="text-right">
                                     <span class="text-xs text-gray-400">dari target</span>
                                     <div class="text-gray-600 font-semibold text-sm">Rp {{ number_format($targetAmount, 0, ',', '.') }}</div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
                                 <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-3 rounded-full transition-all duration-1000 ease-out" 
@@ -210,13 +210,13 @@
                             </button>
                         </div>
 
-                        {{-- Custom Input (Initially Hidden or Subtle) --}}
+                        {{-- Custom Input (Initially Disabled) --}}
                         <div class="relative transition-all duration-300 transform origin-top" id="custom-amount-container">
                             <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400 font-bold">Rp</span>
                             <input type="text" id="donation_amount_display" inputmode="numeric"
                                 oninput="formatAndSetValues(this)"
-                                class="w-full border-2 border-gray-200 rounded-xl pl-12 pr-4 py-4 font-bold text-lg text-gray-800 placeholder-gray-300 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-50 focus:outline-none transition-all"
-                                placeholder="Masukkan nominal donasi (Min. Rp 10.000)" required autocomplete="off">
+                                class="w-full border-2 border-gray-200 rounded-xl pl-12 pr-4 py-4 font-bold text-lg text-gray-800 placeholder-gray-300 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-50 focus:outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-400"
+                                placeholder="Pilih nominal atau klik 'Nominal Lain'" required autocomplete="off" disabled>
                         </div>
                     </div>
 
@@ -310,6 +310,22 @@
                             </div>
                         </div>
                     </div>
+                        @php
+                            $prayersQuery = \App\Models\ZakatPayment::where('status', 'completed')
+                                ->whereNotNull('notes')
+                                ->where('notes', '!=', '');
+
+                            if (isset($program)) {
+                                $prayersQuery->where('program_id', $program->id);
+                            } elseif (isset($programCategory)) {
+                                $prayersQuery->where('program_category', $programCategory);
+                            }
+                            
+                            $tickerPrayers = $prayersQuery->with('muzakki')->latest('payment_date')
+                                ->limit(10)
+                                ->get();
+                        @endphp
+
                         {{-- Doa Ticker (Social Proof) --}}
                         <div class="mt-8 bg-gray-50 rounded-xl p-5 border border-gray-100">
                              <div class="flex items-center gap-2 mb-3">
@@ -320,35 +336,28 @@
                                 <div class="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-gray-50 to-transparent z-10"></div>
                                 <div class="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-gray-50 to-transparent z-10"></div>
                                 
+                                @if($tickerPrayers->count() > 0)
                                 <div class="animate-marquee-vertical space-y-3">
-                                    {{-- Mock Data - In real app, loop from DB --}}
-                                    @foreach([
-                                        ["Hamba Allah", "Semoga berkah untuk semua penerima."],
-                                        ["Rizky", "Bismillah, semoga dilancarkan rezekinya."],
-                                        ["Aisyah", "Ya Allah, sehatkanlah orang tua saya."],
-                                        ["Abdullah", "Semoga menjadi amal jariyah."],
-                                        ["Hamba Allah", "Untuk kesembuhan keluarga."],
-                                        ["Siti", "Semoga bermanfaat bagi umat."]
-                                    ] as $doa)
+                                    @foreach($tickerPrayers as $prayer)
                                     <div class="text-sm bg-white p-2 rounded-lg shadow-sm border border-gray-100">
-                                        <span class="font-bold text-gray-800 mr-1">{{ $doa[0] }}:</span>
-                                        <span class="text-gray-600 italic">"{{ $doa[1] }}"</span>
+                                        <span class="font-bold text-gray-800 mr-1">{{ optional($prayer->muzakki)->name ?? 'Hamba Allah' }}:</span>
+                                        <span class="text-gray-600 italic">"{{ $prayer->notes }}"</span>
                                     </div>
                                     @endforeach
+                                    
                                     {{-- Duplicate for smooth loop --}}
-                                    @foreach([
-                                        ["Hamba Allah", "Semoga berkah untuk semua penerima."],
-                                        ["Rizky", "Bismillah, semoga dilancarkan rezekinya."],
-                                        ["Aisyah", "Ya Allah, sehatkanlah orang tua saya."],
-                                        ["Abdullah", "Semoga menjadi amal jariyah."],
-                                        ["Hamba Allah", "Untuk kesembuhan keluarga."],
-                                        ["Siti", "Semoga bermanfaat bagi umat."]
-                                    ] as $doa)
+                                    @foreach($tickerPrayers as $prayer)
                                     <div class="text-sm bg-white p-2 rounded-lg shadow-sm border border-gray-100">
-                                        <span class="font-bold text-gray-800 mr-1">{{ $doa[0] }}:</span>
-                                        <span class="text-gray-600 italic">"{{ $doa[1] }}"</span>
+                                        <span class="font-bold text-gray-800 mr-1">{{ optional($prayer->muzakki)->name ?? 'Hamba Allah' }}:</span>
+                                        <span class="text-gray-600 italic">"{{ $prayer->notes }}"</span>
                                     </div>
                                     @endforeach
+                                </div>
+                                @else
+                                <div class="text-center text-gray-500 italic text-sm py-8">
+                                    Belum ada doa. Jadilah yang pertama mendoakan!
+                                </div>
+                                @endif
                                 </div>
                             </div>
                         </div>
@@ -563,6 +572,7 @@
         document.querySelectorAll('.quick-amount-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const amount = this.dataset.amount;
+                const inputField = document.getElementById('donation_amount_display');
                 
                 // Reset all buttons
                 document.querySelectorAll('.quick-amount-btn').forEach(b => {
@@ -585,12 +595,16 @@
                 }
 
                 if (amount === 'custom') {
-                    document.getElementById('donation_amount_display').focus();
+                    // Enable input for custom amount
+                    inputField.disabled = false;
+                    inputField.focus();
                     // Don't clear value if it's already there
                     return;
                 }
                 
-                document.getElementById('donation_amount_display').value = new Intl.NumberFormat('id-ID').format(amount);
+                // For preset amounts, disable input and set value
+                inputField.disabled = true;
+                inputField.value = new Intl.NumberFormat('id-ID').format(amount);
                 document.getElementById('paid_amount').value = amount;
                 
                 // Update Mobile Display
