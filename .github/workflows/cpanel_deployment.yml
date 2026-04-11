@@ -22,7 +22,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: 2223
           script: |
-            cd ~/public_html/domains/sibk-latansacendekia.my.id
+            cd ~/public_html/domains/lazismu-banten.my.id
 
             echo "📦 Pull latest code from GitHub..."
             git fetch origin
