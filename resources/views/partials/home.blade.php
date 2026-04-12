@@ -10,7 +10,7 @@
 
 <div class="relative w-full h-[85vh] md:h-screen bg-gray-50 overflow-hidden" id="beranda">
     <!-- Slider Container -->
-    <div id="hero-slider" class="absolute inset-0 w-full h-full">
+    <div id="hero-slider" class="absolute inset-0 w-full h-full cursor-grab">
 
         <!-- Slide 1: Quran Quote (Static) -->
         <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-10 opacity-100 bg-gray-50" data-slide="0">
@@ -245,26 +245,44 @@
         }
 
         // Event Listeners
-        prevBtn.addEventListener('click', prevSlide);
-        nextBtn.addEventListener('click', nextSlide);
+        if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+        if (nextBtn) nextBtn.addEventListener('click', nextSlide);
 
-        // Touch support for swipe
-        let touchStartX = 0;
-        let touchEndX = 0;
+        // Touch & Mouse support for swipe
+        let isDragging = false;
+        let startX = 0;
 
-        slider.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, {passive: true});
+        const handleStart = (e) => {
+            isDragging = true;
+            startX = e.type.includes('touch') ? e.touches[0].screenX : e.screenX;
+        };
 
-        slider.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, {passive: true});
+        const handleEnd = (e) => {
+            if (!isDragging) return;
+            const endX = e.type.includes('touch') ? e.changedTouches[0].screenX : e.screenX;
+            const diff = startX - endX;
+            
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+            }
+            isDragging = false;
+        };
 
-        function handleSwipe() {
-            if (touchEndX < touchStartX - 50) nextSlide();
-            if (touchEndX > touchStartX + 50) prevSlide();
-        }
+        const handleMove = (e) => {
+            if (!isDragging) return;
+            // Optional: visual feedback during drag
+        };
+
+        slider.addEventListener('touchstart', handleStart, {passive: true});
+        slider.addEventListener('touchend', handleEnd, {passive: true});
+        slider.addEventListener('mousedown', handleStart);
+        window.addEventListener('mouseup', handleEnd); // Use window for more reliable mouseup
+        
+        // Prevent default drag behavior on images/links if dragging
+        slider.addEventListener('dragstart', (e) => {
+            if (isDragging) e.preventDefault();
+        });
 
         // Initialize
         startAutoSlide();
@@ -303,7 +321,7 @@
             <!-- Slider Wrapper -->
             <div class="group">
                 <div id="campaigns-slider"
-                    class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide scroll-smooth">
+                    class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide scroll-smooth cursor-grab">
                     @foreach (\App\Models\Campaign::active()->latest()->take(10)->get() as $campaign)
                         <div class="flex-shrink-0 w-72 snap-start">
                             <div
@@ -458,7 +476,7 @@
                 <!-- Slider Wrapper -->
                 <div class="group">
                     <div id="news-slider"
-                        class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide scroll-smooth">
+                        class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide scroll-smooth cursor-grab">
                         @foreach (\App\Models\News::published()->latest()->take(10)->get() as $news)
                             <div class="flex-shrink-0 w-72 snap-start">
                                 <div
@@ -572,7 +590,7 @@
                 <!-- Slider Wrapper -->
                 <div class="group">
                     <div id="artikel-slider"
-                        class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide scroll-smooth">
+                        class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide scroll-smooth cursor-grab">
                         @foreach (\App\Models\Artikel::published()->latest()->take(10)->get() as $artikel)
                             <div class="flex-shrink-0 w-72 snap-start">
                                 <div
@@ -777,6 +795,15 @@
         .animate-fadeInUp,
         .animate-fadeInDown {
             will-change: opacity, transform;
+        }
+
+        /* Drag interactions */
+        .cursor-grab {
+            cursor: grab;
+        }
+
+        .cursor-grabbing {
+            cursor: grabbing !important;
         }
 
         /* Respect user's motion preferences */
@@ -1303,6 +1330,36 @@
 
             // Check on resize
             window.addEventListener('resize', toggleNavigationButtons);
+
+            // Mouse drag-to-scroll support
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                slider.classList.add('cursor-grabbing');
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+
+            slider.addEventListener('mouseleave', () => {
+                isDown = false;
+                slider.classList.remove('cursor-grabbing');
+            });
+
+            slider.addEventListener('mouseup', () => {
+                isDown = false;
+                slider.classList.remove('cursor-grabbing');
+            });
+
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2; // scroll-fast factor
+                slider.scrollLeft = scrollLeft - walk;
+            });
         }
 
         function scrollSlider(slider, direction) {
