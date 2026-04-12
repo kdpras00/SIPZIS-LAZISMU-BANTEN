@@ -90,7 +90,7 @@
                             <button onclick="window.open('https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::url()) }}', '_blank')" class="flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700 transition">
                                 <i class="bi bi-facebook mr-2"></i> Facebook
                             </button>
-                            <button onclick="window.open('https://api.whatsapp.com/send?text={{ urlencode($news->title . ' ' . Request::url()) }}', '_blank')" class="flex items-center px-4 py-2 rounded-lg bg-orange-500 text-white text-sm hover:bg-orange-600 transition">
+                            <button onclick="window.open('https://api.whatsapp.com/send?text={{ urlencode($news->title . ' ' . Request::url()) }}', '_blank')" class="flex items-center px-4 py-2 rounded-lg bg-green-500 text-white text-sm hover:bg-green-600 transition">
                                 <i class="bi bi-whatsapp mr-2"></i> WhatsApp
                             </button>
                             <button onclick="window.open('https://twitter.com/intent/tweet?url={{ urlencode(Request::url()) }}&text={{ urlencode($news->title) }}', '_blank')" class="flex items-center px-4 py-2 rounded-lg bg-black text-white text-sm hover:bg-gray-800 transition">

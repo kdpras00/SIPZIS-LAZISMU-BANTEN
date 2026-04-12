@@ -183,7 +183,7 @@
                                 <button class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors flex items-center justify-center">
                                     <i class="bi bi-facebook"></i>
                                 </button>
-                                <button class="w-10 h-10 rounded-full bg-orange-50 text-orange-600 hover:bg-orange-100 transition-colors flex items-center justify-center">
+                                <button class="w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition-colors flex items-center justify-center">
                                     <i class="bi bi-whatsapp"></i>
                                 </button>
                                 <button class="w-10 h-10 rounded-full bg-sky-50 text-sky-500 hover:bg-sky-100 transition-colors flex items-center justify-center">

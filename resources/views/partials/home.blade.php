@@ -699,7 +699,7 @@
             <!-- WhatsApp Button -->
             <a href="https://api.whatsapp.com/send/?phone=628561626222&text=Assalamu%E2%80%99alaikum+Warahmatullahi+Wabarakatuh%2C+hallo+tim+Lazismu+%5Bwebsite%5D&type=phone_number&app_absent=0" 
                target="_blank" 
-               class="bg-orange-500 hover:bg-orange-600 text-white rounded-full p-4 shadow-lg transition transform hover:scale-110 flex items-center justify-center w-14 h-14"
+               class="bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition transform hover:scale-110 flex items-center justify-center w-14 h-14"
                aria-label="Chat WhatsApp">
                 <i class="fab fa-whatsapp text-2xl"></i>
             </a>

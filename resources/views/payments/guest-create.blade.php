@@ -27,7 +27,7 @@
         }
 
         .iti__tel-input:focus {
-            border-color: #ea580c !important;
+            border-color: #22c55e !important;
             outline: none !important;
             box-shadow: none !important
         }
@@ -41,8 +41,8 @@
             border-color: #fca5a5 !important
         }
 
-        .iti__tel-input.border-orange-300 {
-            border-color: #6ee7b7 !important
+        .iti__tel-input.border-green-300 {
+            border-color: #22c55e !important
         }
 
         .iti--separate-dial-code .iti__tel-input,
@@ -529,7 +529,7 @@
             const errorEl = inputElement.id === 'phone_input' ? document.getElementById('phone_error') : null;
 
             inputElement.classList.toggle('border-red-300', !isValid);
-            inputElement.classList.toggle('border-orange-300', isValid);
+            inputElement.classList.toggle('border-green-300', isValid);
 
             if (errorEl) {
                 if (isValid) {

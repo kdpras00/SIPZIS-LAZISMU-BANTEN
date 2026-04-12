@@ -76,21 +76,21 @@
                 </p>
 
                 <div class="flex justify-center gap-3 mb-6">
-                    <input type="text" class="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-0 outline-none transition-all otp-input" maxlength="1" id="otp1">
-                    <input type="text" class="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-0 outline-none transition-all otp-input" maxlength="1" id="otp2">
-                    <input type="text" class="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-0 outline-none transition-all otp-input" maxlength="1" id="otp3">
-                    <input type="text" class="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-0 outline-none transition-all otp-input" maxlength="1" id="otp4">
+                    <input type="text" class="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-green-500 focus:ring-0 outline-none transition-all otp-input" maxlength="1" id="otp1">
+                    <input type="text" class="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-green-500 focus:ring-0 outline-none transition-all otp-input" maxlength="1" id="otp2">
+                    <input type="text" class="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-green-500 focus:ring-0 outline-none transition-all otp-input" maxlength="1" id="otp3">
+                    <input type="text" class="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-green-500 focus:ring-0 outline-none transition-all otp-input" maxlength="1" id="otp4">
                 </div>
 
                 <div class="text-center mb-6">
                     <p class="text-sm text-gray-500">Belum menerima kode?
-                        <a href="#" class="text-orange-600 hover:text-orange-700 font-medium ml-1" id="resendOtp">
+                        <a href="#" class="text-green-600 hover:text-green-700 font-medium ml-1" id="resendOtp">
                             Kirim kode OTP (<span id="countdown">57</span> detik)
                         </a>
                     </p>
                 </div>
 
-                <button type="button" class="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed" id="verifyOtpBtn" disabled>
+                <button type="button" class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed" id="verifyOtpBtn" disabled>
                     Verifikasi
                 </button>
             </div>
