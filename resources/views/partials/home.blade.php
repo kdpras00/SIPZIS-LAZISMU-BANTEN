@@ -1271,13 +1271,14 @@
             const nextBtn = document.getElementById(`${sliderName}-next`);
             const indicatorsContainer = document.querySelector(`.${sliderName}-indicators`);
 
-            if (!slider || !prevBtn || !nextBtn) return;
+            if (!slider) return;
 
             // Create indicators
             const items = slider.querySelectorAll('.flex-shrink-0');
             const itemCount = items.length;
 
             if (indicatorsContainer && itemCount > 0) {
+                indicatorsContainer.innerHTML = ''; // Clear existing
                 for (let i = 0; i < itemCount; i++) {
                     const indicator = document.createElement('span');
                     indicator.classList.add('w-2', 'h-2', 'rounded-full', 'cursor-pointer', 'transition-all',
@@ -1299,15 +1300,19 @@
             }
 
             // Navigation button events
-            prevBtn.addEventListener('click', () => {
-                scrollSlider(slider, -1);
-                updateIndicatorsOnScroll(slider, indicatorsContainer);
-            });
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    scrollSlider(slider, -1);
+                    updateIndicatorsOnScroll(slider, indicatorsContainer);
+                });
+            }
 
-            nextBtn.addEventListener('click', () => {
-                scrollSlider(slider, 1);
-                updateIndicatorsOnScroll(slider, indicatorsContainer);
-            });
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    scrollSlider(slider, 1);
+                    updateIndicatorsOnScroll(slider, indicatorsContainer);
+                });
+            }
 
             // Update indicators when scrolling
             slider.addEventListener('scroll', () => {
@@ -1317,11 +1322,11 @@
             // Hide navigation buttons on mobile
             function toggleNavigationButtons() {
                 if (window.innerWidth < 768) { // md breakpoint
-                    prevBtn.classList.add('hidden');
-                    nextBtn.classList.add('hidden');
+                    if (prevBtn) prevBtn.classList.add('hidden');
+                    if (nextBtn) nextBtn.classList.add('hidden');
                 } else {
-                    prevBtn.classList.remove('hidden');
-                    nextBtn.classList.remove('hidden');
+                    if (prevBtn) prevBtn.classList.remove('hidden');
+                    if (nextBtn) nextBtn.classList.remove('hidden');
                 }
             }
 
@@ -1404,8 +1409,9 @@
         function setupAutoScroll(sliderName) {
             const slider = document.getElementById(`${sliderName}-slider`);
             const nextBtn = document.getElementById(`${sliderName}-next`);
+            const prevBtn = document.getElementById(`${sliderName}-prev`);
 
-            if (!slider || !nextBtn) return;
+            if (!slider) return;
 
             let autoScrollInterval;
 
@@ -1439,10 +1445,11 @@
             slider.addEventListener('mouseleave', startAutoScroll);
 
             // Stop auto scroll when navigation buttons are used
-            const prevBtn = document.getElementById(`${sliderName}-prev`);
             if (prevBtn) {
                 prevBtn.addEventListener('click', stopAutoScroll);
             }
-            nextBtn.addEventListener('click', stopAutoScroll);
+            if (nextBtn) {
+                nextBtn.addEventListener('click', stopAutoScroll);
+            }
         }
     </script>
