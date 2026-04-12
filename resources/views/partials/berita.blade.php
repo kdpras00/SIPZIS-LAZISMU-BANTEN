@@ -1,14 +1,14 @@
-<div class="relative bg-gradient-to-br from-green-900 via-green-800 to-emerald-700 min-h-screen overflow-hidden"
+<div class="relative bg-gray-50 min-h-screen overflow-hidden"
     id="berita">
     <!-- Mosque Background Image Overlay -->
     <div class="absolute inset-0 opacity-90"
         style="background-image: url('{{ asset('img/masjid.webp') }}'); background-size: cover; background-position: center; background-repeat: no-repeat; will-change: transform;">
     </div>
     <!-- Green Gradient Overlay for blending -->
-    <div class="absolute inset-0 bg-gradient-to-br from-green-900/80 via-green-800/70 to-emerald-700/80"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/80 to-white/60"></div>
 
     <!-- Additional Dark Overlay for text readability -->
-    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent"></div>
 
     <div class="relative z-10 py-20">
         <div class="container mx-auto px-4 py-16">
@@ -16,17 +16,17 @@
             <!-- Enhanced Main News -->
             <div class="relative bg-white/95 rounded-3xl shadow-lg p-10 mb-12 border border-white/20">
                 <div
-                    class="absolute inset-0 bg-gradient-to-r from-green-50/50 via-emerald-50/50 to-teal-50/50 rounded-3xl">
+                    class="absolute inset-0 bg-gradient-to-r from-orange-50/50 via-orange-50/50 to-orange-50/50 rounded-3xl">
                 </div>
                 <div class="relative z-10">
                     <div class="text-center mb-12">
-                        <h2 class="text-4xl md:text-5xl font-black text-green-800 mb-4">Berita Seputar Lazismu Banten
+                        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">Berita Seputar Lazismu Banten
                         </h2>
-                        <p class="text-lg text-green-700 max-w-2xl mx-auto">Update terbaru seputar program zakat, infaq,
+                        <p class="text-lg text-gray-700 max-w-2xl mx-auto">Update terbaru seputar program zakat, infaq,
                             dan sedekah yang telah tersalurkan untuk membantu sesama</p>
                         <div class="flex justify-center mt-4">
                             <div
-                                class="w-24 h-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-full">
+                                class="w-24 h-1 bg-gradient-to-r from-orange-500 via-orange-500 to-orange-500 rounded-full">
                             </div>
                         </div>
                     </div>
@@ -60,8 +60,8 @@
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center">
                                             <div
-                                                class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2">
-                                                <i class="fas fa-user text-green-600 text-sm"></i>
+                                                class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mr-2">
+                                                <i class="fas fa-user text-orange-600 text-sm"></i>
                                             </div>
                                             <span
                                                 class="text-sm text-gray-600">{{ $item->author->name ?? 'Admin' }}</span>
@@ -73,7 +73,7 @@
                                     <!-- Read More Link -->
                                     <div class="mt-4">
                                         <a href="{{ route('news.show', $item->slug) }}"
-                                            class="text-green-600 hover:text-green-700 font-medium text-sm flex items-center">
+                                            class="text-orange-600 hover:text-orange-700 font-medium text-sm flex items-center">
                                             Baca Selengkapnya
                                             <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">

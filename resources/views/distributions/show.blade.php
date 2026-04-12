@@ -5,11 +5,11 @@
 @section('content')
 @php
     $statusBadge = $distribution->is_received
-        ? ['text' => 'Sudah Diterima', 'class' => 'bg-emerald-100 text-emerald-700']
+        ? ['text' => 'Sudah Diterima', 'class' => 'bg-orange-100 text-orange-700']
         : ['text' => 'Belum Diterima', 'class' => 'bg-amber-100 text-amber-700'];
 
     $typeLabels = [
-        'cash' => ['Tunai', 'bg-emerald-100 text-emerald-700'],
+        'cash' => ['Tunai', 'bg-orange-100 text-orange-700'],
         'goods' => ['Barang', 'bg-sky-100 text-sky-700'],
         'voucher' => ['Voucher', 'bg-amber-100 text-amber-700'],
         'service' => ['Layanan', 'bg-indigo-100 text-indigo-700'],
@@ -20,7 +20,7 @@
 <div class="space-y-6">
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <p class="text-sm font-medium text-emerald-600">#{{ $distribution->distribution_code }}</p>
+            <p class="text-sm font-medium text-orange-600">#{{ $distribution->distribution_code }}</p>
             <h1 class="text-3xl font-semibold text-gray-900">Detail Distribusi</h1>
             <p class="text-sm text-gray-500">Pantau status dan riwayat distribusi mustahik.</p>
         </div>
@@ -36,7 +36,7 @@
                 Edit
             </a>
             <a href="{{ route('distributions.receipt', $distribution) }}" target="_blank"
-               class="inline-flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700 hover:bg-emerald-100">
+               class="inline-flex items-center gap-2 rounded-lg border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-medium text-orange-700 hover:bg-orange-100">
                 <i class="bi bi-receipt text-base"></i>
                 Kwitansi
             </a>
@@ -55,7 +55,7 @@
             <section class="rounded-2xl border border-gray-100 bg-white shadow-sm">
                 <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
                     <div class="flex items-center gap-3">
-                        <span class="inline-flex items-center justify-center rounded-full bg-emerald-50 p-2 text-emerald-600">
+                        <span class="inline-flex items-center justify-center rounded-full bg-orange-50 p-2 text-orange-600">
                             <i class="bi bi-hand-thumbs-up text-lg"></i>
                         </span>
                         <h2 class="text-lg font-semibold text-gray-900">Informasi Distribusi</h2>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="rounded-2xl border border-gray-100 bg-white p-4 shadow-inner">
                             <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">Jumlah</dt>
-                            <dd class="mt-1 text-2xl font-bold text-emerald-600">
+                            <dd class="mt-1 text-2xl font-bold text-orange-600">
                                 Rp {{ number_format($distribution->amount, 0, ',', '.') }}
                             </dd>
                         </div>
@@ -115,17 +115,17 @@
                             <dd class="mt-1 text-base font-medium text-gray-900">{{ $distribution->created_at->format('d F Y H:i') }}</dd>
                         </div>
                         @if ($distribution->is_received)
-                            <div class="rounded-2xl border border-gray-100 bg-emerald-50 p-4">
-                                <dt class="text-xs font-semibold uppercase tracking-wide text-emerald-700">Tanggal Diterima</dt>
-                                <dd class="mt-1 text-base font-semibold text-emerald-900">
+                            <div class="rounded-2xl border border-gray-100 bg-orange-50 p-4">
+                                <dt class="text-xs font-semibold uppercase tracking-wide text-orange-700">Tanggal Diterima</dt>
+                                <dd class="mt-1 text-base font-semibold text-orange-900">
                                     {{ $distribution->received_date?->format('d F Y H:i') ?? 'Tidak tercatat' }}
                                 </dd>
                             </div>
                         @endif
                         @if ($distribution->received_by_name)
-                            <div class="rounded-2xl border border-gray-100 bg-emerald-50 p-4">
-                                <dt class="text-xs font-semibold uppercase tracking-wide text-emerald-700">Diterima Oleh</dt>
-                                <dd class="mt-1 text-base font-semibold text-emerald-900">
+                            <div class="rounded-2xl border border-gray-100 bg-orange-50 p-4">
+                                <dt class="text-xs font-semibold uppercase tracking-wide text-orange-700">Diterima Oleh</dt>
+                                <dd class="mt-1 text-base font-semibold text-orange-900">
                                     {{ $distribution->received_by_name }}
                                 </dd>
                             </div>
@@ -147,9 +147,9 @@
                     @endif
 
                     @if ($distribution->received_notes)
-                        <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-                            <h3 class="text-sm font-semibold text-emerald-800">Catatan Penerimaan</h3>
-                            <p class="mt-2 text-sm text-emerald-900">{{ $distribution->received_notes }}</p>
+                        <div class="rounded-2xl border border-orange-200 bg-orange-50 p-4">
+                            <h3 class="text-sm font-semibold text-orange-800">Catatan Penerimaan</h3>
+                            <p class="mt-2 text-sm text-orange-900">{{ $distribution->received_notes }}</p>
                         </div>
                     @endif
                 </div>
@@ -188,7 +188,7 @@
 
                         @if ($distribution->is_received)
                             <li class="ml-6">
-                                <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                                <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-orange-100 text-orange-600">
                                     <i class="bi bi-check-lg text-sm"></i>
                                 </span>
                                 <h3 class="text-base font-semibold text-gray-900">Distribusi Diterima</h3>
@@ -264,7 +264,7 @@
                 <div class="space-y-3 p-6">
                     @if (! $distribution->is_received)
                         <button type="button" data-open-mark-received
-                                class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-emerald-700">
+                                class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-orange-700">
                             <i class="bi bi-check-circle text-base"></i>
                             Tandai Sudah Diterima
                         </button>
@@ -277,7 +277,7 @@
                     </a>
 
                     <a href="{{ route('distributions.receipt', $distribution) }}" target="_blank"
-                       class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-700 hover:bg-emerald-100">
+                       class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-4 py-2.5 text-sm font-semibold text-orange-700 hover:bg-orange-100">
                         <i class="bi bi-receipt text-base"></i>
                         Cetak Kwitansi
                     </a>
@@ -327,13 +327,13 @@
                 <div>
                     <label for="received_by_name" class="mb-1 block text-sm font-medium text-gray-700">Diterima Oleh</label>
                     <input type="text" id="received_by_name" name="received_by_name"
-                           class="block w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:border-emerald-500 focus:ring-emerald-500"
+                           class="block w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:border-orange-500 focus:ring-orange-500"
                            placeholder="Nama penerima (opsional)">
                 </div>
                 <div>
                     <label for="received_notes" class="mb-1 block text-sm font-medium text-gray-700">Catatan Penerimaan</label>
                     <textarea id="received_notes" name="received_notes" rows="3"
-                              class="block w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:border-emerald-500 focus:ring-emerald-500"
+                              class="block w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:border-orange-500 focus:ring-orange-500"
                               placeholder="Catatan tambahan (opsional)"></textarea>
                 </div>
             </div>
@@ -343,7 +343,7 @@
                     Batal
                 </button>
                 <button type="submit"
-                        class="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700">
+                        class="rounded-xl bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">
                     Tandai Diterima
                 </button>
             </div>

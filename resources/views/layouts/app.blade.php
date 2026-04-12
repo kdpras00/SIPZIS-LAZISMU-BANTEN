@@ -198,38 +198,214 @@
             overflow: auto !important;
             padding-right: 0 !important;
         }
+
+        /* ============================================
+           SIPZIS GLOBAL THEME — Burnt Clay Humanized
+           ============================================ */
+
+        /* --- Color Tokens --- */
+        :root {
+            --sz-bg: #faf8f5;
+            --sz-card: #ffffff;
+            --sz-border: #f0ece6;
+            --sz-border-strong: #e8e0d6;
+            --sz-fg: #1c0f0a;
+            --sz-muted: #8b7e74;
+            --sz-accent: #c2410c;
+            --sz-accent-light: #fff7ed;
+            --sz-accent-hover: #9a3412;
+            --sz-success: #15803d;
+            --sz-info: #0369a1;
+            --sz-warning: #b45309;
+            --sz-danger: #dc2626;
+        }
+
+        /* --- Page Background --- */
+        main, main > div { background: var(--sz-bg) !important; }
+
+        /* --- Cards: warm borders, softer shadow --- */
+        main .bg-white.rounded-lg,
+        main .bg-white.rounded-xl,
+        main .bg-white.rounded-2xl {
+            border-color: var(--sz-border) !important;
+            box-shadow: 0 1px 3px rgba(28,15,10,0.04) !important;
+        }
+
+        /* --- Table Header: warm cream --- */
+        main thead, main thead th,
+        main .bg-gray-50 th {
+            background: var(--sz-bg) !important;
+            color: var(--sz-muted) !important;
+            border-color: var(--sz-border) !important;
+            font-size: 0.75rem;
+            letter-spacing: 0.04em;
+        }
+
+        /* --- Table body rows --- */
+        main tbody tr {
+            border-color: var(--sz-border) !important;
+            transition: background 0.15s ease;
+        }
+        main tbody tr:hover {
+            background: var(--sz-accent-light) !important;
+        }
+        main tbody td {
+            border-color: var(--sz-border) !important;
+            color: var(--sz-fg);
+        }
+
+        /* --- Section borders --- */
+        main .border-gray-200,
+        main .border-gray-300,
+        main .border-b {
+            border-color: var(--sz-border) !important;
+        }
+
+        /* --- Form inputs --- */
+        main input[type="text"],
+        main input[type="email"],
+        main input[type="password"],
+        main input[type="number"],
+        main input[type="date"],
+        main input[type="search"],
+        main input[type="tel"],
+        main input[type="url"],
+        main select,
+        main textarea {
+            border-color: var(--sz-border-strong) !important;
+            background: var(--sz-card) !important;
+            color: var(--sz-fg) !important;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        main input:focus,
+        main select:focus,
+        main textarea:focus {
+            border-color: var(--sz-accent) !important;
+            box-shadow: 0 0 0 3px rgba(194,65,12,0.1) !important;
+            outline: none !important;
+        }
+
+        /* --- Primary Buttons: orange accent --- */
+        main .bg-blue-600,
+        main .bg-blue-500,
+        main .bg-indigo-600,
+        main .bg-green-600,
+        main .bg-emerald-600 {
+            background: var(--sz-accent) !important;
+            border-color: var(--sz-accent) !important;
+        }
+        main .bg-blue-600:hover,
+        main .bg-blue-500:hover,
+        main .bg-indigo-600:hover,
+        main .bg-green-600:hover,
+        main .bg-emerald-600:hover {
+            background: var(--sz-accent-hover) !important;
+            border-color: var(--sz-accent-hover) !important;
+        }
+
+        /* --- Gradient buttons override --- */
+        main .bg-gradient-to-r.from-orange-500,
+        main .bg-gradient-to-r.from-blue-500 {
+            background: var(--sz-accent) !important;
+        }
+
+        /* --- Text links: accent color --- */
+        main .text-blue-600,
+        main .text-blue-700,
+        main .text-indigo-600 {
+            color: var(--sz-accent) !important;
+        }
+        main a.text-blue-600:hover,
+        main a.text-blue-700:hover {
+            color: var(--sz-accent-hover) !important;
+        }
+
+        /* --- Badges: warm tones --- */
+        main .bg-blue-100 { background: var(--sz-accent-light) !important; }
+        main .text-blue-800 { color: var(--sz-accent) !important; }
+
+        /* --- Pagination active --- */
+        main .bg-blue-600.text-white,
+        main [class*="bg-blue-600"][class*="border-blue-600"] {
+            background: var(--sz-accent) !important;
+            border-color: var(--sz-accent) !important;
+        }
+
+        /* --- Focus ring: warm orange --- */
+        main .focus\:ring-blue-500:focus,
+        main .focus\:ring-2:focus {
+            --tw-ring-color: rgba(194,65,12,0.2) !important;
+        }
+        main .focus\:border-blue-500:focus {
+            border-color: var(--sz-accent) !important;
+        }
+
+        /* --- Stat card icons: warm tint override --- */
+        main .text-4xl.text-blue-600 { color: var(--sz-accent) !important; }
+        main .text-4xl.text-blue-500 { color: var(--sz-info) !important; }
+
+        /* --- Page headings: warm dark --- */
+        main h2, main h3, main h4, main h5 {
+            color: var(--sz-fg) !important;
+        }
+        main .text-gray-600,
+        main .text-gray-500 {
+            color: var(--sz-muted) !important;
+        }
+
+        /* --- Modal & dropdown: warm styling --- */
+        .dropdown-menu {
+            border: 1px solid var(--sz-border) !important;
+            box-shadow: 0 8px 24px rgba(28,15,10,0.08) !important;
+            border-radius: 12px !important;
+        }
+
+        /* --- SweetAlert theme override --- */
+        .swal2-popup {
+            border-radius: 16px !important;
+        }
+        .swal2-confirm {
+            background: var(--sz-accent) !important;
+            border-radius: 8px !important;
+        }
+
+        /* --- Print: keep it clean --- */
+        @media print {
+            main, main > div { background: white !important; }
+            #sidebar, header { display: none !important; }
+        }
     </style>
 </head>
 
-<body class="bg-light">
-    <div class="container-fluid p-0">
-        <div class="row g-0 min-vh-100">
+<body style="background-color: #faf8f5;">
+    <div class="w-full">
+        <div class="flex min-h-screen">
             @auth
                 @if (auth()->user()->role !== 'muzakki')
-                    <aside class="col-md-3 col-lg-2 p-0">
+                    <aside class="flex-shrink-0 hidden md:block" style="width: 272px;">
                         @include('components.sidebar', [
                             'user' => auth()->user(),
                             'currentRoute' => request()->route()->getName() ?? '',
                         ])
                     </aside>
-                    <main class="col-md-9 col-lg-10 p-0">
+                    <main class="flex-1 min-w-0">
                         @include('components.navbar')
-                        <div class="p-4">
+                        <div>
                             @yield('content')
                         </div>
                     </main>
                 @else
-                    <main class="col-12 p-0 muzakki-layout">
-                        <div class="p-4">
+                    <main class="w-full muzakki-layout">
+                        <div>
                             @include('components.alerts')
                             @yield('content')
                         </div>
                     </main>
                 @endif
             @else
-                <main class="col-12 p-0">
+                <main class="w-full">
                     @include('components.navbar')
-                    <div class="p-4">
+                    <div>
                         @include('components.alerts')
                         @yield('content')
                     </div>
@@ -267,7 +443,7 @@
             };
 
             const swalBase = {
-                confirmButtonColor: '#047857',
+                confirmButtonColor: '#ea580c',
                 confirmButtonText: 'Mengerti',
                 allowOutsideClick: false,
                 buttonsStyling: true,

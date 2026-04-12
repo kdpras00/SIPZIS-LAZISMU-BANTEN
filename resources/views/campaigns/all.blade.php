@@ -7,26 +7,26 @@
 @endsection
 
 @section('content')
-<div class="min-h-screen relative bg-emerald-900 pb-20 pt-10 overflow-hidden">
+<div class="min-h-screen relative bg-gray-50 pb-20 pt-10 overflow-hidden">
     
     <!-- Background Image & Overlay -->
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay"
+        <div class="absolute inset-0 bg-cover bg-center opacity-10"
              style="background-image: url('{{ asset('img/masjid.webp') }}');">
         </div>
-        <div class="absolute inset-0 bg-gradient-to-br from-emerald-950/95 via-emerald-900/90 to-emerald-800/80"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/80 to-white/60"></div>
     </div>
 
     <div class="container relative z-10 mx-auto px-4 max-w-7xl">
         <!-- Header Section -->
         <div class="text-center mb-16 pt-10 animate-fadeInUp">
-            <span class="inline-block px-4 py-1.5 rounded-full bg-white/10 text-emerald-100 text-sm font-bold mb-4 border border-white/20 backdrop-blur-sm">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-orange-100 text-orange-600 text-sm font-bold mb-4 border border-white/20 backdrop-blur-sm">
                 MARI BERBAGI KEBAIKAN
             </span>
-            <h1 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+            <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                 Daftar Program & Campaign
             </h1>
-            <p class="text-lg text-emerald-50/90 max-w-2xl mx-auto leading-relaxed font-light">
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed font-light">
                 Salurkan zakat, infaq, dan sedekah Anda melalui berbagai program pilihan yang transparan dan tepat sasaran.
             </p>
         </div>
@@ -34,9 +34,9 @@
         <!-- Filter/Navigation (Optional - Implementation for future) -->
         {{-- 
         <div class="flex flex-wrap justify-center gap-4 mb-12 animate-fadeInUp delay-100">
-            <a href="#" class="px-6 py-2.5 rounded-full bg-green-600 text-white font-semibold shadow-lg shadow-green-200 hover:shadow-xl hover:-translate-y-0.5 transition-all">Semua</a>
-            <a href="#" class="px-6 py-2.5 rounded-full bg-white text-gray-600 font-medium border border-gray-200 hover:border-green-300 hover:text-green-600 transition-all">Pendidikan</a>
-            <a href="#" class="px-6 py-2.5 rounded-full bg-white text-gray-600 font-medium border border-gray-200 hover:border-green-300 hover:text-green-600 transition-all">Kesehatan</a>
+            <a href="#" class="px-6 py-2.5 rounded-full bg-orange-600 text-white font-semibold shadow-lg shadow-green-200 hover:shadow-xl hover:-translate-y-0.5 transition-all">Semua</a>
+            <a href="#" class="px-6 py-2.5 rounded-full bg-white text-gray-600 font-medium border border-gray-200 hover:border-orange-300 hover:text-orange-600 transition-all">Pendidikan</a>
+            <a href="#" class="px-6 py-2.5 rounded-full bg-white text-gray-600 font-medium border border-gray-200 hover:border-orange-300 hover:text-orange-600 transition-all">Kesehatan</a>
         </div>
         --}}
 
@@ -49,7 +49,7 @@
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Belum Ada Campaign</h3>
                 <p class="text-gray-500">Mohon maaf, saat ini belum ada campaign yang tersedia.</p>
                 <div class="mt-8">
-                    <a href="{{ route('home') }}" class="inline-flex items-center text-green-600 font-semibold hover:text-green-700">
+                    <a href="{{ route('home') }}" class="inline-flex items-center text-orange-600 font-semibold hover:text-orange-700">
                         <i class="bi bi-arrow-left mr-2"></i> Kembali ke Beranda
                     </a>
                 </div>
@@ -96,7 +96,7 @@
                             
                             <!-- Category Badge -->
                             <div class="absolute top-4 left-4">
-                                <span class="bg-white/95 backdrop-blur-sm text-green-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm border border-green-100">
+                                <span class="bg-white/95 backdrop-blur-sm text-orange-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm border border-orange-100">
                                     {{ $categoryTitle }}
                                 </span>
                             </div>
@@ -104,7 +104,7 @@
 
                         <!-- Content -->
                         <div class="p-6 flex flex-col flex-1">
-                            <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 leading-snug group-hover:text-green-600 transition-colors">
+                            <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 leading-snug group-hover:text-orange-600 transition-colors">
                                 <a href="{{ route('campaigns.show', [$campaign->program_category, $campaign]) }}">
                                     {{ $campaign->title }}
                                 </a>
@@ -119,7 +119,7 @@
                                 <div class="flex justify-between items-end mb-2">
                                     <div class="flex flex-col">
                                         <span class="text-xs text-gray-500 mb-0.5">Terkumpul</span>
-                                        <span class="text-sm font-bold text-green-600">{{ $campaign->formatted_collected_amount }}</span>
+                                        <span class="text-sm font-bold text-orange-600">{{ $campaign->formatted_collected_amount }}</span>
                                     </div>
                                     <span class="text-xs font-bold text-gray-700 bg-gray-100 px-2 py-1 rounded-lg">
                                         {{ number_format($campaign->progress_percentage, 0) }}%
@@ -127,13 +127,13 @@
                                 </div>
                                 
                                 <div class="w-full bg-gray-100 rounded-full h-2 mb-4 overflow-hidden">
-                                    <div class="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full transition-all duration-1000"
+                                    <div class="bg-gradient-to-r from-orange-500 to-orange-500 h-2 rounded-full transition-all duration-1000"
                                          style="width: {{ min($campaign->progress_percentage, 100) }}%">
                                     </div>
                                 </div>
 
                                 <a href="{{ route('campaigns.show', [$campaign->program_category, $campaign]) }}" 
-                                   class="block w-full py-3 px-4 bg-white border border-green-600 text-green-600 font-bold rounded-xl text-center hover:bg-green-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-0.5">
+                                   class="block w-full py-3 px-4 bg-white border border-orange-600 text-orange-600 font-bold rounded-xl text-center hover:bg-orange-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-0.5">
                                     Donasi Sekarang
                                 </a>
                             </div>

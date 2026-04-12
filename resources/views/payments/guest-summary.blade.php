@@ -11,10 +11,10 @@
 
     <div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center font-sans">
         {{-- Main Card: Changed max-w-md to max-w-2xl for wider layout --}}
-        <div class="max-w-2xl w-full space-y-6 bg-white p-8 rounded-2xl shadow-xl border-t-4 border-emerald-500 relative overflow-hidden">
+        <div class="max-w-2xl w-full space-y-6 bg-white p-8 rounded-2xl shadow-xl border-t-4 border-orange-500 relative overflow-hidden">
             
             {{-- Decorative Background Elements --}}
-            <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-emerald-50 opacity-50 blur-xl"></div>
+            <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-orange-50 opacity-50 blur-xl"></div>
             <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-32 h-32 rounded-full bg-yellow-50 opacity-50 blur-xl"></div>
 
             <div class="relative z-10">
@@ -24,8 +24,8 @@
                     </div> -->
 
                 {{-- Amount Card (Compact) --}}
-                <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-100 shadow-sm mb-6 text-center transform transition-all hover:shadow-md">
-                    <p class="text-xs font-bold text-emerald-600 uppercase tracking-widest mb-1">Total Pembayaran</p>
+                <div class="bg-gradient-to-br from-orange-50 to-orange-50 rounded-xl p-5 border border-orange-100 shadow-sm mb-6 text-center transform transition-all hover:shadow-md">
+                    <p class="text-xs font-bold text-orange-600 uppercase tracking-widest mb-1">Total Pembayaran</p>
                     <div class="text-4xl font-extrabold text-gray-900 my-2 tracking-tight">
                         Rp {{ number_format($payment->paid_amount, 0, ',', '.') }}
                     </div>
@@ -44,7 +44,7 @@
                 {{-- Payment Methods --}}
                 <div class="space-y-5">
                     <h3 class="text-sm font-bold text-gray-800 flex items-center">
-                        <span class="w-1 h-5 bg-emerald-500 rounded-full mr-3"></span>
+                        <span class="w-1 h-5 bg-orange-500 rounded-full mr-3"></span>
                         Metode Pembayaran
                     </h3>
 
@@ -53,21 +53,21 @@
                         <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">QRIS & E-Wallet</p>
                         {{-- Grid 4 Columns for Wallets --}}
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="qris">
+                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="qris">
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" class="h-6 mb-2 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
-                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-emerald-700 transition-colors">Scan QR</span>
+                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-orange-700 transition-colors">Scan QR</span>
                             </button>
-                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="gopay">
+                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="gopay">
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Logo_Gopay.svg" class="h-4 mb-3 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
-                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-emerald-700 transition-colors">GoPay</span>
+                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-orange-700 transition-colors">GoPay</span>
                             </button>
-                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="shopeepay">
+                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="shopeepay">
                                 <img src="https://images.seeklogo.com/logo-png/40/1/shopee-pay-logo-png_seeklogo-406839.png" class="h-6 mb-2 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
-                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-emerald-700 transition-colors">ShopeePay</span>
+                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-orange-700 transition-colors">ShopeePay</span>
                             </button>
-                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="dana">
+                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="dana">
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" class="h-4 mb-3 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
-                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-emerald-700 transition-colors">Dana (Link)</span>
+                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-orange-700 transition-colors">Dana (Link)</span>
                             </button>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                                     'mandiri_va' => ['Mandiri', 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg'],
                                     'bri_va' => ['BRI', 'https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg'],
                                     'bni_va' => ['BNI', 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg']] as $method => $details)
-                            <button class="flex items-center px-4 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-emerald-500 hover:shadow-sm payment-method-btn transition-all text-left group" data-method="{{ $method }}">
+                            <button class="flex items-center px-4 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-sm payment-method-btn transition-all text-left group" data-method="{{ $method }}">
                                 <img src="{{ $details[1] }}" class="h-5 w-10 object-contain mr-3 filter grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all">
                                 <span class="text-sm font-medium text-gray-600 group-hover:text-gray-900 transition-colors">{{ $details[0] }} VA</span>
                             </button>
@@ -93,11 +93,11 @@
                 {{-- Action Buttons --}}
                 <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-50 mt-6">
                     <button id="leave-page-button"
-                        class="w-full sm:w-1/3 order-2 sm:order-1 bg-white border border-gray-200 text-gray-500 font-medium py-3 rounded-xl hover:text-emerald-600 hover:border-emerald-200 hover:bg-emerald-50 transition text-sm">
+                        class="w-full sm:w-1/3 order-2 sm:order-1 bg-white border border-gray-200 text-gray-500 font-medium py-3 rounded-xl hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50 transition text-sm">
                         Bayar Nanti
                     </button>
                     <button id="pay-button"
-                        class="w-full sm:w-2/3 order-1 sm:order-2 bg-emerald-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-emerald-700 transition shadow-lg shadow-emerald-200 disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] flex items-center justify-center text-base"
+                        class="w-full sm:w-2/3 order-1 sm:order-2 bg-orange-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-orange-700 transition shadow-lg shadow-orange-200 disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] flex items-center justify-center text-base"
                         disabled>
                         Pilih Metode
                     </button>
@@ -176,7 +176,7 @@
                 button.addEventListener('click', function() {
                     // Reset styles
                     document.querySelectorAll('.payment-method-btn').forEach(btn => {
-                        btn.classList.remove('border-emerald-500', 'bg-emerald-50', 'ring-2', 'ring-emerald-100', 'shadow-md');
+                        btn.classList.remove('border-orange-500', 'bg-orange-50', 'ring-2', 'ring-orange-100', 'shadow-md');
                         btn.classList.add('border-gray-200');
                         const img = btn.querySelector('img');
                         if(img) {
@@ -187,7 +187,7 @@
 
                     // Set Active
                     this.classList.remove('border-gray-200');
-                    this.classList.add('border-emerald-500', 'bg-emerald-50', 'ring-2', 'ring-emerald-100', 'shadow-md');
+                    this.classList.add('border-orange-500', 'bg-orange-50', 'ring-2', 'ring-orange-100', 'shadow-md');
                     const img = this.querySelector('img');
                     if(img) {
                         img.classList.remove('grayscale', 'opacity-70');

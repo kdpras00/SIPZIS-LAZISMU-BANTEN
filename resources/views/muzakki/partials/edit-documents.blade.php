@@ -12,7 +12,7 @@
             </div>
         </div>
         <p class="text-gray-500 mb-4 text-sm" id="profilePhotoText">{{ $muzakki->profile_photo ? '' : 'Belum ada foto profil' }}</p>
-        <button type="button" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-full transition-colors shadow-sm"
+        <button type="button" class="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-full transition-colors shadow-sm"
             onclick="document.getElementById('profilePhotoInput').click()">
             {{ $muzakki->profile_photo ? 'Ganti foto profil' : 'Upload foto profil' }}
         </button>
@@ -22,14 +22,14 @@
     <!-- KTP -->
     <div class="mb-4">
         <label for="nik" class="block text-sm font-medium text-gray-700 mb-2">KTP<span class="text-red-500 ml-1">*</span></label>
-        <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-green-500 hover:bg-green-50 transition-all cursor-pointer group"
+        <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-orange-500 hover:bg-orange-50 transition-all cursor-pointer group"
             onclick="document.getElementById('ktpInput').click()">
             <img id="ktpPreview" src="{{ $muzakki->ktp_photo ? asset('storage/' . $muzakki->ktp_photo) : '' }}" 
                 alt="Preview KTP"
                 class="w-full max-w-sm mx-auto h-auto rounded-lg shadow-sm object-contain"
                 style="{{ $muzakki->ktp_photo ? '' : 'display: none;' }}">
             <div id="ktpPlaceholder" style="{{ $muzakki->ktp_photo ? 'display: none;' : '' }}">
-                <i class="bi bi-plus-circle text-green-500 text-4xl mb-3 group-hover:scale-110 transition-transform inline-block"></i>
+                <i class="bi bi-plus-circle text-orange-500 text-4xl mb-3 group-hover:scale-110 transition-transform inline-block"></i>
                 <p class="text-gray-500 text-sm font-medium">Upload foto KTP</p>
                 <p class="text-gray-400 text-xs mt-1">Format: JPG, PNG (Max. 2MB)</p>
             </div>

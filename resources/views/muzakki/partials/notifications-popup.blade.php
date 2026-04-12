@@ -5,7 +5,7 @@
     {{-- Mark all as read button --}}
     <form action="{{ route('notifications.markAsRead') }}" method="POST" class="text-right mb-4">
         @csrf
-        <button type="submit" class="text-sm text-green-600 hover:text-green-700 font-medium transition-colors duration-200">
+        <button type="submit" class="text-sm text-orange-600 hover:text-orange-700 font-medium transition-colors duration-200">
             Tandai semua sebagai dibaca
         </button>
     </form>
@@ -16,7 +16,7 @@
         @php
             $actionUrl = $notification->action_url ?? route('notifications.index');
         @endphp
-        <a href="{{ $actionUrl }}" class="block border border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-green-200 no-underline text-gray-900 {{ $notification->is_read ? 'bg-white' : 'bg-blue-50' }}">
+        <a href="{{ $actionUrl }}" class="block border border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-200 no-underline text-gray-900 {{ $notification->is_read ? 'bg-white' : 'bg-blue-50' }}">
             <div class="flex items-start">
                 {{-- Icon --}}
                 <div class="flex-shrink-0 mt-1">
@@ -77,7 +77,7 @@
 
     {{-- View All Link --}}
     <div class="pt-3 border-t border-gray-200">
-        <a href="{{ route('notifications.index') }}" class="text-base font-medium text-green-600 hover:text-green-700 flex items-center justify-center transition-colors duration-200">
+        <a href="{{ route('notifications.index') }}" class="text-base font-medium text-orange-600 hover:text-orange-700 flex items-center justify-center transition-colors duration-200">
             Lihat semua notifikasi
             <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -96,7 +96,7 @@
     <h3 class="mt-4 text-lg font-medium text-gray-900">Tidak ada notifikasi</h3>
     <p class="mt-2 text-base text-gray-500">Anda tidak memiliki notifikasi saat ini.</p>
     <div class="mt-6">
-        <a href="{{ route('program') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+        <a href="{{ route('program') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200">
             Lakukan Donasi
         </a>
     </div>

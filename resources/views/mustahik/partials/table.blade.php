@@ -16,8 +16,8 @@
             <tr class="bg-white border-b hover:bg-gray-50">
                 <td class="px-6 py-4">
                     <div class="flex items-center">
-                        <div class="bg-green-100 rounded-full p-2 mr-3">
-                            <i class="bi bi-person-heart text-green-600"></i>
+                        <div class="bg-orange-100 rounded-full p-2 mr-3">
+                            <i class="bi bi-person-heart text-orange-600"></i>
                         </div>
                         <div>
                             <div class="font-semibold text-gray-900">{{ $item->name }}</div>

@@ -19,8 +19,8 @@
     <div class="bg-white rounded-xl shadow-md mb-6 overflow-hidden">
         <div class="divide-y divide-gray-100">
             <!-- Transfer Campaign Ownership -->
-            <a href="{{ route('dashboard.management.transfer-account') }}" class="flex items-center gap-4 p-5 hover:bg-green-50 transition-all duration-300 group">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+            <a href="{{ route('dashboard.management.transfer-account') }}" class="flex items-center gap-4 p-5 hover:bg-orange-50 transition-all duration-300 group">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 9L21 3M21 3H15M21 3L13 11M10 5H7.8C6.11984 5 5.27976 5 4.63803 5.32698C4.07354 5.6146 3.6146 6.07354 3.32698 6.63803C3 7.27976 3 8.11984 3 9.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H14.2C15.8802 21 16.7202 21 17.362 20.673C17.9265 20.3854 18.3854 19.9265 18.673 19.362C19 18.7202 19 17.8802 19 16.2V14" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
@@ -29,7 +29,7 @@
                     <div class="font-medium text-gray-900 mb-1">Transfer Campaign Ownership</div>
                     <p class="text-sm text-gray-600 m-0">Transfer kepemilikan campaign ke pengguna lain</p>
                 </div>
-                <svg class="w-5 h-5 text-gray-400 transition-all duration-300 group-hover:translate-x-1 group-hover:text-green-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-5 h-5 text-gray-400 transition-all duration-300 group-hover:translate-x-1 group-hover:text-orange-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </a>

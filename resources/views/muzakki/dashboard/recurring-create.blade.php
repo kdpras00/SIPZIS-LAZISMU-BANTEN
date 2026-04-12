@@ -19,7 +19,7 @@
             @csrf
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Program</label>
-                <select name="program_id" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+                <select name="program_id" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
                     <option value="">Pilih program</option>
                     @foreach($programs as $program)
                         <option value="{{ $program->id }}" {{ old('program_id') == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
@@ -28,28 +28,28 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Nominal donasi</label>
-                <input type="number" min="10000" name="amount" value="{{ old('amount') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200" placeholder="Minimal Rp10.000" required>
+                <input type="number" min="10000" name="amount" value="{{ old('amount') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200" placeholder="Minimal Rp10.000" required>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Frekuensi</label>
-                    <select name="frequency" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+                    <select name="frequency" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
                         <option value="monthly" {{ old('frequency') === 'monthly' ? 'selected' : '' }}>Bulanan</option>
                         <option value="weekly" {{ old('frequency') === 'weekly' ? 'selected' : '' }}>Mingguan</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Mulai tanggal</label>
-                    <input type="date" name="start_date" value="{{ old('start_date') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200">
+                    <input type="date" name="start_date" value="{{ old('start_date') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
                 </div>
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Catatan (opsional)</label>
-                <textarea name="notes" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200" placeholder="Tambahkan doa atau niat khusus">{{ old('notes') }}</textarea>
+                <textarea name="notes" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200" placeholder="Tambahkan doa atau niat khusus">{{ old('notes') }}</textarea>
             </div>
             <div class="flex items-center justify-between pt-4">
                 <a href="{{ route('dashboard.recurring') }}" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">Batal</a>
-                <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors">Simpan</button>
+                <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-orange-600 rounded-lg hover:bg-orange-700 transition-colors">Simpan</button>
             </div>
         </form>
     </div>

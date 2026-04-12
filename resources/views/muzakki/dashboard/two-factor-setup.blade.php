@@ -19,12 +19,12 @@
     <!-- Already Enabled -->
     <div class="bg-white rounded-xl shadow-md mb-6">
         <div class="p-6">
-            <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-lg mb-4">
+            <div class="bg-orange-50 border-l-4 border-orange-400 p-4 rounded-lg mb-4">
                 <div class="flex items-start">
-                    <i class="bi bi-check-circle text-green-600 mr-2 mt-0.5"></i>
+                    <i class="bi bi-check-circle text-orange-600 mr-2 mt-0.5"></i>
                     <div>
-                        <p class="text-sm text-green-800 m-0 font-semibold">Autentikasi Dua Faktor Aktif</p>
-                        <p class="text-sm text-green-700 m-0 mt-1">Akun Anda dilindungi dengan autentikasi dua faktor.</p>
+                        <p class="text-sm text-orange-800 m-0 font-semibold">Autentikasi Dua Faktor Aktif</p>
+                        <p class="text-sm text-orange-700 m-0 mt-1">Akun Anda dilindungi dengan autentikasi dua faktor.</p>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                 </h3>
                 
                 <!-- Larger QR Code with better styling -->
-                <div class="inline-block p-6 bg-white border-4 border-green-500 rounded-2xl shadow-lg">
+                <div class="inline-block p-6 bg-white border-4 border-orange-500 rounded-2xl shadow-lg">
                     <img src="{{ $qrCode }}" 
                          alt="QR Code" 
                          class="mx-auto" 

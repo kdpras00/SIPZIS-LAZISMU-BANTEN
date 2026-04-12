@@ -7,11 +7,11 @@
 @endsection
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-b from-emerald-800 via-green-700 to-teal-800">
+<div class="min-h-screen bg-gradient-to-b from-orange-800 via-orange-700 to-orange-800">
     <!-- Simple Background Pattern -->
     <div class="absolute inset-0 opacity-10">
-        <div class="absolute top-20 right-20 w-64 h-64 bg-emerald-300 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-20 left-20 w-64 h-64 bg-teal-300 rounded-full blur-3xl"></div>
+        <div class="absolute top-20 right-20 w-64 h-64 bg-orange-300 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 left-20 w-64 h-64 bg-orange-300 rounded-full blur-3xl"></div>
     </div>
 
     <div class="relative container mx-auto px-4 py-8">
@@ -45,15 +45,15 @@
                     </div>
 
                     <!-- Donation Card -->
-                    <div class="bg-white border-2 border-emerald-100 rounded-xl p-6 shadow-sm">
+                    <div class="bg-white border-2 border-orange-100 rounded-xl p-6 shadow-sm">
                         @if($program->isCompleted())
                             {{-- Completed Badge --}}
-                            <div class="bg-emerald-100 border border-emerald-300 rounded-xl p-4 mb-4">
+                            <div class="bg-orange-100 border border-orange-300 rounded-xl p-4 mb-4">
                                 <div class="flex items-center">
-                                    <i class="fas fa-check-circle text-emerald-600 text-2xl mr-3"></i>
+                                    <i class="fas fa-check-circle text-orange-600 text-2xl mr-3"></i>
                                     <div>
-                                        <h3 class="font-bold text-emerald-800">Target Tercapai!</h3>
-                                        <p class="text-sm text-emerald-700">Program ini telah mencapai target donasi.</p>
+                                        <h3 class="font-bold text-orange-800">Target Tercapai!</h3>
+                                        <p class="text-sm text-orange-700">Program ini telah mencapai target donasi.</p>
                                     </div>
                                 </div>
                             </div>
@@ -61,13 +61,13 @@
                         
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg font-semibold text-gray-800">Dana Terkumpul</h3>
-                            <span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">
+                            <span class="bg-orange-100 text-orange-700 text-xs font-semibold px-3 py-1 rounded-full">
                                 {{ number_format($program->progress_percentage, 1) }}%
                             </span>
                         </div>
 
                         <div class="mb-5">
-                            <p class="text-3xl font-bold text-emerald-700 mb-1">
+                            <p class="text-3xl font-bold text-orange-700 mb-1">
                                 {{ $program->formatted_total_collected }}
                             </p>
                             {{-- <p class="text-sm text-gray-500">
@@ -78,7 +78,7 @@
                         <!-- Progress Bar -->
                         <div class="mb-6">
                             <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                                <div class="bg-gradient-to-r from-emerald-500 to-teal-500 h-3 rounded-full transition-all duration-500"
+                                <div class="bg-gradient-to-r from-orange-500 to-orange-500 h-3 rounded-full transition-all duration-500"
                                     style="width: {{ min(100, $program->progress_percentage) }}%"></div>
                             </div>
                         </div>
@@ -120,7 +120,7 @@
                         @else
                             {{-- Active donation button --}}
                             <a href="{{ route('guest.payment.create', ['program_id' => $program->id]) }}"
-                                class="inline-flex items-center justify-center w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-6 py-3 rounded-lg hover:from-emerald-700 hover:to-teal-700 transition-all font-semibold shadow-md">
+                                class="inline-flex items-center justify-center w-full bg-gradient-to-r from-orange-600 to-orange-600 text-white px-6 py-3 rounded-lg hover:from-orange-700 hover:to-orange-700 transition-all font-semibold shadow-md">
                                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                                     <path
                                         d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
@@ -153,7 +153,7 @@
         @if($prayers->count() > 0)
         <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                <i class="fas fa-praying-hands text-emerald-600 mr-3"></i>
+                <i class="fas fa-praying-hands text-orange-600 mr-3"></i>
                 Doa-doa Orang Baik
             </h2>
             
@@ -193,10 +193,10 @@
             @if($recentDonations->count() > 0)
             <div class="space-y-3">
                 @foreach($recentDonations as $donation)
-                <div class="bg-emerald-50 rounded-lg p-4 hover:bg-emerald-100 transition-colors">
+                <div class="bg-orange-50 rounded-lg p-4 hover:bg-orange-100 transition-colors">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div class="flex items-center">
-                            <div class="bg-emerald-600 text-white p-3 rounded-full mr-4">
+                            <div class="bg-orange-600 text-white p-3 rounded-full mr-4">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
@@ -206,7 +206,7 @@
                                 <p class="text-sm text-gray-600">{{ $donation->payment_date->format('d M Y') }} • {{ $donation->payment_date->diffForHumans() }}</p>
                             </div>
                         </div>
-                        <div class="bg-emerald-600 text-white px-4 py-2 rounded-lg">
+                        <div class="bg-orange-600 text-white px-4 py-2 rounded-lg">
                             <p class="font-bold">Rp {{ number_format($donation->paid_amount, 0, ',', '.') }}</p>
                         </div>
                     </div>
@@ -215,15 +215,15 @@
             </div>
             @else
             <div class="text-center py-12">
-                <div class="bg-emerald-100 rounded-full p-6 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-                    <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-orange-100 rounded-full p-6 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Belum Ada Donasi</h3>
                 <p class="text-gray-600 mb-4">Jadilah yang pertama berdonasi untuk program ini.</p>
                 <a href="{{ route('guest.payment.create', ['program_id' => $program->id]) }}"
-                    class="inline-block bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition-colors font-semibold">
+                    class="inline-block bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors font-semibold">
                     Mulai Berdonasi
                 </a>
             </div>

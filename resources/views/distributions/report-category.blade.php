@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const values = [];
     const colors = [
         '#0d6efd', '#6f42c1', '#d63384', '#dc3545',
-        '#fd7e14', '#ffc107', '#198754', '#20c997'
+        '#fd7e14', '#ffc107', '#c2410c', '#20c997'
     ];
     
     Object.keys(categories).forEach((key, index) => {

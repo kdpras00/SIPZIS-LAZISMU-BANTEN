@@ -7,3 +7,33 @@
     @apply no-underline;
   }
 }
+
+/* Override Bootstrap Success themes to Orange to match branding */
+:root {
+    --bs-success: #ea580c;
+    --bs-success-rgb: 234, 88, 12;
+}
+
+.bg-success {
+    background-color: var(--bs-success) !important;
+}
+.text-success {
+    color: var(--bs-success) !important;
+}
+.btn-success {
+    --bs-btn-bg: #ea580c;
+    --bs-btn-border-color: #ea580c;
+    --bs-btn-hover-bg: #c2410c;
+    --bs-btn-hover-border-color: #c2410c;
+    --bs-btn-active-bg: #c2410c;
+    --bs-btn-active-border-color: #c2410c;
+}
+.btn-outline-success {
+    --bs-btn-color: #ea580c;
+    --bs-btn-border-color: #ea580c;
+    --bs-btn-hover-bg: #ea580c;
+    --bs-btn-hover-border-color: #ea580c;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-active-bg: #ea580c;
+    --bs-btn-active-border-color: #ea580c;
+}

@@ -22,7 +22,7 @@
                     <div class="border-b border-gray-200">
                         <div class="flex">
                             <button type="button" onclick="switchTab('penghasilan')" id="tab-penghasilan"
-                                class="tab-button active flex-1 py-5 px-6 text-center font-semibold border-b-4 border-green-500 text-green-600 bg-green-50 transition-all duration-300">
+                                class="tab-button active flex-1 py-5 px-6 text-center font-semibold border-b-4 border-orange-500 text-orange-600 bg-orange-50 transition-all duration-300">
                                 <i class="fas fa-user-tie mr-2"></i>Penghasilan
                             </button>
                             <button type="button" onclick="switchTab('harta')" id="tab-harta"
@@ -42,12 +42,12 @@
                                     <div class="flex gap-3 mb-6">
                                         <button type="button" onclick="togglePenghasilanType('perbulan')"
                                             id="penghasilan-perbulan"
-                                            class="flex-1 py-3 px-4 bg-green-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-green-600 shadow-sm">
+                                            class="flex-1 py-3 px-4 bg-orange-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-orange-600 shadow-sm">
                                             <i class="fas fa-calendar-alt mr-2"></i>Perbulan
                                         </button>
                                         <button type="button" onclick="togglePenghasilanType('pertahun')"
                                             id="penghasilan-pertahun"
-                                            class="flex-1 py-3 px-4 bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-green-600 shadow-sm">
+                                            class="flex-1 py-3 px-4 bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-orange-600 shadow-sm">
                                             <i class="fas fa-calendar mr-2"></i>Pertahun
                                         </button>
                                     </div>
@@ -63,7 +63,7 @@
                                             Pendapatan (Gaji bulanan)
                                         </label>
                                         <div
-                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-green-500">
+                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
                                             <span class="px-3 text-gray-500 text-sm">Rp</span>
                                             <input type="text" id="income"
                                                 class="w-full py-3 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
@@ -75,7 +75,7 @@
                                             Pendapatan lain bulanan (opsional)
                                         </label>
                                         <div
-                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-green-500">
+                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
                                             <span class="px-3 text-gray-500 text-sm">Rp</span>
                                             <input type="text" id="otherIncome"
                                                 class="w-full py-3 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
@@ -88,7 +88,7 @@
                                             Hutang/Cicilan bulanan (opsional)
                                         </label>
                                         <div
-                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-green-500">
+                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
                                             <span class="px-3 text-gray-500 text-sm">Rp</span>
                                             <input type="text" id="debt"
                                                 class="w-full py-3 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
@@ -104,11 +104,11 @@
                                 <div class="mb-6">
                                     <div class="flex gap-3 mb-6">
                                         <button type="button" onclick="toggleHartaType('perbulan')" id="harta-perbulan"
-                                            class="flex-1 py-3 px-4 bg-green-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-green-600 shadow-sm">
+                                            class="flex-1 py-3 px-4 bg-orange-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-orange-600 shadow-sm">
                                             <i class="fas fa-calendar-alt mr-2"></i>Perbulan (Simulasi)
                                         </button>
                                         <button type="button" onclick="toggleHartaType('pertahun')" id="harta-pertahun"
-                                            class="flex-1 py-3 px-4 bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-green-600 shadow-sm">
+                                            class="flex-1 py-3 px-4 bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-orange-600 shadow-sm">
                                             <i class="fas fa-calendar mr-2"></i>Pertahun
                                         </button>
                                     </div>
@@ -125,7 +125,7 @@
                                             Deposito / Tabungan / Giro
                                         </label>
                                         <div
-                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-green-500">
+                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
                                             <span class="px-3 text-gray-500 text-sm">Rp</span>
                                             <input type="text" id="savings"
                                                 class="w-full py-3 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
@@ -138,7 +138,7 @@
                                             Emas, perak, permata, atau sejenisnya
                                         </label>
                                         <div
-                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-green-500">
+                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
                                             <span class="px-3 text-gray-500 text-sm">Rp</span>
                                             <input type="text" id="gold"
                                                 class="w-full py-3 pr-3 outline-none rounded-r-lg text-left"
@@ -151,7 +151,7 @@
                                             Nilai properti & kendaraan (bukan yang digunakan sehari-hari)
                                         </label>
                                         <div
-                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-green-500">
+                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
                                             <span class="px-3 text-gray-500 text-sm">Rp</span>
                                             <input type="text" id="property"
                                                 class="w-full py-3 pr-3 outline-none rounded-r-lg text-left"
@@ -164,7 +164,7 @@
                                             Lainnya (saham, piutang, dan surat berharga lainnya)
                                         </label>
                                         <div
-                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-green-500">
+                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
                                             <span class="px-3 text-gray-500 text-sm">Rp</span>
                                             <input type="text" id="other"
                                                 class="w-full py-3 pr-3 outline-none rounded-r-lg text-left"
@@ -177,7 +177,7 @@
                                             Hutang pribadi yang jatuh tempo tahun ini
                                         </label>
                                         <div
-                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-green-500">
+                                            class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
                                             <span class="px-3 text-gray-500 text-sm">Rp</span>
                                             <input type="text" id="hartaDebt"
                                                 class="w-full py-3 pr-3 outline-none rounded-r-lg text-left"
@@ -189,39 +189,39 @@
                         </div>
 
                         <!-- Right Side - Result Panel (1 column) -->
-                        <div class="lg:col-span-1 bg-gradient-to-b from-green-50 to-white p-8">
+                        <div class="lg:col-span-1 bg-gradient-to-b from-orange-50 to-white p-8">
                             <!-- Penghasilan Result -->
                             <div id="result-penghasilan" class="result-content">
-                                <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-green-200">Hasil
+                                <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-orange-200">Hasil
                                     Perhitungan</h3>
                                 <p class="text-sm text-gray-600 mb-6">Berikut hasil perhitungan dan nilai zakat yang harus
                                     anda keluarkan</p>
 
                                 <div class="space-y-4">
-                                    <div class="bg-white rounded-lg p-4 border border-green-200 shadow-sm">
+                                    <div class="bg-white rounded-lg p-4 border border-orange-200 shadow-sm">
                                         <p class="text-xs text-gray-500 mb-1">Status</p>
                                         <p class="text-sm font-semibold text-gray-700" id="penghasilan-status">Tidak Wajib
                                             Membayar Zakat</p>
                                     </div>
 
-                                    <div class="bg-white rounded-lg p-4 border border-green-200 shadow-sm">
+                                    <div class="bg-white rounded-lg p-4 border border-orange-200 shadow-sm">
                                         <p class="text-xs text-gray-500 mb-1">Total Harta</p>
                                         <p class="text-xl font-bold text-gray-800" id="penghasilan-total">Rp 0</p>
                                     </div>
 
-                                    <div class="bg-white rounded-lg p-4 border border-green-200 shadow-sm">
+                                    <div class="bg-white rounded-lg p-4 border border-orange-200 shadow-sm">
                                         <p class="text-xs text-gray-500 mb-1">Nisab</p>
                                         <p class="text-base font-semibold text-gray-700" id="penghasilan-nisab">Rp
                                             17.051.489</p>
                                     </div>
 
-                                    <div class="bg-green-50 rounded-lg p-4 border border-green-200 shadow-sm">
+                                    <div class="bg-orange-50 rounded-lg p-4 border border-orange-200 shadow-sm">
                                         <p class="text-xs text-gray-500 mb-1">Nilai Zakat</p>
-                                        <p class="text-2xl font-bold text-green-600" id="penghasilan-zakat">Rp 0</p>
+                                        <p class="text-2xl font-bold text-orange-600" id="penghasilan-zakat">Rp 0</p>
                                     </div>
 
                                     <button id="salurkanZakatPenghasilan"
-                                        class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg mt-3 text-lg">
+                                        class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg mt-3 text-lg">
                                         <i class="fas fa-hand-holding-heart mr-2"></i>Salurkan Zakat
                                     </button>
                                 </div>
@@ -229,36 +229,36 @@
 
                             <!-- Harta Result -->
                             <div id="result-harta" class="result-content hidden">
-                                <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-green-200">Hasil
+                                <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-orange-200">Hasil
                                     Perhitungan</h3>
                                 <p class="text-sm text-gray-600 mb-6">Berikut hasil perhitungan dan nilai zakat yang harus
                                     anda keluarkan</p>
 
                                 <div class="space-y-4">
-                                    <div class="bg-white rounded-lg p-4 border border-green-200 shadow-sm">
+                                    <div class="bg-white rounded-lg p-4 border border-orange-200 shadow-sm">
                                         <p class="text-xs text-gray-500 mb-1">Status</p>
                                         <p class="text-sm font-semibold text-gray-700" id="harta-status">Tidak Wajib
                                             Membayar Zakat</p>
                                     </div>
 
-                                    <div class="bg-white rounded-lg p-4 border border-green-200 shadow-sm">
+                                    <div class="bg-white rounded-lg p-4 border border-orange-200 shadow-sm">
                                         <p class="text-xs text-gray-500 mb-1">Total Harta</p>
                                         <p class="text-xl font-bold text-gray-800" id="harta-total">Rp 0</p>
                                     </div>
 
-                                    <div class="bg-white rounded-lg p-4 border border-green-200 shadow-sm">
+                                    <div class="bg-white rounded-lg p-4 border border-orange-200 shadow-sm">
                                         <p class="text-xs text-gray-500 mb-1">Nisab</p>
                                         <p class="text-base font-semibold text-gray-700" id="harta-nisab">Rp 17.051.489
                                         </p>
                                     </div>
 
-                                    <div class="bg-green-50 rounded-lg p-4 border border-green-200 shadow-sm">
+                                    <div class="bg-orange-50 rounded-lg p-4 border border-orange-200 shadow-sm">
                                         <p class="text-xs text-gray-500 mb-1">Nilai Zakat</p>
-                                        <p class="text-2xl font-bold text-green-600" id="harta-zakat">Rp 0</p>
+                                        <p class="text-2xl font-bold text-orange-600" id="harta-zakat">Rp 0</p>
                                     </div>
 
                                     <button id="salurkanZakatHarta"
-                                        class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg mt-3 text-lg">
+                                        class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg mt-3 text-lg">
                                         <i class="fas fa-hand-holding-heart mr-2"></i>Salurkan Zakat
                                     </button>
                                 </div>
@@ -271,23 +271,23 @@
                 <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Informasi Penting</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="border-l-4 border-green-500 pl-4 py-1">
+                        <div class="border-l-4 border-orange-500 pl-4 py-1">
                             <h4 class="font-semibold text-gray-800">Nisab Zakat</h4>
                             <p class="text-sm text-gray-600">Nisab zakat adalah batas minimum harta yang wajib dizakatkan,
                                 yaitu setara 85 gram emas atau 595 gram perak. Nilai nisab menggunakan harga emas terkini
                                 untuk perhitungan yang akurat.</p>
                         </div>
-                        <div class="border-l-4 border-green-500 pl-4 py-1">
+                        <div class="border-l-4 border-orange-500 pl-4 py-1">
                             <h4 class="font-semibold text-gray-800">Haul Zakat</h4>
                             <p class="text-sm text-gray-600">Haul adalah kepemilikan harta secara penuh selama satu tahun
                                 hijriyah (354 hari).</p>
                         </div>
-                        <div class="border-l-4 border-green-500 pl-4 py-1">
+                        <div class="border-l-4 border-orange-500 pl-4 py-1">
                             <h4 class="font-semibold text-gray-800">Zakat Harta</h4>
                             <p class="text-sm text-gray-600">Zakat harta wajib dibayar per tahun. Mode "per bulan" hanya
                                 digunakan untuk simulasi pembayaran.</p>
                         </div>
-                        <div class="border-l-4 border-green-500 pl-4 py-1">
+                        <div class="border-l-4 border-orange-500 pl-4 py-1">
                             <h4 class="font-semibold text-gray-800">Harga Emas</h4>
                             <p class="text-sm text-gray-600">Perhitungan menggunakan harga emas terkini. Untuk akurasi
                                 maksimal, harga emas diperbarui secara berkala.</p>
@@ -313,14 +313,14 @@
         function switchTab(tab) {
             // Update tab buttons - use active class instead of individual classes
             document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active', 'border-green-500', 'text-green-600', 'bg-green-50');
+                btn.classList.remove('active', 'border-orange-500', 'text-orange-600', 'bg-orange-50');
                 btn.classList.add('border-transparent', 'text-gray-500');
             });
 
             // Set active tab
             const activeTab = document.getElementById('tab-' + tab);
             activeTab.classList.remove('border-transparent', 'text-gray-500');
-            activeTab.classList.add('active', 'border-green-500', 'text-green-600', 'bg-green-50');
+            activeTab.classList.add('active', 'border-orange-500', 'text-orange-600', 'bg-orange-50');
 
             // Switch content
             document.querySelectorAll('.calculator-content').forEach(content => {
@@ -343,13 +343,13 @@
 
             if (type === 'perbulan') {
                 perbulanBtn.classList.remove('bg-gray-200', 'text-gray-700');
-                perbulanBtn.classList.add('bg-green-500', 'text-white');
-                pertahunBtn.classList.remove('bg-green-500', 'text-white');
+                perbulanBtn.classList.add('bg-orange-500', 'text-white');
+                pertahunBtn.classList.remove('bg-orange-500', 'text-white');
                 pertahunBtn.classList.add('bg-gray-200', 'text-gray-700');
             } else {
                 pertahunBtn.classList.remove('bg-gray-200', 'text-gray-700');
-                pertahunBtn.classList.add('bg-green-500', 'text-white');
-                perbulanBtn.classList.remove('bg-green-500', 'text-white');
+                pertahunBtn.classList.add('bg-orange-500', 'text-white');
+                perbulanBtn.classList.remove('bg-orange-500', 'text-white');
                 perbulanBtn.classList.add('bg-gray-200', 'text-gray-700');
             }
 
@@ -364,13 +364,13 @@
 
             if (type === 'perbulan') {
                 perbulanBtn.classList.remove('bg-gray-200', 'text-gray-700');
-                perbulanBtn.classList.add('bg-green-500', 'text-white');
-                pertahunBtn.classList.remove('bg-green-500', 'text-white');
+                perbulanBtn.classList.add('bg-orange-500', 'text-white');
+                pertahunBtn.classList.remove('bg-orange-500', 'text-white');
                 pertahunBtn.classList.add('bg-gray-200', 'text-gray-700');
             } else {
                 pertahunBtn.classList.remove('bg-gray-200', 'text-gray-700');
-                pertahunBtn.classList.add('bg-green-500', 'text-white');
-                perbulanBtn.classList.remove('bg-green-500', 'text-white');
+                pertahunBtn.classList.add('bg-orange-500', 'text-white');
+                perbulanBtn.classList.remove('bg-orange-500', 'text-white');
                 perbulanBtn.classList.add('bg-gray-200', 'text-gray-700');
             }
 
@@ -425,7 +425,7 @@
             if (totalIncome >= nisabToUse) {
                 zakatAmount = totalIncome * ZAKAT_RATE;
                 status = 'Wajib Membayar Zakat';
-                statusColor = 'text-green-600';
+                statusColor = 'text-orange-600';
             }
 
             document.getElementById('penghasilan-status').textContent = status;
@@ -474,7 +474,7 @@
                 const annualizedWealth = totalWealth * 12;
                 if (annualizedWealth >= nisabToUse) {
                     status = 'Wajib Membayar Zakat (Jika Per Tahun)';
-                    statusColor = 'text-green-600';
+                    statusColor = 'text-orange-600';
                     // Show the annual zakat amount for simulation
                     zakatAmount = annualizedWealth * ZAKAT_RATE / 12; // Monthly equivalent
                 } else {
@@ -487,7 +487,7 @@
                 if (totalWealth >= nisabToUse) {
                     zakatAmount = totalWealth * ZAKAT_RATE;
                     status = 'Wajib Membayar Zakat';
-                    statusColor = 'text-green-600';
+                    statusColor = 'text-orange-600';
                 } else {
                     const shortfall = nisabToUse - totalWealth;
                     status = 'Tidak Wajib Membayar Zakat';

@@ -52,7 +52,7 @@
                         </div>
                         <h4 class="text-xl font-semibold text-gray-900 mt-3 mb-2">{{ $muzakki->name }}</h4>
                         <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $muzakki->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $muzakki->is_active ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-800' }}">
                             {{ $muzakki->is_active ? 'Aktif' : 'Non-aktif' }}
                         </span>
                     </div>
@@ -141,7 +141,7 @@
             <!-- Account Information -->
             @if ($muzakki->user)
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-                    <div class="bg-green-600 text-white px-6 py-3 rounded-t-lg">
+                    <div class="bg-orange-600 text-white px-6 py-3 rounded-t-lg">
                         <h6 class="text-base font-semibold flex items-center">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -156,7 +156,7 @@
                                 <div class="text-gray-600 w-24 flex-shrink-0">Status</div>
                                 <div>
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $muzakki->user->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $muzakki->user->is_active ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-800' }}">
                                         {{ $muzakki->user->is_active ? 'Aktif' : 'Tidak Aktif' }}
                                     </span>
                                 </div>
@@ -203,22 +203,22 @@
                         <p class="text-blue-100 text-xs mt-2 opacity-75">Sepanjang masa</p>
                     </div>
                 </div>
-                <div class="bg-green-600 text-white rounded-lg shadow-sm">
+                <div class="bg-orange-600 text-white rounded-lg shadow-sm">
                     <div class="p-6">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h6 class="text-green-100 text-sm font-medium mb-2">Total Transaksi</h6>
+                                <h6 class="text-orange-100 text-sm font-medium mb-2">Total Transaksi</h6>
                                 <h4 class="text-2xl font-bold mb-0">{{ number_format($stats['payment_count']) }}</h4>
                             </div>
                             <div class="flex-shrink-0">
-                                <svg class="w-8 h-8 text-green-200" fill="none" stroke="currentColor"
+                                <svg class="w-8 h-8 text-orange-200" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-green-100 text-xs mt-2 opacity-75">Pembayaran selesai</p>
+                        <p class="text-orange-100 text-xs mt-2 opacity-75">Pembayaran selesai</p>
                     </div>
                 </div>
                 <div class="bg-cyan-600 text-white rounded-lg shadow-sm">
@@ -326,7 +326,7 @@
                                                 @switch($payment->payment_method)
                                                     @case('cash')
                                                         <span
-                                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Tunai</span>
+                                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">Tunai</span>
                                                     @break
 
                                                     @case('transfer')
@@ -354,7 +354,7 @@
                                                 @switch($payment->status)
                                                     @case('completed')
                                                         <span
-                                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Selesai</span>
+                                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">Selesai</span>
                                                     @break
 
                                                     @case('pending')
@@ -388,7 +388,7 @@
                                                     </a>
                                                     @if ($payment->status === 'completed')
                                                         <a href="{{ route('payments.receipt', $payment) }}"
-                                                            class="inline-flex items-center p-2 text-sm font-medium text-center text-green-600 hover:text-green-800 hover:bg-green-50 rounded-lg focus:ring-4 focus:outline-none focus:ring-green-300"
+                                                            class="inline-flex items-center p-2 text-sm font-medium text-center text-orange-600 hover:text-orange-800 hover:bg-orange-50 rounded-lg focus:ring-4 focus:outline-none focus:ring-orange-300"
                                                             title="Kwitansi" target="_blank">
                                                             <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
@@ -401,7 +401,7 @@
                                                     @if (auth()->user()->role === 'admin')
                                                         {{-- Edit button removed as payments.edit route was intentionally disabled --}}
                                                         {{-- <a href="{{ route('payments.edit', $payment) }}"
-                                                            class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-200"
+                                                            class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200"
                                                             title="Edit">
                                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -476,7 +476,7 @@
                             @csrf
                             @method('PATCH')
                             <button type="submit"
-                                class="py-2.5 px-5 text-sm font-medium text-white {{ $muzakki->is_active ? 'bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-300' : 'bg-green-600 hover:bg-green-700 focus:ring-green-300' }} rounded-lg focus:outline-none focus:ring-4">
+                                class="py-2.5 px-5 text-sm font-medium text-white {{ $muzakki->is_active ? 'bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-300' : 'bg-orange-600 hover:bg-orange-700 focus:ring-orange-300' }} rounded-lg focus:outline-none focus:ring-4">
                                 {{ $muzakki->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
                             </button>
                         </form>

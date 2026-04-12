@@ -1,4 +1,4 @@
-<div class="relative bg-gradient-to-br from-green-900 via-green-800 to-emerald-700 min-h-screen" id="program">
+<div class="relative bg-gray-50 min-h-screen" id="program">
     <!-- Hidden element to pass activeTab from Laravel to JavaScript -->
     @if(isset($activeTab))
     <div id="laravel-active-tab" data-tab="{{ $activeTab }}" style="display: none;"></div>
@@ -8,31 +8,31 @@
         style="background-image: url('{{ asset('img/masjid.webp') }}'); background-size: cover; background-position: center; background-repeat: no-repeat; will-change: transform;">
     </div>
     <!-- Green Gradient Overlay for blending -->
-    <div class="absolute inset-0 bg-gradient-to-br from-green-900/80 via-green-800/70 to-emerald-700/80"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/80 to-white/60"></div>
 
     <!-- Additional Dark Overlay for text readability -->
-    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-gray-50/40 via-transparent to-transparent"></div>
 
     <div class="relative z-10 py-20">
         <div class="container mx-auto px-4 py-16">
             <!-- Enhanced Page Header -->
             <div class="text-center mb-16">
-                <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
                     Kategori Donasi
                 </h1>
-                <p class="text-xl text-white max-w-3xl mx-auto">
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
                     Pilih kategori donasi yang sesuai dengan nilai dan prioritas Anda
                 </p>
             </div>
 
             <!-- Tab Navigation -->
             <div class="flex flex-wrap justify-center mb-12">
-                <div class="inline-flex p-1 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/30">
+                <div class="inline-flex p-1 bg-gray-100/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/50">
                     <button class="tab-button active px-6 py-3 rounded-xl text-lg font-bold" data-tab="zakat">
                         <span class="text-amber-600">Zakat</span>
                     </button>
                     <button class="tab-button px-6 py-3 rounded-xl text-lg font-bold" data-tab="infaq">
-                        <span class="text-green-600">Infaq</span>
+                        <span class="text-orange-600">Infaq</span>
                     </button>
                     <button class="tab-button px-6 py-3 rounded-xl text-lg font-bold" data-tab="shadaqah">
                         <span class="text-blue-600">Shadaqah</span>
@@ -69,7 +69,7 @@
                                         </div>
                                         @if($program->isCompleted())
                                         <div class="absolute top-4 right-4">
-                                            <span class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                            <span class="inline-block bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
                                                 <i class="fas fa-check-circle mr-1"></i>Target Tercapai
                                             </span>
                                         </div>
@@ -121,11 +121,11 @@
                                         @endphp
                                         <div class="absolute inset-0 bg-cover bg-center" data-bg-url="{{ $imageUrl }}"></div>
                                         <div class="absolute top-4 left-4">
-                                            <span class="inline-block bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">Infaq</span>
+                                            <span class="inline-block bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">Infaq</span>
                                         </div>
                                         @if($program->isCompleted())
                                         <div class="absolute top-4 right-4">
-                                            <span class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                            <span class="inline-block bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
                                                 <i class="fas fa-check-circle mr-1"></i>Target Tercapai
                                             </span>
                                         </div>
@@ -133,16 +133,16 @@
                                     </div>
 
                                     <div class="p-6">
-                                        <h3 class="text-xl font-black text-green-800 mb-2">{{ $program->name }}</h3>
+                                        <h3 class="text-xl font-black text-orange-800 mb-2">{{ $program->name }}</h3>
                                         <p class="text-gray-600 text-sm mb-4">{{ $program->description }}</p>
 
                                         <div class="space-y-2">
                                             <div class="flex justify-between text-sm">
                                                 <span class="text-gray-500">Donasi Terkumpul</span>
-                                                <span class="text-green-600 font-bold">{{ $program->formatted_total_collected }}</span>
+                                                <span class="text-orange-600 font-bold">{{ $program->formatted_total_collected }}</span>
                                             </div>
                                             <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                                                <div class="bg-green-500 h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}"></div>
+                                                <div class="bg-orange-500 h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}"></div>
                                             </div>
                                             <div class="flex justify-between items-center">
                                                 {{-- <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span> --}}
@@ -181,7 +181,7 @@
                                         </div>
                                         @if($program->isCompleted())
                                         <div class="absolute top-4 right-4">
-                                            <span class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                            <span class="inline-block bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
                                                 <i class="fas fa-check-circle mr-1"></i>Target Tercapai
                                             </span>
                                         </div>
@@ -237,7 +237,7 @@
                                         </div>
                                         @if($program->isCompleted())
                                         <div class="absolute top-4 right-4">
-                                            <span class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                            <span class="inline-block bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
                                                 <i class="fas fa-check-circle mr-1"></i>Target Tercapai
                                             </span>
                                         </div>

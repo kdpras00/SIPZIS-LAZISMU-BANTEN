@@ -8,20 +8,19 @@
     $heroSlides = $activeCampaigns->concat($activePrograms)->sortByDesc('created_at')->take(15);
 @endphp
 
-<div class="relative w-full h-[85vh] md:h-screen bg-gray-900 overflow-hidden" id="beranda">
+<div class="relative w-full h-[85vh] md:h-screen bg-gray-50 overflow-hidden" id="beranda">
     <!-- Slider Container -->
     <div id="hero-slider" class="absolute inset-0 w-full h-full">
 
         <!-- Slide 1: Quran Quote (Static) -->
-        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-10 opacity-100 bg-gray-900" data-slide="0">
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-10 opacity-100 bg-gray-50" data-slide="0">
             <!-- Background Image with Zoom Effect -->
             <div class="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] scale-100 hover:scale-110"
                 style="background-image: url('{{ asset('img/masjid.webp') }}');">
             </div>
             
             <!-- Modern Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-br from-emerald-950/90 via-emerald-900/70 to-emerald-900/30 mix-blend-multiply"></div>
-            <div class="absolute inset-0 bg-black/20"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/80 to-white/40"></div>
 
             <!-- Content -->
             <div class="relative container h-full mx-auto px-6 md:px-12 flex flex-col justify-center items-center text-center z-10 pt-20">
@@ -29,38 +28,33 @@
                 @if(Auth::check() && !Auth::user()->two_factor_enabled)
                 <div class="mb-8 w-full"></div>
                 @endif
-
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-emerald-100 text-sm font-medium mb-8 animate-fadeInUp shadow-lg">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>Mari Berbagi Kebaikan</span>
-                </div>
-
+                
                 <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight animate-fadeInUp delay-100">
-                    <span class="text-white drop-shadow-lg">
+                    <span class="text-gray-900 drop-shadow-sm">
                         "Dan laksanakanlah salat, <br class="hidden md:block"/>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-teal-100">tunaikanlah zakat</span>."
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-400">tunaikanlah zakat</span>."
                     </span>
                 </h1>
 
-                <p class="text-xl md:text-2xl font-light mb-8 text-emerald-50 italic animate-fadeInUp delay-200 relative inline-block">
-                    <span class="absolute -left-4 -top-2 text-4xl text-emerald-500 opacity-50 font-serif">"</span>
+                <p class="text-xl md:text-2xl font-light mb-8 text-gray-700 italic animate-fadeInUp delay-200 relative inline-block">
+                    <span class="absolute -left-4 -top-2 text-4xl text-orange-500 opacity-50 font-serif">"</span>
                      (QS. Al-Baqarah: 43) 
-                    <span class="absolute -right-4 -bottom-4 text-4xl text-emerald-500 opacity-50 font-serif">"</span>
+                    <span class="absolute -right-4 -bottom-4 text-4xl text-orange-500 opacity-50 font-serif">"</span>
                 </p>
 
-                <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-10 leading-relaxed animate-fadeInUp delay-300 drop-shadow-md">
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed animate-fadeInUp delay-300">
                     Tunaikan kewajiban zakat Anda dengan mudah, transparan, dan sesuai syariat Islam melalui platform digital yang terpercaya.
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fadeInUp delay-500 w-full md:w-auto">
                     <a href="{{ route('calculator.index') }}"
-                        class="group relative px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-full transition-all duration-300 shadow-[0_10px_20px_-10px_rgba(16,185,129,0.5)] hover:shadow-[0_20px_30px_-10px_rgba(16,185,129,0.6)] hover:-translate-y-1 flex items-center gap-3 min-w-[200px] justify-center overflow-hidden">
+                        class="group relative px-8 py-4 bg-orange-600 hover:bg-orange-500 text-white font-bold rounded-full transition-all duration-300 shadow-[0_10px_20px_-10px_rgba(234,88,12,0.5)] hover:shadow-[0_20px_30px_-10px_rgba(234,88,12,0.6)] hover:-translate-y-1 flex items-center gap-3 min-w-[200px] justify-center overflow-hidden">
                         <div class="absolute inset-0 w-full h-full bg-white/20 skew-x-12 -translate-x-full group-hover:animate-[shimmer_1s_infinite]"></div>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                         <span class="relative">KALKULATOR ZAKAT</span>
                     </a>
                     <a href="{{ route('program') }}"
-                        class="group px-8 py-4 bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md font-bold rounded-full transition-all duration-300 hover:-translate-y-1 flex items-center gap-3 min-w-[200px] justify-center">
+                        class="group px-8 py-4 bg-white hover:bg-orange-50 text-orange-600 border border-orange-200 font-bold rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 flex items-center gap-3 min-w-[200px] justify-center">
                         <span>DONASI SEKARANG</span>
                         <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -73,7 +67,7 @@
         <!-- Dynamic Slides (Campaigns & Programs) -->
         @php $slideIndex = 1; @endphp
         @foreach($heroSlides as $item)
-        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-0 bg-gray-900" data-slide="{{ $slideIndex++ }}">
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-0 bg-gray-50" data-slide="{{ $slideIndex++ }}">
             @php
                 $isCampaign = $item instanceof \App\Models\Campaign;
                 
@@ -104,41 +98,41 @@
             </div>
             
             <!-- Immersive Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-r from-gray-950/95 via-gray-900/60 to-transparent"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-900/40 to-transparent md:hidden"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-white/20"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-transparent md:hidden"></div>
 
             <!-- Content Container -->
             <div class="relative container h-full mx-auto px-6 md:px-12 flex items-center z-10">
                 <div class="max-w-xl lg:max-w-2xl pt-24 md:pt-0">
                     
                     <!-- Category Badge -->
-                    <span class="inline-block px-4 py-1.5 rounded-full bg-emerald-600/90 hover:bg-emerald-500 text-white text-xs md:text-sm font-bold tracking-wide mb-6 animate-fadeInUp border border-emerald-400/30 shadow-lg backdrop-blur-sm uppercase">
+                    <span class="inline-block px-4 py-1.5 rounded-full bg-orange-600/90 hover:bg-orange-500 text-white text-xs md:text-sm font-bold tracking-wide mb-6 animate-fadeInUp border border-orange-400/30 shadow-lg backdrop-blur-sm uppercase">
                         {{ $category }}
                     </span>
 
-                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white animate-fadeInUp delay-100 drop-shadow-xl">
+                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-gray-900 animate-fadeInUp delay-100 drop-shadow-sm">
                         {{ \Illuminate\Support\Str::limit($title, 60) }}
                     </h1>
 
-                    <p class="text-base md:text-lg text-gray-200 mb-8 line-clamp-3 leading-relaxed animate-fadeInUp delay-200 drop-shadow-md hidden md:block">
+                    <p class="text-base md:text-lg text-gray-700 mb-8 line-clamp-3 leading-relaxed animate-fadeInUp delay-200 hidden md:block">
                         {{ Str::limit(strip_tags($item->description), 180) }}
                     </p>
 
                     <!-- Glass Progress Card -->
-                    <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 md:p-6 mb-8 w-full max-w-md animate-fadeInUp delay-300 shadow-2xl">
-                        <div class="flex justify-between text-sm text-gray-300 mb-2 font-medium">
+                    <div class="bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl p-5 md:p-6 mb-8 w-full max-w-md animate-fadeInUp delay-300 shadow-xl">
+                        <div class="flex justify-between text-sm text-gray-600 mb-2 font-medium">
                             <span class="flex items-center gap-2">
-                                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 Terkumpul
                             </span>
-                            <span class="text-white font-bold">{{ number_format($percentage, 0) }}%</span>
+                            <span class="text-gray-900 font-bold">{{ number_format($percentage, 0) }}%</span>
                         </div>
-                        <div class="w-full bg-gray-700/50 rounded-full h-2.5 mb-3 overflow-hidden border border-white/5">
-                            <div class="bg-gradient-to-r from-emerald-500 to-green-400 h-full rounded-full transition-all duration-1000 relative shadow-[0_0_15px_rgba(16,185,129,0.6)]" style="width: {{ min($percentage, 100) }}%">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3 overflow-hidden border border-gray-300">
+                            <div class="bg-gradient-to-r from-orange-500 to-orange-400 h-full rounded-full transition-all duration-1000 relative shadow-[0_0_15px_rgba(234,88,12,0.6)]" style="width: {{ min($percentage, 100) }}%">
                                 <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
                             </div>
                         </div>
-                        <div class="text-2xl font-bold text-white tracking-tight">
+                        <div class="text-2xl font-bold text-gray-900 tracking-tight">
                             Rp {{ number_format($collected, 0, ',', '.') }}
                         </div>
                     </div>
@@ -146,14 +140,14 @@
                     <!-- Buttons -->
                     <div class="flex flex-wrap gap-4 animate-fadeInUp delay-500">
                         <a href="{{ $link }}"
-                            class="group bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-8 rounded-full transition-all duration-300 shadow-lg shadow-emerald-900/40 flex items-center gap-2 transform hover:-translate-y-1">
+                            class="group bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 px-8 rounded-full transition-all duration-300 shadow-lg shadow-orange-900/40 flex items-center gap-2 transform hover:-translate-y-1">
                             <span>DONASI SEKARANG</span>
                             <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
                         </a>
                         <a href="{{ $link }}"
-                            class="group bg-transparent hover:bg-white/10 text-white border border-white/30 hover:border-white/60 font-semibold py-3.5 px-8 rounded-full transition-all duration-300 backdrop-blur-sm flex items-center gap-2">
+                            class="group bg-white hover:bg-orange-50 text-orange-600 border border-orange-200 font-semibold py-3.5 px-8 rounded-full transition-all duration-300 shadow-sm flex items-center gap-2">
                             <span>Pelajari Selengkapnya</span>
                         </a>
                     </div>
@@ -164,20 +158,10 @@
 
     </div>
 
-    <!-- Navigation Arrows -->
-    <button id="hero-prev" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full bg-black/20 hover:bg-emerald-600/90 text-white border border-white/10 hover:border-emerald-500/50 backdrop-blur-md transition-all duration-300 group hover:scale-110 hidden md:flex">
-        <svg class="w-6 h-6 md:w-8 md:h-8 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-    </button>
-    <button id="hero-next" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full bg-black/20 hover:bg-emerald-600/90 text-white border border-white/10 hover:border-emerald-500/50 backdrop-blur-md transition-all duration-300 group hover:scale-110 hidden md:flex">
-        <svg class="w-6 h-6 md:w-8 md:h-8 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-    </button>
+    <!-- Navigation Arrows Removed Per Request -->
 
     <!-- Pagination Dots -->
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3 p-3 rounded-full backdrop-blur-sm bg-black/10 border border-white/5" id="hero-dots">
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3 p-3 rounded-full backdrop-blur-sm bg-white/50 border border-gray-200 shadow-sm" id="hero-dots">
         <!-- Dots will be generated by JS -->
     </div>
 </div>
@@ -200,7 +184,7 @@
         // Create dots
         for (let i = 0; i < totalSlides; i++) {
             const dot = document.createElement('button');
-            dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${i === 0 ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/80'}`;
+            dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${i === 0 ? 'bg-orange-600 w-8' : 'bg-gray-400 hover:bg-gray-600'}`;
             dot.ariaLabel = `Go to slide ${i + 1}`;
             dot.addEventListener('click', () => goToSlide(i));
             dotsContainer.appendChild(dot);
@@ -223,9 +207,9 @@
             // Update dots
             Array.from(dots).forEach((dot, index) => {
                 if (index === currentSlide) {
-                    dot.className = 'w-8 h-3 rounded-full bg-white transition-all duration-300';
+                    dot.className = 'w-8 h-3 rounded-full bg-orange-600 transition-all duration-300';
                 } else {
-                    dot.className = 'w-3 h-3 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300';
+                    dot.className = 'w-3 h-3 rounded-full bg-gray-400 hover:bg-gray-600 transition-all duration-300';
                 }
             });
 
@@ -289,7 +273,7 @@
 @endpush
 
 <!-- Campaigns Terbaru Section -->
-<div class="py-16 bg-gradient-to-br from-gray-50 via-white to-green-50">
+<div class="py-16 bg-gradient-to-br from-gray-50 via-white to-orange-50">
     <div class="max-w-6xl mx-auto px-4">
         <div class="text-center mb-12 animate-fadeInUp">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Campaigns Terbaru</h2>
@@ -301,7 +285,7 @@
         <div class="relative">
             <!-- Navigation Buttons -->
             <button id="campaigns-prev"
-                class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-green-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-orange-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                 aria-label="Previous campaign">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -309,7 +293,7 @@
             </button>
 
             <button id="campaigns-next"
-                class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-green-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-orange-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                 aria-label="Next campaign">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -350,7 +334,7 @@
                                     <!-- Category Badge -->
                                     <div class="flex flex-wrap gap-1 mb-2">
                                         <span
-                                            class="text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-800">
+                                            class="text-xs font-semibold px-2 py-1 rounded-full bg-orange-100 text-orange-800">
                                             {{ $campaign->program_category ?? 'Zakat' }}
                                         </span>
                                     </div>
@@ -393,7 +377,7 @@
                                             }
 
                                             // Determine progress bar color based on percentage
-                                            $progressBarColor = 'bg-green-600';
+                                            $progressBarColor = 'bg-orange-600';
                                             if ($progress < 30) {
                                                 $progressBarColor = 'bg-blue-500';
                                             } elseif ($progress < 70) {
@@ -413,7 +397,7 @@
                                     </div>
 
                                     <a href="{{ route('campaigns.show', [$campaign->program_category, $campaign]) }}"
-                                        class="inline-block w-full text-center bg-green-600 hover:bg-green-700 text-white text-sm font-medium py-1.5 px-3 rounded-lg transition-colors duration-300 flex-grow-0">
+                                        class="inline-block w-full text-center bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium py-1.5 px-3 rounded-lg transition-colors duration-300 flex-grow-0">
                                         Lihat Selengkapnya
                                     </a>
                                 </div>
@@ -431,7 +415,7 @@
 
         <div class="text-center mt-10">
             <a href="{{ route('campaigns.index', 'all') }}"
-                class="inline-flex items-center gap-2 bg-white border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-bold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm group">
+                class="inline-flex items-center gap-2 bg-white border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm group">
                 Lihat Semua Campaign
                 <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -442,7 +426,7 @@
 
 
     <!-- Berita Terbaru Section -->
-    <div class="py-16 bg-gradient-to-br from-white via-green-50 to-gray-100">
+    <div class="py-16 bg-gradient-to-br from-white via-orange-50 to-gray-100">
         <div class="max-w-6xl mx-auto px-4">
             <div class="text-center mb-12 animate-fadeInUp">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Berita Terbaru</h2>
@@ -454,7 +438,7 @@
             <div class="relative">
                 <!-- Navigation Buttons -->
                 <button id="news-prev"
-                    class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-green-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                    class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-orange-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                     aria-label="Previous news">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
@@ -463,7 +447,7 @@
                 </button>
 
                 <button id="news-next"
-                    class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-green-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                    class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-orange-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                     aria-label="Next news">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
@@ -521,7 +505,7 @@
                                             {{ $news->title }}</h3>
                                         <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ $news->excerpt }}</p>
                                         <a href="{{ route('news.show', $news->slug) }}"
-                                            class="text-green-600 hover:text-green-700 font-medium text-sm flex items-center">
+                                            class="text-orange-600 hover:text-orange-700 font-medium text-sm flex items-center">
                                             Baca Selengkapnya
                                             <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -544,7 +528,7 @@
 
             <div class="text-center mt-10">
                 <a href="{{ route('berita') }}"
-                    class="inline-flex items-center gap-2 bg-white border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-bold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm group">
+                    class="inline-flex items-center gap-2 bg-white border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm group">
                     Lihat Semua Berita
                     <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
@@ -556,7 +540,7 @@
     </div>
 
     <!-- Artikel Terbaru Section -->
-    <div class="py-16 bg-gradient-to-br from-gray-50 via-white to-emerald-50">
+    <div class="py-16 bg-gradient-to-br from-gray-50 via-white to-orange-50">
         <div class="max-w-6xl mx-auto px-4">
             <div class="text-center mb-12 animate-fadeInUp">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Artikel Terbaru</h2>
@@ -568,7 +552,7 @@
             <div class="relative">
                 <!-- Navigation Buttons -->
                 <button id="artikel-prev"
-                    class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-green-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                    class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-orange-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                     aria-label="Previous article">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
@@ -577,7 +561,7 @@
                 </button>
 
                 <button id="artikel-next"
-                    class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-green-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                    class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-orange-600 hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                     aria-label="Next article">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
@@ -637,7 +621,7 @@
                                             {{ $artikel->title }}</h3>
                                         <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ $artikel->excerpt }}</p>
                                         <a href="{{ route('artikel.show', $artikel->slug) }}"
-                                            class="text-green-600 hover:text-green-700 font-medium text-sm flex items-center">
+                                            class="text-orange-600 hover:text-orange-700 font-medium text-sm flex items-center">
                                             Baca Selengkapnya
                                             <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -660,7 +644,7 @@
 
             <div class="text-center mt-10">
                 <a href="{{ route('artikel.all') }}"
-                    class="inline-flex items-center gap-2 bg-white border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-bold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm group">
+                    class="inline-flex items-center gap-2 bg-white border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm group">
                     Lihat Semua Artikel
                     <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
@@ -676,8 +660,8 @@
 
         <!-- Popup Chat (Awalnya disembunyikan) -->
         <div id="chatbot-popup"
-            class="hidden flex-col bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl w-80 max-h-[500px] border border-emerald-200 overflow-hidden">
-            <div class="bg-emerald-600 text-white p-3 font-bold text-center">
+            class="hidden flex-col bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl w-80 max-h-[500px] border border-orange-200 overflow-hidden">
+            <div class="bg-orange-600 text-white p-3 font-bold text-center">
                 Asisten Zakat
             </div>
             <div id="chat-messages"
@@ -686,9 +670,9 @@
             </div>
             <div class="p-3 border-t border-gray-200 flex">
                 <input id="chat-input" type="text" placeholder="Ketik pesan..."
-                    class="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" />
+                    class="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" />
                 <button id="send-btn"
-                    class="ml-2 bg-emerald-600 text-white px-3 py-2 rounded-lg hover:bg-emerald-700 transition">Kirim</button>
+                    class="ml-2 bg-orange-600 text-white px-3 py-2 rounded-lg hover:bg-orange-700 transition">Kirim</button>
             </div>
         </div>
 
@@ -697,14 +681,14 @@
             <!-- WhatsApp Button -->
             <a href="https://api.whatsapp.com/send/?phone=628561626222&text=Assalamu%E2%80%99alaikum+Warahmatullahi+Wabarakatuh%2C+hallo+tim+Lazismu+%5Bwebsite%5D&type=phone_number&app_absent=0" 
                target="_blank" 
-               class="bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition transform hover:scale-110 flex items-center justify-center w-14 h-14"
+               class="bg-orange-500 hover:bg-orange-600 text-white rounded-full p-4 shadow-lg transition transform hover:scale-110 flex items-center justify-center w-14 h-14"
                aria-label="Chat WhatsApp">
                 <i class="fab fa-whatsapp text-2xl"></i>
             </a>
 
             <!-- Tombol Chat -->
             <button id="chatbot-button"
-                class="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full p-4 shadow-lg transition transform hover:scale-110 flex items-center justify-center w-14 h-14">
+                class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-4 shadow-lg transition transform hover:scale-110 flex items-center justify-center w-14 h-14">
                 <span class="text-2xl">💬</span>
             </button>
         </div>
@@ -864,7 +848,7 @@
         /* Chat message bubbles */
         .message-user {
             align-self: flex-end;
-            background-color: #10B981;
+            background-color: #ea580c;
             color: white;
             border-bottom-right-radius: 18px;
             border-bottom-left-radius: 18px;
@@ -1272,7 +1256,7 @@
                     indicator.classList.add('w-2', 'h-2', 'rounded-full', 'cursor-pointer', 'transition-all',
                         'duration-300');
                     if (i === 0) {
-                        indicator.classList.add('bg-green-600', 'w-4');
+                        indicator.classList.add('bg-orange-600', 'w-4');
                     } else {
                         indicator.classList.add('bg-gray-300');
                     }
@@ -1342,9 +1326,9 @@
             indicators.forEach((indicator, index) => {
                 if (index === activeIndex) {
                     indicator.classList.remove('bg-gray-300');
-                    indicator.classList.add('bg-green-600', 'w-4');
+                    indicator.classList.add('bg-orange-600', 'w-4');
                 } else {
-                    indicator.classList.remove('bg-green-600', 'w-4');
+                    indicator.classList.remove('bg-orange-600', 'w-4');
                     indicator.classList.add('bg-gray-300', 'w-2');
                 }
             });

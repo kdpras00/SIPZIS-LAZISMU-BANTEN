@@ -13,7 +13,7 @@
             <h5 class="text-xl font-semibold text-gray-900 mb-0">Galang Dana</h5>
         </div>
         <a href="{{ optional($muzakki)->email ? route('campaigner.personal', $muzakki->email) : route('home') }}"
-            class="px-4 py-2 bg-green-600 text-white text-sm rounded-full hover:bg-green-700 transition-colors font-medium no-underline">
+            class="px-4 py-2 bg-orange-600 text-white text-sm rounded-full hover:bg-orange-700 transition-colors font-medium no-underline">
             <i class="bi bi-plus-circle mr-1"></i>Buat Campaign
         </a>
     </div>
@@ -30,7 +30,7 @@
                         <h6 class="font-semibold text-gray-900 mb-1">{{ $campaign->title ?? 'Untitled Campaign' }}</h6>
                         <p class="text-gray-600 text-sm mb-2">{{ \Illuminate\Support\Str::limit($campaign->description ?? '', 100) }}</p>
                         <div class="flex items-center gap-4 mb-2">
-                            <small class="text-green-600 font-semibold">
+                            <small class="text-orange-600 font-semibold">
                                 Terkumpul: Rp {{ number_format($campaign->collected_amount ?? $campaign->net_collected_amount ?? 0, 0, ',', '.') }}
                             </small>
                             {{-- <small class="text-gray-500">
@@ -39,7 +39,7 @@
                         </div>
                         <div class="mt-2">
                             @if(isset($campaign->status) && $campaign->status === 'published')
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">Aktif</span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-700">Aktif</span>
                             @elseif(isset($campaign->status) && $campaign->status === 'draft')
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">Draft</span>
                             @else
@@ -60,7 +60,7 @@
             <h4 class="text-xl font-semibold text-gray-900 mb-2">Belum Ada Campaign</h4>
             <p class="text-gray-600 mb-6">Anda belum membuat campaign galang dana.</p>
             <a href="{{ optional($muzakki)->email ? route('campaigner.personal', $muzakki->email) : route('home') }}"
-                class="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors font-medium no-underline">
+                class="inline-flex items-center px-6 py-3 bg-orange-600 text-white rounded-full hover:bg-orange-700 transition-colors font-medium no-underline">
                 <i class="bi bi-plus-circle mr-2"></i>Buat Campaign Pertama
             </a>
         </div>
@@ -78,7 +78,7 @@
         <i class="bi bi-heart text-xl block mb-1"></i>
         <small class="text-xs">Donasi</small>
     </a>
-    <a href="{{ route('fundraising') }}" class="text-green-600 hover:text-green-700 no-underline">
+    <a href="{{ route('fundraising') }}" class="text-orange-600 hover:text-orange-700 no-underline">
         <i class="bi bi-box-seam text-xl block mb-1"></i>
         <small class="text-xs">Galang Dana</small>
     </a>

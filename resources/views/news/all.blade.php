@@ -5,13 +5,13 @@
 @endsection
 
 @section('content')
-<div class="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-100 min-h-screen overflow-hidden" style="background-image: url('{{ asset('img/masjid.webp') }}'); background-size: cover; background-position: center; background-attachment: fixed;">
+<div class="relative bg-gradient-to-br from-orange-50 via-orange-50 to-orange-100 min-h-screen overflow-hidden" style="background-image: url('{{ asset('img/masjid.webp') }}'); opacity: 0.95; background-size: cover; background-position: center; background-attachment: fixed;">
     <!-- Animated Background Elements -->
     <div class="absolute inset-0">
-        <div class="absolute inset-0 bg-gradient-to-br from-green-600/40 via-emerald-600/30 to-teal-600/40"></div>
-        <div class="absolute top-10 left-10 w-72 h-72 bg-green-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-bounce animation-delay-1000"></div>
-        <div class="absolute top-20 right-10 w-72 h-72 bg-emerald-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-bounce animation-delay-3000"></div>
-        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-teal-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-bounce animation-delay-5000"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-white/60 via-white/40 to-white/60"></div>
+        <div class="absolute top-10 left-10 w-72 h-72 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-bounce animation-delay-1000"></div>
+        <div class="absolute top-20 right-10 w-72 h-72 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-bounce animation-delay-3000"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-bounce animation-delay-5000"></div>
     </div>
 
     <div class="relative z-10 py-20">
@@ -19,18 +19,18 @@
             <!-- Page Header -->
             <div class="text-center mb-20 relative">
                 <div class="inline-block">
-                    <div class="bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-white/20">
-                        <span class="text-white/90 text-sm font-medium tracking-wider uppercase">Semua Berita</span>
+                    <div class="bg-orange-100 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
+                        <span class="text-orange-600 text-sm font-medium tracking-wider uppercase">Semua Berita</span>
                     </div>
                 </div>
                 <h1 class="text-5xl md:text-7xl font-black mb-6 relative">
-                    <span class="bg-gradient-to-r from-white via-green-100 to-emerald-200 bg-clip-text text-transparent drop-shadow-2xl">
+                    <span class="bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 bg-clip-text text-transparent drop-shadow-2xl">
                         Berita SIPZ
                     </span>
-                    <div class="absolute -top-2 -right-2 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
+                    <div class="absolute -top-2 -right-2 w-4 h-4 bg-orange-400 rounded-full animate-pulse"></div>
                 </h1>
                 <div class="max-w-4xl mx-auto">
-                    <p class="text-2xl md:text-3xl font-light text-white/95 mb-6 leading-relaxed">
+                    <p class="text-2xl md:text-3xl font-light text-gray-600 mb-6 leading-relaxed">
                         Update terbaru seputar program zakat, infaq, dan sedekah
                     </p>
                 </div>
@@ -38,7 +38,7 @@
 
             <!-- News Grid -->
             <div class="relative bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-10 mb-12 border border-white/20">
-                <div class="absolute inset-0 bg-gradient-to-r from-green-50/50 via-emerald-50/50 to-teal-50/50 rounded-3xl"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-orange-50/50 via-orange-50/50 to-orange-50/50 rounded-3xl"></div>
                 <div class="relative z-10">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         @forelse($news as $item)
@@ -61,7 +61,7 @@
                                 <div class="absolute top-4 left-4">
                                     @php
                                     $categoryColors = [
-                                    'zakat' => 'from-green-500 to-green-700',
+                                    'zakat' => 'from-orange-500 to-orange-700',
                                     'infaq' => 'from-blue-500 to-blue-700',
                                     'sedekah' => 'from-purple-500 to-purple-700'
                                     ];
@@ -76,7 +76,7 @@
                                 <p class="text-gray-600 text-sm mb-4 leading-relaxed">{{ $item->excerpt }}</p>
                                 <div class="flex items-center justify-between">
                                     <span class="text-gray-500 text-xs">{{ $item->formatted_date }}</span>
-                                    <a href="{{ route('news.show', $item->slug) }}" class="text-green-600 hover:text-green-800 text-sm font-bold flex items-center group">
+                                    <a href="{{ route('news.show', $item->slug) }}" class="text-orange-600 hover:text-orange-800 text-sm font-bold flex items-center group">
                                         Baca Selengkapnya
                                         <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>

@@ -3,36 +3,24 @@
 @section('page-title', 'Manajemen Distribusi ZIS')
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
+<div class="px-6 py-5" style="max-width: 1280px;">
+<div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
     <div>
-        <h2 class="text-2xl font-bold mb-1">Manajemen Distribusi Zakat</h2>
-        <p class="text-gray-600">Kelola dan pantau distribusi zakat kepada mustahik</p>
+        <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Data Distribusi ZIS</h2>
+        <p class="text-sm" style="color: #8b7e74;">Kelola penyaluran zakat kepada mustahik</p>
     </div>
-    <div>
-        <a href="{{ route('distributions.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="bi bi-plus-circle mr-2"></i> Tambah Distribusi
-        </a>
-    </div>
+    <a href="{{ route('distributions.create') }}" class="inline-flex items-center px-4 py-2 text-white font-medium rounded-lg transition-colors text-sm" style="background: #c2410c;">
+        <i class="bi bi-plus-circle mr-2"></i> Tambah Distribusi
+    </a>
 </div>
 
-<!-- Filter Section -->
-<div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
-    <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-green-50 to-emerald-50">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                </svg>
-                <h3 class="text-lg font-semibold text-gray-900">Filter & Pencarian</h3>
-            </div>
-            <button type="button" id="reset-filters"
-                class="inline-flex items-center gap-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-2 focus:ring-green-500 rounded-lg px-4 py-2 transition-all duration-200 shadow-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                </svg>
-                <span>Reset Filter</span>
-            </button>
+<div class="rounded-2xl mb-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+    <div class="px-5 py-3 flex items-center justify-between" style="border-bottom: 1px solid #f0ece6;">
+        <div class="flex items-center gap-2">
+            <i class="bi bi-funnel text-sm" style="color: #8b7e74;"></i>
+            <span class="text-sm font-semibold" style="color: #1c0f0a;">Filter</span>
         </div>
+        <button type="button" id="reset-filters" class="text-xs font-medium px-3 py-1.5 rounded-lg" style="color: #c2410c; border: 1px solid #f0ece6; background: #fff;">Reset</button>
     </div>
     
     <div class="p-6">
@@ -51,7 +39,7 @@
                     </svg>
                 </span>
                 <input type="text" id="search-input"
-                    class="w-full pl-12 pr-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50 hover:bg-white"
+                    class="w-full pl-12 pr-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-gray-50 hover:bg-white"
                     placeholder="Ketik kode distribusi, nama program, atau nama mustahik..." value="{{ request('search') }}">
             </div>
         </div>
@@ -66,7 +54,7 @@
                     Kategori Mustahik
                 </label>
                 <select id="category-filter"
-                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400">
+                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400">
                     <option value="">Semua Kategori</option>
                     @foreach($categories as $category)
                     <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
@@ -84,7 +72,7 @@
                     Jenis Distribusi
                 </label>
                 <select id="distribution-type-filter"
-                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400">
+                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400">
                     <option value="">Semua Jenis</option>
                     <option value="cash" {{ request('distribution_type') == 'cash' ? 'selected' : '' }}>💵 Tunai</option>
                     <option value="goods" {{ request('distribution_type') == 'goods' ? 'selected' : '' }}>📦 Barang</option>
@@ -101,7 +89,7 @@
                     Program
                 </label>
                 <input type="text" id="program-filter"
-                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400"
+                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400"
                     placeholder="Nama program..." value="{{ request('program') }}">
             </div>
             
@@ -113,7 +101,7 @@
                     Status Penerimaan
                 </label>
                 <select id="received-status-filter"
-                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400">
+                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400">
                     <option value="">Semua Status</option>
                     <option value="received" {{ request('received_status') == 'received' ? 'selected' : '' }}>✅ Sudah Diterima</option>
                     <option value="pending" {{ request('received_status') == 'pending' ? 'selected' : '' }}>⏳ Belum Diterima</option>
@@ -129,10 +117,10 @@
                 </label>
                 <div class="grid grid-cols-2 gap-3">
                     <input type="date" id="date-from"
-                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400"
+                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400"
                         value="{{ request('date_from') }}" placeholder="Dari tanggal">
                     <input type="date" id="date-to"
-                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white transition-all duration-200 hover:border-gray-400"
+                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400"
                         value="{{ request('date_to') }}" placeholder="Sampai tanggal">
                 </div>
             </div>
@@ -140,61 +128,53 @@
 
         <!-- Loading Indicator -->
         <div id="search-loading" class="hidden mt-4 pt-4 border-t border-gray-200">
-            <div class="flex items-center justify-center gap-3 text-green-600">
-                <div class="inline-block animate-spin rounded-full h-5 w-5 border-3 border-green-600 border-t-transparent"></div>
+            <div class="flex items-center justify-center gap-3 text-orange-600">
+                <div class="inline-block animate-spin rounded-full h-5 w-5 border-3 border-orange-600 border-t-transparent"></div>
                 <span class="text-sm font-medium">Memproses pencarian...</span>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Statistics Cards -->
-<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-    <div class="bg-white rounded-lg shadow-sm border-0">
-        <div class="p-6 text-center">
-            <i class="bi bi-cash-stack text-4xl text-blue-600 mb-2"></i>
-            <h5 class="text-lg font-semibold mb-0" id="total-amount">Rp {{ number_format($stats['total_amount'], 0, ',', '.') }}</h5>
-            <small class="text-gray-600">Total Distribusi</small>
-        </div>
+<!-- Stats -->
+<div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+    <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fff7ed;"><i class="bi bi-cash-stack" style="color: #c2410c;"></i></div>
+        <h5 class="text-lg font-bold mb-0" id="total-amount" style="color: #1c0f0a;">Rp {{ number_format($stats['total_amount'], 0, ',', '.') }}</h5>
+        <small class="text-xs" style="color: #8b7e74;">Total distribusi</small>
     </div>
-    <div class="bg-white rounded-lg shadow-sm border-0">
-        <div class="p-6 text-center">
-            <i class="bi bi-people text-4xl text-green-600 mb-2"></i>
-            <h5 class="text-lg font-semibold mb-0" id="total-count">{{ number_format($stats['total_count']) }}</h5>
-            <small class="text-gray-600">Total Penerima</small>
-        </div>
+    <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #f0fdf4;"><i class="bi bi-people" style="color: #15803d;"></i></div>
+        <h5 class="text-lg font-bold mb-0" id="total-count" style="color: #1c0f0a;">{{ number_format($stats['total_count']) }}</h5>
+        <small class="text-xs" style="color: #8b7e74;">Total penerima</small>
     </div>
-    <div class="bg-white rounded-lg shadow-sm border-0">
-        <div class="p-6 text-center">
-            <i class="bi bi-calendar-month text-4xl text-cyan-600 mb-2"></i>
-            <h5 class="text-lg font-semibold mb-0" id="thismonth-amount">Rp {{ number_format($stats['this_month'], 0, ',', '.') }}</h5>
-            <small class="text-gray-600">Bulan Ini</small>
-        </div>
+    <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #eff6ff;"><i class="bi bi-calendar-month" style="color: #0369a1;"></i></div>
+        <h5 class="text-lg font-bold mb-0" id="thismonth-amount" style="color: #1c0f0a;">Rp {{ number_format($stats['this_month'], 0, ',', '.') }}</h5>
+        <small class="text-xs" style="color: #8b7e74;">Bulan ini</small>
     </div>
-    <div class="bg-white rounded-lg shadow-sm border-0">
-        <div class="p-6 text-center">
-            <i class="bi bi-clock text-4xl text-yellow-600 mb-2"></i>
-            <h5 class="text-lg font-semibold mb-0" id="pending-count">{{ $stats['pending_receipt'] }}</h5>
-            <small class="text-gray-600">Belum Diterima</small>
-        </div>
+    <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fef3c7;"><i class="bi bi-clock" style="color: #b45309;"></i></div>
+        <h5 class="text-lg font-bold mb-0" id="pending-count" style="color: #1c0f0a;">{{ $stats['pending_receipt'] }}</h5>
+        <small class="text-xs" style="color: #8b7e74;">Belum diterima</small>
     </div>
-    <div class="bg-white rounded-lg shadow-sm border-0 col-span-2 md:col-span-1">
-        <div class="p-6 text-center">
-            <i class="bi bi-wallet2 text-4xl {{ $stats['available_balance'] > 0 ? 'text-green-600' : 'text-red-600' }} mb-2"></i>
-            <h5 class="text-lg font-semibold mb-0" id="available-balance">Rp {{ number_format($stats['available_balance'], 0, ',', '.') }}</h5>
-            <small class="text-gray-600">Saldo Tersedia</small>
+    <div class="rounded-2xl p-5 col-span-2 lg:col-span-1" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: {{ $stats['available_balance'] > 0 ? '#fff7ed' : '#fef2f2' }};">
+            <i class="bi bi-wallet2" style="color: {{ $stats['available_balance'] > 0 ? '#c2410c' : '#dc2626' }};"></i>
         </div>
+        <h5 class="text-lg font-bold mb-0" id="available-balance" style="color: #1c0f0a;">Rp {{ number_format($stats['available_balance'], 0, ',', '.') }}</h5>
+        <small class="text-xs" style="color: #8b7e74;">Saldo tersedia</small>
     </div>
 </div>
 
-<!-- Distributions Table -->
-<div class="bg-white rounded-lg shadow-sm">
-    <div class="px-6 py-4 border-b border-gray-200 bg-white">
-        <h5 class="text-lg font-semibold mb-0">Daftar Distribusi Zakat</h5>
+<div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+    <div class="px-5 py-4" style="border-bottom: 1px solid #f0ece6;">
+        <h5 class="text-base font-bold mb-0" style="color: #1c0f0a;">Daftar Distribusi</h5>
     </div>
     <div class="p-0" id="distributions-table-container">
         @include('distributions.partials.table')
     </div>
+</div>
 </div>
 @endsection
 
@@ -333,7 +313,7 @@
 
                     // Distribution type colors
                     const typeColors = {
-                        'cash': 'bg-green-100 text-green-800',
+                        'cash': 'bg-orange-100 text-orange-800',
                         'goods': 'bg-cyan-100 text-cyan-800',
                         'voucher': 'bg-yellow-100 text-yellow-800',
                         'service': 'bg-blue-100 text-blue-800'
@@ -373,7 +353,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             ${distribution.is_received ? 
-                                '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Sudah Diterima</span>' : 
+                                '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">Sudah Diterima</span>' : 
                                 '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Belum Diterima</span>'
                             }
                         </td>
@@ -389,14 +369,14 @@
                                     </svg>
                                 </a>
                                 <a href="/distributions/${distribution.id}/receipt" 
-                                   class="inline-flex items-center px-3 py-1.5 border border-green-300 shadow-sm text-sm font-medium rounded-md text-green-700 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200" 
+                                   class="inline-flex items-center px-3 py-1.5 border border-orange-300 shadow-sm text-sm font-medium rounded-md text-orange-700 bg-white hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200" 
                                    title="Kwitansi" target="_blank">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
                                 </a>
                                 <a href="/distributions/${distribution.id}/edit" 
-                                   class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-200" 
+                                   class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200" 
                                    title="Edit">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -499,9 +479,9 @@
             // Update available balance color
             const balanceIcon = document.getElementById('available-balance').previousElementSibling;
             if (stats.available_balance > 0) {
-                balanceIcon.className = balanceIcon.className.replace('text-red-600', 'text-green-600');
+                balanceIcon.className = balanceIcon.className.replace('text-red-600', 'text-orange-600');
             } else {
-                balanceIcon.className = balanceIcon.className.replace('text-green-600', 'text-red-600');
+                balanceIcon.className = balanceIcon.className.replace('text-orange-600', 'text-red-600');
             }
         }
 

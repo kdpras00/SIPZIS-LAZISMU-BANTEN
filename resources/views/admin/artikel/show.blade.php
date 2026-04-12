@@ -46,10 +46,10 @@
             <div class="flex justify-between items-center mb-6">
                 <div>
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                        @if($artikel->is_published) bg-green-100 text-green-800
+                        @if($artikel->is_published) bg-orange-100 text-orange-800
                         @else bg-gray-100 text-gray-800 @endif">
                         <i class="fas fa-circle w-2 h-2 mr-2
-                            @if($artikel->is_published) text-green-400
+                            @if($artikel->is_published) text-orange-400
                             @else text-gray-400 @endif"></i>
                         {{ $artikel->is_published ? 'Published' : 'Draft' }}
                     </span>

@@ -28,31 +28,31 @@
             <div class="border-b border-gray-200">
                 <nav class="flex -mb-px">
                     <a href="{{ route('notifications.index', ['filter' => 'all']) }}"
-                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'all' ? 'active text-green-600 border-green-500' : '' }}">
+                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'all' ? 'active text-orange-600 border-orange-500' : '' }}">
                         Semua
                     </a>
                     <a href="{{ route('notifications.index', ['filter' => 'payment']) }}"
-                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'payment' ? 'active text-green-600 border-green-500' : '' }}">
+                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'payment' ? 'active text-orange-600 border-orange-500' : '' }}">
                         Pembayaran {{ isset($notificationTypes['payment']) ? "({$notificationTypes['payment']->count})" : '' }}
                     </a>
                     <a href="{{ route('notifications.index', ['filter' => 'distribution']) }}"
-                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'distribution' ? 'active text-green-600 border-green-500' : '' }}">
+                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'distribution' ? 'active text-orange-600 border-orange-500' : '' }}">
                         Penyaluran {{ isset($notificationTypes['distribution']) ? "({$notificationTypes['distribution']->count})" : '' }}
                     </a>
                     <a href="{{ route('notifications.index', ['filter' => 'program']) }}"
-                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'program' ? 'active text-green-600 border-green-500' : '' }}">
+                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'program' ? 'active text-orange-600 border-orange-500' : '' }}">
                         Program {{ isset($notificationTypes['program']) ? "({$notificationTypes['program']->count})" : '' }}
                     </a>
                     <a href="{{ route('notifications.index', ['filter' => 'account']) }}"
-                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'account' ? 'active text-green-600 border-green-500' : '' }}">
+                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'account' ? 'active text-orange-600 border-orange-500' : '' }}">
                         Akun {{ isset($notificationTypes['account']) ? "({$notificationTypes['account']->count})" : '' }}
                     </a>
                     <a href="{{ route('notifications.index', ['filter' => 'reminder']) }}"
-                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'reminder' ? 'active text-green-600 border-green-500' : '' }}">
+                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'reminder' ? 'active text-orange-600 border-orange-500' : '' }}">
                         Pengingat {{ isset($notificationTypes['reminder']) ? "({$notificationTypes['reminder']->count})" : '' }}
                     </a>
                     <a href="{{ route('notifications.index', ['filter' => 'message']) }}"
-                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'message' ? 'active text-green-600 border-green-500' : '' }}">
+                        class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm {{ $filter === 'message' ? 'active text-orange-600 border-orange-500' : '' }}">
                         Pesan {{ isset($notificationTypes['message']) ? "({$notificationTypes['message']->count})" : '' }}
                     </a>
                 </nav>
@@ -61,7 +61,7 @@
             <!-- Content -->
             <div class="p-6">
                 @if(session()->has('notifications_success'))
-                <div class="mb-4 p-4 rounded-lg border border-green-200 bg-green-50 text-green-800">
+                <div class="mb-4 p-4 rounded-lg border border-orange-200 bg-orange-50 text-orange-800">
                     {{ session('notifications_success') }}
                 </div>
                 @endif
@@ -149,7 +149,7 @@
                     <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak ada notifikasi</h3>
                     <p class="mt-1 text-sm text-gray-500">Anda tidak memiliki notifikasi saat ini.</p>
                     <div class="mt-6">
-                        <a href="{{ route('program') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        <a href="{{ route('program') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
                             Lakukan Donasi
                         </a>
                     </div>

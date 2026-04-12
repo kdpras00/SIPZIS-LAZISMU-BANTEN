@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="min-h-screen flex items-center justify-center bg-green-900">
+    <div class="min-h-screen flex items-center justify-center bg-gray-50">
         <div class="w-full max-w-md px-6">
             <div class="bg-white rounded-lg shadow-md p-8">
                 <!-- Logo & Title -->
@@ -13,7 +13,7 @@
 
                 <!-- Success Message -->
                 @if(session('status'))
-                    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                    <div class="mb-4 p-4 bg-orange-100 border border-orange-400 text-orange-700 rounded-lg">
                         {!! session('status') !!}
                     </div>
                 @endif
@@ -40,7 +40,7 @@
                     <!-- Email Input -->
                     <div>
                         <input id="email" type="email"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('email') border-red-500 @enderror"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('email') border-red-500 @enderror"
                             name="email" value="{{ old('email') }}" placeholder="Email" required autocomplete="email"
                             autofocus>
                         @error('email')
@@ -50,14 +50,14 @@
 
                     <!-- Submit Button -->
                     <button type="submit"
-                        class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
+                        class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
                         Kirim Link Reset Password
                     </button>
                 </form>
 
                 <!-- Back to Login Link -->
                 <p class="text-center text-sm text-gray-600 mt-6">
-                    <a href="{{ route('login') }}" class="text-green-600 hover:text-green-700 font-medium">
+                    <a href="{{ route('login') }}" class="text-orange-600 hover:text-orange-700 font-medium">
                         ← Kembali ke Login
                     </a>
                 </p>

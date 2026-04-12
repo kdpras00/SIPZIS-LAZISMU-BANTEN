@@ -322,7 +322,7 @@
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-600">Status</span>
                             <span
-                                class="px-2.5 py-0.5 text-xs font-medium rounded-full {{ $mustahik->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                class="px-2.5 py-0.5 text-xs font-medium rounded-full {{ $mustahik->is_active ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-800' }}">
                                 {{ $mustahik->is_active ? 'Aktif' : 'Non-aktif' }}
                             </span>
                         </div>
@@ -347,14 +347,14 @@
             <!-- Payment Statistics (if has distributions) -->
             @if ($mustahik->zakatDistributions()->count() > 0)
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-                    <div class="px-6 py-4 bg-green-600 text-white rounded-t-lg">
+                    <div class="px-6 py-4 bg-orange-600 text-white rounded-t-lg">
                         <h6 class="text-lg font-semibold mb-0 flex items-center">
                             <i class="bi bi-wallet2 mr-2"></i> Statistik Penerimaan Zakat
                         </h6>
                     </div>
                     <div class="p-6">
                         <div class="text-center mb-4">
-                            <h4 class="text-2xl font-bold text-green-600 mb-0">Rp
+                            <h4 class="text-2xl font-bold text-orange-600 mb-0">Rp
                                 {{ number_format($mustahik->zakatDistributions()->sum('amount'), 0, ',', '.') }}</h4>
                             <p class="text-sm text-gray-500 mt-1">Total Diterima</p>
                         </div>

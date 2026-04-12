@@ -21,7 +21,7 @@
                         Tambah Massal
                             </a>
                     <a href="{{ route('admin.programs.create') }}" 
-                       class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg shadow-sm transition-colors duration-200">
+                       class="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg shadow-sm transition-colors duration-200">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
@@ -33,14 +33,14 @@
 
         <!-- Success Message -->
                     @if(session('success'))
-        <div class="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center justify-between">
+        <div class="mb-6 bg-orange-50 border border-orange-200 text-orange-800 px-4 py-3 rounded-lg flex items-center justify-between">
             <div class="flex items-center">
                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                 </svg>
                 <span>{{ session('success') }}</span>
             </div>
-            <button type="button" onclick="this.parentElement.remove()" class="text-green-600 hover:text-green-800">
+            <button type="button" onclick="this.parentElement.remove()" class="text-orange-600 hover:text-orange-800">
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                 </svg>
@@ -54,7 +54,7 @@
                 <nav class="flex -mb-px" aria-label="Tabs">
                     <button onclick="showTab('zakat')" 
                             id="zakat-tab" 
-                            class="tab-button active px-6 py-4 text-sm font-medium text-center border-b-2 border-emerald-500 text-emerald-600">
+                            class="tab-button active px-6 py-4 text-sm font-medium text-center border-b-2 border-orange-500 text-orange-600">
                         Zakat
                     </button>
                     <button onclick="showTab('infaq')" 
@@ -256,7 +256,7 @@
 
         // Remove active class from all tabs
         document.querySelectorAll('.tab-button').forEach(button => {
-            button.classList.remove('active', 'border-emerald-500', 'text-emerald-600');
+            button.classList.remove('active', 'border-orange-500', 'text-orange-600');
             button.classList.add('border-transparent', 'text-gray-500');
         });
 
@@ -265,7 +265,7 @@
 
         // Add active class to selected tab
         const activeTab = document.getElementById(tabName + '-tab');
-        activeTab.classList.add('active', 'border-emerald-500', 'text-emerald-600');
+        activeTab.classList.add('active', 'border-orange-500', 'text-orange-600');
         activeTab.classList.remove('border-transparent', 'text-gray-500');
     }
 

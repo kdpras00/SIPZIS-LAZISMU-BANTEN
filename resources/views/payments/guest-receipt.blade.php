@@ -80,8 +80,8 @@
 
                 <!-- Islamic Quote -->
                 <div class="mt-12 text-center">
-                    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-6 shadow-md">
-                        <div class="text-emerald-700 font-semibold mb-2">
+                    <div class="bg-gradient-to-r from-orange-50 to-orange-50 rounded-2xl p-6 shadow-md">
+                        <div class="text-orange-700 font-semibold mb-2">
                             "وَمَن يُؤْتَ الْحِكْمَةَ فَقَدْ أُوتِيَ خَيْرًا كَثِيرًا"
                         </div>
                         <p class="text-gray-600 italic">
@@ -100,7 +100,7 @@
                     <i class="fas fa-arrow-left mr-2"></i>
                     Kembali
                 </a>
-                <button onclick="window.print()" class="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition-colors inline-flex items-center mr-4">
+                <button onclick="window.print()" class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors inline-flex items-center mr-4">
                     <i class="fas fa-print mr-2"></i>
                     Cetak Kwitansi
                 </button>

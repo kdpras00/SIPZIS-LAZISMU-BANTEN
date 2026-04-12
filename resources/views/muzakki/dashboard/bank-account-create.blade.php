@@ -19,20 +19,20 @@
             @csrf
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Nama Bank</label>
-                <input type="text" name="bank_name" value="{{ old('bank_name') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200" placeholder="Contoh: BSI" required>
+                <input type="text" name="bank_name" value="{{ old('bank_name') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200" placeholder="Contoh: BSI" required>
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Rekening</label>
-                <input type="text" name="account_number" value="{{ old('account_number') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200" placeholder="Masukkan nomor rekening" required>
+                <input type="text" name="account_number" value="{{ old('account_number') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200" placeholder="Masukkan nomor rekening" required>
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Atas Nama</label>
-                <input type="text" name="account_holder" value="{{ old('account_holder') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200" placeholder="Nama pemilik rekening" required>
+                <input type="text" name="account_holder" value="{{ old('account_holder') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200" placeholder="Nama pemilik rekening" required>
             </div>
             <p class="text-xs text-gray-500">Informasi rekening disimpan aman dan hanya digunakan untuk mempermudah pembayaran zakat Anda.</p>
             <div class="flex items-center justify-between pt-4">
                 <a href="{{ route('dashboard.bank-accounts') }}" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">Batal</a>
-                <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors">Simpan</button>
+                <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-orange-600 rounded-lg hover:bg-orange-700 transition-colors">Simpan</button>
             </div>
         </form>
     </div>

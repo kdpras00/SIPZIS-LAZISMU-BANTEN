@@ -12,7 +12,7 @@
         <!-- Breadcrumb & Back -->
         <div class="container mx-auto px-4 max-w-7xl mb-6">
             <a href="{{ route('campaigns.index', $category) }}" 
-               class="inline-flex items-center text-gray-500 hover:text-green-600 transition-colors duration-200">
+               class="inline-flex items-center text-gray-500 hover:text-orange-600 transition-colors duration-200">
                 <i class="bi bi-arrow-left mr-2"></i>
                 Kembali ke Daftar Campaign
             </a>
@@ -35,13 +35,13 @@
                             
                             <!-- Badges on Image -->
                             <div class="absolute bottom-4 left-4 right-4 text-white z-10">
-                                <span class="inline-block px-3 py-1 rounded-full bg-green-600/90 backdrop-blur-sm text-xs font-semibold mb-2">
+                                <span class="inline-block px-3 py-1 rounded-full bg-orange-600/90 backdrop-blur-sm text-xs font-semibold mb-2">
                                     {{ $categoryDetails['title'] }}
                                 </span>
                                 <h1 class="text-2xl md:text-3xl font-bold leading-tight text-white mb-2 drop-shadow-md">
                                     {{ $campaign->title }}
                                 </h1>
-                                <div class="flex items-center text-sm text-green-50 space-x-4">
+                                <div class="flex items-center text-sm text-orange-50 space-x-4">
                                     <span class="flex items-center drop-shadow-sm">
                                         <i class="bi bi-calendar3 mr-2"></i>
                                         {{ $campaign->created_at->diffForHumans() }}
@@ -60,7 +60,7 @@
                     <!-- Description -->
                     <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
                         <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                            <i class="bi bi-card-text mr-3 text-green-600"></i>
+                            <i class="bi bi-card-text mr-3 text-orange-600"></i>
                             Keterangan Lengkap
                         </h3>
                         <div class="prose prose-green max-w-none text-gray-600 leading-relaxed text-justify">
@@ -83,13 +83,13 @@
                         <!-- Donation Card -->
                         <div class="bg-white rounded-3xl p-6 shadow-lg border border-gray-100 relative overflow-hidden">
                             <!-- Background Decoration -->
-                            <div class="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 bg-green-50 rounded-full blur-2xl opacity-50"></div>
+                            <div class="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 bg-orange-50 rounded-full blur-2xl opacity-50"></div>
                             
                             <h3 class="text-lg font-bold text-gray-900 mb-6">Target Donasi</h3>
                             
                             <div class="mb-6">
                                 <div class="flex justify-between items-end mb-2">
-                                    <span class="text-3xl font-bold text-green-600">{{ $campaign->formatted_collected_amount }}</span>
+                                    <span class="text-3xl font-bold text-orange-600">{{ $campaign->formatted_collected_amount }}</span>
                                 </div>
                                 <div class="flex justify-between text-xs text-gray-500 mb-3">
                                     <span>Terkumpul</span>
@@ -97,7 +97,7 @@
                                 </div>
                                 
                                 <div class="w-full bg-gray-100 rounded-full h-3">
-                                    <div class="bg-gradient-to-r from-green-400 to-green-600 h-3 rounded-full relative"
+                                    <div class="bg-gradient-to-r from-orange-400 to-orange-600 h-3 rounded-full relative"
                                          style="width: {{ min($campaign->progress_percentage, 100) }}%">
                                          @if($campaign->progress_percentage > 0)
                                             <div class="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full shadow-sm mr-0.5"></div>
@@ -105,26 +105,26 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 text-right">
-                                    <span class="text-sm font-semibold text-green-600">{{ number_format($campaign->progress_percentage, 1) }}%</span>
+                                    <span class="text-sm font-semibold text-orange-600">{{ number_format($campaign->progress_percentage, 1) }}%</span>
                                 </div>
                             </div>
 
                             <button id="donateButton" 
-                                    class="w-full group relative overflow-hidden bg-gradient-to-br from-green-600 to-green-700 text-white rounded-xl px-4 py-4 font-bold shadow-green-200 shadow-xl transition-all hover:shadow-green-300 hover:scale-[1.02] active:scale-[0.98]">
+                                    class="w-full group relative overflow-hidden bg-gradient-to-br from-orange-600 to-orange-700 text-white rounded-xl px-4 py-4 font-bold shadow-green-200 shadow-xl transition-all hover:shadow-green-300 hover:scale-[1.02] active:scale-[0.98]">
                                 <div class="relative z-10 flex items-center justify-center">
                                     <span>Donasi Sekarang</span>
                                     <i class="bi bi-heart-fill ml-2 group-hover:animate-pulse"></i>
                                 </div>
-                                <div class="absolute inset-0 bg-gradient-to-br from-green-500 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                             </button>
 
                             <div class="mt-6 flex items-center justify-center space-x-4 text-xs text-gray-500">
                                 <span class="flex items-center">
-                                    <i class="bi bi-shield-check text-green-500 mr-1"></i>
+                                    <i class="bi bi-shield-check text-orange-500 mr-1"></i>
                                     Terverifikasi
                                 </span>
                                 <span class="flex items-center">
-                                    <i class="bi bi-lock text-green-500 mr-1"></i>
+                                    <i class="bi bi-lock text-orange-500 mr-1"></i>
                                     Pembayaran Aman
                                 </span>
                             </div>
@@ -134,7 +134,7 @@
                         <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="font-bold text-gray-900">Donatur Terbaru</h3>
-                                <span class="text-xs px-2 py-1 bg-green-50 text-green-700 rounded-full font-medium">
+                                <span class="text-xs px-2 py-1 bg-orange-50 text-orange-700 rounded-full font-medium">
                                     {{ $campaign->zakatPayments->count() }} Orang
                                 </span>
                             </div>
@@ -143,7 +143,7 @@
                                 @forelse($campaign->zakatPayments as $payment)
                                     <div class="flex items-start">
                                         <div class="flex-shrink-0">
-                                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-100 to-green-50 flex items-center justify-center text-green-600 font-bold text-sm">
+                                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center text-orange-600 font-bold text-sm">
                                                 {{ substr($payment->muzakki ? $payment->muzakki->name : 'A', 0, 1) }}
                                             </div>
                                         </div>
@@ -152,7 +152,7 @@
                                                 <h4 class="text-sm font-semibold text-gray-900">
                                                     {{ $payment->muzakki ? $payment->muzakki->name : 'Hamba Allah' }}
                                                 </h4>
-                                                <span class="text-xs font-bold text-green-600">
+                                                <span class="text-xs font-bold text-orange-600">
                                                     {{ $payment->formatted_amount }}
                                                 </span>
                                             </div>
@@ -183,7 +183,7 @@
                                 <button class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors flex items-center justify-center">
                                     <i class="bi bi-facebook"></i>
                                 </button>
-                                <button class="w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition-colors flex items-center justify-center">
+                                <button class="w-10 h-10 rounded-full bg-orange-50 text-orange-600 hover:bg-orange-100 transition-colors flex items-center justify-center">
                                     <i class="bi bi-whatsapp"></i>
                                 </button>
                                 <button class="w-10 h-10 rounded-full bg-sky-50 text-sky-500 hover:bg-sky-100 transition-colors flex items-center justify-center">

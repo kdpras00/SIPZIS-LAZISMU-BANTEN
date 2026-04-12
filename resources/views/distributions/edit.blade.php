@@ -25,7 +25,7 @@
                 <div class="flex justify-between items-center">
                     <h5 class="text-lg font-semibold mb-0"><i class="bi bi-pencil mr-2"></i> Edit Form Distribusi</h5>
                     @if($distribution->is_received)
-                        <span class="px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">Sudah Diterima</span>
+                        <span class="px-3 py-1 text-sm font-semibold rounded-full bg-orange-100 text-orange-800">Sudah Diterima</span>
                     @else
                         <span class="px-3 py-1 text-sm font-semibold rounded-full bg-yellow-100 text-yellow-800">Belum Diterima</span>
                     @endif
@@ -242,7 +242,7 @@
                     <!-- Receipt Status Section (if already received) -->
                     @if($distribution->is_received)
                     <div class="mb-6">
-                        <h6 class="text-green-600 font-semibold mb-3">
+                        <h6 class="text-orange-600 font-semibold mb-3">
                             <i class="bi bi-check-circle mr-2"></i> Status Penerimaan
                         </h6>
                         
@@ -305,7 +305,7 @@
                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                                 <i class="bi bi-check-circle mr-2"></i> Simpan Perubahan
                             </button>
-                            <button type="submit" name="save_and_continue" value="1" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                            <button type="submit" name="save_and_continue" value="1" class="inline-flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700">
                                 <i class="bi bi-check-circle mr-2"></i> Simpan & Lihat
                             </button>
                         </div>
@@ -318,11 +318,11 @@
     <div class="lg:col-span-1">
         <!-- Available Balance Card -->
         <div class="bg-white rounded-lg shadow-sm mb-6">
-            <div class="px-6 py-4 {{ $availableBalance > 0 ? 'bg-green-600' : 'bg-red-600' }} text-white rounded-t-lg">
+            <div class="px-6 py-4 {{ $availableBalance > 0 ? 'bg-orange-600' : 'bg-red-600' }} text-white rounded-t-lg">
                 <h6 class="font-semibold mb-0"><i class="bi bi-wallet2 mr-2"></i> Saldo Tersedia</h6>
             </div>
             <div class="p-6 text-center">
-                <h3 class="text-2xl font-bold {{ $availableBalance > 0 ? 'text-green-600' : 'text-red-600' }}" id="available-balance">
+                <h3 class="text-2xl font-bold {{ $availableBalance > 0 ? 'text-orange-600' : 'text-red-600' }}" id="available-balance">
                     Rp {{ number_format($availableBalance, 0, ',', '.') }}
                 </h3>
                 <small class="text-gray-600">
@@ -358,7 +358,7 @@
                         <td class="py-2">
                             @switch($distribution->distribution_type)
                                 @case('cash')
-                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Tunai</span>
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">Tunai</span>
                                     @break
                                 @case('goods')
                                     <span class="px-2 py-1 text-xs font-semibold rounded-full bg-cyan-100 text-cyan-800">Barang</span>
@@ -395,10 +395,10 @@
             </div>
             <div class="p-6">
                 <ul class="list-none space-y-2 text-sm">
-                    <li><i class="bi bi-check-circle text-green-600 mr-2"></i> Pastikan data yang diubah sudah benar</li>
-                    <li><i class="bi bi-check-circle text-green-600 mr-2"></i> Perubahan jumlah akan mempengaruhi saldo</li>
-                    <li><i class="bi bi-check-circle text-green-600 mr-2"></i> Jika distribusi sudah diterima, berhati-hatilah mengubah data</li>
-                    <li><i class="bi bi-check-circle text-green-600 mr-2"></i> Backup data penting sebelum perubahan besar</li>
+                    <li><i class="bi bi-check-circle text-orange-600 mr-2"></i> Pastikan data yang diubah sudah benar</li>
+                    <li><i class="bi bi-check-circle text-orange-600 mr-2"></i> Perubahan jumlah akan mempengaruhi saldo</li>
+                    <li><i class="bi bi-check-circle text-orange-600 mr-2"></i> Jika distribusi sudah diterima, berhati-hatilah mengubah data</li>
+                    <li><i class="bi bi-check-circle text-orange-600 mr-2"></i> Backup data penting sebelum perubahan besar</li>
                 </ul>
                 
                 @if($distribution->is_received)

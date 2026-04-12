@@ -12,7 +12,7 @@
             </a>
             <h5 class="text-xl font-semibold text-gray-900 mb-0">Akun bank</h5>
         </div>
-        <a href="{{ route('dashboard.bank-accounts.create') }}" class="px-4 py-2 bg-green-600 text-white text-sm rounded-full hover:bg-green-700 transition-colors font-medium">
+        <a href="{{ route('dashboard.bank-accounts.create') }}" class="px-4 py-2 bg-orange-600 text-white text-sm rounded-full hover:bg-orange-700 transition-colors font-medium">
             <i class="bi bi-plus-circle mr-1"></i>Tambah
         </a>
     </div>
@@ -23,7 +23,7 @@
                 <i class="bi bi-bank text-6xl text-gray-400 mb-4 block"></i>
                 <h4 class="text-xl font-semibold text-gray-900 mb-2">Belum ada akun bank</h4>
                 <p class="text-gray-600 mb-6">Simpan informasi rekening bank Anda untuk memudahkan pembayaran zakat.</p>
-                <a href="{{ route('dashboard.bank-accounts.create') }}" class="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors font-medium">
+                <a href="{{ route('dashboard.bank-accounts.create') }}" class="inline-flex items-center px-6 py-3 bg-orange-600 text-white rounded-full hover:bg-orange-700 transition-colors font-medium">
                     <i class="bi bi-plus-circle mr-2"></i>Tambah Akun Bank
                 </a>
             </div>
@@ -36,7 +36,7 @@
                         <div class="flex items-center gap-3 mb-1">
                             <h6 class="text-lg font-semibold text-gray-900 mb-0">{{ $account->bank_name }}</h6>
                             @if($account->is_primary)
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">Rekening Utama</span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-700">Rekening Utama</span>
                             @endif
                         </div>
                         <p class="text-gray-700 font-mono text-sm mb-1">{{ $account->account_number }}</p>

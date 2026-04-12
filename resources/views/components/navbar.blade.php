@@ -1,356 +1,187 @@
-<nav class="navbar navbar-expand-lg shadow-sm py-3 mb-3"
-    style="background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%); border-bottom: 1px solid rgba(255, 255, 255, 0.1); position: relative; z-index: 1051;">
-    <div class="container-fluid">
-        <button class="btn btn-outline-light" type="button" id="sidebarToggle" style="position: relative; z-index: 1052;">
-            <i class="bi bi-list"></i>
+@php
+    $routeName = request()->route()?->getName() ?? '';
+    $breadcrumbMap = [
+        'dashboard' => 'Overview',
+        'muzakki.index' => 'Muzakki',
+        'muzakki.create' => 'Tambah Muzakki',
+        'muzakki.show' => 'Detail Muzakki',
+        'mustahik.index' => 'Mustahik',
+        'mustahik.create' => 'Tambah Mustahik',
+        'payments.index' => 'Pembayaran',
+        'payments.create' => 'Buat Pembayaran',
+        'payments.show' => 'Detail Pembayaran',
+        'distributions.index' => 'Distribusi',
+        'distributions.create' => 'Buat Distribusi',
+        'reports.incoming' => 'Laporan Masuk',
+        'reports.outgoing' => 'Laporan Keluar',
+        'admin.news.index' => 'Berita',
+        'admin.artikel.index' => 'Artikel',
+        'admin.campaigns.index' => 'Campaign',
+        'admin.programs.index' => 'Program',
+        'profile.show' => 'Profil',
+        'profile.edit' => 'Edit Profil',
+        'notifications.index' => 'Notifikasi',
+    ];
+    $currentPage = $breadcrumbMap[$routeName] ?? 'Dashboard';
+
+    $user = auth()->user();
+    $unreadCount = 0;
+    if ($user->role === 'muzakki' && $user->muzakki) {
+        $unreadCount = $user->muzakki->unread_notifications_count;
+    } else {
+        $unreadCount = $user->unread_notifications_count;
+    }
+@endphp
+
+<header class="flex items-center justify-between px-6 py-3" style="background: #faf8f5; border-bottom: 1px solid #f0ece6; position: relative; z-index: 1051;">
+
+    {{-- Left: Toggle + Breadcrumb --}}
+    <div class="flex items-center gap-4">
+        <button id="sidebarToggle" class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-200 hover:bg-gray-100" style="color: #8b7e74; border: 1px solid #f0ece6; background: transparent; cursor: pointer;">
+            <i class="bi bi-list text-lg"></i>
         </button>
 
-        <div class="ms-auto d-flex align-items-center">
-            <div class="dropdown me-4">
-                <button class="btn btn-outline-light position-relative px-3 py-2" type="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-bell fs-5"></i>
-                    @php
-                        $user = auth()->user();
-                        $unreadCount = 0;
+        <nav class="hidden sm:flex items-center gap-1.5 text-sm">
+            <span style="color: #8b7e74;">Dashboard</span>
+            @if($currentPage !== 'Overview' && $currentPage !== 'Dashboard')
+                <span style="color: #d1cbc4;">/</span>
+                <span class="font-medium" style="color: #1c0f0a;">{{ $currentPage }}</span>
+            @endif
+        </nav>
+    </div>
 
-                        if ($user->role === 'muzakki' && $user->muzakki) {
-                            $unreadCount = $user->muzakki->unread_notifications_count;
-                        } else {
-                            $unreadCount = $user->unread_notifications_count;
-                        }
+    {{-- Right: Actions --}}
+    <div class="flex items-center gap-3">
 
-                        // Also count pending mustahik for admin
-                        $pendingMustahik = 0;
-                    @endphp
-                    @if ($unreadCount > 0 || $pendingMustahik > 0)
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            {{ $unreadCount + $pendingMustahik }}
-                        </span>
-                    @endif
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" style="min-width: 320px; max-width: 350px;">
-                    <li class="dropdown-header fw-bold d-flex justify-content-between align-items-center border-bottom py-2">
-                        <span>Notifikasi</span>
-                        <form action="{{ route('notifications.markAsRead') }}" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-link btn-sm p-0 text-decoration-none" style="font-size: 0.8rem;">
-                                Tandai semua dibaca
-                            </button>
-                        </form>
-                    </li>
-                    
-                    <li>
-                        <div style="max-height: 300px; overflow-y: auto;">
-                            <ul class="list-unstyled mb-0">
-                                @php
-                                    $notifications = collect();
-                                    $limit = 10; // Menampilkan 10 notifikasi terbaru (bisa di-scroll)
-                                    
-                                    if ($user->role === 'muzakki' && $user->muzakki) {
-                                        $notifications = $user->muzakki->notifications()->latest()->limit($limit)->get();
-                                    } else {
-                                        $notifications = $user->notifications()->latest()->limit($limit)->get();
-                                        // For admin, also include pending mustahik as a notification
-                                        if ($pendingMustahik > 0) {
-                                            $mustahikNotification = new \stdClass();
-                                            $mustahikNotification->id = 'mustahik_pending';
-                                            $mustahikNotification->title = 'Mustahik Menunggu Verifikasi';
-                                            $mustahikNotification->message = $pendingMustahik . ' mustahik menunggu verifikasi';
-                                            $mustahikNotification->type = 'account';
-                                            $mustahikNotification->created_at = now();
-                                            $mustahikNotification->is_read = false;
-                                            $notifications->prepend($mustahikNotification);
-                                        }
-                                    }
-                                @endphp
+        {{-- Notifications --}}
+        <div class="dropdown relative">
+            <button class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-200 relative hover:bg-gray-100" 
+                type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                style="color: #8b7e74; border: none; background: transparent; cursor: pointer;">
+                <i class="bi bi-bell text-lg"></i>
+                @if ($unreadCount > 0)
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full" style="background: #c2410c;"></span>
+                @endif
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-xl overflow-hidden" style="min-width: 320px; max-width: 360px; border: 1px solid #f0ece6;">
+                <li class="px-4 py-3 flex justify-between items-center" style="border-bottom: 1px solid #f0ece6;">
+                    <span class="font-semibold text-sm" style="color: #1c0f0a;">Notifikasi</span>
+                    <form action="{{ route('notifications.markAsRead') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-xs no-underline bg-transparent border-0 cursor-pointer" style="color: #c2410c;">Tandai dibaca</button>
+                    </form>
+                </li>
+                <li>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        @php
+                            $notifications = collect();
+                            $limit = 10;
+                            if ($user->role === 'muzakki' && $user->muzakki) {
+                                $notifications = $user->muzakki->notifications()->latest()->limit($limit)->get();
+                            } else {
+                                $notifications = $user->notifications()->latest()->limit($limit)->get();
+                            }
+                        @endphp
 
-                                @if ($notifications->count() > 0)
-                                    @foreach ($notifications as $notification)
-                                        @if (isset($notification->id) && $notification->id === 'mustahik_pending')
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-start py-2 border-bottom"
-                                                    href="{{ route('mustahik.index', ['status' => 'pending']) }}" style="white-space: normal;">
-                                                    <div class="me-2 mt-1">
-                                                        <i class="bi bi-person-exclamation-fill text-warning"></i>
-                                                    </div>
-                                                    <div class="flex-grow-1">
-                                                        <div class="d-flex justify-content-between">
-                                                            <strong>{{ $notification->title }}</strong>
-                                                        </div>
-                                                        <small class="text-muted d-block text-wrap">{{ $notification->message }}</small>
-                                                        <div class="small text-muted">
-                                                            {{ $notification->created_at->diffForHumans() }}
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        @else
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-start py-2 border-bottom" href="#" style="white-space: normal;">
-                                                    <div class="me-2 mt-1">
-                                                        @switch($notification->type)
-                                                            @case('payment')
-                                                                <i class="bi bi-credit-card text-success"></i>
-                                                            @break
-                                                            @case('distribution')
-                                                                <i class="bi bi-box-seam text-primary"></i>
-                                                            @break
-                                                            @case('program')
-                                                                <i class="bi bi-calendar-event text-purple"></i>
-                                                            @break
-                                                            @case('account')
-                                                                <i class="bi bi-person-circle text-warning"></i>
-                                                            @break
-                                                            @case('reminder')
-                                                                <i class="bi bi-alarm text-orange"></i>
-                                                            @break
-                                                            @default
-                                                                <i class="bi bi-bell text-secondary"></i>
-                                                        @endswitch
-                                                    </div>
-                                                    <div class="flex-grow-1">
-                                                        <div class="d-flex justify-content-between">
-                                                            <strong>{{ $notification->title }}</strong>
-                                                            @if (!$notification->is_read)
-                                                                <span class="badge bg-danger rounded-pill">baru</span>
-                                                            @endif
-                                                        </div>
-                                                        <small class="text-muted d-block text-wrap">{{ $notification->message }}</small>
-                                                        <div class="small text-muted">
-                                                            {{ $notification->created_at->diffForHumans() }}
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        @endif
-                                    @endforeach
-                                @else
-                                    <li><span class="dropdown-item text-muted text-center py-3">Tidak ada notifikasi</span></li>
-                                @endif
-                            </ul>
-                        </div>
-                    </li>
-                    
-                    <li>
-                        <a class="dropdown-item text-center py-2 fw-bold text-primary"
-                            href="{{ route('notifications.index') }}" style="border-top: 1px solid #e9ecef;">
-                            Lihat semua notifikasi
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                        @if ($notifications->count() > 0)
+                            @foreach ($notifications as $notification)
+                                <a class="flex items-start gap-3 px-4 py-3 no-underline transition-colors duration-200 hover:bg-gray-50" href="#" style="border-bottom: 1px solid #f8f5f1;">
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                                        style="background: {{ $notification->type === 'payment' ? '#f0fdf4' : ($notification->type === 'distribution' ? '#eff6ff' : '#fff7ed') }};">
+                                        <i class="bi {{ $notification->type === 'payment' ? 'bi-credit-card text-green-600' : ($notification->type === 'distribution' ? 'bi-box-seam text-blue-600' : 'bi-bell text-orange-600') }} text-xs"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-sm font-medium mb-0.5 truncate" style="color: #1c0f0a;">{{ $notification->title }}</p>
+                                        <p class="text-xs mb-0 line-clamp-2" style="color: #8b7e74;">{{ $notification->message }}</p>
+                                        <p class="text-xs mt-1 mb-0" style="color: #b8ada3;">{{ $notification->created_at->diffForHumans() }}</p>
+                                    </div>
+                                    @if (!$notification->is_read)
+                                        <span class="w-2 h-2 rounded-full flex-shrink-0 mt-2" style="background: #c2410c;"></span>
+                                    @endif
+                                </a>
+                            @endforeach
+                        @else
+                            <div class="px-4 py-6 text-center">
+                                <p class="text-sm mb-0" style="color: #8b7e74;">Tidak ada notifikasi</p>
+                            </div>
+                        @endif
+                    </div>
+                </li>
+                <li>
+                    <a class="block text-center py-2.5 text-xs font-semibold no-underline transition-colors hover:bg-gray-50" href="{{ route('notifications.index') }}" style="color: #c2410c; border-top: 1px solid #f0ece6;">
+                        Lihat semua
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-            <div class="dropdown">
-                <button class="btn btn-outline-light dropdown-toggle px-3 py-2" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <i class="bi bi-person-circle fs-5 me-2"></i>
-                    {{ auth()->user()->name }}
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0">
-                    <li>
-                        <h6 class="dropdown-header">{{ ucfirst(auth()->user()->role) }}</h6>
-                    </li>
-                    <li><a class="dropdown-item" href="{{ route('profile.show') }}"><i
-                                class="bi bi-person me-2"></i>Profile</a></li>
-                    <!-- <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li> -->
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <form id="logout-form" method="POST" action="{{ route('logout') }}">
-                            @csrf
-                        </form>
-                        <a class="dropdown-item" href="#"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="bi bi-box-arrow-right me-2"></i>Logout
-                        </a>
-                    </li>
-                </ul>
-            </div>
+        {{-- Divider --}}
+        <div class="w-px h-6" style="background: #f0ece6;"></div>
+
+        {{-- User Dropdown --}}
+        <div class="dropdown relative">
+            <button class="flex items-center gap-2.5 px-2 py-1.5 rounded-lg transition-colors duration-200 hover:bg-gray-100"
+                type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                style="border: none; background: transparent; cursor: pointer;">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style="background: #c2410c;">
+                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                </div>
+                <span class="text-sm font-medium hidden sm:inline" style="color: #1c0f0a;">{{ auth()->user()->name }}</span>
+                <i class="bi bi-chevron-down text-xs hidden sm:inline" style="color: #8b7e74;"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-xl overflow-hidden" style="border: 1px solid #f0ece6; min-width: 200px;">
+                <li class="px-4 py-2.5" style="border-bottom: 1px solid #f0ece6;">
+                    <p class="text-xs font-semibold mb-0" style="color: #8b7e74;">{{ ucfirst(auth()->user()->role) }}</p>
+                </li>
+                <li>
+                    <a class="flex items-center gap-2.5 px-4 py-2.5 text-sm no-underline transition-colors hover:bg-gray-50" href="{{ route('profile.show') }}" style="color: #1c0f0a;">
+                        <i class="bi bi-person text-base" style="color: #8b7e74;"></i>
+                        Profil
+                    </a>
+                </li>
+                <li style="border-top: 1px solid #f0ece6;">
+                    <form id="logout-form" method="POST" action="{{ route('logout') }}">@csrf</form>
+                    <a class="flex items-center gap-2.5 px-4 py-2.5 text-sm no-underline transition-colors hover:bg-gray-50" href="#"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: #1c0f0a;">
+                        <i class="bi bi-box-arrow-right text-base" style="color: #8b7e74;"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
-</nav>
-
-<style>
-    /* Ensure navbar works properly with new layout */
-    .navbar {
-        margin-bottom: 0;
-        border-radius: 0;
-        max-width: 100%;
-        overflow: visible !important;
-    }
-
-    /* Custom colors for notification icons */
-    .text-purple {
-        color: #8b5cf6;
-    }
-
-    .text-orange {
-        color: #f97316;
-    }
-
-    /* Notification item hover effect */
-    .dropdown-item:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-    }
-
-    /* Memastikan container navbar tidak menyebabkan horizontal scroll */
-    .container-fluid {
-        max-width: 100%;
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-
-    .navbar .container-fluid {
-        overflow: visible !important;
-    }
-
-
-    /* Responsive adjustments */
-    @media (max-width: 767.98px) {
-        .container-fluid {
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-        }
-
-        .navbar {
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-        }
-    }
-
-    /* Ensure dropdowns are clickable and above everything */
-    .navbar .dropdown {
-        position: relative;
-        z-index: 1052;
-    }
-
-    .navbar .dropdown-menu {
-        z-index: 1053 !important;
-        position: absolute !important;
-        pointer-events: auto !important;
-    }
-
-    .navbar .dropdown-toggle {
-        cursor: pointer;
-        pointer-events: auto !important;
-        z-index: 1052;
-    }
-
-    /* Ensure navbar buttons are clickable */
-    .navbar button,
-    .navbar .btn {
-        pointer-events: auto !important;
-        z-index: 1052;
-        position: relative;
-    }
-
-    /* Override any parent elements that might block clicks */
-    .navbar * {
-        pointer-events: auto !important;
-    }
-
-    /* Ensure dropdown container doesn't block */
-    .navbar .ms-auto {
-        position: relative;
-        z-index: 1052;
-    }
-
-    /* Make sure nothing overlays the navbar */
-    .navbar {
-        position: relative !important;
-        z-index: 1051 !important;
-        isolation: isolate;
-    }
-</style>
+</header>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Force enable clicks on navbar dropdowns
-        const navbar = document.querySelector('.navbar');
-        if (navbar) {
-            navbar.style.pointerEvents = 'auto';
-            navbar.style.zIndex = '1051';
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.querySelector('header');
+    if (!navbar) return;
 
-        // Find all dropdown buttons in navbar
-        const dropdownButtons = navbar ? navbar.querySelectorAll('[data-bs-toggle="dropdown"]') : [];
+    const dropdownButtons = navbar.querySelectorAll('[data-bs-toggle="dropdown"]');
+    dropdownButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const dropdownMenu = this.parentElement.querySelector('.dropdown-menu');
+            if (!dropdownMenu) return;
 
-        dropdownButtons.forEach(button => {
-            // Remove any pointer-events blocking
-            button.style.pointerEvents = 'auto';
-            button.style.zIndex = '1052';
-            button.style.position = 'relative';
+            const isShown = dropdownMenu.classList.contains('show');
+            document.querySelectorAll('.dropdown-menu.show').forEach(m => m !== dropdownMenu && m.classList.remove('show'));
+            dropdownMenu.classList.toggle('show');
 
-            // Add direct click handler as fallback
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                const dropdownMenu = this.nextElementSibling ||
-                    this.parentElement.querySelector('.dropdown-menu');
-
-                if (dropdownMenu) {
-                    // Toggle dropdown manually if Bootstrap didn't work
-                    const isShown = dropdownMenu.classList.contains('show');
-
-                    // Close all other dropdowns first
-                    document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
-                        if (menu !== dropdownMenu) {
-                            menu.classList.remove('show');
-                        }
-                    });
-
-                    // Toggle current dropdown
-                    dropdownMenu.classList.toggle('show');
-
-                    // Try Bootstrap way too
-                    if (typeof bootstrap !== 'undefined') {
-                        try {
-                            const bsDropdown = bootstrap.Dropdown.getInstance(button);
-                            if (!isShown && bsDropdown) {
-                                bsDropdown.show();
-                            } else if (isShown && bsDropdown) {
-                                bsDropdown.hide();
-                            } else {
-                                const newDropdown = new bootstrap.Dropdown(button);
-                                if (!isShown) {
-                                    newDropdown.show();
-                                }
-                            }
-                        } catch (err) {
-                            console.log('Bootstrap dropdown fallback:', err);
-                        }
-                    }
-                }
-            });
-        });
-
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!navbar.contains(e.target)) {
-                document.querySelectorAll('.navbar .dropdown-menu.show').forEach(menu => {
-                    menu.classList.remove('show');
-                });
-            }
-        });
-
-        // Initialize Bootstrap dropdowns after a short delay to ensure Bootstrap is loaded
-        setTimeout(function() {
             if (typeof bootstrap !== 'undefined') {
-                dropdownButtons.forEach(button => {
-                    try {
-                        // Check if already initialized
-                        let bsDropdown = bootstrap.Dropdown.getInstance(button);
-                        if (!bsDropdown) {
-                            bsDropdown = new bootstrap.Dropdown(button);
-                        }
-                    } catch (e) {
-                        console.log('Error initializing Bootstrap dropdown:', e);
-                    }
-                });
+                try {
+                    let bsDropdown = bootstrap.Dropdown.getInstance(button) || new bootstrap.Dropdown(button);
+                    isShown ? bsDropdown.hide() : bsDropdown.show();
+                } catch(err) {}
             }
-        }, 500);
+        });
     });
+
+    document.addEventListener('click', function(e) {
+        if (!navbar.contains(e.target)) {
+            navbar.querySelectorAll('.dropdown-menu.show').forEach(m => m.classList.remove('show'));
+        }
+    });
+});
 </script>

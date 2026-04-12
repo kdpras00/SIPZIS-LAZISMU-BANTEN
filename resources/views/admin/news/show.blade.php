@@ -11,9 +11,9 @@
                 <h1 class="text-2xl font-bold text-gray-900">Detail Berita</h1>
                 <nav class="flex text-sm text-gray-500 mt-1">
                     <ol class="flex items-center space-x-2">
-                        <li><a href="{{ route('dashboard') }}" class="hover:text-emerald-600 transition-colors">Dashboard</a></li>
+                        <li><a href="{{ route('dashboard') }}" class="hover:text-orange-600 transition-colors">Dashboard</a></li>
                         <li><span class="text-gray-400">/</span></li>
-                        <li><a href="{{ route('admin.news.index') }}" class="hover:text-emerald-600 transition-colors">Berita</a></li>
+                        <li><a href="{{ route('admin.news.index') }}" class="hover:text-orange-600 transition-colors">Berita</a></li>
                         <li><span class="text-gray-400">/</span></li>
                         <li class="text-gray-900 font-medium truncate max-w-[200px]">{{ $news->title }}</li>
                     </ol>
@@ -26,7 +26,7 @@
                     <i class="bi bi-arrow-left mr-2"></i> Kembali
                 </a>
                 <a href="{{ route('news.show', $news->slug) }}" target="_blank"
-                   class="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-50 text-emerald-700 font-medium border border-emerald-100 hover:bg-emerald-100 transition-all hover:shadow-sm">
+                   class="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-orange-50 text-orange-700 font-medium border border-orange-100 hover:bg-orange-100 transition-all hover:shadow-sm">
                     <i class="bi bi-eye mr-2"></i> Lihat Publik
                 </a>
             </div>
@@ -43,7 +43,7 @@
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-gray-500">Status Publikasi</span>
                         @if($news->is_published)
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
                                 Published
                             </span>
                         @else
@@ -95,7 +95,7 @@
                         </div>
                     @endif
 
-                    <div class="prose prose-lg max-w-none text-gray-600 prose-headings:text-gray-900 prose-a:text-emerald-600 hover:prose-a:text-emerald-500 prose-img:rounded-2xl prose-img:shadow-md">
+                    <div class="prose prose-lg max-w-none text-gray-600 prose-headings:text-gray-900 prose-a:text-orange-600 hover:prose-a:text-orange-500 prose-img:rounded-2xl prose-img:shadow-md">
                         {!! nl2br(e($news->content)) !!}
                     </div>
                     
@@ -130,7 +130,7 @@
                                 <div class="flex-1 p-3 bg-gray-50 rounded-xl border border-gray-100 text-gray-600 text-sm truncate">
                                     {{ route('news.show', $news->slug) }}
                                 </div>
-                                <button onclick="copyToClipboard()" class="p-3 text-gray-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl border border-gray-100 transition-all" title="Salin Link">
+                                <button onclick="copyToClipboard()" class="p-3 text-gray-500 hover:text-orange-600 hover:bg-orange-50 rounded-xl border border-gray-100 transition-all" title="Salin Link">
                                     <i class="bi bi-clipboard"></i>
                                 </button>
                                 <a href="{{ route('news.show', $news->slug) }}" target="_blank" class="p-3 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-xl border border-gray-100 transition-all" title="Buka Link">
@@ -147,14 +147,14 @@
         <div class="space-y-6">
             <!-- Status Card -->
             <div class="bg-white rounded-3xl shadow-lg shadow-gray-100 border border-gray-100 overflow-hidden">
-                <div class="p-6 text-center border-b border-gray-100 {{ $news->is_published ? 'bg-emerald-50/50' : 'bg-amber-50/50' }}">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full {{ $news->is_published ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600' }} mb-4">
+                <div class="p-6 text-center border-b border-gray-100 {{ $news->is_published ? 'bg-orange-50/50' : 'bg-amber-50/50' }}">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full {{ $news->is_published ? 'bg-orange-100 text-orange-600' : 'bg-amber-100 text-amber-600' }} mb-4">
                         <i class="bi {{ $news->is_published ? 'bi-check-circle-fill' : 'bi-clock-fill' }} text-3xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold {{ $news->is_published ? 'text-emerald-900' : 'text-amber-900' }} mb-1">
+                    <h3 class="text-xl font-bold {{ $news->is_published ? 'text-orange-900' : 'text-amber-900' }} mb-1">
                         {{ $news->is_published ? 'Terpublikasi' : 'Draft' }}
                     </h3>
-                    <p class="{{ $news->is_published ? 'text-emerald-600' : 'text-amber-600' }} text-sm">
+                    <p class="{{ $news->is_published ? 'text-orange-600' : 'text-amber-600' }} text-sm">
                         {{ $news->is_published ? 'Berita ini dapat diakses publik' : 'Berita belum dipublikasikan' }}
                     </p>
                 </div>
@@ -169,7 +169,7 @@
                                 Batalkan Publikasi
                             </button>
                         @else
-                            <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold shadow-lg shadow-emerald-200 hover:shadow-emerald-300 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                            <button type="submit" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold shadow-lg shadow-orange-200 hover:shadow-orange-300 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
                                 <i class="bi bi-rocket-takeoff-fill"></i>
                                 Publikasikan Sekarang
                             </button>
@@ -246,7 +246,7 @@
     /* Custom override for prose if needed */
     .prose blockquote {
         font-style: normal;
-        border-left-color: #10b981;
+        border-left-color: #ea580c;
         background-color: #f0fdf4;
         padding: 1rem;
         border-radius: 0 0.5rem 0.5rem 0;

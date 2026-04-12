@@ -4,7 +4,7 @@
 <div class="container mx-auto px-4 py-6">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Manajemen Berita</h1>
-        <a href="{{ route('admin.news.create') }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+        <a href="{{ route('admin.news.create') }}" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
             <i class="fas fa-plus mr-2"></i>Tambah Berita
         </a>
     </div>
@@ -58,10 +58,10 @@
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition duration-200
-                                    @if($article->is_published) bg-green-100 text-green-800 hover:bg-green-200
+                                    @if($article->is_published) bg-orange-100 text-orange-800 hover:bg-orange-200
                                     @else bg-gray-100 text-gray-800 hover:bg-gray-200 @endif">
                                     <i class="fas fa-circle w-2 h-2 mr-1.5
-                                        @if($article->is_published) text-green-400
+                                        @if($article->is_published) text-orange-400
                                         @else text-gray-400 @endif"></i>
                                     {{ $article->is_published ? 'Published' : 'Draft' }}
                                 </button>

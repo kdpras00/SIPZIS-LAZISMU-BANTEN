@@ -49,7 +49,7 @@
                                                 <td class="py-2.5 pr-6 align-top"><strong class="text-gray-700">Status:</strong></td>
                                                 <td class="py-2.5">
                                                     @if($payment->status == 'completed')
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Selesai</span>
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">Selesai</span>
                                                     @elseif($payment->status == 'pending')
                                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Pending</span>
                                                     @else
@@ -130,7 +130,7 @@
                                     <tr>
                                         <td class="py-2.5 pr-6 align-top"><strong class="text-gray-700">Jumlah Pembayaran:</strong></td>
                                         <td class="py-2.5">
-                                            <h5 class="text-xl font-bold text-green-600">
+                                            <h5 class="text-xl font-bold text-orange-600">
                                                 Rp {{ number_format($payment->paid_amount, 0, ',', '.') }}
                                             </h5>
                                         </td>

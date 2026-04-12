@@ -45,10 +45,6 @@ class MustahikSeeder extends Seeder
                 'family_members' => 3,
                 'monthly_income' => 1500000.00,
                 'income_source' => 'Jualan gorengan',
-                'verification_status' => 'verified',
-                'verification_notes' => 'Penghasilan tidak cukup untuk kebutuhan keluarga',
-                'verified_at' => now(),
-                'verified_by' => 1, // Admin
                 'is_active' => true,
             ],
             [
@@ -66,10 +62,6 @@ class MustahikSeeder extends Seeder
                 'family_members' => 2,
                 'monthly_income' => 3000000.00,
                 'income_source' => 'Gaji sebagai amil zakat',
-                'verification_status' => 'verified',
-                'verification_notes' => 'Bertugas sebagai amil zakat di Masjid Al-Ikhlas',
-                'verified_at' => now(),
-                'verified_by' => 1, // Admin
                 'is_active' => true,
             ],
             [
@@ -138,10 +130,6 @@ class MustahikSeeder extends Seeder
                 'family_members' => 1,
                 'monthly_income' => 500000.00,
                 'income_source' => 'Kiriman orangtua (tidak mencukupi)',
-                'verification_status' => 'pending',
-                'verification_notes' => 'Mahasiswa dari luar kota yang kesulitan biaya',
-                'verified_at' => null,
-                'verified_by' => null,
                 'is_active' => true,
             ],
         ];

@@ -24,8 +24,8 @@
                     <tr class="hover:bg-gray-50 transition-colors {{ $loop->even ? 'bg-gray-50' : 'bg-white' }}">
                         <td class="px-4 py-3">
                             <div class="flex items-center">
-                                <div class="bg-green-100 rounded-full p-1.5 mr-2 flex-shrink-0">
-                                    <i class="fas fa-user text-green-600 text-xs"></i>
+                                <div class="bg-orange-100 rounded-full p-1.5 mr-2 flex-shrink-0">
+                                    <i class="fas fa-user text-orange-600 text-xs"></i>
                                 </div>
                                 <div class="min-w-0">
                                     <div class="font-semibold text-gray-900 truncate">{{ $item->name }}</div>
@@ -48,7 +48,7 @@
                         <td class="px-2 py-3">
                             @if ($item->is_active)
                                 <span
-                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-600 text-white whitespace-nowrap">Terverifikasi</span>
+                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-600 text-white whitespace-nowrap">Terverifikasi</span>
                             @else
                                 <span
                                     class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-500 text-white whitespace-nowrap">Menunggu</span>

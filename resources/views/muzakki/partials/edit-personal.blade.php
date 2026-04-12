@@ -3,7 +3,7 @@
 
     <div class="mb-5">
         <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nama<span class="text-red-500 ml-1">*</span></label>
-        <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-green-500 focus:ring-green-500 transition-all @error('name') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
+        <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all @error('name') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
             id="name" name="name" value="{{ old('name', $muzakki->name) }}" required>
         @error('name')
         <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
@@ -41,20 +41,20 @@
         <div class="flex items-center gap-3">
             <div class="flex-1">
                 <input type="tel" id="phone" name="phone" 
-                    class="w-full {{ $muzakki->phone_verified ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-gray-50' }} border border-gray-300 rounded-lg py-3 pr-4 shadow-sm focus:bg-white focus:border-green-500 focus:ring-green-500 transition-all @error('phone') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
+                    class="w-full {{ $muzakki->phone_verified ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-gray-50' }} border border-gray-300 rounded-lg py-3 pr-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all @error('phone') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
                     value="{{ old('phone', preg_replace('/^\+62|^62|^0/', '', $muzakki->phone ?? '')) }}"
                     placeholder="8xxxxxxxxxx"
                     {{ $muzakki->phone_verified ? 'readonly' : '' }}>
             </div>
 
             @if(!$muzakki->phone_verified)
-            <button type="button" class="px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors shadow-sm flex items-center whitespace-nowrap"
+            <button type="button" class="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors shadow-sm flex items-center whitespace-nowrap"
                 id="verifyPhoneBtn">
                 <span id="verifyButtonText">Verifikasi</span>
             </button>
             @endif
             
-            <span id="verifyCheckmark" style="{{ $muzakki->phone_verified ? '' : 'display: none;' }}" class="text-green-600" title="Terverifikasi">
+            <span id="verifyCheckmark" style="{{ $muzakki->phone_verified ? '' : 'display: none;' }}" class="text-orange-600" title="Terverifikasi">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                     class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                     <path
@@ -69,7 +69,7 @@
             <span>Mohon verifikasi nomor telepon Anda</span>
         </div>
         @else
-        <div class="mt-3 p-3 bg-green-50 border-l-4 border-green-400 text-green-700 text-sm rounded-r-md flex items-start" id="verifiedAlert">
+        <div class="mt-3 p-3 bg-orange-50 border-l-4 border-orange-400 text-orange-700 text-sm rounded-r-md flex items-start" id="verifiedAlert">
             <i class="bi bi-check-circle-fill mr-2 mt-0.5"></i>
             <span>Nomor telepon sudah diverifikasi</span>
         </div>
@@ -82,7 +82,7 @@
 
     <div class="mb-5">
         <label for="gender" class="block text-sm font-medium text-gray-700 mb-2">Jenis kelamin<span class="text-red-500 ml-1">*</span></label>
-        <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-green-500 focus:ring-green-500 transition-all @error('gender') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror" id="gender"
+        <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all @error('gender') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror" id="gender"
             name="gender" required>
             <option value="">----------</option>
             <option value="male" {{ old('gender', $muzakki->gender) == 'male' ? 'selected' : '' }}>Laki-laki</option>
@@ -97,7 +97,7 @@
         <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal lahir<span class="text-red-500 ml-1">*</span></label>
         <div class="grid grid-cols-3 gap-4">
             <div>
-                <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-green-500 focus:ring-green-500 transition-all" name="birth_day">
+                <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all" name="birth_day">
                     <option value="">Hari</option>
                     @for ($i = 1; $i <= 31; $i++)
                     <option value="{{ $i }}" {{ old('birth_day', $muzakki->date_of_birth ? $muzakki->date_of_birth->day : '') == $i ? 'selected' : '' }}>
@@ -107,7 +107,7 @@
                 </select>
             </div>
             <div>
-                <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-green-500 focus:ring-green-500 transition-all" name="birth_month">
+                <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all" name="birth_month">
                     <option value="">Bulan</option>
                     @php
                     $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -120,7 +120,7 @@
                 </select>
             </div>
             <div>
-                <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-green-500 focus:ring-green-500 transition-all" name="birth_year">
+                <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all" name="birth_year">
                     <option value="">Tahun</option>
                     @for ($i = date('Y'); $i >= 1940; $i--)
                     <option value="{{ $i }}" {{ old('birth_year', $muzakki->date_of_birth ? $muzakki->date_of_birth->year : '') == $i ? 'selected' : '' }}>
@@ -134,7 +134,7 @@
 
     <div class="mb-5">
         <label for="occupation" class="block text-sm font-medium text-gray-700 mb-2">Profesi<span class="text-red-500 ml-1">*</span></label>
-        <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-green-500 focus:ring-green-500 transition-all @error('occupation') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
+        <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all @error('occupation') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
             id="occupation" name="occupation">
             <option value="">Pilih Profesi</option>
             @php
@@ -154,7 +154,7 @@
 
     <div class="mb-0">
         <label for="bio" class="block text-sm font-medium text-gray-700 mb-2">Biodata<span class="text-red-500 ml-1">*</span></label>
-        <div class="border border-gray-300 rounded-lg p-2 mb-2 bg-gray-50 focus-within:bg-white shadow-sm focus-within:ring-1 focus-within:ring-green-500 focus-within:border-green-500 transition-all">
+        <div class="border border-gray-300 rounded-lg p-2 mb-2 bg-gray-50 focus-within:bg-white shadow-sm focus-within:ring-1 focus-within:ring-orange-500 focus-within:border-orange-500 transition-all">
             <div class="flex gap-1 mb-2 border-b border-gray-100 pb-2">
                 <button type="button" class="p-1.5 text-gray-500 hover:bg-gray-100 rounded transition-colors" onclick="formatText('bold')"><i class="bi bi-type-bold"></i></button>
                 <button type="button" class="p-1.5 text-gray-500 hover:bg-gray-100 rounded transition-colors" onclick="formatText('italic')"><i class="bi bi-type-italic"></i></button>

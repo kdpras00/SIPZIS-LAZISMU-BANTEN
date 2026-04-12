@@ -3,85 +3,72 @@
 @section('page-title', 'Manajemen Mustahik')
 
 @section('content')
-    <div class="flex justify-between items-center mb-6">
+    <div class="px-6 py-5" style="max-width: 1280px;">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
-            <h2 class="text-2xl font-semibold mb-1 text-gray-900">Manajemen Mustahik</h2>
-            <p class="text-gray-500">Kelola data mustahik (penerima zakat) </p>
+            <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Data Mustahik</h2>
+            <p class="text-sm" style="color: #8b7e74;">Kelola data penerima manfaat zakat</p>
         </div>
-        <div>
-            <a href="{{ route('mustahik.create') }}"
-                class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
-                <i class="bi bi-plus-circle mr-2"></i> Tambah Mustahik
-            </a>
-        </div>
+        <a href="{{ route('mustahik.create') }}"
+            class="inline-flex items-center px-4 py-2 text-white font-medium rounded-lg transition-colors duration-200 text-sm" style="background: #c2410c;">
+            <i class="bi bi-plus-circle mr-2"></i> Tambah Mustahik
+        </a>
     </div>
 
-    <!-- Filter Section -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+    <div class="rounded-2xl mb-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         <div class="p-4">
             <div class="flex flex-wrap gap-3">
                 <div class="flex-1 min-w-[200px]">
-                    <input type="text" id="search-input"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                        placeholder="Cari nama, NIK, telepon..." value="{{ request('search') }}">
+                    <input type="text" id="search-input" class="w-full px-3 py-2 rounded-lg text-sm" style="border: 1px solid #e8e0d6;" placeholder="Cari nama, NIK, telepon..." value="{{ request('search') }}">
                 </div>
                 <div class="w-[180px]">
-                    <select id="category-filter"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white">
+                    <select id="category-filter" class="w-full px-3 py-2 rounded-lg text-sm" style="border: 1px solid #e8e0d6; background: #fff;">
                         <option value="">Semua Kategori</option>
                         @foreach (\App\Models\Mustahik::CATEGORIES as $key => $label)
-                            <option value="{{ $key }}" {{ request('category') == $key ? 'selected' : '' }}>
-                                {{ ucfirst(str_replace('_', ' ', $key)) }}
-                            </option>
+                            <option value="{{ $key }}" {{ request('category') == $key ? 'selected' : '' }}>{{ ucfirst(str_replace('_', ' ', $key)) }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="w-[150px]">
-                    <input type="text" id="city-filter"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                        placeholder="Kota" value="{{ request('city') }}">
+                    <input type="text" id="city-filter" class="w-full px-3 py-2 rounded-lg text-sm" style="border: 1px solid #e8e0d6;" placeholder="Kota" value="{{ request('city') }}">
                 </div>
                 <div class="flex items-center gap-2">
-                    <button type="button" id="reset-filters"
-                        class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium rounded-lg transition-colors duration-200 text-sm">
+                    <button type="button" id="reset-filters" class="inline-flex items-center px-4 py-2 font-medium rounded-lg text-sm" style="border: 1px solid #e8e0d6; color: #8b7e74; background: #fff;">
                         <i class="bi bi-arrow-clockwise mr-2"></i> Reset
                     </button>
                     <div id="search-loading" class="hidden">
-                        <div class="inline-block animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+                        <div class="inline-block animate-spin rounded-full h-5 w-5 border-b-2" style="border-color: #c2410c;"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Statistics Cards -->
-    <div class="grid grid-cols-2 gap-4 mb-6"
-        style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem;">
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div class="p-6 text-center">
-                <i class="bi bi-person-hearts text-5xl text-blue-600 mb-3"></i>
-                <h4 class="text-2xl font-bold mb-0 text-gray-900" id="total-count">{{ $mustahik->total() }}</h4>
-                <small class="text-gray-500 text-sm">Total Mustahik</small>
+    <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fff7ed;">
+                <i class="bi bi-person-hearts" style="color: #c2410c;"></i>
             </div>
+            <h4 class="text-2xl font-bold mb-0" id="total-count" style="color: #1c0f0a;">{{ $mustahik->total() }}</h4>
+            <small class="text-xs" style="color: #8b7e74;">Total penerima manfaat</small>
         </div>
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div class="p-6 text-center">
-                <i class="bi bi-person-plus text-5xl text-blue-400 mb-3"></i>
-                <h4 class="text-2xl font-bold mb-0 text-gray-900" id="thismonth-count">
-                    {{ $mustahik->where('created_at', '>=', now()->startOfMonth())->count() }}</h4>
-                <small class="text-gray-500 text-sm">Baru Bulan Ini</small>
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #eff6ff;">
+                <i class="bi bi-person-plus" style="color: #0369a1;"></i>
             </div>
+            <h4 class="text-2xl font-bold mb-0" id="thismonth-count" style="color: #1c0f0a;">{{ $mustahik->where('created_at', '>=', now()->startOfMonth())->count() }}</h4>
+            <small class="text-xs" style="color: #8b7e74;">Baru bulan ini</small>
         </div>
     </div>
 
-    <!-- Mustahik Table -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div class="px-6 py-4 border-b border-gray-200 bg-white">
-            <h5 class="text-lg font-semibold text-gray-900 mb-0">Daftar Mustahik</h5>
+    <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+        <div class="px-5 py-4" style="border-bottom: 1px solid #f0ece6;">
+            <h5 class="text-base font-bold mb-0" style="color: #1c0f0a;">Daftar Mustahik</h5>
         </div>
         <div class="p-0" id="mustahik-table-container">
             @include('mustahik.partials.table')
         </div>
+    </div>
     </div>
 @endsection
 
@@ -180,8 +167,8 @@
                     <tr class="bg-white border-b hover:bg-gray-50">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                                <div class="bg-green-100 rounded-full p-2 mr-3">
-                                    <i class="bi bi-person-heart text-green-600"></i>
+                                <div class="bg-orange-100 rounded-full p-2 mr-3">
+                                    <i class="bi bi-person-heart text-orange-600"></i>
                                 </div>
                                 <div>
                                     <div class="font-semibold text-gray-900">${item.name}</div>

@@ -11,7 +11,7 @@
             $actions[] = [
                 'label' => 'Aktifkan 2FA',
                 'url' => route('dashboard.two-factor.setup'),
-                'class' => 'text-green-700 bg-green-100 hover:bg-green-200'
+                'class' => 'text-orange-700 bg-orange-100 hover:bg-orange-200'
             ];
         }
 
@@ -39,7 +39,7 @@
 @if ($showReminder)
     <div id="security-reminder" class="fixed top-24 right-4 z-50 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden animate-fade-in-up transform transition-all duration-300 hover:scale-[1.02]" style="display: none; animation: fadeInUp 0.5s ease-out;">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-green-500 to-green-600 px-4 py-3 flex justify-between items-center">
+        <div class="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2 text-white">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -58,7 +58,7 @@
             <div class="space-y-3">
                 @foreach($messages as $message)
                     <div class="flex items-start space-x-3 text-sm text-gray-600">
-                        <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         <span>{{ $message }}</span>

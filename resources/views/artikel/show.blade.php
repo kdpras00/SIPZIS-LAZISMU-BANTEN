@@ -13,7 +13,7 @@
         
         <!-- Breadcrumb -->
         <div class="mb-6">
-            <a href="{{ route('artikel.all') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-green-600 transition-colors">
+            <a href="{{ route('artikel.all') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-orange-600 transition-colors">
                 <i class="bi bi-arrow-left mr-2"></i>
                 Kembali ke Artikel
             </a>
@@ -26,7 +26,7 @@
                 
                 <!-- Article Header -->
                 <div class="mb-8">
-                    <span class="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold uppercase tracking-wider mb-4">
+                    <span class="inline-block px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-bold uppercase tracking-wider mb-4">
                         Artikel
                     </span>
                     <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
@@ -90,7 +90,7 @@
                             <button onclick="window.open('https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::url()) }}', '_blank')" class="flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700 transition">
                                 <i class="bi bi-facebook mr-2"></i> Facebook
                             </button>
-                            <button onclick="window.open('https://api.whatsapp.com/send?text={{ urlencode($artikel->title . ' ' . Request::url()) }}', '_blank')" class="flex items-center px-4 py-2 rounded-lg bg-green-500 text-white text-sm hover:bg-green-600 transition">
+                            <button onclick="window.open('https://api.whatsapp.com/send?text={{ urlencode($artikel->title . ' ' . Request::url()) }}', '_blank')" class="flex items-center px-4 py-2 rounded-lg bg-orange-500 text-white text-sm hover:bg-orange-600 transition">
                                 <i class="bi bi-whatsapp mr-2"></i> WhatsApp
                             </button>
                             <button onclick="window.open('https://twitter.com/intent/tweet?url={{ urlencode(Request::url()) }}&text={{ urlencode($artikel->title) }}', '_blank')" class="flex items-center px-4 py-2 rounded-lg bg-black text-white text-sm hover:bg-gray-800 transition">
@@ -109,7 +109,7 @@
                     <!-- Recent Widget -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                         <h3 class="text-lg font-bold text-gray-900 mb-6 flex items-center">
-                            <span class="w-1 h-6 bg-green-600 rounded-full mr-3"></span>
+                            <span class="w-1 h-6 bg-orange-600 rounded-full mr-3"></span>
                             Artikel Terbaru
                         </h3>
                         
@@ -137,7 +137,7 @@
                                         @endif
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <h4 class="text-sm font-semibold text-gray-900 group-hover:text-green-600 transition-colors line-clamp-2 leading-snug mb-1">
+                                        <h4 class="text-sm font-semibold text-gray-900 group-hover:text-orange-600 transition-colors line-clamp-2 leading-snug mb-1">
                                             {{ $item->title }}
                                         </h4>
                                         <span class="text-xs text-gray-400">
@@ -152,20 +152,20 @@
                             @endforelse
                         </div>
                         
-                        <a href="{{ route('artikel.all') }}" class="block mt-6 text-center text-sm font-semibold text-green-600 hover:text-green-700 transition-colors">
+                        <a href="{{ route('artikel.all') }}" class="block mt-6 text-center text-sm font-semibold text-orange-600 hover:text-orange-700 transition-colors">
                             Lihat Semua Artikel <i class="bi bi-arrow-right ml-1"></i>
                         </a>
                     </div>
 
                     <!-- CTA Widget -->
-                    <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-2xl p-6 text-white text-center shadow-lg relative overflow-hidden">
+                    <div class="bg-gradient-to-br from-orange-600 to-orange-800 rounded-2xl p-6 text-white text-center shadow-lg relative overflow-hidden">
                         <div class="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
                         <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
                         
                         <h3 class="text-xl font-bold mb-2 relative z-10">Dukung Program Kebaikan</h3>
-                        <p class="text-green-100 text-sm mb-6 relative z-10">Salurkan donasi Anda untuk membantu mereka yang membutuhkan.</p>
+                        <p class="text-orange-100 text-sm mb-6 relative z-10">Salurkan donasi Anda untuk membantu mereka yang membutuhkan.</p>
                         
-                        <a href="{{ route('program') }}" class="inline-block w-full py-3 bg-white text-green-700 font-bold rounded-xl shadow-md hover:bg-green-50 transition-colors relative z-10">
+                        <a href="{{ route('program') }}" class="inline-block w-full py-3 bg-white text-orange-700 font-bold rounded-xl shadow-md hover:bg-orange-50 transition-colors relative z-10">
                             Donasi Sekarang
                         </a>
                     </div>

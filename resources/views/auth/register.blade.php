@@ -1,13 +1,13 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="min-h-screen flex items-center justify-center bg-green-900 py-12">
+    <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12">
         <div class="w-full max-w-md px-6">
             <div class="bg-white rounded-lg shadow-md p-8">
                 <!-- Back Button & Title -->
                 <!-- Back Button & Logo -->
                 <div class="mb-8 text-center relative">
-                    <a href="{{ route('login') }}" class="absolute left-0 top-0 inline-flex items-center text-green-600 hover:text-green-700">
+                    <a href="{{ route('login') }}" class="absolute left-0 top-0 inline-flex items-center text-orange-600 hover:text-orange-700">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
@@ -25,7 +25,7 @@
                             Nama Lengkap <span class="text-red-500">*</span>
                         </label>
                         <input id="name" type="text"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('name') border-red-500 @enderror"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('name') border-red-500 @enderror"
                             name="name" value="{{ old('name') }}" placeholder="John Doe" required autocomplete="name"
                             autofocus>
                         @error('name')
@@ -39,7 +39,7 @@
                             Email <span class="text-red-500">*</span>
                         </label>
                         <input id="email" type="email"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('email') border-red-500 @enderror"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('email') border-red-500 @enderror"
                             name="email" value="{{ old('email') }}" placeholder="johndoe@example.com" required
                             autocomplete="email">
                         @error('email')
@@ -68,7 +68,7 @@
                         </label>
                         <div class="relative">
                             <input id="password" type="password"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('password') border-red-500 @enderror pr-12"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('password') border-red-500 @enderror pr-12"
                                 name="password" placeholder="Masukkan kata sandi" required autocomplete="new-password">
                             <button
                                 class="absolute inset-y-0 right-0 flex items-center pr-4 bg-transparent border-0 text-gray-500 cursor-pointer"
@@ -102,7 +102,7 @@
                         </label>
                         <div class="relative">
                             <input id="password_confirmation" type="password"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-12"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-12"
                                 name="password_confirmation" placeholder="Masukkan ulang kata sandi" required
                                 autocomplete="new-password">
                             <button
@@ -125,7 +125,7 @@
 
                     <!-- Submit Button -->
                     <button type="submit"
-                        class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 mt-6">
+                        class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 mt-6">
                         Daftar
                     </button>
                 </form>
@@ -133,7 +133,7 @@
                 <!-- Login Link -->
                 <p class="text-center text-sm text-gray-600 mt-6">
                     Sudah punya akun?
-                    <a href="{{ route('login') }}" class="text-green-600 hover:text-green-700 font-medium">
+                    <a href="{{ route('login') }}" class="text-orange-600 hover:text-orange-700 font-medium">
                         Masuk
                     </a>
                 </p>
@@ -195,28 +195,28 @@
 
                 // Check length
                 if (value.length >= 8) {
-                    lengthCheck.classList.add('bg-green-500', 'border-green-500');
+                    lengthCheck.classList.add('bg-orange-500', 'border-orange-500');
                     lengthCheck.classList.remove('border-gray-300');
                 } else {
-                    lengthCheck.classList.remove('bg-green-500', 'border-green-500');
+                    lengthCheck.classList.remove('bg-orange-500', 'border-orange-500');
                     lengthCheck.classList.add('border-gray-300');
                 }
 
                 // Check capital letter
                 if (/[A-Z]/.test(value)) {
-                    capitalCheck.classList.add('bg-green-500', 'border-green-500');
+                    capitalCheck.classList.add('bg-orange-500', 'border-orange-500');
                     capitalCheck.classList.remove('border-gray-300');
                 } else {
-                    capitalCheck.classList.remove('bg-green-500', 'border-green-500');
+                    capitalCheck.classList.remove('bg-orange-500', 'border-orange-500');
                     capitalCheck.classList.add('border-gray-300');
                 }
 
                 // Check number
                 if (/[0-9]/.test(value)) {
-                    numberCheck.classList.add('bg-green-500', 'border-green-500');
+                    numberCheck.classList.add('bg-orange-500', 'border-orange-500');
                     numberCheck.classList.remove('border-gray-300');
                 } else {
-                    numberCheck.classList.remove('bg-green-500', 'border-green-500');
+                    numberCheck.classList.remove('bg-orange-500', 'border-orange-500');
                     numberCheck.classList.add('border-gray-300');
                 }
             });
@@ -299,9 +299,9 @@
         }
 
         .iti__tel-input:focus {
-            border-color: #10b981 !important;
+            border-color: #ea580c !important;
             outline: none !important;
-            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1) !important;
+            box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.1) !important;
         }
 
         .iti__selected-flag {
@@ -313,7 +313,7 @@
             border-color: #fca5a5 !important;
         }
 
-        .iti__tel-input.border-emerald-300 {
+        .iti__tel-input.border-orange-300 {
             border-color: #6ee7b7 !important;
         }
 
@@ -389,7 +389,7 @@
                 // Clear error on input
                 phoneInput.addEventListener('input', function() {
                     document.getElementById('phone_error').textContent = '';
-                    phoneInput.classList.remove('border-red-300', 'border-emerald-300');
+                    phoneInput.classList.remove('border-red-300', 'border-orange-300');
                 });
 
                 // Prevent national format (0 prefix) for Indonesia only
@@ -480,7 +480,7 @@
             const errorEl = document.getElementById('phone_error');
 
             inputElement.classList.toggle('border-red-300', !isValid);
-            inputElement.classList.toggle('border-emerald-300', isValid);
+            inputElement.classList.toggle('border-orange-300', isValid);
 
             if (errorEl) {
                 if (isValid) {

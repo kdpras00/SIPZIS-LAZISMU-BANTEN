@@ -7,10 +7,10 @@
     <div class="flex justify-between items-center">
         <div>
                 <h4 class="text-2xl font-bold mb-0">Rp {{ number_format($stats['total_zakat_paid'], 0, ',', '.') }}</h4>
-                <small class="text-green-100">Sepanjang masa</small>
+                <small class="text-orange-100">Sepanjang masa</small>
             </div>
             <div class="self-center">
-                <i class="bi bi-currency-dollar text-4xl text-green-200"></i>
+                <i class="bi bi-currency-dollar text-4xl text-orange-200"></i>
             </div>
         </div>
     </div>
@@ -69,7 +69,7 @@
     </a>
 
     <a href="{{ route('dashboard.recurring') }}" class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 text-center p-6 block no-underline h-full">
-        <i class="bi bi-arrow-repeat text-5xl text-green-500 mb-3 block"></i>
+        <i class="bi bi-arrow-repeat text-5xl text-orange-500 mb-3 block"></i>
         <h5 class="text-lg font-semibold text-gray-900 mb-2">Donasi Rutin</h5>
         <p class="text-gray-600 text-sm">Atur donasi otomatis setiap bulan</p>
     </a>

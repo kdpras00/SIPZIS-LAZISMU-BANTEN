@@ -1,16 +1,14 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="relative bg-gradient-to-br from-green-900 via-green-800 to-emerald-700 min-h-screen flex items-center justify-center overflow-hidden">
+<div class="relative bg-gray-50 min-h-screen flex items-center justify-center overflow-hidden">
 
-    <div class="absolute inset-0 opacity-20" style="background-image: url('{{ asset("img/masjid.webp") }}'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+    <div class="absolute inset-0 opacity-[0.10]" style="background-image: url('{{ asset("img/masjid.webp") }}'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
 
-    <div class="absolute inset-0 bg-gradient-to-br from-green-900/80 via-green-800/70 to-emerald-700/80"></div>
-
-    <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/80 to-white/60"></div>
 
     <div class="relative z-10 w-full max-w-md mx-auto px-6">
-        <div class="backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 animate-fadeInUp">
+        <div class="bg-white border border-gray-100 rounded-3xl shadow-xl p-8 animate-fadeInUp">
             <div class="text-center mb-8">
                 <div class="mx-auto w-32 h-32 mb-4 animate-fadeInDown">
                     <img src="{{ asset('storage/lazismu-icon.png') }}" alt="Logo Lazismu" class="w-full h-full object-contain drop-shadow-lg">
@@ -19,7 +17,7 @@
                 {{-- <h1 class="text-3xl font-bold text-white mb-2 animate-fadeInDown delay-300">
                     SIPZIS
                 </h1> --}}
-                <p class="text-green-200 text-xs mt-1 animate-fadeInDown delay-700">
+                <p class="text-gray-500 text-sm mt-1 animate-fadeInDown delay-700">
                     Masuk ke dashboard administrasi
                 </p>
             </div>
@@ -28,53 +26,53 @@
                 @csrf
 
                 <div class="animate-fadeInUp delay-500">
-                    <label for="email" class="block text-sm font-medium text-green-100 mb-2">
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
                         <i class="fas fa-envelope mr-2"></i>Email
                     </label>
                     <input id="email" type="email"
-                        class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-green-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent backdrop-blur-sm transition-all duration-300 @error('email') border-red-400 @enderror"
+                        class="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 @error('email') border-red-500 @enderror"
                         name="email" value="{{ old('email') }}"
                         placeholder="Masukkan email Anda"
                         required autocomplete="email" autofocus>
                     @error('email')
-                    <span class="text-red-300 text-sm mt-1 block">
+                    <span class="text-red-500 text-sm mt-1 block">
                         <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
                     </span>
                     @enderror
                 </div>
 
                 <div class="animate-fadeInUp delay-700">
-                    <label for="password" class="block text-sm font-medium text-green-100 mb-2">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
                         <i class="fas fa-lock mr-2"></i>Password
                     </label>
                     <div class="relative">
                         <input id="password" type="password"
-                            class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-green-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent backdrop-blur-sm transition-all duration-300 @error('password') border-red-400 @enderror pr-12"
+                            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 @error('password') border-red-500 @enderror pr-12"
                             name="password"
                             placeholder="Masukkan password Anda"
                             required autocomplete="current-password">
-                        <button class="absolute inset-y-0 right-0 flex items-center pr-3 bg-transparent border-0 text-white cursor-pointer" type="button" id="togglePassword" style="right: 20px;">
+                        <button class="absolute inset-y-0 right-0 flex items-center pr-3 bg-transparent border-0 text-gray-500 hover:text-gray-700 cursor-pointer" type="button" id="togglePassword" style="right: 20px;">
                             <i class="bi bi-eye"></i>
                         </button>
                     </div>
                     @error('password')
-                    <span class="text-red-300 text-sm mt-1 block">
+                    <span class="text-red-500 text-sm mt-1 block">
                         <i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}
                     </span>
                     @enderror
                 </div>
 
                 <div class="flex items-center animate-fadeInUp delay-900">
-                    <input class="w-4 h-4 text-green-600 bg-white/20 border-white/30 rounded focus:ring-green-400 focus:ring-2"
+                    <input class="w-4 h-4 text-orange-600 bg-white border-gray-300 rounded focus:ring-orange-500 focus:ring-2"
                         type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                    <label class="ml-2 text-sm text-green-100" for="remember">
+                    <label class="ml-2 text-sm text-gray-600" for="remember">
                         Ingat saya
                     </label>
                 </div>
 
                 <div class="animate-fadeInUp delay-1100">
                     <button type="submit"
-                        class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-transparent">
+                        class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-transparent">
                         <i class="fas fa-sign-in-alt mr-2"></i>
                         Masuk ke Dashboard
                     </button>

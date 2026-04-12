@@ -1,252 +1,173 @@
 @php
-    // Gunakan parameter user jika ada, atau ambil dari auth
     $user = $user ?? auth()->user();
     $currentRoute = $currentRoute ?? Route::currentRouteName();
+    if (!$user) return;
 
-    // Safety check: jika user null, return early untuk mencegah error
-    if (!$user) {
-        return;
-    }
+    $hour = (int) now('Asia/Jakarta')->format('H');
+    $greeting = $hour < 11 ? 'Selamat Pagi' : ($hour < 15 ? 'Selamat Siang' : ($hour < 18 ? 'Selamat Sore' : 'Selamat Malam'));
+    $firstName = explode(' ', $user->name)[0];
 @endphp
 
-<div id="sidebar" class="sidebar flex flex-col h-screen" style="padding: 1rem 0.5rem 1rem 0.75rem;">
-    {{-- SIPZIS Logo --}}
-    <div class="logo-container flex justify-start items-center mb-4 px-4 transition-all duration-300">
-        <a href="{{ route('dashboard') }}"
-            class="flex items-center text-white no-underline">
-            <i class="fas fa-mosque mr-2 text-white text-2xl logo-icon transition-all duration-300"></i>
-            <span class="logo-text font-bold text-xl text-white whitespace-nowrap overflow-hidden transition-all duration-300" style="font-family: 'Poppins', sans-serif;">SIPZIS</span>
+<aside id="sidebar" class="flex flex-col h-screen overflow-y-auto overflow-x-hidden scrollbar-hide" style="background: #faf8f5; border-right: 1px solid #f0ece6; width: 100%; max-width: 272px; position: sticky; top: 0;">
+
+    {{-- Brand --}}
+    <div class="px-6 pt-6 pb-2">
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 no-underline group">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background: #c2410c;">
+                <i class="fas fa-mosque text-white text-sm"></i>
+            </div>
+            <div>
+                <span class="font-bold text-sm tracking-widest" style="color: #1c0f0a; letter-spacing: 0.12em;">SIPZIS</span>
+                <span class="block text-xs" style="color: #8b7e74;">Lazismu Banten</span>
+            </div>
         </a>
     </div>
 
-    <hr class="border-white opacity-25 my-0 mx-2">
+    {{-- Personal Greeting --}}
+    <div class="px-6 py-4">
+        <p class="text-xs mb-0.5" style="color: #8b7e74;">{{ $greeting }},</p>
+        <p class="font-semibold text-sm" style="color: #1c0f0a;">{{ $firstName }}</p>
+    </div>
 
-    <ul class="flex flex-col mb-auto list-none p-0" style="padding-left: 0.5rem; padding-right: 0.5rem;">
-        {{-- Dashboard --}}
-        <li class="nav-item mb-1">
+    <div class="h-px mx-6" style="background: #f0ece6;"></div>
+
+    {{-- Navigation --}}
+    <nav class="flex-1 px-4 pt-4 pb-2">
+
+        {{-- Main --}}
+        <div class="mb-5">
+            <p class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider" style="color: #b8ada3; letter-spacing: 0.08em;">Utama</p>
             <a href="{{ route('dashboard') }}"
-                class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ $currentRoute === 'dashboard' ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                style="padding-left: 0.75rem; padding-right: 0.75rem;">
-                <i class="bi bi-speedometer2 mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Dashboard</span>
+                class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 no-underline mb-0.5 {{ $currentRoute === 'dashboard' ? 'active' : '' }}">
+                <i class="bi bi-grid-1x2 text-base" style="min-width: 20px;"></i>
+                <span>Dashboard</span>
             </a>
-        </li>
+        </div>
 
         @if ($user->role === 'admin')
-            {{-- Admin Menu --}}
-            <li class="nav-item mb-1">
-                <a href="{{ route('muzakki.index') }}"
-                    class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'muzakki.') && !str_contains($currentRoute, 'dashboard') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                    style="padding-left: 0.75rem; padding-right: 0.75rem;">
-                    <i class="bi bi-people mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Muzakki</span>
-                </a>
-            </li>
+        {{-- Data Management --}}
+        <div class="mb-5">
+            <p class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider" style="color: #b8ada3; letter-spacing: 0.08em;">Kelola Data</p>
 
-            <li class="nav-item mb-1">
-                <a href="{{ route('mustahik.index') }}"
-                    class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'mustahik.') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                    style="padding-left: 0.75rem; padding-right: 0.75rem;">
-                    <i class="bi bi-person-hearts mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Mustahik</span>
-                </a>
-            </li>
+            <a href="{{ route('muzakki.index') }}"
+                class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'muzakki.') && !str_contains($currentRoute, 'dashboard') ? 'active' : '' }}">
+                <i class="bi bi-people text-base" style="min-width: 20px;"></i>
+                <span>Muzakki</span>
+            </a>
 
-            <li class="nav-item mb-1">
-                <a href="{{ route('payments.index') }}"
-                    class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'payments.') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                    style="padding-left: 0.75rem; padding-right: 0.75rem;">
-                    <i class="bi bi-credit-card mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Pembayaran ZIS</span>
-                </a>
-            </li>
+            <a href="{{ route('mustahik.index') }}"
+                class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'mustahik.') ? 'active' : '' }}">
+                <i class="bi bi-person-hearts text-base" style="min-width: 20px;"></i>
+                <span>Mustahik</span>
+            </a>
 
-            <li class="nav-item mb-1">
-                <a href="{{ route('distributions.index') }}"
-                    class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'distributions.') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                    style="padding-left: 0.75rem; padding-right: 0.75rem;">
-                    <i class="bi bi-box-seam mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Distribusi ZIS</span>
-                </a>
-            </li>
+            <a href="{{ route('payments.index') }}"
+                class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'payments.') ? 'active' : '' }}">
+                <i class="bi bi-credit-card text-base" style="min-width: 20px;"></i>
+                <span>Pembayaran ZIS</span>
+            </a>
 
-            <li class="nav-item mb-1">
-                <a href="{{ route('admin.news.index') }}"
-                    class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'admin.news.') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                    style="padding-left: 0.75rem; padding-right: 0.75rem;">
-                    <i class="bi bi-newspaper mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Kelola Berita</span>
-                </a>
-            </li>
+            <a href="{{ route('distributions.index') }}"
+                class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'distributions.') ? 'active' : '' }}">
+                <i class="bi bi-box-seam text-base" style="min-width: 20px;"></i>
+                <span>Distribusi ZIS</span>
+            </a>
+        </div>
 
-            <li class="nav-item mb-1">
-                <a href="{{ route('admin.artikel.index') }}"
-                    class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'admin.artikel.') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                    style="padding-left: 0.75rem; padding-right: 0.75rem;">
-                    <i class="bi bi-file-text mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Kelola Artikel</span>
-                </a>
-            </li>
+        {{-- Reports --}}
+        <div class="mb-5">
+            <p class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider" style="color: #b8ada3; letter-spacing: 0.08em;">Laporan</p>
 
-            {{-- Reports Dropdown --}}
-            <li class="nav-item mb-1">
-                <a href="javascript:void(0)"
-                    class="reports-dropdown-toggle nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'reports.') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                    style="padding-left: 0.75rem; padding-right: 0.75rem;"
-                    aria-expanded="{{ str_starts_with($currentRoute, 'reports.') ? 'true' : 'false' }}"
-                    aria-controls="reportsSubmenu" id="reportsDropdown">
-                    <i class="bi bi-file-earmark-text mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Laporan Keuangan</span>
-                    <i class="bi bi-chevron-down ml-auto mr-2 text-sm chevron-icon"
-                        style="transition: transform 0.3s ease; transform-origin: center; display: inline-block;"></i>
-                </a>
+            <a href="{{ route('reports.incoming') }}"
+                class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 no-underline mb-0.5 {{ $currentRoute === 'reports.incoming' ? 'active' : '' }}">
+                <i class="bi bi-arrow-down-circle text-base" style="min-width: 20px;"></i>
+                <span>Laporan Masuk</span>
+            </a>
 
-                <ul class="bg-opacity-20 rounded-lg my-1 transition-all duration-300 overflow-hidden list-none p-0 {{ str_starts_with($currentRoute, 'reports.') ? '' : 'hidden' }}"
-                    id="reportsSubmenu"
-                    style="background: linear-gradient(135deg, rgba(6, 78, 59, 0.3) 0%, rgba(6, 95, 70, 0.3) 50%, rgba(4, 120, 87, 0.3) 100%); max-height: {{ str_starts_with($currentRoute, 'reports.') ? '500px' : '0' }}; opacity: {{ str_starts_with($currentRoute, 'reports.') ? '1' : '0' }}; padding-top: {{ str_starts_with($currentRoute, 'reports.') ? '0.75rem' : '0' }}; padding-bottom: {{ str_starts_with($currentRoute, 'reports.') ? '0.75rem' : '0' }}; padding-left: 0.5rem; padding-right: 0.5rem;">
-                    <li class="nav-item mb-3">
-                        <a href="{{ route('reports.incoming') }}"
-                            class="nav-link flex items-center py-2.5 rounded-lg transition-all duration-200 text-sm {{ $currentRoute === 'reports.incoming' ? 'text-white font-bold bg-white bg-opacity-20' : 'text-white text-opacity-80 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                            style="padding-left: 1.25rem; padding-right: 0.75rem;">
-                            <i
-                                class="bi bi-arrow-down-circle mr-3 text-base min-w-[20px] text-center flex-shrink-0"></i>
-                            <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Laporan Masuk</span>
-                        </a>
-                    </li>
-                    <li class="nav-item mb-3">
-                        <a href="{{ route('reports.outgoing') }}"
-                            class="nav-link flex items-center py-2.5 rounded-lg transition-all duration-200 text-sm {{ $currentRoute === 'reports.outgoing' ? 'text-white font-bold bg-white bg-opacity-20' : 'text-white text-opacity-80 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                            style="padding-left: 1.25rem; padding-right: 0.75rem;">
-                            <i class="bi bi-arrow-up-circle mr-3 text-base min-w-[20px] text-center flex-shrink-0"></i>
-                            <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Laporan
-                                Keluar</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            <a href="{{ route('reports.outgoing') }}"
+                class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 no-underline mb-0.5 {{ $currentRoute === 'reports.outgoing' ? 'active' : '' }}">
+                <i class="bi bi-arrow-up-circle text-base" style="min-width: 20px;"></i>
+                <span>Laporan Keluar</span>
+            </a>
+        </div>
 
+        {{-- Content --}}
+        <div class="mb-5">
+            <p class="px-2 mb-2 text-xs font-semibold uppercase tracking-wider" style="color: #b8ada3; letter-spacing: 0.08em;">Konten</p>
 
-            <li class="nav-item mb-1">
-                <a href="{{ route('admin.campaigns.index') }}"
-                    class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'admin.campaigns.') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                    style="padding-left: 0.75rem; padding-right: 0.75rem;">
-                    <i class="bi bi-bullseye mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Kelola Campaign</span>
-                </a>
-            </li>
+            <a href="{{ route('admin.news.index') }}"
+                class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'admin.news.') ? 'active' : '' }}">
+                <i class="bi bi-newspaper text-base" style="min-width: 20px;"></i>
+                <span>Berita</span>
+            </a>
 
-            <li class="nav-item mb-1">
-                <a href="{{ route('admin.programs.index') }}"
-                    class="nav-link flex items-center py-3 rounded-lg transition-all duration-200 whitespace-nowrap w-full {{ str_starts_with($currentRoute, 'admin.programs.') ? 'bg-white bg-opacity-20 text-white font-medium' : 'text-white text-opacity-85 hover:bg-white hover:bg-opacity-10 hover:text-white' }}"
-                    style="padding-left: 0.75rem; padding-right: 0.75rem;">
-                    <i class="bi bi-grid mr-3 text-lg min-w-[20px] text-center flex-shrink-0"></i>
-                    <span class="flex-grow whitespace-nowrap overflow-hidden text-ellipsis">Kelola Program</span>
-                </a>
-            </li>
+            <a href="{{ route('admin.artikel.index') }}"
+                class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'admin.artikel.') ? 'active' : '' }}">
+                <i class="bi bi-file-text text-base" style="min-width: 20px;"></i>
+                <span>Artikel</span>
+            </a>
+
+            <a href="{{ route('admin.campaigns.index') }}"
+                class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'admin.campaigns.') ? 'active' : '' }}">
+                <i class="bi bi-megaphone text-base" style="min-width: 20px;"></i>
+                <span>Campaign</span>
+            </a>
+
+            <a href="{{ route('admin.programs.index') }}"
+                class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'admin.programs.') ? 'active' : '' }}">
+                <i class="bi bi-grid text-base" style="min-width: 20px;"></i>
+                <span>Program</span>
+            </a>
+        </div>
         @endif
+    </nav>
 
-        <hr class="border-white opacity-25 my-4 mx-2">
-    </ul>
+    {{-- Bottom User Card --}}
+    <div class="mt-auto px-4 pb-5">
+        <div class="h-px mb-4" style="background: #f0ece6;"></div>
+        <div class="flex items-center gap-3 px-2">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style="background: #c2410c;">
+                {{ strtoupper(substr($user->name, 0, 1)) }}
+            </div>
+            <div class="min-w-0">
+                <p class="text-sm font-medium truncate mb-0" style="color: #1c0f0a;">{{ $user->name }}</p>
+                <p class="text-xs truncate mb-0" style="color: #8b7e74;">{{ ucfirst($user->role) }}</p>
+            </div>
+        </div>
+    </div>
+</aside>
 
-    {{-- User Info --}}
-    {{-- <div class="dropdown border-top pt-3 mt-auto">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-            id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-person-circle me-2 fs-4"></i>
-            <div class="overflow-hidden flex-grow-1">
-                <strong class="d-block text-truncate">{{ $user->name }}</strong>
-    <small class="d-block text-white-50">{{ ucfirst($user->role) }}</small>
-</div>
-</a>
-<ul class="dropdown-menu dropdown-menu-dark shadow" aria-labelledby="dropdownUser">
-    <li><a class="dropdown-item" href="{{ route('profile.show') }}">
-            <i class="bi bi-person me-2"></i>Profile
-        </a></li>
-    <li>
-        <hr class="dropdown-divider">
-    </li>
-    <li>
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="dropdown-item">
-                <i class="bi bi-box-arrow-right me-2"></i>Sign out
-            </button>
-        </form>
-    </li>
-</ul>
-</div> --}}
-</div>
-
-<!-- Overlay for mobile sidebar -->
-<div id="sidebar-overlay"></div>
+<div id="sidebar-overlay" class="fixed inset-0 bg-black/30 z-40 hidden opacity-0 transition-opacity duration-300"></div>
 
 <style>
-    /* ===== SIDEBAR BASE ===== */
     #sidebar {
-        background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
-        min-height: 100vh;
-        width: 100%;
-        max-width: 280px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        position: sticky;
-        top: 0;
-        transition: transform 0.3s ease-in-out;
-        will-change: transform;
         scrollbar-width: none;
         -ms-overflow-style: none;
-        padding-left: 0 !important;
-        padding-right: 0.5rem !important;
     }
-
     #sidebar::-webkit-scrollbar {
-        width: 0px;
-        background: transparent;
+        display: none;
     }
 
-    /* ===== DESKTOP: Toggle functionality ===== */
-    @media (min-width: 768px) {
-
-        /* Fixed positioning for collapsed sidebar to prevent layout shifts */
-        #sidebar.collapsed {
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            z-index: 1050;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        /* When sidebar is collapsed on desktop, adjust main content */
-        aside.col-md-3.sidebar-collapsed,
-        aside.col-lg-2.sidebar-collapsed {
-            position: relative;
-            width: 0;
-            overflow: hidden;
-            padding: 0;
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: width;
-        }
-
-        /* Main content expands when sidebar is collapsed */
-        main.sidebar-collapsed {
-            margin-left: 0 !important;
-            transition: margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: margin;
-        }
+    .sidebar-link {
+        color: #8b7e74;
+        position: relative;
+    }
+    .sidebar-link:hover {
+        color: #1c0f0a;
+        background: #f0ece6;
+    }
+    .sidebar-link.active {
+        color: #c2410c;
+        background: #fff7ed;
+        font-weight: 600;
+        border-left: 3px solid #c2410c;
+        padding-left: 9px;
+    }
+    .sidebar-link.active i {
+        color: #c2410c;
     }
 
-    /* ===== MOBILE: Hide Sidebar by default, show on toggle ===== */
     @media (max-width: 767.98px) {
-
-        /* Don't hide the aside, but position it properly */
-        aside.col-md-3,
-        aside.col-lg-2 {
-            position: static;
-            display: block !important;
-        }
-
-        /* Hide sidebar by default on mobile */
         #sidebar {
             position: fixed;
             left: 0;
@@ -255,382 +176,65 @@
             z-index: 1050;
             transform: translateX(-100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-            will-change: transform;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.08);
         }
-
-        /* Show sidebar when it has 'show' class */
         #sidebar.show {
             transform: translateX(0);
         }
-
-        /* Overlay */
-        #sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1040;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: opacity, visibility;
-        }
-
         #sidebar-overlay.show {
+            display: block;
             opacity: 1;
-            visibility: visible;
-        }
-
-        /* Full width main content on mobile */
-        main.col-md-9,
-        main.col-lg-10 {
-            width: 100% !important;
-            max-width: 100% !important;
-            margin-left: 0 !important;
-            transition: margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: margin;
         }
     }
 
-    /* ===== NAV LINKS ===== */
-    #sidebar .nav-link {
-        position: relative;
-    }
-
-    /* Prevent white background flash on click */
-    #sidebar .nav-link {
-        -webkit-tap-highlight-color: transparent;
-        user-select: none;
-    }
-
-    /* Active state - maintain bg-white bg-opacity-20 (light green) */
-    #sidebar .nav-link.bg-white {
-        background-color: rgba(255, 255, 255, 0.2) !important;
-    }
-
-    /* Hover for active items - keep same background */
-    #sidebar .nav-link.bg-white:hover {
-        background-color: rgba(255, 255, 255, 0.2) !important;
-    }
-
-    /* Hover for non-active items */
-    #sidebar .nav-link:not(.bg-white):hover {
-        background-color: rgba(255, 255, 255, 0.1) !important;
-    }
-
-    /* Focus/active states for non-active items only */
-    #sidebar .nav-link:not(.bg-white):active,
-    #sidebar .nav-link:not(.bg-white):focus,
-    #sidebar .nav-link:not(.bg-white):focus-visible {
-        background-color: rgba(255, 255, 255, 0.1) !important;
-        outline: none !important;
-        box-shadow: none !important;
-    }
-
-    /* Reports dropdown submenu animation */
-    #sidebar #reportsSubmenu {
-        max-height: 0;
-        transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
-        opacity: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-        display: none;
-        visibility: hidden;
-    }
-
-    #sidebar #reportsSubmenu:not(.hidden) {
-        max-height: 500px;
-        opacity: 1;
-        padding-top: 0.75rem;
-        padding-bottom: 0.75rem;
-        display: block !important;
-        visibility: visible !important;
-        transition: max-height 0.3s ease-in, opacity 0.3s ease-in, padding 0.3s ease-in, visibility 0.3s ease-in;
-    }
-
-    /* Submenu items styling */
-    #sidebar #reportsSubmenu .nav-link {
-        margin-bottom: 0;
-    }
-
-    /* Active state for submenu items */
-    #sidebar #reportsSubmenu .nav-link.bg-white {
-        background-color: rgba(255, 255, 255, 0.2) !important;
-    }
-
-    /* Hover for active submenu items - keep same background */
-    #sidebar #reportsSubmenu .nav-link.bg-white:hover {
-        background-color: rgba(255, 255, 255, 0.2) !important;
-    }
-
-    /* Hover for non-active submenu items */
-    #sidebar #reportsSubmenu .nav-link:not(.bg-white):hover {
-        background-color: rgba(255, 255, 255, 0.1) !important;
-    }
-
-    /* Chevron rotation for reports dropdown */
-    #sidebar .chevron-icon {
-        transition: transform 0.3s ease;
-        display: inline-block;
-        transform-origin: center;
-    }
-
-    #sidebar #reportsDropdown[aria-expanded="true"] .chevron-icon {
-        transform: rotate(180deg) !important;
-    }
-
-    #sidebar #reportsDropdown[aria-expanded="false"] .chevron-icon {
-        transform: rotate(0deg) !important;
-    }
-
-    aside.col-md-3,
-    aside.col-lg-2 {
-        padding: 0;
-        max-width: 280px;
-        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        will-change: width;
-    }
-
-    .sidebar {
-        overflow-x: hidden;
-    }
-
-    /* List styling */
-    #sidebar ul {
-        padding-left: 0;
-        margin-bottom: 0;
-        list-style: none;
-    }
-
-    /* Desktop collapse */
-    aside.sidebar-collapsed {
-        width: 80px !important;
-        overflow: visible !important;
-        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        will-change: width;
-    }
-
-    main.sidebar-collapsed {
-        margin-left: 0 !important;
-        width: calc(100% - 80px) !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        will-change: margin, width;
-    }
-
-    /* Mini Sidebar Styling */
-    aside.sidebar-collapsed .logo-text,
-    aside.sidebar-collapsed .nav-link span,
-    aside.sidebar-collapsed .chevron-icon,
-    aside.sidebar-collapsed .reports-dropdown-toggle::after {
-        display: none !important;
-        opacity: 0;
-        width: 0;
-    }
-
-    aside.sidebar-collapsed .logo-container {
-        justify-content: center !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-    }
-
-    aside.sidebar-collapsed .logo-icon {
-        margin-right: 0 !important;
-        font-size: 1.75rem;
-    }
-
-    aside.sidebar-collapsed .nav-link {
-        justify-content: center !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        text-align: center;
-    }
-
-    aside.sidebar-collapsed .nav-link i {
-        margin-right: 0 !important;
-        font-size: 1.25rem;
-    }
-
-    /* Hide submenus in collapsed mode unless we want hover menu (complex) */
-    /* For now, hiding submenus or handling them might be tricky. 
-       Let's hide the dropdown arrow and maybe the submenu itself if it's open */
-    aside.sidebar-collapsed #reportsSubmenu {
-        display: none !important;
-    }
-
-    /* Mobile overlay behavior */
-    #sidebar-overlay.show {
-        opacity: 1;
-        visibility: visible;
+    @media (min-width: 768px) {
+        #sidebar.collapsed {
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            z-index: 1050;
+        }
+        aside.sidebar-collapsed {
+            width: 0 !important;
+            overflow: hidden;
+            padding: 0;
+        }
     }
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const sidebar = document.getElementById("sidebar");
-        const toggleBtn = document.getElementById("sidebarToggle");
-        const overlay = document.getElementById("sidebar-overlay");
-        const main = document.querySelector("main");
-        const aside = sidebar ? sidebar.closest("aside") : null;
+document.addEventListener("DOMContentLoaded", function() {
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.getElementById("sidebarToggle");
+    const overlay = document.getElementById("sidebar-overlay");
+    const main = document.querySelector("main");
+    const aside = sidebar ? sidebar.closest("aside") : null;
 
-        // Only initialize if sidebar and toggle button exist
-        if (!sidebar || !toggleBtn) {
-            return;
+    if (!sidebar || !toggleBtn) return;
+
+    toggleBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        if (window.innerWidth < 768) {
+            sidebar.classList.toggle("show");
+            overlay && overlay.classList.toggle("show");
+        } else {
+            aside && aside.classList.toggle("sidebar-collapsed");
+            main && main.classList.toggle("sidebar-collapsed");
         }
-
-        // Use requestAnimationFrame for smoother animations
-        function smoothToggle() {
-            const isMobile = window.innerWidth < 768;
-
-            if (isMobile) {
-                // === Mobile Mode ===
-                sidebar.classList.toggle("show");
-                if (overlay) {
-                    overlay.classList.toggle("show");
-                }
-            } else {
-                // === Desktop Mode ===
-                if (aside) {
-                    aside.classList.toggle("sidebar-collapsed");
-                }
-                if (main) {
-                    main.classList.toggle("sidebar-collapsed");
-                }
-            }
-        }
-
-        // Debounce function to limit how often resize events fire
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        toggleBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            requestAnimationFrame(smoothToggle);
-        });
-
-        // Tutup sidebar kalau klik overlay (mobile)
-        if (overlay) {
-            overlay.addEventListener("click", function() {
-                requestAnimationFrame(() => {
-                    sidebar.classList.remove("show");
-                    if (overlay) {
-                        overlay.classList.remove("show");
-                    }
-                });
-            });
-        }
-
-        // Reset ke mode normal saat resize dengan debounce
-        const handleResize = debounce(function() {
-            if (window.innerWidth >= 768) {
-                sidebar.classList.remove("show");
-                if (overlay) {
-                    overlay.classList.remove("show");
-                }
-            } else {
-                if (aside) {
-                    aside.classList.remove("sidebar-collapsed");
-                }
-                if (main) {
-                    main.classList.remove("sidebar-collapsed");
-                }
-            }
-        }, 150);
-
-        window.addEventListener("resize", handleResize);
-
-        // Handle Reports dropdown toggle (for Tailwind, since we're not using Bootstrap collapse)
-        function initReportsDropdown() {
-            const reportsDropdown = document.querySelector(".reports-dropdown-toggle");
-            const reportsSubmenu = document.getElementById("reportsSubmenu");
-
-            if (!reportsDropdown || !reportsSubmenu) {
-                console.warn("Reports dropdown elements not found");
-                return;
-            }
-
-            const chevronIcon = reportsDropdown.querySelector(".chevron-icon");
-
-            // Function to update chevron rotation
-            function updateChevron(isExpanded) {
-                if (chevronIcon) {
-                    // Force immediate update
-                    chevronIcon.style.transition = "transform 0.3s ease";
-                    chevronIcon.style.transformOrigin = "center";
-                    chevronIcon.style.display = "inline-block";
-                    chevronIcon.style.transform = isExpanded ? "rotate(180deg)" : "rotate(0deg)";
-                }
-            }
-
-            // Function to open dropdown
-            function openDropdown() {
-                reportsDropdown.setAttribute("aria-expanded", "true");
-                updateChevron(true);
-
-                reportsSubmenu.classList.remove("hidden");
-                reportsSubmenu.style.display = "block";
-                reportsSubmenu.style.visibility = "visible";
-                // Force reflow
-                void reportsSubmenu.offsetHeight;
-                const height = reportsSubmenu.scrollHeight;
-                reportsSubmenu.style.maxHeight = height + "px";
-                reportsSubmenu.style.opacity = "1";
-                reportsSubmenu.style.paddingTop = "0.75rem";
-                reportsSubmenu.style.paddingBottom = "0.75rem";
-            }
-
-            // Function to close dropdown
-            function closeDropdown() {
-                reportsDropdown.setAttribute("aria-expanded", "false");
-                updateChevron(false);
-
-                reportsSubmenu.style.maxHeight = "0";
-                reportsSubmenu.style.opacity = "0";
-                reportsSubmenu.style.paddingTop = "0";
-                reportsSubmenu.style.paddingBottom = "0";
-                setTimeout(() => {
-                    reportsSubmenu.classList.add("hidden");
-                    reportsSubmenu.style.display = "none";
-                    reportsSubmenu.style.visibility = "hidden";
-                }, 300);
-            }
-
-            // Click handler
-            reportsDropdown.addEventListener("click", function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-
-                const isExpanded = this.getAttribute("aria-expanded") === "true";
-
-                if (isExpanded) {
-                    closeDropdown();
-                } else {
-                    openDropdown();
-                }
-            });
-
-            // Set initial state based on current route
-            const isReportsActive = reportsDropdown.getAttribute("aria-expanded") === "true";
-            if (isReportsActive) {
-                openDropdown();
-            } else {
-                closeDropdown();
-            }
-        }
-
-        // Initialize dropdown
-        initReportsDropdown();
     });
+
+    overlay && overlay.addEventListener("click", function() {
+        sidebar.classList.remove("show");
+        overlay.classList.remove("show");
+    });
+
+    window.addEventListener("resize", function() {
+        if (window.innerWidth >= 768) {
+            sidebar.classList.remove("show");
+            overlay && overlay.classList.remove("show");
+        } else {
+            aside && aside.classList.remove("sidebar-collapsed");
+            main && main.classList.remove("sidebar-collapsed");
+        }
+    });
+});
 </script>

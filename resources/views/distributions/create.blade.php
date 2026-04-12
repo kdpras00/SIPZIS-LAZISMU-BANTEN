@@ -128,8 +128,8 @@
                     <div class="mb-8">
                         <div class="flex items-center mb-4 pb-2 border-b border-gray-200">
                             <div
-                                class="flex-shrink-0 w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                class="flex-shrink-0 w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
@@ -309,7 +309,7 @@
         <!-- Available Balance Card -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div
-                class="px-6 py-4 {{ $availableBalance > 0 ? 'bg-gradient-to-r from-green-600 to-green-700' : 'bg-gradient-to-r from-red-600 to-red-700' }} text-white">
+                class="px-6 py-4 {{ $availableBalance > 0 ? 'bg-gradient-to-r from-orange-600 to-orange-700' : 'bg-gradient-to-r from-red-600 to-red-700' }} text-white">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-3">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -322,7 +322,7 @@
                 </div>
             </div>
             <div class="p-6 text-center">
-                <h2 class="text-3xl font-bold {{ $availableBalance > 0 ? 'text-green-600' : 'text-red-600' }} mb-2"
+                <h2 class="text-3xl font-bold {{ $availableBalance > 0 ? 'text-orange-600' : 'text-red-600' }} mb-2"
                     id="available-balance">
                     Rp {{ number_format($availableBalance, 0, ',', '.') }}
                 </h2>
@@ -351,8 +351,8 @@
                     <ul class="space-y-2.5 text-sm">
                         <li class="flex items-start">
                             <span
-                                class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-2 mt-0.5">
-                                <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                class="flex-shrink-0 w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center mr-2 mt-0.5">
+                                <svg class="w-4 h-4 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
                                     <path
                                         d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z">
                                     </path>

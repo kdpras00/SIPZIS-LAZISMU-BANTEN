@@ -25,7 +25,7 @@
                             <h6 class="font-semibold text-gray-900 mb-1">{{ $program->name }}</h6>
                             <p class="text-gray-600 text-sm mb-2">{{ Str::limit($program->description, 100) }}</p>
                             <div class="flex items-center gap-4">
-                                <small class="text-green-600 font-semibold">
+                                <small class="text-orange-600 font-semibold">
                                     Terkumpul: Rp {{ number_format($program->net_total_collected ?? 0, 0, ',', '.') }}
                                 </small>
                                 {{-- <small class="text-gray-500">
@@ -53,7 +53,7 @@
     <!-- Quick Donate Button -->
     <div class="bg-white rounded-xl shadow-md mb-6">
         <div class="p-6 text-center">
-            <a href="{{ route('program') }}" class="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors font-medium">
+            <a href="{{ route('program') }}" class="inline-flex items-center px-8 py-3 bg-orange-600 text-white rounded-full hover:bg-orange-700 transition-colors font-medium">
                 <i class="bi bi-plus-circle mr-2"></i>Donasi Sekarang
             </a>
         </div>
@@ -66,7 +66,7 @@
                 <i class="bi bi-house text-xl block mb-1"></i>
                 <small class="text-xs">Home</small>
             </a>
-            <a href="{{ route('donation') }}" class="text-green-600 hover:text-green-700 no-underline">
+            <a href="{{ route('donation') }}" class="text-orange-600 hover:text-orange-700 no-underline">
         <i class="bi bi-heart text-xl block mb-1"></i>
         <small class="text-xs">Donasi</small>
     </a>

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="min-h-screen flex items-center justify-center bg-green-900">
+    <div class="min-h-screen flex items-center justify-center bg-orange-900">
         <div class="w-full max-w-md px-6">
             <div class="bg-white rounded-lg shadow-md p-8">
                 <!-- Logo & Title -->
@@ -31,7 +31,7 @@
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                         <input id="email" type="email"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('email') border-red-500 @enderror"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('email') border-red-500 @enderror"
                             name="email" value="{{ old('email') }}" placeholder="Email" required autocomplete="email"
                             autofocus>
                         @error('email')
@@ -44,7 +44,7 @@
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password Baru</label>
                         <div class="relative">
                             <input id="password" type="password"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('password') border-red-500 @enderror pr-12"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('password') border-red-500 @enderror pr-12"
                                 name="password" placeholder="Password Baru" required autocomplete="new-password">
                             <button
                                 class="absolute inset-y-0 right-0 flex items-center pr-3 bg-transparent border-0 text-gray-500 cursor-pointer"
@@ -62,7 +62,7 @@
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Password</label>
                         <div class="relative">
                             <input id="password_confirmation" type="password"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent @error('password_confirmation') border-red-500 @enderror pr-12"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('password_confirmation') border-red-500 @enderror pr-12"
                                 name="password_confirmation" placeholder="Konfirmasi Password" required autocomplete="new-password">
                             <button
                                 class="absolute inset-y-0 right-0 flex items-center pr-3 bg-transparent border-0 text-gray-500 cursor-pointer"
@@ -77,14 +77,14 @@
 
                     <!-- Submit Button -->
                     <button type="submit"
-                        class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
+                        class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
                         Reset Password
                     </button>
                 </form>
 
                 <!-- Back to Login Link -->
                 <p class="text-center text-sm text-gray-600 mt-6">
-                    <a href="{{ route('login') }}" class="text-green-600 hover:text-green-700 font-medium">
+                    <a href="{{ route('login') }}" class="text-orange-600 hover:text-orange-700 font-medium">
                         ← Kembali ke Login
                     </a>
                 </p>

@@ -1,12 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid px-4">
-    <h1 class="mt-4 text-2xl font-bold">Laporan Keluar</h1>
-    <ol class="breadcrumb mb-4 flex space-x-2">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-blue-600 hover:text-blue-800">Dashboard</a></li>
-        <li class="breadcrumb-item active text-gray-600">Laporan Keluar</li>
-    </ol>
+<div class="px-6 py-5" style="max-width: 1280px;">
+    <div class="mb-6">
+        <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Laporan Keluar</h2>
+        <p class="text-sm" style="color: #8b7e74;">Ringkasan data distribusi zakat yang telah disalurkan</p>
+    </div>
     
     <!-- Filter Section -->
     <div class="bg-white rounded-lg shadow-sm mb-6">
@@ -61,7 +60,7 @@
                             </a>
                             <!-- Export Buttons -->
                         <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" @click.outside="open = false" type="button" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                            <button @click="open = !open" @click.outside="open = false" type="button" class="inline-flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700">
                                 <i class="fas fa-download me-1 mr-2"></i> Export
                             </button>
                             <ul x-show="open" x-transition style="display: none;" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
@@ -83,84 +82,41 @@
         </div>
     </div>
 
-    <!-- Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-blue-600 text-white rounded-lg shadow-sm">
-            <div class="p-6">
-                <div class="flex items-center">
-                    <div class="flex-1">
-                        <div class="text-xs font-semibold uppercase mb-1">Total Distribusi</div>
-                        <div class="text-2xl font-bold">{{ number_format($stats['total_count'], 0, ',', '.') }}</div>
-                        </div>
-                    <div class="text-4xl opacity-75">
-                        <i class="fas fa-donate"></i>
-                    </div>
-                </div>
-            </div>
+    <!-- Stats -->
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fff7ed;"><i class="fas fa-donate" style="color: #c2410c;"></i></div>
+            <p class="text-2xl font-bold mb-0" style="color: #1c0f0a;">{{ number_format($stats['total_count'], 0, ',', '.') }}</p>
+            <small class="text-xs" style="color: #8b7e74;">Total distribusi</small>
         </div>
-        <div class="bg-green-600 text-white rounded-lg shadow-sm">
-            <div class="p-6">
-                <div class="flex items-center">
-                    <div class="flex-1">
-                        <div class="text-xs font-semibold uppercase mb-1">Total Nominal</div>
-                        <div class="text-2xl font-bold">Rp {{ number_format($stats['total_amount'], 0, ',', '.') }}</div>
-                        </div>
-                    <div class="text-4xl opacity-75">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                </div>
-            </div>
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #f0fdf4;"><i class="fas fa-money-bill-wave" style="color: #15803d;"></i></div>
+            <p class="text-xl font-bold mb-0" style="color: #1c0f0a;">Rp {{ number_format($stats['total_amount'], 0, ',', '.') }}</p>
+            <small class="text-xs" style="color: #8b7e74;">Total nominal keluar</small>
         </div>
-        <div class="bg-cyan-600 text-white rounded-lg shadow-sm">
-            <div class="p-6">
-                <div class="flex items-center">
-                    <div class="flex-1">
-                        <div class="text-xs font-semibold uppercase mb-1">Bulan Ini</div>
-                        <div class="text-2xl font-bold">Rp {{ number_format($stats['this_month'], 0, ',', '.') }}</div>
-                        </div>
-                    <div class="text-4xl opacity-75">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                </div>
-            </div>
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #eff6ff;"><i class="fas fa-calendar-alt" style="color: #0369a1;"></i></div>
+            <p class="text-xl font-bold mb-0" style="color: #1c0f0a;">Rp {{ number_format($stats['this_month'], 0, ',', '.') }}</p>
+            <small class="text-xs" style="color: #8b7e74;">Bulan ini</small>
         </div>
-        <div class="bg-yellow-600 text-white rounded-lg shadow-sm">
-            <div class="p-6">
-                <div class="flex items-center">
-                    <div class="flex-1">
-                        <div class="text-xs font-semibold uppercase mb-1">Pending Diterima</div>
-                        <div class="text-2xl font-bold">{{ number_format($stats['pending_receipt'], 0, ',', '.') }}</div>
-                        </div>
-                    <div class="text-4xl opacity-75">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                </div>
-            </div>
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fef3c7;"><i class="fas fa-clock" style="color: #b45309;"></i></div>
+            <p class="text-2xl font-bold mb-0" style="color: #1c0f0a;">{{ number_format($stats['pending_receipt'], 0, ',', '.') }}</p>
+            <small class="text-xs" style="color: #8b7e74;">Belum diterima</small>
         </div>
-    </div>
-
-    <!-- Balance Card -->
-    <div class="grid grid-cols-1 mb-6">
-        <div class="bg-gray-900 text-white rounded-lg shadow-sm">
-            <div class="p-6">
-                <div class="flex items-center">
-                    <div class="flex-1">
-                        <div class="text-xs font-semibold uppercase mb-1">Saldo Tersedia</div>
-                        <div class="text-2xl font-bold">Rp {{ number_format($stats['available_balance'], 0, ',', '.') }}</div>
-                        </div>
-                    <div class="text-4xl opacity-75">
-                        <i class="fas fa-wallet"></i>
-                    </div>
-                </div>
+        <div class="rounded-2xl p-5 col-span-2 lg:col-span-1" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: {{ $stats['available_balance'] > 0 ? '#fff7ed' : '#fef2f2' }};">
+                <i class="fas fa-wallet" style="color: {{ $stats['available_balance'] > 0 ? '#c2410c' : '#dc2626' }};"></i>
             </div>
+            <p class="text-xl font-bold mb-0" style="color: #1c0f0a;">Rp {{ number_format($stats['available_balance'], 0, ',', '.') }}</p>
+            <small class="text-xs" style="color: #8b7e74;">Saldo tersedia</small>
         </div>
     </div>
 
     <!-- Data Table -->
-    <div class="bg-white rounded-lg shadow-sm mb-6">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <i class="fas fa-table me-1 mr-2"></i>
-            Data Distribusi Zakat
+    <div class="rounded-2xl overflow-hidden mb-6" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+        <div class="px-5 py-4" style="border-bottom: 1px solid #f0ece6;">
+            <h5 class="text-base font-bold mb-0" style="color: #1c0f0a;">Data Distribusi Zakat</h5>
         </div>
         <div class="p-6">
             <div class="overflow-x-auto">
@@ -204,7 +160,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm border border-gray-300">{{ $distribution->distribution_date->format('d M Y') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm border border-gray-300">
                                     @if($distribution->is_received)
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Sudah Diterima</span>
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">Sudah Diterima</span>
                                     @else
                                         <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Belum Diterima</span>
                                     @endif

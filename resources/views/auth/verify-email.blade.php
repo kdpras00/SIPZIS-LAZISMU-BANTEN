@@ -1,13 +1,13 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-green-900">
+<div class="min-h-screen flex items-center justify-center bg-orange-900">
     <div class="w-full max-w-md px-6">
         <div class="bg-white rounded-lg shadow-md p-8">
             <!-- Icon & Title -->
             <div class="text-center mb-6">
-                <div class="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                    <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="mx-auto w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-10 h-10 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                     </svg>
                 </div>
@@ -18,8 +18,8 @@
             </div>
 
             <!-- Instructions -->
-            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                <p class="text-sm text-green-800 text-center">
+            <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+                <p class="text-sm text-orange-800 text-center">
                     <i class="bi bi-info-circle me-1"></i>
                     Silakan cek <strong>inbox</strong> atau <strong>folder spam</strong> Anda dan klik link verifikasi
                 </p>
@@ -27,7 +27,7 @@
 
             <!-- Success Message -->
             @if (session('success'))
-                <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg text-sm">
+                <div class="mb-4 p-4 bg-orange-100 border border-orange-400 text-orange-700 rounded-lg text-sm">
                     <i class="bi bi-check-circle me-2"></i>
                     {{ session('success') }}
                 </div>
@@ -44,7 +44,7 @@
             <!-- Resend Form -->
             <form method="POST" action="{{ route('verification.send') }}" class="mb-4">
                 @csrf
-                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+                <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                     </svg>

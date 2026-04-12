@@ -6,10 +6,7 @@
                 <a href="/" class="flex-shrink-0 flex items-center">
 
                     <div class="flex items-center ml-4">
-                        <h1 style="font-family: 'Poppins', sans-serif; font-size: 1.5rem; background: linear-gradient(45deg, #fff, #e0e7ff, #c7d2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 20px rgba(255,255,255,0.5); letter-spacing: 0.1em; font-weight: 800;"
-                            id="navbar-title" class="text-white">
-                            SIPZIS
-                        </h1>
+                        <h1 style="font-family: \'Poppins\', sans-serif; font-size: 1.5rem; letter-spacing: 0.1em; font-weight: 800;" id="navbar-title" class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-400">SIPZIS</h1>
                     </div>
                 </a>
             </div>
@@ -47,7 +44,7 @@
                 @endauth
 
                 <!-- Hamburger Menu Button - Mobile -->
-                <button id="mobile-menu-button" class="text-white hover:text-green-200 focus:outline-none">
+                <button id="mobile-menu-button" class="text-gray-800 hover:text-orange-600 focus:outline-none">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -63,27 +60,27 @@
                     @php $isActive = fn($route, $page) => request()->routeIs($route) || (isset($activePage) && $activePage === $page); @endphp
                     
                     {{-- <a href="{{ route('home') }}"
-                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link {{ $isActive('home', 'home') ? 'border-b-2 border-white' : '' }}">Home</a> --}}
+                        class="px-3 py-2 text-gray-800 hover:border-b-2 hover:border-orange-600 hover:text-orange-600 transition duration-300 navbar-link {{ $isActive('home', 'home') ? 'border-b-2 border-white' : '' }}">Home</a> --}}
                     <a href="{{ route('tentang') }}"
-                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link {{ $isActive('tentang*', 'tentang') ? 'border-b-2 border-white' : '' }}">Tentang</a>
+                        class="px-3 py-2 text-gray-800 hover:border-b-2 hover:border-orange-600 hover:text-orange-600 transition duration-300 navbar-link {{ $isActive('tentang*', 'tentang') ? 'border-b-2 border-white' : '' }}">Tentang</a>
                     <a href="{{ route('program') }}"
-                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link {{ $isActive('program*', 'program') ? 'border-b-2 border-white' : '' }}">Program</a>
+                        class="px-3 py-2 text-gray-800 hover:border-b-2 hover:border-orange-600 hover:text-orange-600 transition duration-300 navbar-link {{ $isActive('program*', 'program') ? 'border-b-2 border-white' : '' }}">Program</a>
                     <a href="{{ route('berita') }}"
-                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link {{ $isActive('berita*', 'berita') ? 'border-b-2 border-white' : '' }}">Berita</a>
+                        class="px-3 py-2 text-gray-800 hover:border-b-2 hover:border-orange-600 hover:text-orange-600 transition duration-300 navbar-link {{ $isActive('berita*', 'berita') ? 'border-b-2 border-white' : '' }}">Berita</a>
                     <a href="{{ route('artikel.all') }}"
-                        class="px-3 py-2 text-white hover:border-b-2 hover:border-white transition duration-300 navbar-link {{ $isActive('artikel*', 'artikel') ? 'border-b-2 border-white' : '' }}">Artikel</a>
+                        class="px-3 py-2 text-gray-800 hover:border-b-2 hover:border-orange-600 hover:text-orange-600 transition duration-300 navbar-link {{ $isActive('artikel*', 'artikel') ? 'border-b-2 border-white' : '' }}">Artikel</a>
                 </div>
             </div>
 
             <!-- Mobile Menu (Hidden by default) -->
-            <div id="mobile-menu" class="md:hidden fixed inset-0 bg-green-800 bg-opacity-95 z-40 hidden">
+            <div id="mobile-menu" class="md:hidden fixed inset-0 bg-white bg-opacity-[0.98] z-40 hidden">
                 <div class="flex flex-col h-full">
-                    <div class="flex justify-between items-center p-4 border-b border-green-700">
+                    <div class="flex justify-between items-center p-4 border-b border-gray-200">
                         <h1
-                            style="font-family: 'Poppins', sans-serif; font-size: 1.5rem; background: linear-gradient(45deg, #fff, #e0e7ff, #c7d2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 20px rgba(255,255,255,0.5); letter-spacing: 0.1em; font-weight: 800;">
+                            style="font-family: 'Poppins', sans-serif; font-size: 1.5rem; background: linear-gradient(45deg, #fff, #ffedd5, #fed7aa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 20px rgba(255,255,255,0.5); letter-spacing: 0.1em; font-weight: 800;">
                             SIPZIS
                         </h1>
-                        <button id="close-mobile-menu" class="text-white hover:text-green-200 focus:outline-none">
+                        <button id="close-mobile-menu" class="text-gray-800 hover:text-orange-600 focus:outline-none">
                             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -93,54 +90,54 @@
                     </div>
                     <div class="flex flex-col py-4 space-y-4 overflow-y-auto">
                         <!-- <a href="{{ route('home') }}"
-                            class="px-4 py-2 text-white hover:bg-green-700 transition duration-300 navbar-link">Home</a> -->
+                            class="px-4 py-2 text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300 navbar-link">Home</a> -->
                         <a href="{{ route('tentang') }}"
-                            class="px-4 py-2 text-white hover:bg-green-700 transition duration-300 navbar-link">Tentang</a>
+                            class="px-4 py-2 text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300 navbar-link">Tentang</a>
                         <a href="{{ route('program') }}"
-                            class="px-4 py-2 text-white hover:bg-green-700 transition duration-300 navbar-link">Program</a>
+                            class="px-4 py-2 text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300 navbar-link">Program</a>
                         <a href="{{ route('berita') }}"
-                            class="px-4 py-2 text-white hover:bg-green-700 transition duration-300 navbar-link">Berita</a>
+                            class="px-4 py-2 text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300 navbar-link">Berita</a>
                         <a href="{{ route('artikel.all') }}"
-                            class="px-4 py-2 text-white hover:bg-green-700 transition duration-300 navbar-link">Artikel</a>
+                            class="px-4 py-2 text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300 navbar-link">Artikel</a>
 
                         @auth
                             @if (Auth::user()->role === 'admin')
-                                <div class="border-t border-green-700 mt-4 pt-4">
+                                <div class="border-t border-gray-200 mt-4 pt-4">
                                     <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-white hover:bg-green-700 transition duration-300">
+                                        class="block px-4 py-2 text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300">
                                         Dashboard Admin
                                     </a>
                                     <form method="POST" action="{{ route('logout') }}" class="px-4 py-2">
                                         @csrf
                                         <button type="submit"
-                                            class="w-full text-left text-white hover:bg-green-700 transition duration-300">
+                                            class="w-full text-left text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300">
                                             Logout
                                         </button>
                                     </form>
                                 </div>
                             @else
-                                <div class="border-t border-green-700 mt-4 pt-4">
+                                <div class="border-t border-gray-200 mt-4 pt-4">
                                     <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-white hover:bg-green-700 transition duration-300">
+                                        class="block px-4 py-2 text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300">
                                         Profil
                                     </a>
                                     <form method="POST" action="{{ route('logout') }}" class="px-4 py-2">
                                         @csrf
                                         <button type="submit"
-                                            class="w-full text-left text-white hover:bg-green-700 transition duration-300">
+                                            class="w-full text-left text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300">
                                             Logout
                                         </button>
                                     </form>
                                 </div>
                             @endif
                         @else
-                            <div class="border-t border-green-700 mt-4 pt-4">
+                            <div class="border-t border-gray-200 mt-4 pt-4">
                                 <a href="{{ route('login') }}"
-                                    class="block px-4 py-2 text-white border-2 border-white rounded-lg hover:bg-green-700 transition duration-300 text-center mx-4 mb-2" style="border: 2px solid white;">
+                                    class="block px-4 py-2 border-2 border-orange-600 text-orange-600 rounded-lg hover:bg-orange-50 hover:text-orange-700 transition duration-300 text-center mx-4 mb-2">
                                     Masuk
                                 </a>
                                 <a href="{{ route('register') }}"
-                                    class="block px-4 py-2 text-white hover:bg-green-700 transition duration-300">
+                                    class="block px-4 py-2 text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300">
                                     Daftar
                                 </a>
                             </div>
@@ -157,13 +154,13 @@
                         <!-- Admin Navigation -->
                         <div class="flex items-center space-x-4">
                             <a href="{{ route('dashboard') }}"
-                                class="text-white hover:text-green-200 transition duration-300 font-medium">
+                                class="text-gray-800 hover:text-orange-600 transition duration-300 font-medium">
                                 Dashboard Admin
                             </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit"
-                                    class="bg-white text-green-800 px-4 py-2 rounded-full font-medium hover:bg-green-100 transition duration-300">
+                                    class="bg-orange-600 text-white px-4 py-2 rounded-full font-medium hover:bg-orange-700 transition duration-300">
                                     Logout
                                 </button>
                             </form>
@@ -214,7 +211,7 @@
                                         style="scrollbar-width: thin;">
                                         <!-- Notifications will be loaded here via AJAX -->
                                         <div class="flex justify-center py-8">
-                                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600">
+                                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600">
                                             </div>
                                         </div>
                                     </div>
@@ -229,7 +226,7 @@
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="sr-only">Open user menu</span>
                                     <div
-                                        class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center text-white hover:bg-green-600 transition-colors">
+                                        class="h-8 w-8 rounded-full bg-orange-500 flex items-center justify-center text-white hover:bg-orange-600 transition-colors">
                                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -261,11 +258,11 @@
                     <!-- Login/Register Buttons -->
                     <div class="flex items-center space-x-4">
                         <a href="{{ route('login') }}"
-                            class="text-white border border-white px-4 py-2 rounded-full hover:bg-white hover:text-green-800 transition duration-300 font-medium">
+                            class="text-orange-600 border border-orange-600 px-4 py-2 rounded-full hover:bg-orange-50 hover:text-orange-700 transition duration-300 font-medium">
                             Masuk
                         </a>
                         <a href="{{ route('register') }}"
-                            class="bg-white text-green-800 px-4 py-2 rounded-full font-medium hover:bg-green-100 transition duration-300">
+                            class="bg-orange-600 text-white px-4 py-2 rounded-full font-medium hover:bg-orange-700 transition duration-300">
                             Daftar
                         </a>
                     </div>
@@ -319,35 +316,25 @@
     if (beranda) {
         let isTransparent = true;
 
-        // Fungsi untuk membuat navbar transparan
+        
+        // Fungsi untuk membuat navbar transparan (putih dengan efek blur)
         function setNavbarTransparent() {
             if (!isTransparent) {
-                navbar.classList.remove('bg-green-800', 'shadow-md');
-                navbar.classList.add('bg-transparent');
-                navbarTitle.classList.remove('text-white');
-                navbarTitle.classList.add('text-white');
-                navbarLinks.forEach(link => {
-                    link.classList.remove('text-white');
-                    link.classList.add('text-white');
-                });
+                navbar.classList.remove('bg-white', 'shadow-md');
+                navbar.classList.add('bg-white/90', 'backdrop-blur-md');
                 isTransparent = true;
             }
         }
 
-        // Fungsi untuk membuat navbar solid (hijau tua dengan teks putih)
+        // Fungsi untuk membuat navbar solid (putih solid)
         function setNavbarSolid() {
             if (isTransparent) {
-                navbar.classList.remove('bg-transparent');
-                navbar.classList.add('bg-green-800', 'shadow-md');
-                navbarTitle.classList.remove('text-white');
-                navbarTitle.classList.add('text-white');
-                navbarLinks.forEach(link => {
-                    link.classList.remove('text-white');
-                    link.classList.add('text-white');
-                });
+                navbar.classList.remove('bg-transparent', 'bg-white/90', 'backdrop-blur-md');
+                navbar.classList.add('bg-white', 'shadow-md');
                 isTransparent = false;
             }
         }
+
 
         // Periksa lokasi hash saat ini
         function checkCurrentHash() {
@@ -375,13 +362,7 @@
     } else {
         // Jika tidak ada elemen beranda, buat navbar selalu solid
         navbar.classList.remove('bg-transparent');
-        navbar.classList.add('bg-green-800', 'shadow-md');
-        navbarTitle.classList.remove('text-white');
-        navbarTitle.classList.add('text-white');
-        navbarLinks.forEach(link => {
-            link.classList.remove('text-white');
-            link.classList.add('text-white');
-        });
+        navbar.classList.add('bg-white', 'shadow-md');
     }
 
     // Mobile menu functionality
@@ -592,16 +573,22 @@
 </script>
 
 <style>
-    /* Mengubah warna hover tautan menjadi putih */
+    /* Mengubah warna hover tautan menjadi orange */
     .navbar-link:hover {
-        color: white;
-        border-bottom: 2px solid white;
+        color: #ea580c !important;
+        border-bottom: 2px solid #ea580c;
     }
 
-    /* Warna teks default untuk navbar solid */
-    .bg-green-800 .navbar-link {
-        color: white;
+    /* Warna teks default untuk navbar solid / transparan sama-sama abu gelap */
+    .bg-white .navbar-link, .bg-white\/90 .navbar-link {
+        color: #1f2937;
     }
+
+    .navbar-link.border-orange-600 {
+        color: #ea580c !important;
+        border-color: #ea580c !important;
+    }
+
 
     /* Warna teks default untuk navbar transparan */
     .bg-transparent .navbar-link {

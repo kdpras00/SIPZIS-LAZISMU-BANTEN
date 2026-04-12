@@ -9,13 +9,13 @@
 
 @section('content')
     <!-- Success Section -->
-    <div class="relative bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 overflow-hidden min-h-screen">
+    <div class="relative bg-gradient-to-br from-orange-50 via-orange-50 to-cyan-50 overflow-hidden min-h-screen">
         <div class="relative container mx-auto px-4 py-16">
             <div class="max-w-4xl mx-auto">
                 <!-- Success Header -->
                 <div class="text-center mb-12 mt-16">
                     @if ($status === 'completed')
-                        <h1 class="text-5xl font-bold text-green-600 mb-3">Pembayaran Berhasil!</h1>
+                        <h1 class="text-5xl font-bold text-orange-600 mb-3">Pembayaran Berhasil!</h1>
                         <p class="text-gray-700">Terima kasih, pembayaran Anda telah kami terima.</p>
                     @elseif ($status === 'pending')
                         <h1 class="text-5xl font-bold text-yellow-600 mb-3">Menunggu Konfirmasi</h1>
@@ -35,7 +35,7 @@
                         </h2>
                         <div
                             class="px-4 py-2 rounded-full text-sm font-semibold
-                        @if ($payment->status === 'completed') bg-green-100 text-green-800
+                        @if ($payment->status === 'completed') bg-orange-100 text-orange-800
                         @elseif($payment->status === 'pending')
                             bg-yellow-100 text-yellow-800
                         @else
@@ -55,7 +55,7 @@
                         <div class="space-y-4">
                             <div class="flex justify-between border-b pb-2">
                                 <span class="text-gray-600">Kode Pembayaran:</span>
-                                <span class="font-semibold text-emerald-700">{{ $payment->payment_code }}</span>
+                                <span class="font-semibold text-orange-700">{{ $payment->payment_code }}</span>
                             </div>
                             <div class="flex justify-between border-b pb-2">
                                 <span class="text-gray-600">No. Kwitansi:</span>
@@ -76,7 +76,7 @@
 
                             <div class="flex justify-between border-b pb-2">
                                 <span class="text-gray-600">Jumlah Dibayar:</span>
-                                <span class="font-semibold text-emerald-700">Rp
+                                <span class="font-semibold text-orange-700">Rp
                                     {{ number_format($payment->paid_amount, 0, ',', '.') }}</span>
                             </div>
                             <div class="flex justify-between border-b pb-2">
@@ -101,7 +101,7 @@
                 </div>
 
                 <div
-                    class="text-center mb-6 bg-green-50 border border-green-200 text-green-700 rounded-xl py-4 px-6 shadow-sm">
+                    class="text-center mb-6 bg-orange-50 border border-orange-200 text-orange-700 rounded-xl py-4 px-6 shadow-sm">
                     @if ($payment->status === 'completed')
                         Terima kasih, donasi Anda telah kami terima.
                     @elseif($payment->status === 'pending')
@@ -142,16 +142,16 @@
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <a href="{{ route('guest.payment.receipt.download', $payment->payment_code) }}"
-                        class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white w-[280px] px-12 py-3 rounded-2xl
-               hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 font-bold shadow-lg
+                        class="bg-gradient-to-r from-orange-600 to-orange-600 text-white w-[280px] px-12 py-3 rounded-2xl
+               hover:from-orange-700 hover:to-orange-700 transition-all duration-300 font-bold shadow-lg
                hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center whitespace-nowrap">
                         <i class="fas fa-download mr-2"></i>
                         Unduh Kwitansi
                     </a>
 
                     <a href="{{ route('guest.payment.receipt', $payment->payment_code) }}"
-                        class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white w-[280px] px-12 py-3 rounded-2xl
-               hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 font-bold shadow-lg
+                        class="bg-gradient-to-r from-orange-600 to-orange-600 text-white w-[280px] px-12 py-3 rounded-2xl
+               hover:from-orange-700 hover:to-orange-700 transition-all duration-300 font-bold shadow-lg
                hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center whitespace-nowrap">
                         <i class="fas fa-eye mr-2"></i>
                         Lihat Kwitansi
@@ -176,8 +176,8 @@
 
                 <!-- Islamic Quote -->
                 <div class="mt-12 text-center">
-                    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-6 shadow-md">
-                        <div class="text-emerald-700 font-semibold mb-2">
+                    <div class="bg-gradient-to-r from-orange-50 to-orange-50 rounded-2xl p-6 shadow-md">
+                        <div class="text-orange-700 font-semibold mb-2">
                             "وَمَن يُؤْتَ الْحِكْمَةَ فَقَدْ أُوتِيَ خَيْرًا كَثِيرًا"
                         </div>
                         <p class="text-gray-600 italic">

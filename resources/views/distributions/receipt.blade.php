@@ -12,7 +12,7 @@
                 <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <h6 class="text-lg font-semibold text-gray-800">Kwitansi Distribusi Zakat</h6>
-                        <button onclick="window.print()" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300 print:hidden">
+                        <button onclick="window.print()" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-orange-600 rounded-lg hover:bg-orange-700 focus:ring-4 focus:ring-orange-300 print:hidden">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
                             </svg>
@@ -49,7 +49,7 @@
                                                 <td class="py-2.5 pr-6 align-top"><strong class="text-gray-700">Status:</strong></td>
                                                 <td class="py-2.5">
                                                     @if($distribution->is_received)
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Sudah Diterima</span>
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">Sudah Diterima</span>
                                                     @else
                                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Belum Diterima</span>
                                                     @endif
@@ -66,7 +66,7 @@
                                                 <td class="py-2.5 text-gray-900">
                                                     @switch($distribution->distribution_type)
                                                         @case('cash')
-                                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Tunai</span>
+                                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">Tunai</span>
                                                             @break
                                                         @case('goods')
                                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Barang</span>
@@ -145,7 +145,7 @@
                                     <tr>
                                         <td class="py-2.5 pr-6 align-top"><strong class="text-gray-700">Jumlah Distribusi:</strong></td>
                                         <td class="py-2.5">
-                                            <h5 class="text-xl font-bold text-green-600">
+                                            <h5 class="text-xl font-bold text-orange-600">
                                                 Rp {{ number_format($distribution->amount, 0, ',', '.') }}
                                             </h5>
                                             <p class="text-sm text-gray-600 italic mt-1">

@@ -24,7 +24,7 @@
                             Judul Artikel <span class="text-red-500">*</span>
                         </label>
                         <input type="text" id="title" name="title"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 @error('title') border-red-500 @enderror"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 @error('title') border-red-500 @enderror"
                             placeholder="Masukkan judul artikel"
                             value="{{ old('title') }}" required>
                         @error('title')
@@ -38,7 +38,7 @@
                             Ringkasan (Opsional)
                         </label>
                         <textarea id="excerpt" name="excerpt" rows="3"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 @error('excerpt') border-red-500 @enderror"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 @error('excerpt') border-red-500 @enderror"
                             placeholder="Ringkasan singkat artikel (maksimal 500 karakter)">{{ old('excerpt') }}</textarea>
                         @error('excerpt')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -51,7 +51,7 @@
                             Konten Artikel <span class="text-red-500">*</span>
                         </label>
                         <textarea id="content" name="content" rows="15"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 @error('content') border-red-500 @enderror"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 @error('content') border-red-500 @enderror"
                             placeholder="Tulis konten artikel di sini..." required>{{ old('content') }}</textarea>
                         @error('content')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -72,7 +72,7 @@
                                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 <div class="flex text-sm text-gray-600">
-                                    <label for="image" class="relative cursor-pointer bg-white rounded-md font-medium text-green-600 hover:text-green-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-green-500">
+                                    <label for="image" class="relative cursor-pointer bg-white rounded-md font-medium text-orange-600 hover:text-orange-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-orange-500">
                                         <span>Upload gambar</span>
                                         <input id="image" name="image" type="file" class="sr-only" accept="image/*">
                                     </label>
@@ -96,7 +96,7 @@
                     <div>
                         <label class="flex items-center">
                             <input type="checkbox" name="is_published" value="1"
-                                class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
+                                class="rounded border-gray-300 text-orange-600 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200"
                                 {{ old('is_published') ? 'checked' : '' }}>
                             <span class="ml-2 text-sm text-gray-700">Publikasikan sekarang</span>
                         </label>
@@ -111,7 +111,7 @@
                     Batal
                 </a>
                 <button type="submit"
-                    class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-200">
+                    class="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition duration-200">
                     <i class="fas fa-save mr-2"></i>Simpan Artikel
                 </button>
             </div>

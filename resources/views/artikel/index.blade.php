@@ -12,9 +12,9 @@
                 style="background-image: url('{{ asset('img/masjid.webp') }}'); background-size: cover; background-position: center; background-repeat: no-repeat; will-change: transform;">
             </div>
             <!-- Green Gradient Overlay for blending -->
-            <div class="absolute inset-0 bg-gradient-to-br from-green-900/80 via-green-800/70 to-emerald-700/80"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/80 to-white/60"></div>
             <!-- Additional Dark Overlay for text readability -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent"></div>
             <!-- Animated Background Elements (removed) -->
             <div class="blob blob-1"></div>
             <div class="blob blob-2"></div>
@@ -93,7 +93,7 @@
                                                             class="artikel-author-name">{{ $artikel->author->name }}</span>
                                                     </div>
                                                     <a href="{{ route('artikel.show', $artikel->slug) }}"
-                                                        class="artikel-read-more text-green-600 hover:text-green-800">
+                                                        class="artikel-read-more text-orange-600 hover:text-orange-800">
                                                         Baca Selengkapnya
                                                         <svg class="artikel-read-more-icon" fill="none"
                                                             stroke="currentColor" viewBox="0 0 24 24">
@@ -143,7 +143,7 @@
 
         .artikel-bg {
             position: relative;
-            background: linear-gradient(to bottom right, #064e3b, #065f46, #047857);
+            background: #f9fafb /* gray-50 */;
             min-height: 100vh;
             overflow: hidden;
             will-change: transform;
@@ -283,7 +283,7 @@
         .artikel-main-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to right, rgba(240, 253, 244, 0.5), rgba(236, 253, 245, 0.5), rgba(240, 253, 250, 0.5));
+            background: linear-gradient(to right, rgba(255, 247, 237, 0.5), rgba(255, 237, 213, 0.5), rgba(255, 247, 237, 0.5));
             border-radius: 1.5rem;
         }
 
@@ -295,7 +295,7 @@
         .artikel-section-title {
             font-size: 2.25rem;
             font-weight: 900;
-            color: #166534;
+            color: #111827; /* Dark black */
             margin-bottom: 1rem;
         }
 
@@ -307,7 +307,7 @@
 
         .artikel-section-description {
             font-size: 1.125rem;
-            color: #166534;
+            color: #374151; /* Dark gray/black for readability */
             max-width: 42rem;
             margin-left: auto;
             margin-right: auto;
@@ -316,7 +316,7 @@
         .artikel-section-divider {
             width: 6rem;
             height: 0.25rem;
-            background: linear-gradient(to right, #16a34a, #059669, #0d9488);
+            background: linear-gradient(to right, #ea580c, #f97316, #fb923c);
             border-radius: 9999px;
             margin: 1rem auto 0;
         }
@@ -436,7 +436,7 @@
         }
 
         .artikel-card-title-link:hover {
-            color: #16a34a;
+            color: #ea580c;
         }
 
         .artikel-card-excerpt {
@@ -488,7 +488,7 @@
         }
 
         .text-zakat {
-            color: #16a34a;
+            color: #ea580c;
         }
 
         .text-infaq {
@@ -504,7 +504,7 @@
         }
 
         .hover-zakat:hover {
-            color: #166534;
+            color: #ea580c;
         }
 
         .hover-infaq:hover {

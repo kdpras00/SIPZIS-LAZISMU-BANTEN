@@ -19,13 +19,13 @@
     <div class="bg-white rounded-xl shadow-md mb-6">
         <div class="p-6">
             <!-- Bulan -->
-            <h6 class="font-semibold text-green-600 mb-4">
+            <h6 class="font-semibold text-orange-600 mb-4">
                 {{ now()->translatedFormat('F Y') }}
             </h6>
 
             <!-- Daftar Transaksi -->
             @foreach($payments as $payment)
-            <div class="p-4 mb-3 rounded-xl border border-gray-100 hover:bg-green-50 hover:border-green-200 transition-all duration-200 {{ $loop->odd ? 'bg-gray-50' : 'bg-white' }}">
+            <div class="p-4 mb-3 rounded-xl border border-gray-100 hover:bg-orange-50 hover:border-orange-200 transition-all duration-200 {{ $loop->odd ? 'bg-gray-50' : 'bg-white' }}">
                 <div class="flex justify-between items-start">
                     <div>
                         <small class="text-gray-500 block">
@@ -48,7 +48,7 @@
                     </div>
                     <div class="text-right">
                         @if($payment->status === 'completed')
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">Selesai</span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-700">Selesai</span>
                         @elseif($payment->status === 'pending')
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">Menunggu Pembayaran</span>
                         @else
@@ -74,7 +74,7 @@
             <i class="bi bi-credit-card text-6xl text-gray-400 mb-4 block"></i>
             <h4 class="text-xl font-semibold text-gray-900 mb-2">Belum Ada Transaksi</h4>
             <p class="text-gray-600 mb-6">Anda belum melakukan pembayaran zakat.</p>
-            <a href="{{ route('program') }}" class="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors font-medium">
+            <a href="{{ route('program') }}" class="inline-flex items-center px-6 py-3 bg-orange-600 text-white rounded-full hover:bg-orange-700 transition-colors font-medium">
                 <i class="bi bi-plus-circle mr-2"></i> Bayar Zakat Sekarang
             </a>
         </div>

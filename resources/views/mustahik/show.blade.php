@@ -83,7 +83,7 @@
 
                                     @case('verified')
                                         <span
-                                            class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">Terverifikasi</span>
+                                            class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-orange-100 text-orange-800">Terverifikasi</span>
                                     @break
 
                                     @case('rejected')
@@ -103,7 +103,7 @@
                             <div class="font-semibold">
                                 @if ($mustahik->is_active)
                                     <span
-                                        class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800">Aktif</span>
+                                        class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-orange-100 text-orange-800">Aktif</span>
                                 @else
                                     <span
                                         class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">Tidak
@@ -235,7 +235,7 @@
                         <div>
                             <label class="block text-xs text-gray-500 mb-1">Status Keaktifan</label>
                             <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $mustahik->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $mustahik->is_active ? 'bg-orange-100 text-orange-800' : 'bg-red-100 text-red-800' }}">
                                 {{ $mustahik->is_active ? 'Aktif' : 'Non-Aktif' }}
                             </span>
                         </div>
@@ -275,7 +275,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <h3 class="text-3xl font-bold text-green-600 mb-1">Rp
+                        <h3 class="text-3xl font-bold text-orange-600 mb-1">Rp
                             {{ number_format($stats['total_received'], 0, ',', '.') }}</h3>
                         <p class="text-sm text-gray-500">Total Zakat Diterima</p>
                     </div>
@@ -345,7 +345,7 @@
                             @csrf
                             @method('PATCH')
                             <button type="submit"
-                                class="w-full inline-flex items-center justify-center px-4 py-2 {{ $mustahik->is_active ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-green-600 hover:bg-green-700' }} text-white font-medium rounded-lg transition-colors duration-200">
+                                class="w-full inline-flex items-center justify-center px-4 py-2 {{ $mustahik->is_active ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-orange-600 hover:bg-orange-700' }} text-white font-medium rounded-lg transition-colors duration-200">
                                 <i class="bi bi-toggle-{{ $mustahik->is_active ? 'on' : 'off' }} mr-2"></i>
                                 {{ $mustahik->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
                             </button>

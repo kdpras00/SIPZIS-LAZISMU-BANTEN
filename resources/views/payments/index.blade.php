@@ -3,20 +3,21 @@
 @section('page-title', 'Manajemen Pembayaran Zakat')
 
 @section('content')
-    <div class="flex justify-between items-center mb-6">
+    <div class="px-6 py-5" style="max-width: 1280px;">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
-            <h2 class="text-2xl font-bold text-gray-900 mb-1">
+            <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">
                 @if (auth()->user()->role === 'muzakki')
-                    Riwayat Pembayaran Zakat
+                    Riwayat Donasi
                 @else
-                    Manajemen Pembayaran Zakat
+                    Data Pembayaran ZIS
                 @endif
             </h2>
-            <p class="text-gray-600">
+            <p class="text-sm" style="color: #8b7e74;">
                 @if (auth()->user()->role === 'muzakki')
-                    Kelola dan lihat riwayat pembayaran Donasi Anda
+                    Lihat riwayat pembayaran donasi Anda
                 @else
-                    Kelola data pembayaran zakat
+                    Kelola data pembayaran zakat, infaq, dan sedekah
                 @endif
             </p>
         </div>
@@ -34,23 +35,15 @@
     </div>
 
     <!-- Filter Section -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
-        <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                    </svg>
-                    <h3 class="text-lg font-semibold text-gray-900">Filter & Pencarian</h3>
-                </div>
-                <button type="button" id="reset-filters"
-                    class="inline-flex items-center gap-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 rounded-lg px-4 py-2 transition-all duration-200 shadow-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                    </svg>
-                    <span>Reset Filter</span>
-                </button>
+    <div class="rounded-2xl mb-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+        <div class="px-5 py-3 flex items-center justify-between" style="border-bottom: 1px solid #f0ece6;">
+            <div class="flex items-center gap-2">
+                <i class="bi bi-funnel text-sm" style="color: #8b7e74;"></i>
+                <span class="text-sm font-semibold" style="color: #1c0f0a;">Filter</span>
             </div>
+            <button type="button" id="reset-filters" class="text-xs font-medium px-3 py-1.5 rounded-lg" style="color: #c2410c; border: 1px solid #f0ece6; background: #fff;">
+                Reset
+            </button>
         </div>
         
         <div class="p-6">
@@ -156,49 +149,38 @@
         </div>
     </div>
 
-    <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div class="p-6 text-center">
-                <i class="bi bi-credit-card text-5xl text-blue-600 mb-3 block"></i>
-                <h4 class="text-2xl font-bold text-gray-900 mb-1" id="total-amount">Rp
-                    {{ number_format($stats['total_amount'], 0, ',', '.') }}</h4>
-                <small class="text-gray-600">Total Terkumpul</small>
-            </div>
+    <!-- Stats -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fff7ed;"><i class="bi bi-credit-card" style="color: #c2410c;"></i></div>
+            <h4 class="text-xl font-bold mb-0" id="total-amount" style="color: #1c0f0a;">Rp {{ number_format($stats['total_amount'], 0, ',', '.') }}</h4>
+            <small class="text-xs" style="color: #8b7e74;">Total terkumpul</small>
         </div>
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div class="p-6 text-center">
-                <i class="bi bi-check-circle text-5xl text-green-600 mb-3 block"></i>
-                <h4 class="text-2xl font-bold text-gray-900 mb-1" id="total-count">
-                    {{ number_format($stats['total_count']) }}</h4>
-                <small class="text-gray-600">Total Pembayaran</small>
-            </div>
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #f0fdf4;"><i class="bi bi-check-circle" style="color: #15803d;"></i></div>
+            <h4 class="text-2xl font-bold mb-0" id="total-count" style="color: #1c0f0a;">{{ number_format($stats['total_count']) }}</h4>
+            <small class="text-xs" style="color: #8b7e74;">Total transaksi</small>
         </div>
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div class="p-6 text-center">
-                <i class="bi bi-calendar-month text-5xl text-cyan-600 mb-3 block"></i>
-                <h4 class="text-2xl font-bold text-gray-900 mb-1" id="thismonth-amount">Rp
-                    {{ number_format($stats['this_month'], 0, ',', '.') }}</h4>
-                <small class="text-gray-600">Bulan Ini</small>
-            </div>
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #eff6ff;"><i class="bi bi-calendar-month" style="color: #0369a1;"></i></div>
+            <h4 class="text-xl font-bold mb-0" id="thismonth-amount" style="color: #1c0f0a;">Rp {{ number_format($stats['this_month'], 0, ',', '.') }}</h4>
+            <small class="text-xs" style="color: #8b7e74;">Bulan ini</small>
         </div>
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-            <div class="p-6 text-center">
-                <i class="bi bi-clock text-5xl text-yellow-600 mb-3 block"></i>
-                <h4 class="text-2xl font-bold text-gray-900 mb-1" id="pending-count">{{ $stats['pending'] }}</h4>
-                <small class="text-gray-600">Menunggu</small>
-            </div>
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fef3c7;"><i class="bi bi-clock" style="color: #b45309;"></i></div>
+            <h4 class="text-2xl font-bold mb-0" id="pending-count" style="color: #1c0f0a;">{{ $stats['pending'] }}</h4>
+            <small class="text-xs" style="color: #8b7e74;">Menunggu verifikasi</small>
         </div>
     </div>
 
-    <!-- Payments Table -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <h5 class="text-lg font-semibold text-gray-900">Daftar Pembayaran Zakat</h5>
+    <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+        <div class="px-5 py-4" style="border-bottom: 1px solid #f0ece6;">
+            <h5 class="text-base font-bold mb-0" style="color: #1c0f0a;">Daftar Pembayaran</h5>
         </div>
         <div class="p-0" id="payments-table-container">
             @include('payments.partials.table')
         </div>
+    </div>
     </div>
 @endsection
 
@@ -344,7 +326,7 @@
                         // Status badge classes
                         const statusClasses = {
                             'pending': 'bg-yellow-100 text-yellow-800',
-                            'completed': 'bg-green-100 text-green-800',
+                            'completed': 'bg-orange-100 text-orange-800',
                             'cancelled': 'bg-red-100 text-red-800'
                         };
 
@@ -393,7 +375,7 @@
                                     </svg>
                                 </a>
                                 <a href="/payments/${payment.id}/receipt" 
-                                   class="inline-flex items-center px-3 py-1.5 border border-green-300 shadow-sm text-sm font-medium rounded-md text-green-700 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200" 
+                                   class="inline-flex items-center px-3 py-1.5 border border-orange-300 shadow-sm text-sm font-medium rounded-md text-orange-700 bg-white hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200" 
                                    title="Kwitansi" target="_blank">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -401,7 +383,7 @@
                                 </a>
                                 ${config.isNotMuzakki ? `
                                     <a href="/payments/${payment.id}/edit" 
-                                       class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-200" 
+                                       class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200" 
                                        title="Edit">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
