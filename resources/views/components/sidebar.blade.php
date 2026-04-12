@@ -13,8 +13,8 @@
     {{-- Brand --}}
     <div class="px-6 pt-6 pb-2">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 no-underline group">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background: #c2410c;">
-                <i class="fas fa-mosque text-white text-sm"></i>
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden">
+                <img src="{{ asset('storage/logo/logo-lazismu.png') }}" alt="Logo Lazismu" class="w-full h-auto">
             </div>
             <div>
                 <span class="font-bold text-sm tracking-widest" style="color: #1c0f0a; letter-spacing: 0.12em;">SIPZIS</span>

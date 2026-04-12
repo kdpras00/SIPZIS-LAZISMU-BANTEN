@@ -5,8 +5,8 @@
             <div class="flex items-center">
                 <a href="/" class="flex-shrink-0 flex items-center">
 
-                    <div class="flex items-center ml-4">
-                        <h1 style="font-family: \'Poppins\', sans-serif; font-size: 1.5rem; letter-spacing: 0.1em; font-weight: 800;" id="navbar-title" class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-400">SIPZIS</h1>
+                    <div class="flex items-center ml-0 md:ml-4">
+                        <img src="{{ asset('storage/logo/logo-lazismu.png') }}" alt="Logo Lazismu" class="h-10 w-auto -mt-2">
                     </div>
                 </a>
             </div>
@@ -54,6 +54,7 @@
             </div>
 
             <!-- Navigation Links - Center -->
+
             <div class="hidden md:flex items-center justify-center flex-1">
                 <div class="flex items-center space-x-8" id="href-navbar">
                     {{-- Logic for active state: Check Route or $activePage variable --}}
@@ -76,10 +77,9 @@
             <div id="mobile-menu" class="md:hidden fixed inset-0 bg-white bg-opacity-[0.98] z-40 hidden">
                 <div class="flex flex-col h-full">
                     <div class="flex justify-between items-center p-4 border-b border-gray-200">
-                        <h1
-                            style="font-family: 'Poppins', sans-serif; font-size: 1.5rem; background: linear-gradient(45deg, #fff, #ffedd5, #fed7aa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 20px rgba(255,255,255,0.5); letter-spacing: 0.1em; font-weight: 800;">
-                            SIPZIS
-                        </h1>
+                        <div class="flex items-center">
+                            <img src="{{ asset('storage/logo/logo-lazismu.png') }}" alt="Logo Lazismu" class="h-10 w-auto">
+                        </div>
                         <button id="close-mobile-menu" class="text-gray-800 hover:text-orange-600 focus:outline-none">
                             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
