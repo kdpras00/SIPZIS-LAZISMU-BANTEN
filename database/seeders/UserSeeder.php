@@ -15,8 +15,8 @@ class UserSeeder extends Seeder
     {
         // Create Admin User
         User::create([
-            'name' => 'Administrator Zakat',
-            'email' => 'admin@zakat.com',
+            'name' => 'Administrator Lazismu Banten',
+            'email' => 'admin@sipzis.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
             'is_active' => true,
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
         // Create Sample Muzakki Users
         User::create([
             'name' => 'Ahmad Muzakki',
-            'email' => 'ahmad@example.com',
+            'email' => 'ahmad@sipzis.com',
             'password' => Hash::make('password'),
             'role' => 'muzakki',
             'is_active' => true,
@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Fatimah Zakat',
-            'email' => 'fatimah@example.com',
+            'email' => 'fatimah@sipzis.com',
             'password' => Hash::make('password'),
             'role' => 'muzakki',
             'is_active' => true,
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Muhammad Dermawan',
-            'email' => 'muhammad@example.com',
+            'email' => 'muhammad@sipzis.com',
             'password' => Hash::make('password'),
             'role' => 'muzakki',
             'is_active' => true,

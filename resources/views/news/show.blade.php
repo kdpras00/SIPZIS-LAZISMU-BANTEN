@@ -13,8 +13,8 @@
         
         <!-- Breadcrumb -->
         <div class="mb-6">
-            <a href="{{ route('berita') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-orange-600 transition-colors">
-                <i class="bi bi-arrow-left mr-2"></i>
+            <a href="{{ route('berita.index') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-orange-600 transition-colors">
+                <i class="bi bi-arrow-left-circle mr-2"></i>
                 Kembali ke Berita
             </a>
         </div>
@@ -26,7 +26,7 @@
                 
                 <!-- Article Header -->
                 <div class="mb-8">
-                    <span class="inline-block px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-bold uppercase tracking-wider mb-4">
+                    <span class="inline-block px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-sm font-semibold mb-4">
                         Berita
                     </span>
                     <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
@@ -157,15 +157,13 @@
                             @endforelse
                         </div>
                         
-                        <a href="{{ route('berita') }}" class="block mt-6 text-center text-sm font-semibold text-orange-600 hover:text-orange-700 transition-colors">
+                        <a href="{{ route('berita.index') }}" class="block mt-6 text-center text-sm font-semibold text-orange-600 hover:text-orange-700 transition-colors">
                             Lihat Semua Berita <i class="bi bi-arrow-right ml-1"></i>
                         </a>
                     </div>
 
                     <!-- CTA Widget -->
-                    <div class="bg-gradient-to-br from-orange-600 to-orange-800 rounded-2xl p-6 text-white text-center shadow-lg relative overflow-hidden">
-                        <div class="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
-                        <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
+                    <div class="bg-orange-600 rounded-xl p-6 text-white text-center shadow-sm">
                         
                         <h3 class="text-xl font-bold mb-2 relative z-10">Dukung Program Kebaikan</h3>
                         <p class="text-orange-100 text-sm mb-6 relative z-10">Salurkan donasi Anda untuk membantu mereka yang membutuhkan.</p>

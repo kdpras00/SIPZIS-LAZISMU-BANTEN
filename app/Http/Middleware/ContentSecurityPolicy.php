@@ -7,30 +7,22 @@ use Illuminate\Http\Request;
 
 class ContentSecurityPolicy
 {
+    // ponytail: removed $noCOOPRoutes since COOP is now unconditionally set.
+
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
 
-        // Ambil config
-        $cspConfig = config('csp.policy');
-
         // Build CSP string
+        $cspConfig = config('csp.policy');
         $directives = [];
         foreach ($cspConfig as $directive => $sources) {
             $directives[] = $directive . ' ' . implode(' ', $sources);
         }
+        $response->headers->set('Content-Security-Policy', implode('; ', $directives));
 
-        $cspHeader = implode('; ', $directives);
-
-        // Tentukan nilai COOP khusus halaman login (butuh akses pop-up)
-        $coopValue = 'unsafe-none';
-        if ($request->is('login') || $request->is('login/*')) {
-            $coopValue = 'unsafe-none';
-        }
-
-        // Tambahkan header CSP
-        $response->headers->set('Content-Security-Policy', $cspHeader);
-        $response->headers->set('Cross-Origin-Opener-Policy', $coopValue);
+        // ponytail: unconditionally set COOP to allow Firebase popups. No route whitelist needed.
+        $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
         $response->headers->set('Cross-Origin-Embedder-Policy', 'unsafe-none');
 
         return $response;

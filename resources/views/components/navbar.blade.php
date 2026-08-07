@@ -33,21 +33,27 @@
     }
 @endphp
 
-<header class="flex items-center justify-between px-6 py-3" style="background: #faf8f5; border-bottom: 1px solid #f0ece6; position: relative; z-index: 1051;">
+<header class="flex items-center justify-between px-6" style="background: #faf8f5; border-bottom: 1px solid #f0ece6; height: 68px; box-sizing: border-box; position: relative; z-index: 1051;">
 
     {{-- Left: Toggle + Breadcrumb --}}
     <div class="flex items-center gap-4">
-        <button id="sidebarToggle" class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-200 hover:bg-gray-100" style="color: #8b7e74; border: 1px solid #f0ece6; background: transparent; cursor: pointer;">
+        <button id="sidebarToggle" class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-200 hover:bg-gray-100" style="color: #8b7e74; border: 1px solid #f0ece6; background: transparent; cursor: pointer;" aria-label="Toggle Sidebar">
             <i class="bi bi-list text-lg"></i>
         </button>
 
+        {{-- Desktop breadcrumb --}}
         <nav class="hidden sm:flex items-center gap-1.5 text-sm">
-            <span style="color: #8b7e74;">Dashboard</span>
+            <a href="{{ route('dashboard') }}" class="no-underline transition-colors hover:opacity-70" style="color: #8b7e74;">Dashboard</a>
             @if($currentPage !== 'Overview' && $currentPage !== 'Dashboard')
                 <span style="color: #d1cbc4;">/</span>
                 <span class="font-medium" style="color: #1c0f0a;">{{ $currentPage }}</span>
             @endif
         </nav>
+
+        {{-- Mobile: show current page name instead of breadcrumb --}}
+        <span class="sm:hidden text-sm font-semibold" style="color: #1c0f0a;">
+            {{ $currentPage === 'Overview' ? 'Dashboard' : $currentPage }}
+        </span>
     </div>
 
     {{-- Right: Actions --}}
@@ -57,7 +63,7 @@
         <div class="dropdown relative">
             <button class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-200 relative hover:bg-gray-100" 
                 type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                style="color: #8b7e74; border: none; background: transparent; cursor: pointer;">
+                style="color: #8b7e74; border: none; background: transparent; cursor: pointer;" aria-label="Notifikasi">
                 <i class="bi bi-bell text-lg"></i>
                 @if ($unreadCount > 0)
                     <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full" style="background: #c2410c;"></span>

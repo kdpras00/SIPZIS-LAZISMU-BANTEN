@@ -12,7 +12,7 @@ class ZakatCalculatorController extends Controller
      */
     public function index()
     {
-        $zakatTypes = ZakatType::active()->get();
+        $zakatTypes = cache()->remember('active_zakat_types', 300, function() { return ZakatType::active()->get(); });
         return view('calculator.index', compact('zakatTypes'));
     }
 

@@ -18,21 +18,17 @@ class CampaignController extends Controller
      */
     public function all()
     {
-        // Auto-complete expired or target-reached campaigns before fetching
-        $this->autoCompleteCampaigns();
-        
         $campaigns = Campaign::active()
+            ->withSum('zakatPayments', 'paid_amount')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Calculate total collected and target amounts
+        // Use pre-aggregated sum from withSum to avoid N+1
         $totalCollected = 0;
         $totalTarget = 0;
 
         foreach ($campaigns as $campaign) {
-            // Calculate collected amount for each campaign (now using dynamic calculation)
             $collected = $campaign->collected_amount;
-            // Add to campaign object as a custom attribute for the view
             $campaign->display_collected_amount = $collected;
             $totalCollected += $collected;
             $totalTarget += $campaign->target_amount;
@@ -46,15 +42,12 @@ class CampaignController extends Controller
      */
     public function index($category)
     {
-        // Auto-complete expired or target-reached campaigns before fetching
-        $this->autoCompleteCampaigns();
-        
         $campaigns = Campaign::active()
             ->byCategory($category)
+            ->withSum('zakatPayments', 'paid_amount')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Update collected amounts dynamically
         foreach ($campaigns as $campaign) {
             $campaign->display_collected_amount = $campaign->collected_amount;
         }
@@ -68,10 +61,7 @@ class CampaignController extends Controller
             $totalCollected = $program->total_collected;
             $totalTarget = $program->total_target;
         } else {
-            // Fallback to direct calculation if program doesn't exist
-            $totalCollected = $campaigns->sum(function ($campaign) {
-                return $campaign->display_collected_amount;
-            });
+            $totalCollected = $campaigns->sum(fn($c) => $c->display_collected_amount);
             $totalTarget = $campaigns->sum('target_amount');
         }
 
@@ -107,10 +97,12 @@ class CampaignController extends Controller
         if ($program) {
             $totalCollected = $program->total_collected;
         } else {
-            // Fallback to direct calculation
-            $totalCollected = Campaign::published()->byCategory($category)->get()->sum(function ($campaign) {
-                return $campaign->collected_amount;
-            });
+            // Fallback to database aggregate to avoid N+1 query explosion
+            $totalCollected = Campaign::published()
+                ->byCategory($category)
+                ->withSum('zakatPayments', 'paid_amount')
+                ->get()
+                ->sum('zakat_payments_sum_paid_amount');
         }
 
         $categoryDetails = $this->getCategoryDetails($category);
@@ -177,9 +169,6 @@ class CampaignController extends Controller
  */
 public function adminIndex()
 {
-    // Auto-complete campaigns before displaying
-    $this->autoCompleteCampaigns();
-    
     // Get ALL campaigns (including completed) for admin
     $campaigns = Campaign::orderBy('created_at', 'desc')->get();
 
@@ -352,7 +341,7 @@ public function adminIndex()
             'pendidikan' => [
                 'title' => 'Pendidikan',
                 'subtitle' => 'Meningkatkan kualitas pendidikan melalui berbagai inisiatif',
-                'image' => asset('img/program/pendidikan.jpg'),
+                'image' => asset('storage/program/pendidikan.jpg'),
                 'text_color' => 'text-blue-800',
                 'bg_color' => 'bg-blue-100',
                 'border_color' => 'border-blue-200'
@@ -360,7 +349,7 @@ public function adminIndex()
             'kesehatan' => [
                 'title' => 'Kesehatan',
                 'subtitle' => 'Memberikan akses layanan kesehatan yang terjangkau',
-                'image' => asset('img/program/kesehatan.jpg'),
+                'image' => asset('storage/program/kesehatan.jpg'),
                 'text_color' => 'text-green-800',
                 'bg_color' => 'bg-green-100',
                 'border_color' => 'border-green-200'
@@ -368,7 +357,7 @@ public function adminIndex()
             'ekonomi' => [
                 'title' => 'Ekonomi',
                 'subtitle' => 'Mendorong kemandirian ekonomi masyarakat',
-                'image' => asset('img/program/ekonomi.jpg'),
+                'image' => asset('storage/program/ekonomi.jpg'),
                 'text_color' => 'text-amber-800',
                 'bg_color' => 'bg-amber-100',
                 'border_color' => 'border-amber-200'
@@ -376,7 +365,7 @@ public function adminIndex()
             'sosial-dakwah' => [
                 'title' => 'Sosial & Dakwah',
                 'subtitle' => 'Mengembangkan kegiatan sosial dan dakwah',
-                'image' => asset('img/program/sosial-dakwah.jpg'),
+                'image' => asset('storage/program/sosial-dakwah.jpg'),
                 'text_color' => 'text-purple-800',
                 'bg_color' => 'bg-purple-100',
                 'border_color' => 'border-purple-200'
@@ -384,7 +373,7 @@ public function adminIndex()
             'kemanusiaan' => [
                 'title' => 'Kemanusiaan',
                 'subtitle' => 'Menyejahterakan umat manusia tanpa diskriminasi',
-                'image' => asset('img/program/kemanusiaan.jpg'),
+                'image' => asset('storage/program/kemanusiaan.jpg'),
                 'text_color' => 'text-purple-800',
                 'bg_color' => 'bg-purple-100',
                 'border_color' => 'border-purple-200'
@@ -392,7 +381,7 @@ public function adminIndex()
             'lingkungan' => [
                 'title' => 'Lingkungan',
                 'subtitle' => 'Menjaga lingkungan untuk generasi mendatang',
-                'image' => asset('img/program/lingkungan.jpg'),
+                'image' => asset('storage/program/lingkungan.jpg'),
                 'text_color' => 'text-cyan-800',
                 'bg_color' => 'bg-cyan-100',
                 'border_color' => 'border-cyan-200'
@@ -402,33 +391,13 @@ public function adminIndex()
         return $categories[$category] ?? [
             'title' => ucfirst($category),
             'subtitle' => 'Program ' . ucfirst($category),
-            'image' => asset('img/masjid.webp'),
+            'image' => asset('img/masjidbanten.png'),
             'text_color' => 'text-emerald-800',
             'bg_color' => 'bg-emerald-100',
             'border_color' => 'border-emerald-200'
         ];
     }
 
-    /**
-     * Auto-complete campaigns that are expired or reached their target
-     */
-    private function autoCompleteCampaigns()
-    {
-        $publishedCampaigns = Campaign::where('status', 'published')->get();
-
-        foreach ($publishedCampaigns as $campaign) {
-            try {
-                // Check and complete if expired or target reached
-                $campaign->checkAndCompleteIfExpired();
-            } catch (\Exception $e) {
-                // Log error but don't break the request
-                \Log::error("Failed to auto-complete campaign", [
-                    'campaign_id' => $campaign->id,
-                    'error' => $e->getMessage()
-                ]);
-            }
-        }
-    }
 
     public function showPersonalCampaign($email)
     {

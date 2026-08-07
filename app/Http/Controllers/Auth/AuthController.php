@@ -161,8 +161,7 @@ class AuthController extends Controller
         // Verify reCAPTCHA v3 token
         $recaptchaToken = $request->input('g-recaptcha-response');
         if (!$recaptchaToken) {
-            // For admin, we should be strict
-            // return back()->withErrors(['email' => 'Validasi reCAPTCHA diperlukan.'])->withInput();
+            return back()->withErrors(['email' => 'Validasi reCAPTCHA diperlukan.'])->withInput();
         } else {
              try {
                 $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
@@ -416,6 +415,11 @@ class AuthController extends Controller
     // Handle Firebase authentication
     public function firebaseLogin(Request $request)
     {
+        // SECURITY: This endpoint trusts client-supplied uid/email without server-side
+        // Firebase ID token verification. To fix properly: require a Firebase ID token,
+        // verify it server-side via Firebase Admin SDK (kreait/firebase-php), then use
+        // the verified uid/email from the decoded token — not from the request body.
+        // ponytail: ceiling = unauthenticated identity claim; upgrade = firebase-php token verify
         $request->validate([
             'uid' => 'required|string',
             'email' => 'required|email',

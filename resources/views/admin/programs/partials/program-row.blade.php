@@ -1,67 +1,60 @@
-<tr class="hover:bg-gray-50 transition-colors duration-150">
-    <td class="px-6 py-4 whitespace-nowrap">
+<tr class="hover:bg-[#faf8f5]/60 transition-colors duration-150">
+    <td class="px-5 py-4 whitespace-nowrap">
         <div class="flex items-center">
             <img src="{{ $program->image_url }}" 
                  alt="{{ $program->name }}"
-                 onerror="this.src='{{ asset('img/masjid.webp') }}';"
-                 class="h-16 w-16 rounded-lg object-cover mr-4 flex-shrink-0">
+                 onerror="this.src='{{ asset('img/masjidbanten.png') }}';"
+                 class="h-14 w-14 rounded-xl object-cover mr-3.5 flex-shrink-0 border border-[#f0ece6]">
             <div class="min-w-0">
-                <div class="text-sm font-semibold text-gray-900 truncate">
+                <div class="text-xs font-bold truncate max-w-[220px]" style="color: #1c0f0a;">
                     {{ $program->name }}
                 </div>
-                <div class="text-sm text-gray-500 truncate mt-1">
+                <div class="text-[11px] truncate max-w-[220px] mt-0.5" style="color: #8b7e74;">
                     {{ Str::limit($program->description, 50) }}
                 </div>
             </div>
         </div>
     </td>
-    <td class="px-6 py-4 whitespace-nowrap">
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+    <td class="px-5 py-4 whitespace-nowrap">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">
             {{ $categoryName }}
         </span>
     </td>
-    <td class="px-6 py-4 whitespace-nowrap text-center">
-        <div class="text-sm font-medium text-gray-900">
-            {{ $program->formatted_total_target }}
-        </div>
+    <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-bold" style="color: #1c0f0a;">
+        {{ $program->formatted_total_target }}
     </td>
-    <td class="px-6 py-4 whitespace-nowrap text-center">
-        <div class="text-sm font-medium text-gray-900">
-            {{ $program->formatted_total_collected }}
-        </div>
+    <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-bold text-[#c2410c]">
+        {{ $program->formatted_total_collected }}
     </td>
-    <td class="px-6 py-4 whitespace-nowrap">
-        <div class="flex items-center justify-center space-x-2">
-            <span class="text-sm font-medium text-gray-700 w-12 text-right">
+    <td class="px-5 py-4 whitespace-nowrap">
+        <div class="flex items-center justify-center gap-2">
+            <span class="text-xs font-bold w-10 text-right" style="color: #1c0f0a;">
                 {{ number_format($program->progress_percentage, 1) }}%
             </span>
-            <div class="flex-1 max-w-xs">
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 h-2 rounded-full transition-all duration-300" 
-                         style="width: {{ min($program->progress_percentage, 100) }}%"></div>
-                </div>
+            <div class="w-24 bg-[#f0ece6] rounded-full h-2 overflow-hidden">
+                <div class="h-2 rounded-full transition-all duration-300" 
+                     style="background: #c2410c; width: {{ min($program->progress_percentage, 100) }}%"></div>
             </div>
         </div>
     </td>
-    <td class="px-6 py-4 whitespace-nowrap text-center">
+    <td class="px-5 py-4 whitespace-nowrap text-center">
         @if($program->status == 'active')
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                Active
+            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">
+                Aktif
             </span>
         @else
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                Inactive
+            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #8b7e74;">
+                Tidak Aktif
             </span>
         @endif
     </td>
-    <td class="px-6 py-4 whitespace-nowrap text-center">
-        <div class="flex items-center justify-center space-x-2">
+    <td class="px-5 py-4 whitespace-nowrap text-center">
+        <div class="flex items-center justify-center gap-1.5">
             <a href="{{ route('admin.programs.edit', $program) }}" 
-               class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200">
-                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                </svg>
-                Edit
+               class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium transition-colors"
+               style="background: #f0ece6; color: #1c0f0a;"
+               title="Edit Program">
+                <i class="bi bi-pencil mr-1 text-[11px]"></i> Edit
             </a>
             <form action="{{ route('admin.programs.destroy', $program) }}" 
                   method="POST" 
@@ -70,14 +63,11 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit" 
-                        class="inline-flex items-center px-3 py-1.5 border border-red-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
-                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                    </svg>
-                    Hapus
+                        class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
+                        title="Hapus Program">
+                    <i class="bi bi-trash mr-1 text-[11px]"></i> Hapus
                 </button>
             </form>
         </div>
     </td>
 </tr>
-

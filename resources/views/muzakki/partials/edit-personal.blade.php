@@ -1,175 +1,199 @@
-<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-gray-900 mb-6">Data Diri</h3>
-
-    <div class="mb-5">
-        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nama<span class="text-red-500 ml-1">*</span></label>
-        <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all @error('name') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-            id="name" name="name" value="{{ old('name', $muzakki->name) }}" required>
-        @error('name')
-        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-        @enderror
+<div class="bg-white rounded-2xl border border-[#f0ece6] p-6 mb-6 shadow-sm w-full block">
+    <div class="border-b border-[#f0ece6] pb-4 mb-6 w-full">
+        <h2 id="personal-heading" class="text-sm font-bold text-[#1c0f0a] m-0 tracking-tight">Data Diri & Kontak</h2>
+        <p class="text-xs text-[#8b7e74] m-0 mt-0.5">Informasi utama identitas dan kontak akun Anda.</p>
     </div>
 
-    <div class="mb-5">
-        <label for="campaign_url" class="block text-sm font-medium text-gray-700 mb-2">URL List Campaign</label>
-        <div class="relative rounded-md shadow-sm">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i class="bi bi-link-45deg text-gray-400 text-lg"></i>
-            </div>
-            <input type="url" class="pl-10 w-full bg-gray-100 border border-gray-300 rounded-lg py-3 px-4 text-gray-500 cursor-not-allowed shadow-sm focus:border-gray-300 focus:ring-0"
-                id="campaign_url" name="campaign_url" value="{{ old('campaign_url', $muzakki->campaign_url) }}" readonly>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Nama Lengkap (Full Width) -->
+        <div class="md:col-span-2">
+            <label for="name" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Nama Lengkap <span class="text-rose-500">*</span></label>
+            <input type="text" 
+                   class="w-full h-11 px-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none @error('name') border-rose-500 @enderror"
+                   id="name" 
+                   name="name" 
+                   value="{{ old('name', $muzakki->name) }}" 
+                   required
+                   aria-required="true">
+            @error('name')
+            <p class="mt-1 text-xs text-rose-500 m-0" role="alert">{{ $message }}</p>
+            @enderror
         </div>
-        @error('campaign_url')
-        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-        @enderror
-    </div>
 
-    <div class="mb-5">
-        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email<span class="text-red-500 ml-1">*</span></label>
-        <input type="email" class="w-full bg-gray-100 border border-gray-300 rounded-lg py-3 px-4 shadow-sm text-gray-500 cursor-not-allowed focus:border-gray-300 focus:ring-0"
-            id="email" name="email" value="{{ old('email', $muzakki->email) }}" readonly>
-        @error('email')
-        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-        @enderror
-    </div>
+        <!-- Alamat Email -->
+        <div>
+            <label for="email" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Alamat Email <span class="text-rose-500">*</span></label>
+            <input type="email" 
+                   class="w-full h-11 px-4 rounded-xl border border-[#e8e0d6] bg-[#faf8f5] text-xs font-medium text-[#8b7e74] cursor-not-allowed outline-none"
+                   id="email" 
+                   name="email" 
+                   value="{{ old('email', $muzakki->email) }}" 
+                   readonly
+                   aria-readonly="true">
+        </div>
 
-    <div class="mb-5">
-        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-            No. Telepon<span class="text-red-500 ml-1">*</span>
-        </label>
-
-        <div class="flex items-center gap-3">
-            <div class="flex-1">
-                <input type="tel" id="phone" name="phone" 
-                    class="w-full {{ $muzakki->phone_verified ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-gray-50' }} border border-gray-300 rounded-lg py-3 pr-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all @error('phone') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-                    value="{{ old('phone', preg_replace('/^\+62|^62|^0/', '', $muzakki->phone ?? '')) }}"
-                    placeholder="8xxxxxxxxxx"
-                    {{ $muzakki->phone_verified ? 'readonly' : '' }}>
-            </div>
-
-            @if(!$muzakki->phone_verified)
-            <button type="button" class="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors shadow-sm flex items-center whitespace-nowrap"
-                id="verifyPhoneBtn">
-                <span id="verifyButtonText">Verifikasi</span>
-            </button>
-            @endif
+        <!-- Nomor WhatsApp / Telepon -->
+        <div>
+            <label for="phone" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Nomor WhatsApp / Telepon <span class="text-rose-500">*</span></label>
             
-            <span id="verifyCheckmark" style="{{ $muzakki->phone_verified ? '' : 'display: none;' }}" class="text-orange-600" title="Terverifikasi">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                    class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                    <path
-                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                </svg>
-            </span>
-        </div>
-
-        @if (!$muzakki->phone_verified)
-        <div class="mt-3 p-3 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700 text-sm rounded-r-md flex items-start" id="notVerifiedAlert">
-            <i class="bi bi-exclamation-triangle mr-2 mt-0.5"></i>
-            <span>Mohon verifikasi nomor telepon Anda</span>
-        </div>
-        @else
-        <div class="mt-3 p-3 bg-orange-50 border-l-4 border-orange-400 text-orange-700 text-sm rounded-r-md flex items-start" id="verifiedAlert">
-            <i class="bi bi-check-circle-fill mr-2 mt-0.5"></i>
-            <span>Nomor telepon sudah diverifikasi</span>
-        </div>
-        @endif
-
-        @error('phone')
-        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-        @enderror
-    </div>
-
-    <div class="mb-5">
-        <label for="gender" class="block text-sm font-medium text-gray-700 mb-2">Jenis kelamin<span class="text-red-500 ml-1">*</span></label>
-        <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all @error('gender') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror" id="gender"
-            name="gender" required>
-            <option value="">----------</option>
-            <option value="male" {{ old('gender', $muzakki->gender) == 'male' ? 'selected' : '' }}>Laki-laki</option>
-            <option value="female" {{ old('gender', $muzakki->gender) == 'female' ? 'selected' : '' }}>Perempuan</option>
-        </select>
-        @error('gender')
-        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-        @enderror
-    </div>
-
-    <div class="mb-5">
-        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal lahir<span class="text-red-500 ml-1">*</span></label>
-        <div class="grid grid-cols-3 gap-4">
-            <div>
-                <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all" name="birth_day">
-                    <option value="">Hari</option>
-                    @for ($i = 1; $i <= 31; $i++)
-                    <option value="{{ $i }}" {{ old('birth_day', $muzakki->date_of_birth ? $muzakki->date_of_birth->day : '') == $i ? 'selected' : '' }}>
-                        {{ $i }}
-                    </option>
-                    @endfor
-                </select>
+            @if(!$muzakki->phone_verified)
+            <div class="flex items-center">
+                <div class="relative flex-1 min-w-0">
+                    <input type="tel" 
+                           id="phone" 
+                           name="phone" 
+                           class="w-full h-11 rounded-l-xl border border-r-0 border-[#e8e0d6] bg-white text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 text-xs font-medium transition-all outline-none"
+                           value="{{ old('phone', preg_replace('/^\+62|^62|^0/', '', $muzakki->phone ?? '')) }}"
+                           placeholder="8xxxxxxxxxx"
+                           aria-label="Nomor Telepon WhatsApp">
+                </div>
+                <button type="button" 
+                        class="inline-flex items-center justify-center h-11 px-4 bg-[#c2410c] hover:bg-[#9a3412] text-white font-semibold text-xs rounded-r-xl border border-[#c2410c] transition-all shadow-2xs whitespace-nowrap"
+                        id="verifyPhoneBtn">
+                    <i class="bi bi-shield-check mr-1.5 text-sm" aria-hidden="true"></i> Verifikasi OTP
+                </button>
             </div>
-            <div>
-                <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all" name="birth_month">
-                    <option value="">Bulan</option>
+            @else
+            <div class="flex items-center gap-3">
+                <div class="relative flex-1 min-w-0">
+                    <input type="tel" 
+                           id="phone" 
+                           name="phone" 
+                           class="w-full h-11 px-4 rounded-xl border border-[#e8e0d6] bg-[#faf8f5] text-[#8b7e74] cursor-not-allowed text-xs font-medium outline-none"
+                           value="{{ old('phone', preg_replace('/^\+62|^62|^0/', '', $muzakki->phone ?? '')) }}"
+                           readonly
+                           aria-readonly="true">
+                </div>
+                <span id="verifyCheckmark" class="text-emerald-600 flex items-center gap-1 text-xs font-semibold whitespace-nowrap" title="Terverifikasi">
+                    <i class="bi bi-patch-check-fill text-base" aria-hidden="true"></i> Terverifikasi
+                </span>
+            </div>
+            @endif
+
+            @if (!$muzakki->phone_verified)
+            <aside class="mt-2 p-2.5 bg-amber-50/80 border border-amber-200/80 rounded-xl flex items-center gap-2" id="notVerifiedAlert" role="alert">
+                <i class="bi bi-exclamation-circle text-amber-700 text-xs flex-shrink-0" aria-hidden="true"></i>
+                <span class="text-[11px] text-amber-900 leading-tight">Verifikasi telepon diperlukan untuk keamanan transaksi.</span>
+            </aside>
+            @endif
+
+            @error('phone')
+            <p class="mt-1 text-xs text-rose-500 m-0" role="alert">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <!-- Tautan Halaman Campaigner (Full Width) -->
+        <div class="md:col-span-2">
+            <label for="campaign_url" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Tautan Halaman Campaigner</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8b7e74]" aria-hidden="true">
+                    <i class="bi bi-link-45deg text-base"></i>
+                </div>
+                <input type="url" 
+                       class="w-full h-11 pl-9 pr-4 rounded-xl border border-[#e8e0d6] bg-[#faf8f5] text-xs text-[#8b7e74] cursor-not-allowed outline-none"
+                       id="campaign_url" 
+                       name="campaign_url" 
+                       value="{{ old('campaign_url', $muzakki->campaign_url) }}" 
+                       readonly
+                       aria-readonly="true">
+            </div>
+        </div>
+
+        <!-- Jenis Kelamin -->
+        <div>
+            <label for="gender" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Jenis Kelamin <span class="text-rose-500">*</span></label>
+            <div class="relative">
+                <select class="w-full h-11 pl-4 pr-9 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all appearance-none outline-none cursor-pointer" 
+                        id="gender" 
+                        name="gender" 
+                        required
+                        aria-required="true">
+                    <option value="">-- Pilih Jenis Kelamin --</option>
+                    <option value="male" {{ old('gender', $muzakki->gender) == 'male' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="female" {{ old('gender', $muzakki->gender) == 'female' ? 'selected' : '' }}>Perempuan</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-[#8b7e74]" aria-hidden="true">
+                    <i class="bi bi-chevron-down text-xs"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tanggal Lahir -->
+        <div>
+            <label class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Tanggal Lahir <span class="text-rose-500">*</span></label>
+            <div class="grid grid-cols-3 gap-2">
+                <div class="relative">
+                    <select class="w-full h-11 pl-3 pr-7 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] appearance-none outline-none cursor-pointer" name="birth_day" aria-label="Hari Lahir">
+                        <option value="">Hari</option>
+                        @for ($i = 1; $i <= 31; $i++)
+                        <option value="{{ $i }}" {{ old('birth_day', $muzakki->date_of_birth ? $muzakki->date_of_birth->day : '') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                        @endfor
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#8b7e74]" aria-hidden="true">
+                        <i class="bi bi-chevron-down text-[10px]"></i>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <select class="w-full h-11 pl-3 pr-7 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] appearance-none outline-none cursor-pointer" name="birth_month" aria-label="Bulan Lahir">
+                        <option value="">Bulan</option>
+                        @php $months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des']; @endphp
+                        @foreach ($months as $index => $month)
+                        <option value="{{ $index + 1 }}" {{ old('birth_month', $muzakki->date_of_birth ? $muzakki->date_of_birth->month : '') == $index + 1 ? 'selected' : '' }}>{{ $month }}</option>
+                        @endforeach
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#8b7e74]" aria-hidden="true">
+                        <i class="bi bi-chevron-down text-[10px]"></i>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <select class="w-full h-11 pl-3 pr-7 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] appearance-none outline-none cursor-pointer" name="birth_year" aria-label="Tahun Lahir">
+                        <option value="">Tahun</option>
+                        @for ($i = date('Y'); $i >= 1940; $i--)
+                        <option value="{{ $i }}" {{ old('birth_year', $muzakki->date_of_birth ? $muzakki->date_of_birth->year : '') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                        @endfor
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#8b7e74]" aria-hidden="true">
+                        <i class="bi bi-chevron-down text-[10px]"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profesi (Full Width) -->
+        <div class="md:col-span-2">
+            <label for="occupation" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Profesi / Pekerjaan <span class="text-rose-500">*</span></label>
+            <div class="relative">
+                <select class="w-full h-11 pl-4 pr-9 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all appearance-none outline-none cursor-pointer"
+                        id="occupation" 
+                        name="occupation">
+                    <option value="">-- Pilih Profesi --</option>
                     @php
-                    $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                    $occupations = ['Karyawan', 'Wiraswasta', 'PNS', 'Guru', 'Dokter', 'Perawat', 'Tentara', 'Polisi', 'Petani', 'Nelayan', 'Pedagang', 'Sopir', 'Ojek Online', 'Programmer', 'Desainer', 'Akuntan', 'Mahasiswa', 'Pelajar', 'Ibu Rumah Tangga', 'Pensiunan', 'Seniman', 'Musisi', 'Atlet', 'Pengacara', 'Arsitek', 'Lainnya'];
                     @endphp
-                    @foreach ($months as $index => $month)
-                    <option value="{{ $index + 1 }}" {{ old('birth_month', $muzakki->date_of_birth ? $muzakki->date_of_birth->month : '') == $index + 1 ? 'selected' : '' }}>
-                        {{ $month }}
+                    @foreach ($occupations as $occupation)
+                    <option value="{{ strtolower(str_replace(' ', '_', $occupation)) }}"
+                        {{ old('occupation', $muzakki->occupation) == strtolower(str_replace(' ', '_', $occupation)) ? 'selected' : '' }}>
+                        {{ $occupation }}
                     </option>
                     @endforeach
                 </select>
-            </div>
-            <div>
-                <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all" name="birth_year">
-                    <option value="">Tahun</option>
-                    @for ($i = date('Y'); $i >= 1940; $i--)
-                    <option value="{{ $i }}" {{ old('birth_year', $muzakki->date_of_birth ? $muzakki->date_of_birth->year : '') == $i ? 'selected' : '' }}>
-                        {{ $i }}
-                    </option>
-                    @endfor
-                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-[#8b7e74]" aria-hidden="true">
+                    <i class="bi bi-chevron-down text-xs"></i>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="mb-5">
-        <label for="occupation" class="block text-sm font-medium text-gray-700 mb-2">Profesi<span class="text-red-500 ml-1">*</span></label>
-        <select class="w-full bg-gray-50 border border-gray-300 rounded-lg py-3 px-4 shadow-sm focus:bg-white focus:border-orange-500 focus:ring-orange-500 transition-all @error('occupation') border-red-500 focus:border-red-500 focus:ring-red-500 @enderror"
-            id="occupation" name="occupation">
-            <option value="">Pilih Profesi</option>
-            @php
-            $occupations = ['Karyawan', 'Wiraswasta', 'PNS', 'Guru', 'Dokter', 'Perawat', 'Tentara', 'Polisi', 'Petani', 'Nelayan', 'Pedagang', 'Sopir', 'Ojek Online', 'Programmer', 'Desainer', 'Akuntan', 'Mahasiswa', 'Pelajar', 'Ibu Rumah Tangga', 'Pensiunan', 'Seniman', 'Musisi', 'Atlet', 'Pengacara', 'Arsitek', 'Lainnya'];
-            @endphp
-            @foreach ($occupations as $occupation)
-            <option value="{{ strtolower(str_replace(' ', '_', $occupation)) }}"
-                {{ old('occupation', $muzakki->occupation) == strtolower(str_replace(' ', '_', $occupation)) ? 'selected' : '' }}>
-                {{ $occupation }}
-            </option>
-            @endforeach
-        </select>
-        @error('occupation')
-        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-        @enderror
-    </div>
-
-    <div class="mb-0">
-        <label for="bio" class="block text-sm font-medium text-gray-700 mb-2">Biodata<span class="text-red-500 ml-1">*</span></label>
-        <div class="border border-gray-300 rounded-lg p-2 mb-2 bg-gray-50 focus-within:bg-white shadow-sm focus-within:ring-1 focus-within:ring-orange-500 focus-within:border-orange-500 transition-all">
-            <div class="flex gap-1 mb-2 border-b border-gray-100 pb-2">
-                <button type="button" class="p-1.5 text-gray-500 hover:bg-gray-100 rounded transition-colors" onclick="formatText('bold')"><i class="bi bi-type-bold"></i></button>
-                <button type="button" class="p-1.5 text-gray-500 hover:bg-gray-100 rounded transition-colors" onclick="formatText('italic')"><i class="bi bi-type-italic"></i></button>
-                <button type="button" class="p-1.5 text-gray-500 hover:bg-gray-100 rounded transition-colors" onclick="formatText('insertUnorderedList')"><i class="bi bi-list-ul"></i></button>
-                <button type="button" class="p-1.5 text-gray-500 hover:bg-gray-100 rounded transition-colors" onclick="formatText('insertOrderedList')"><i class="bi bi-list-ol"></i></button>
-                <button type="button" class="p-1.5 text-gray-500 hover:bg-gray-100 rounded transition-colors" onclick="formatText('createLink')"><i class="bi bi-link-45deg"></i></button>
-            </div>
-            <div contenteditable="true" class="w-full outline-none min-h-[120px] max-h-[300px] overflow-y-auto p-1" id="bio_editor">
-                {!! old('bio', $muzakki->bio ?? '') !!}
-            </div>
-            <textarea name="bio" id="bio" class="hidden">{{ old('bio', $muzakki->bio) }}</textarea>
+        <!-- Biodata / Catatan Singkat (Full Width) -->
+        <div class="md:col-span-2">
+            <label for="bio" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Biodata / Profil Singkat</label>
+            <textarea name="bio" 
+                      id="bio" 
+                      rows="3" 
+                      class="w-full px-4 py-3 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none leading-relaxed"
+                      placeholder="Tuliskan kisah atau motivasi singkat Anda berdonasi di Lazismu Banten...">{{ old('bio', $muzakki->bio) }}</textarea>
+            <p class="text-[11px] text-[#8b7e74] mt-1 m-0">Profil singkat yang inspiratif memudahkan masyarakat mengenai kiprah kebaikan Anda.</p>
         </div>
-        <p class="text-xs text-gray-500">Dengan membuat cerita yang singkat, kamu akan berkesan pada mendapatkan donasi yang lebih banyak.</p>
-        @error('bio')
-        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-        @enderror
     </div>
 </div>

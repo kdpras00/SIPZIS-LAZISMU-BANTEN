@@ -10,7 +10,7 @@
                 <small class="text-orange-100">Sepanjang masa</small>
             </div>
             <div class="self-center">
-                <i class="bi bi-currency-dollar text-4xl text-orange-200"></i>
+                <i class="bi bi-wallet-fill text-4xl text-orange-200"></i>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
                 <small class="text-yellow-100">Tahun ini</small>
             </div>
             <div class="self-center">
-                <i class="bi bi-calendar text-4xl text-yellow-200"></i>
+                <i class="bi bi-calendar-fill text-4xl text-yellow-200"></i>
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                 <small class="text-blue-100">Kali pembayaran</small>
             </div>
             <div class="self-center">
-                <i class="bi bi-credit-card text-4xl text-blue-200"></i>
+                <i class="bi bi-credit-card-fill text-4xl text-blue-200"></i>
             </div>
         </div>
     </div>
@@ -54,7 +54,7 @@
                 @endif
             </div>
             <div class="self-center">
-                <i class="bi bi-clock text-4xl text-purple-200"></i>
+                <i class="bi bi-clock-fill text-4xl text-purple-200"></i>
             </div>
         </div>
     </div>
@@ -63,7 +63,7 @@
 <!-- Quick Navigation Cards -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
     <a href="{{ route('dashboard.transactions') }}" class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 text-center p-6 block no-underline h-full">
-        <i class="bi bi-credit-card text-5xl text-blue-500 mb-3 block"></i>
+        <i class="bi bi-credit-card-fill text-5xl text-blue-500 mb-3 block"></i>
         <h5 class="text-lg font-semibold text-gray-900 mb-2">Transaksi Saya</h5>
         <p class="text-gray-600 text-sm">Lihat riwayat pembayaran donasi Anda</p>
     </a>
@@ -81,7 +81,7 @@
     </a>
 
     <a href="{{ route('dashboard.management') }}" class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 text-center p-6 block no-underline h-full">
-        <i class="bi bi-person-gear text-5xl text-amber-500 mb-3 block"></i>
+        <i class="bi bi-person-fill text-5xl text-amber-500 mb-3 block"></i>
         <h5 class="text-lg font-semibold text-gray-900 mb-2">Manajemen Akun</h5>
         <p class="text-gray-600 text-sm">Kelola profil dan pengaturan akun</p>
     </a>
@@ -91,7 +91,7 @@
 <div class="bg-white rounded-xl shadow-md overflow-hidden">
     <div class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
         <h5 class="text-lg font-semibold text-gray-900 mb-0">
-            <i class="bi bi-clock-history mr-2 text-blue-500"></i> Aktivitas Terbaru
+            <i class="bi bi-clock-fill mr-2 text-blue-500"></i> Aktivitas Terbaru
         </h5>
     </div>
     <div class="p-0">
@@ -110,7 +110,7 @@
         @endforeach
         @else
         <div class="p-6 text-center text-gray-500">
-            <i class="bi bi-inbox text-5xl block mb-2"></i>
+            <i class="bi bi-inbox-fill text-5xl block mb-2"></i>
             Belum ada aktivitas
         </div>
         @endif

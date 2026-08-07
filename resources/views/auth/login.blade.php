@@ -1,14 +1,14 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="min-h-screen flex items-center justify-center bg-gray-50">
+    <div class="min-h-screen flex items-center justify-center" style="background: #faf8f5;">
         <div class="w-full max-w-md px-6">
-            <div class="bg-white rounded-lg shadow-md p-8">
-                <!-- Logo & Title -->
-                <!-- Logo & Title -->
+            <div class="bg-white rounded-2xl p-8" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06), 0 4px 16px rgba(28,15,10,0.06);">
+
                 <div class="text-center mb-8">
-                    <img src="{{ asset('storage/lazismu-icon.png') }}" alt="Lazismu" class="h-20 mx-auto mb-4">
-                    <p class="text-gray-500 text-sm">Masuk untuk melanjutkan</p>
+                    <div class="mx-auto mb-4" style="width: 120px;">
+                        <img src="{{ asset('img/logo.png') }}" alt="Lazismu" class="w-full object-contain">
+                    </div>
                 </div>
 
                 <!-- Success Message -->
@@ -245,11 +245,11 @@
                 const submitForm = () => loginForm.submit();
                 try {
                     if (!window.grecaptcha || !window.grecaptcha.execute) {
-                        alert('Memuat reCAPTCHA... silakan coba lagi.');
+                        Swal.fire({ icon: 'warning', title: 'Memuat reCAPTCHA', text: 'Silakan tunggu sejenak dan coba lagi.', confirmButtonColor: '#c2410c' });
                         return false;
                     }
                     if (!recaptchaSiteKey) {
-                        alert('Site key reCAPTCHA tidak terbaca. Coba refresh atau hubungi admin.');
+                        Swal.fire({ icon: 'error', title: 'Kesalahan Konfigurasi', text: 'Site key reCAPTCHA tidak terbaca. Silakan hubungi admin.', confirmButtonColor: '#c2410c' });
                         return false;
                     }
                     window.grecaptcha.ready(function() {
@@ -281,12 +281,12 @@
                             })
                             .catch(function(err) {
                                 console.error('reCAPTCHA execute error:', err);
-                                alert('Validasi reCAPTCHA gagal. Coba lagi.');
+                                Swal.fire({ icon: 'error', title: 'Validasi Gagal', text: 'Validasi reCAPTCHA gagal. Silakan coba lagi.', confirmButtonColor: '#c2410c' });
                             });
                     });
                 } catch (err) {
                     console.error('reCAPTCHA setup failed:', err);
-                    alert('Validasi reCAPTCHA gagal. Coba lagi.');
+                    Swal.fire({ icon: 'error', title: 'Validasi Gagal', text: 'Validasi reCAPTCHA gagal. Silakan coba lagi.', confirmButtonColor: '#c2410c' });
                     return false;
                 }
             });
@@ -400,13 +400,13 @@
 
                 if (!window.grecaptcha || !window.grecaptcha.execute) {
                     isLoggingIn = false;
-                    alert('Memuat reCAPTCHA... silakan coba lagi.');
+                    Swal.fire({ icon: 'warning', title: 'Memuat reCAPTCHA', text: 'Silakan tunggu sejenak dan coba lagi.', confirmButtonColor: '#c2410c' });
                     return;
                 }
                 window.grecaptcha.ready(function() {
                     if (!recaptchaSiteKey) {
                         isLoggingIn = false;
-                        alert('Site key reCAPTCHA tidak terbaca. Coba refresh atau hubungi admin.');
+                        Swal.fire({ icon: 'error', title: 'Kesalahan Konfigurasi', text: 'Site key reCAPTCHA tidak terbaca.', confirmButtonColor: '#c2410c' });
                         return;
                     }
                     window.grecaptcha.execute(recaptchaSiteKey, {
@@ -421,7 +421,7 @@
                         .catch(function(err) {
                             console.error('reCAPTCHA execute error:', err);
                             isLoggingIn = false;
-                            alert('Validasi reCAPTCHA gagal. Coba lagi.');
+                            Swal.fire({ icon: 'error', title: 'Validasi Gagal', text: 'Validasi reCAPTCHA gagal. Coba lagi.', confirmButtonColor: '#c2410c' });
                         });
                 });
             };
@@ -443,13 +443,14 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'Accept': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
                                 'content')
                         },
                         body: JSON.stringify({
                             email: user.email,
                             name: user.displayName,
-                            firebase_uid: user.uid,
+                            uid: user.uid,
                             'g-recaptcha-response': recaptchaResponse || ''
                         })
                     })

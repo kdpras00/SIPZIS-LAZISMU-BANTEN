@@ -1,10 +1,6 @@
 @php
-    // Ambil kandidat terbaru (ditingkatkan limitnya)
-    $activeCampaigns = \App\Models\Campaign::active()->latest()->take(10)->get();
-    $activePrograms = \App\Models\Program::active()->latest()->take(10)->get();
-    
-    // Merge, urutkan dari yang terbaru, dan ambil 15 teratas
-    // Logika: Item yang lebih baru (created_at desc) akan berada di atas, sehingga item lama otomatis tergeser/hilang jika > 15
+    $activeCampaigns = \App\Models\Campaign::active()->withSum('zakatPayments', 'paid_amount')->latest()->take(10)->get();
+    $activePrograms = \App\Models\Program::active()->withSum('zakatPayments', 'paid_amount')->latest()->take(10)->get();    
     $heroSlides = $activeCampaigns->concat($activePrograms)->sortByDesc('created_at')->take(15);
 @endphp
 
@@ -13,53 +9,33 @@
     <div id="hero-slider" class="absolute inset-0 w-full h-full cursor-grab">
 
         <!-- Slide 1: Quran Quote (Static) -->
-        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-10 opacity-100 bg-gray-50" data-slide="0">
-            <!-- Background Image with Zoom Effect -->
-            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] scale-100 hover:scale-110"
-                style="background-image: url('{{ asset('img/masjid.webp') }}');">
-            </div>
-            
-            <!-- Modern Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/80 to-white/40"></div>
-
-            <!-- Content -->
-            <div class="relative container h-full mx-auto px-6 md:px-12 flex flex-col justify-center items-center text-center z-10 pt-20">
-                <!-- 2FA Reminder Banner -->
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-10 opacity-100" data-slide="0">
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('img/masjidbanten.png') }}');"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/30"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-white via-white/90 to-transparent md:hidden"></div>
+            <div class="relative container h-full mx-auto px-6 md:px-12 flex flex-col justify-center items-start z-10 pt-20">
                 @if(Auth::check() && !Auth::user()->two_factor_enabled)
-                <div class="mb-8 w-full"></div>
+                <div class="mb-6 w-full"></div>
                 @endif
-                
-                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight animate-fadeInUp delay-100">
-                    <span class="text-gray-900 drop-shadow-sm">
-                        "Dan laksanakanlah salat, <br class="hidden md:block"/>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-orange-400">tunaikanlah zakat</span>."
-                    </span>
-                </h1>
-
-                <p class="text-xl md:text-2xl font-light mb-8 text-gray-700 italic animate-fadeInUp delay-200 relative inline-block">
-                    <span class="absolute -left-4 -top-2 text-4xl text-orange-500 opacity-50 font-serif">"</span>
-                     (QS. Al-Baqarah: 43) 
-                    <span class="absolute -right-4 -bottom-4 text-4xl text-orange-500 opacity-50 font-serif">"</span>
-                </p>
-
-                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed animate-fadeInUp delay-300">
-                    Tunaikan kewajiban zakat Anda dengan mudah, transparan, dan sesuai syariat Islam melalui platform digital yang terpercaya.
-                </p>
-
-                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fadeInUp delay-500 w-full md:w-auto">
-                    <a href="{{ route('calculator.index') }}"
-                        class="group relative px-8 py-4 bg-orange-600 hover:bg-orange-500 text-white font-bold rounded-full transition-all duration-300 shadow-[0_10px_20px_-10px_rgba(234,88,12,0.5)] hover:shadow-[0_20px_30px_-10px_rgba(234,88,12,0.6)] hover:-translate-y-1 flex items-center gap-3 min-w-[200px] justify-center overflow-hidden">
-                        <div class="absolute inset-0 w-full h-full bg-white/20 skew-x-12 -translate-x-full group-hover:animate-[shimmer_1s_infinite]"></div>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                        <span class="relative">KALKULATOR ZAKAT</span>
-                    </a>
-                    <a href="{{ route('program') }}"
-                        class="group px-8 py-4 bg-white hover:bg-orange-50 text-orange-600 border border-orange-200 font-bold rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 flex items-center gap-3 min-w-[200px] justify-center">
-                        <span>DONASI SEKARANG</span>
-                        <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </a>
+                <div class="max-w-2xl">
+                    <div class="inline-block px-3 py-1 bg-orange-100 text-orange-700 text-xs font-bold tracking-wider uppercase rounded-full mb-6">
+                        QS. Al-Baqarah: 43
+                    </div>
+                    <h1 class="font-bold leading-[1.1] tracking-tight mb-6">
+                        <span class="block text-3xl md:text-4xl text-gray-700 mb-2">"Dan laksanakanlah salat,</span>
+                        <span class="block text-4xl md:text-6xl text-orange-600 font-black">tunaikanlah zakat."</span>
+                    </h1>
+                    <p class="text-base md:text-lg text-gray-600 mb-8 leading-relaxed max-w-lg">
+                        Tunaikan zakat Anda dengan mudah, transparan, dan sesuai syariat Islam bersama Lazismu Banten.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="{{ route('calculator.index') }}" class="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-7 rounded-full transition-colors text-sm">
+                            Kalkulator Zakat
+                        </a>
+                        <a href="{{ route('program') }}" class="bg-white hover:bg-orange-50 border border-orange-200 text-orange-600 font-semibold py-3 px-7 rounded-full transition-colors text-sm">
+                            Mulai Berdonasi
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,7 +52,7 @@
                     $rawImage = trim($item->photo ?? '');
                     $isFullUrl = filter_var($rawImage, FILTER_VALIDATE_URL);
                     $imageUrl = $isFullUrl ? $rawImage : asset('storage/' . $item->photo);
-                    if (!$item->photo) $imageUrl = asset('img/masjid.webp');
+                    if (!$item->photo) $imageUrl = asset('img/masjidbanten.png');
                 } else {
                     $imageUrl = $item->image_url; 
                 }
@@ -92,63 +68,37 @@
                 $percentage = $item->progress_percentage;
             @endphp
 
-            <!-- Background Image -->
-            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] ease-linear scale-100 group-hover:scale-105"
-                style="background-image: url('{{ $imageUrl }}');">
-            </div>
-            
-            <!-- Immersive Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-white/20"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-transparent md:hidden"></div>
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ $imageUrl }}');"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/30"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-white via-white/90 to-transparent md:hidden"></div>
 
-            <!-- Content Container -->
             <div class="relative container h-full mx-auto px-6 md:px-12 flex items-center z-10">
-                <div class="max-w-xl lg:max-w-2xl pt-24 md:pt-0">
-                    
-                    <!-- Category Badge -->
-                    <span class="inline-block px-4 py-1.5 rounded-full bg-orange-600/90 hover:bg-orange-500 text-white text-xs md:text-sm font-bold tracking-wide mb-6 animate-fadeInUp border border-orange-400/30 shadow-lg backdrop-blur-sm uppercase">
+                <div class="max-w-xl lg:max-w-2xl pt-20 md:pt-0">
+                    <div class="inline-block px-3 py-1 bg-orange-100 text-orange-700 text-xs font-bold tracking-wider uppercase rounded-full mb-5">
                         {{ $category }}
-                    </span>
-
-                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-gray-900 animate-fadeInUp delay-100 drop-shadow-sm">
+                    </div>
+                    <h1 class="text-3xl md:text-5xl font-black mb-4 leading-tight text-gray-900 capitalize" style="text-wrap: balance;">
                         {{ \Illuminate\Support\Str::limit($title, 60) }}
                     </h1>
-
-                    <p class="text-base md:text-lg text-gray-700 mb-8 line-clamp-3 leading-relaxed animate-fadeInUp delay-200 hidden md:block">
-                        {{ Str::limit(strip_tags($item->description), 180) }}
+                    <p class="text-base text-gray-600 mb-6 line-clamp-2 leading-relaxed hidden md:block">
+                        {{ Str::limit(strip_tags($item->description), 160) }}
                     </p>
-
-                    <!-- Glass Progress Card -->
-                    <div class="bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl p-5 md:p-6 mb-8 w-full max-w-md animate-fadeInUp delay-300 shadow-xl">
-                        <div class="flex justify-between text-sm text-gray-600 mb-2 font-medium">
-                            <span class="flex items-center gap-2">
-                                <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Terkumpul
-                            </span>
-                            <span class="text-gray-900 font-bold">{{ number_format($percentage, 0) }}%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3 overflow-hidden border border-gray-300">
-                            <div class="bg-gradient-to-r from-orange-500 to-orange-400 h-full rounded-full transition-all duration-1000 relative shadow-[0_0_15px_rgba(234,88,12,0.6)]" style="width: {{ min($percentage, 100) }}%">
-                                <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                    <div class="mb-5">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">Dana Terkumpul</p>
+                        <span class="text-2xl md:text-3xl font-black text-gray-900 leading-none">Rp {{ number_format($collected, 0, ',', '.') }}</span>
+                        <div class="w-full max-w-sm mt-3 relative">
+                            <span class="absolute -top-5 right-0 text-xs font-bold text-orange-600">{{ number_format($percentage, 0) }}%</span>
+                            <div class="bg-gray-200 rounded-full h-2">
+                                <div class="bg-orange-500 h-full rounded-full transition-all duration-700" style="width: {{ min($percentage, 100) }}%"></div>
                             </div>
                         </div>
-                        <div class="text-2xl font-bold text-gray-900 tracking-tight">
-                            Rp {{ number_format($collected, 0, ',', '.') }}
-                        </div>
                     </div>
-
-                    <!-- Buttons -->
-                    <div class="flex flex-wrap gap-4 animate-fadeInUp delay-500">
-                        <a href="{{ $link }}"
-                            class="group bg-orange-600 hover:bg-orange-500 text-white font-bold py-3.5 px-8 rounded-full transition-all duration-300 shadow-lg shadow-orange-900/40 flex items-center gap-2 transform hover:-translate-y-1">
-                            <span>DONASI SEKARANG</span>
-                            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="{{ $link }}" class="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-7 rounded-full transition-colors text-sm">
+                            Donasi Sekarang
                         </a>
-                        <a href="{{ $link }}"
-                            class="group bg-white hover:bg-orange-50 text-orange-600 border border-orange-200 font-semibold py-3.5 px-8 rounded-full transition-all duration-300 shadow-sm flex items-center gap-2">
-                            <span>Pelajari Selengkapnya</span>
+                        <a href="{{ $link }}" class="bg-white hover:bg-orange-50 border border-orange-200 text-orange-600 font-semibold py-3 px-7 rounded-full transition-colors text-sm">
+                            Selengkapnya
                         </a>
                     </div>
                 </div>
@@ -291,12 +241,17 @@
 @endpush
 
 <!-- Campaigns Terbaru Section -->
-<div class="py-16 bg-gradient-to-br from-gray-50 via-white to-orange-50">
+<div class="py-16 bg-white border-t border-gray-100">
     <div class="max-w-6xl mx-auto px-4">
-        <div class="text-center mb-12 animate-fadeInUp">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Campaigns Terbaru</h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Temukan campaign zakat, infaq, dan sedekah terbaru yang
-                sedang berjalan</p>
+        <div class="mb-12 animate-fadeInUp flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Campaign aktif</h2>
+                <p class="text-base text-gray-500">Zakat, infaq, dan sedekah yang sedang berjalan</p>
+            </div>
+            <a href="{{ route('campaigns.index', 'all') }}" class="text-sm font-semibold text-orange-600 hover:text-orange-700 flex items-center gap-1 whitespace-nowrap">
+                Lihat semua
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </a>
         </div>
 
         <!-- Slider Container -->
@@ -322,10 +277,9 @@
             <div class="group">
                 <div id="campaigns-slider"
                     class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide scroll-smooth cursor-grab">
-                    @foreach (\App\Models\Campaign::active()->latest()->take(10)->get() as $campaign)
+                    @foreach ($activeCampaigns as $campaign)
                         <div class="flex-shrink-0 w-72 snap-start">
-                            <div
-                                class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 card-hover h-full flex flex-col">
+                            <div class="bg-white rounded-xl border border-gray-100 overflow-hidden transition-shadow duration-200 hover:shadow-md h-full flex flex-col">
                                 @if ($campaign->photo)
                                     <div class="h-40 overflow-hidden">
                                         @php
@@ -349,10 +303,8 @@
                                     </div>
                                 @endif
                                 <div class="p-4 flex flex-col flex-grow">
-                                    <!-- Category Badge -->
-                                    <div class="flex flex-wrap gap-1 mb-2">
-                                        <span
-                                            class="text-xs font-semibold px-2 py-1 rounded-full bg-orange-100 text-orange-800">
+                                    <div class="mb-2">
+                                        <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">
                                             {{ $campaign->program_category ?? 'Zakat' }}
                                         </span>
                                     </div>
@@ -393,17 +345,9 @@
                                             if ($progress > 100) {
                                                 $progress = 100;
                                             }
-
-                                            // Determine progress bar color based on percentage
-                                            $progressBarColor = 'bg-orange-600';
-                                            if ($progress < 30) {
-                                                $progressBarColor = 'bg-blue-500';
-                                            } elseif ($progress < 70) {
-                                                $progressBarColor = 'bg-yellow-500';
-                                            }
                                         @endphp
                                         <div class="w-full bg-gray-200 rounded-full h-2">
-                                            <div class="h-2 rounded-full progress-bar {{ $progressBarColor }}"
+                                            <div class="h-2 rounded-full progress-bar bg-orange-600"
                                                 style="width: <?php echo number_format($progress, 0); ?>%"></div>
                                         </div>
                                         <div class="flex justify-between text-xs text-gray-600 mt-1">
@@ -415,7 +359,7 @@
                                     </div>
 
                                     <a href="{{ route('campaigns.show', [$campaign->program_category, $campaign]) }}"
-                                        class="inline-block w-full text-center bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium py-1.5 px-3 rounded-lg transition-colors duration-300 flex-grow-0">
+                                        class="block w-full text-center bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold py-2 px-3 rounded-full transition-colors flex-grow-0">
                                         Lihat Selengkapnya
                                     </a>
                                 </div>
@@ -431,25 +375,22 @@
             </div>
         </div>
 
-        <div class="text-center mt-10">
-            <a href="{{ route('campaigns.index', 'all') }}"
-                class="inline-flex items-center gap-2 bg-white border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm group">
-                Lihat Semua Campaign
-                <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </a>
-        </div>
+        {{-- "Lihat Semua Campaign" moved to section header --}}
     </div>
 
 
-    <!-- Berita Terbaru Section -->
-    <div class="py-16 bg-gradient-to-br from-white via-orange-50 to-gray-100">
+<!-- Berita Terbaru Section -->
+<div class="py-16 bg-gray-50 border-t border-gray-100">
         <div class="max-w-6xl mx-auto px-4">
-            <div class="text-center mb-12 animate-fadeInUp">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Berita Terbaru</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Ikuti perkembangan terbaru tentang kegiatan zakat
-                    dan program sosial</p>
+            <div class="mb-12 animate-fadeInUp flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Berita terkini</h2>
+                    <p class="text-base text-gray-500">Kegiatan zakat dan program sosial Lazismu Banten</p>
+                </div>
+                <a href="{{ route('berita.index') }}" class="text-sm font-semibold text-orange-600 hover:text-orange-700 flex items-center gap-1 whitespace-nowrap">
+                    Lihat semua
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
             </div>
 
             <!-- Slider Container -->
@@ -479,8 +420,7 @@
                         class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide scroll-smooth cursor-grab">
                         @foreach (\App\Models\News::published()->latest()->take(10)->get() as $news)
                             <div class="flex-shrink-0 w-72 snap-start">
-                                <div
-                                    class="bg-gray-50 rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-1 card-hover">
+                                <div class="bg-white rounded-xl border border-gray-100 overflow-hidden transition-shadow duration-200 hover:shadow-md">
                                     @if ($news->image)
                                         <div class="h-40 overflow-hidden">
                                             @php
@@ -504,21 +444,10 @@
                                         </div>
                                     @endif
                                     <div class="p-4">
-                                        <div class="flex items-center text-xs text-gray-500 mb-1.5">
-                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
+                                        <div class="flex items-center text-xs text-gray-400 mb-2">
                                             <span>{{ $news->created_at->format('d M Y') }}</span>
                                         </div>
-                                        <!-- Category Badge -->
-                                        <div class="flex flex-wrap gap-1 mb-2">
-                                            <span
-                                                class="text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-800">
-                                                Berita
-                                            </span>
-                                        </div>
+                                        <span class="inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 mb-2">Berita</span>
                                         <h3 class="text-base font-bold text-gray-800 mb-2 line-clamp-2">
                                             {{ $news->title }}</h3>
                                         <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ $news->excerpt }}</p>
@@ -544,26 +473,22 @@
                 </div>
             </div>
 
-            <div class="text-center mt-10">
-                <a href="{{ route('berita') }}"
-                    class="inline-flex items-center gap-2 bg-white border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm group">
-                    Lihat Semua Berita
-                    <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                        </path>
-                    </svg>
-                </a>
-            </div>
+            {{-- "Lihat Semua Berita" moved to section header --}}
         </div>
     </div>
 
-    <!-- Artikel Terbaru Section -->
-    <div class="py-16 bg-gradient-to-br from-gray-50 via-white to-orange-50">
+<!-- Artikel Terbaru Section -->
+<div class="py-16 bg-white border-t border-gray-100">
         <div class="max-w-6xl mx-auto px-4">
-            <div class="text-center mb-12 animate-fadeInUp">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Artikel Terbaru</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Temukan artikel edukasi tentang zakat, infaq, dan
-                    sedekah</p>
+            <div class="mb-12 animate-fadeInUp flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Bacaan pilihan</h2>
+                    <p class="text-base text-gray-500">Edukasi zakat, infaq, dan sedekah untuk Anda</p>
+                </div>
+                <a href="{{ route('artikel.index') }}" class="text-sm font-semibold text-orange-600 hover:text-orange-700 flex items-center gap-1 whitespace-nowrap">
+                    Lihat semua
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
             </div>
 
             <!-- Slider Container -->
@@ -593,8 +518,7 @@
                         class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide scroll-smooth cursor-grab">
                         @foreach (\App\Models\Artikel::published()->latest()->take(10)->get() as $artikel)
                             <div class="flex-shrink-0 w-72 snap-start">
-                                <div
-                                    class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 card-hover">
+                                <div class="bg-white rounded-xl border border-gray-100 overflow-hidden transition-shadow duration-200 hover:shadow-md">
                                     @if ($artikel->image)
                                         <div class="h-40 overflow-hidden">
                                             @php
@@ -620,21 +544,10 @@
                                         </div>
                                     @endif
                                     <div class="p-4">
-                                        <div class="flex items-center text-xs text-gray-500 mb-1.5">
-                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
+                                        <div class="flex items-center text-xs text-gray-400 mb-2">
                                             <span>{{ $artikel->created_at->format('d M Y') }}</span>
                                         </div>
-                                        <!-- Category Badge -->
-                                        <div class="flex flex-wrap gap-1 mb-2">
-                                            <span
-                                                class="text-xs font-semibold px-2 py-1 rounded-full bg-purple-100 text-purple-800">
-                                                Artikel
-                                            </span>
-                                        </div>
+                                        <span class="inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 mb-2">Artikel</span>
                                         <h3 class="text-base font-bold text-gray-800 mb-2 line-clamp-2">
                                             {{ $artikel->title }}</h3>
                                         <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ $artikel->excerpt }}</p>
@@ -660,16 +573,7 @@
                 </div>
             </div>
 
-            <div class="text-center mt-10">
-                <a href="{{ route('artikel.all') }}"
-                    class="inline-flex items-center gap-2 bg-white border-2 border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white font-bold py-2.5 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm group">
-                    Lihat Semua Artikel
-                    <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                        </path>
-                    </svg>
-                </a>
-            </div>
+            {{-- "Lihat Semua Artikel" moved to section header --}}
         </div>
     </div>
 
@@ -680,17 +584,28 @@
         <div id="chatbot-popup"
             class="hidden flex-col bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl w-80 max-h-[500px] border border-orange-200 overflow-hidden">
             <div class="bg-orange-600 text-white p-3 font-bold text-center">
-                Asisten Zakat
+                Lazismu Banten
             </div>
             <div id="chat-messages"
                 class="flex-1 p-3 overflow-y-auto flex flex-col text-sm text-gray-800 chat-messages-container">
                 <div class="text-center text-gray-400 text-xs animate-fadeInUp">Mulai percakapan...</div>
             </div>
-            <div class="p-3 border-t border-gray-200 flex">
-                <input id="chat-input" type="text" placeholder="Ketik pesan..."
-                    class="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" />
-                <button id="send-btn"
-                    class="ml-2 bg-orange-600 text-white px-3 py-2 rounded-lg hover:bg-orange-700 transition">Kirim</button>
+        <div class="p-3 border-t border-gray-200">
+                <div class="flex items-end gap-2">
+                    <textarea id="chat-input"
+                        placeholder="Ketik pesan..."
+                        rows="1"
+                        class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none overflow-hidden leading-relaxed"
+                        style="max-height: 120px;"></textarea>
+                    <button id="send-btn"
+                        class="flex-shrink-0 bg-orange-600 text-white w-9 h-9 rounded-xl hover:bg-orange-700 transition-colors flex items-center justify-center"
+                        aria-label="Kirim pesan">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-[10px] text-gray-400 mt-1 pl-0.5">Enter untuk kirim · Shift+Enter baris baru</p>
             </div>
         </div>
 
@@ -706,8 +621,11 @@
 
             <!-- Tombol Chat -->
             <button id="chatbot-button"
-                class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-4 shadow-lg transition transform hover:scale-110 flex items-center justify-center w-14 h-14">
-                <span class="text-2xl">💬</span>
+                class="bg-orange-600 hover:bg-orange-700 text-white rounded-full p-4 shadow-lg transition-colors flex items-center justify-center w-14 h-14"
+                aria-label="Buka Chatbot">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
             </button>
         </div>
     </div>
@@ -989,7 +907,7 @@
                             messages.innerHTML = '';
                             appendMessage(
                                 `
-                <p>Selamat datang di <strong>Asisten Zakat Virtual</strong>! 👋</p>
+                <p>Selamat datang di <strong>Lazismu Banten</strong>! 👋</p>
                 <p>Saya siap membantu Anda dengan pertanyaan seputar <em>zakat</em>, cara pembayaran, program yang tersedia, dan informasi lainnya.</p>
                 <p>Apa yang ingin Anda tanyakan hari ini?</p>
                 `,
@@ -1062,8 +980,11 @@
                     if (!userText) return;
 
                     // Display user message
-                    appendMessage(`<p>${userText}</p>`, "user");
+                    appendMessage(`<p>${userText.replace(/\n/g, '<br>')}</p>`, "user");
                     input.value = "";
+                    // Reset textarea height
+                    input.style.height = 'auto';
+                    input.style.height = input.scrollHeight + 'px';
 
                     // Show typing indicator
                     const loadingMsg = document.createElement("div");
@@ -1218,7 +1139,16 @@
 
                 sendBtn.addEventListener("click", sendMessage);
                 input.addEventListener("keydown", e => {
-                    if (e.key === "Enter") sendMessage();
+                    if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+
+                // Auto-resize textarea as user types
+                input.addEventListener("input", () => {
+                    input.style.height = 'auto';
+                    input.style.height = Math.min(input.scrollHeight, 120) + 'px';
                 });
 
                 // Focus input when chat container is clicked

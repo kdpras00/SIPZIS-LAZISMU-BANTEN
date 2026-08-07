@@ -17,8 +17,6 @@ class ZakatPayment extends Model
         'muzakki_id',
         'program_id',
         'program_category',
-        'program_type_id',
-        'zakat_type_id',
         'zakat_amount',
         'paid_amount',
         'payment_method',
@@ -44,20 +42,6 @@ class ZakatPayment extends Model
         return $this->belongsTo(Muzakki::class);
     }
 
-    public function zakatType()
-    {
-        return $this->belongsTo(ZakatType::class, 'zakat_type_id');
-    }
-
-    public function program()
-    {
-        return $this->belongsTo(Program::class);
-    }
-
-    public function programType()
-    {
-        return $this->belongsTo(ProgramType::class, 'program_type_id');
-    }
 
     public function getCampaignAttribute()
     {
@@ -109,97 +93,40 @@ class ZakatPayment extends Model
     }
 
     // Methods
-    public static function generatePaymentCode()
+    public static function generatePaymentCode(): string
     {
-        $year = date('Y');
-
-        // Try up to 10 times to generate a unique code
-        for ($i = 0; $i < 10; $i++) {
-            // Generate base code
-            $lastPayment = self::where('payment_code', 'like', "DNS-{$year}-%")
+        // ponytail: lockForUpdate inside transaction prevents SELECT-then-INSERT race under concurrent requests.
+        return \Illuminate\Support\Facades\DB::transaction(function () {
+            $year = date('Y');
+            $last = self::where('payment_code', 'like', "DNS-{$year}-%")
+                ->lockForUpdate()
                 ->orderBy('id', 'desc')
                 ->first();
 
-            if ($lastPayment) {
-                // Extract the number part and increment it
-                $lastCode = $lastPayment->payment_code;
-                $parts = explode('-', $lastCode);
-                if (count($parts) >= 3) {
-                    $lastNumber = (int) $parts[2];
-                    $newNumber = $lastNumber + 1;
-                } else {
-                    // Fallback if format is unexpected
-                    $lastNumber = (int) substr($lastCode, -3);
-                    $newNumber = $lastNumber + 1;
-                }
-            } else {
-                $newNumber = 1;
-            }
+            $next = $last
+                ? ((int) (explode('-', $last->payment_code)[2] ?? 0)) + 1
+                : 1;
 
-            // Add a small random component to reduce collision probability
-            if ($i > 0) {
-                $newNumber = $newNumber * 10 + rand(0, 9);
-            }
-
-            // Ensure we don't exceed reasonable limits
-            $newNumber = $newNumber % 10000;
-
-            $paymentCode = "DNS-{$year}-" . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
-
-            // Check if this code already exists
-            if (!self::where('payment_code', $paymentCode)->exists()) {
-                return $paymentCode;
-            }
-        }
-
-        // If we still can't generate a unique code, use timestamp
-        return "DNS-{$year}-" . substr(time(), -6);
+            return "DNS-{$year}-" . str_pad($next % 10000, 3, '0', STR_PAD_LEFT);
+        });
     }
 
-    public static function generateReceiptNumber()
+    public static function generateReceiptNumber(): string
     {
-        $year = date('Y');
-        $month = date('m');
-
-        // Try up to 10 times to generate a unique receipt number
-        for ($i = 0; $i < 10; $i++) {
-            $lastReceipt = self::where('receipt_number', 'like', "RCP-{$year}{$month}-%")
+        return \Illuminate\Support\Facades\DB::transaction(function () {
+            $year  = date('Y');
+            $month = date('m');
+            $last  = self::where('receipt_number', 'like', "RCP-{$year}{$month}-%")
+                ->lockForUpdate()
                 ->orderBy('id', 'desc')
                 ->first();
 
-            if ($lastReceipt) {
-                $lastCode = $lastReceipt->receipt_number;
-                $parts = explode('-', $lastCode);
-                if (count($parts) >= 3) {
-                    $lastNumber = (int) $parts[2];
-                    $newNumber = $lastNumber + 1;
-                } else {
-                    // Fallback if format is unexpected
-                    $lastNumber = (int) substr($lastCode, -4);
-                    $newNumber = $lastNumber + 1;
-                }
-            } else {
-                $newNumber = 1;
-            }
+            $next = $last
+                ? ((int) (explode('-', $last->receipt_number)[2] ?? 0)) + 1
+                : 1;
 
-            // Add a small random component to reduce collision probability
-            if ($i > 0) {
-                $newNumber = $newNumber * 10 + rand(0, 9);
-            }
-
-            // Ensure we don't exceed reasonable limits
-            $newNumber = $newNumber % 100000;
-
-            $receiptNumber = "RCP-{$year}{$month}-" . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
-
-            // Check if this receipt number already exists
-            if (!self::where('receipt_number', $receiptNumber)->exists()) {
-                return $receiptNumber;
-            }
-        }
-
-        // If we still can't generate a unique number, use timestamp
-        return "RCP-{$year}{$month}-" . substr(time(), -8);
+            return "RCP-{$year}{$month}-" . str_pad($next % 100000, 4, '0', STR_PAD_LEFT);
+        });
     }
 
     public function getFormattedAmountAttribute()
@@ -234,12 +161,6 @@ class ZakatPayment extends Model
     {
         return $query->where('status', 'pending');
     }
-
-    // Note: program_id column doesn't exist in zakat_payments table
-    // Program relationship is through campaigns or program_type_id
-    // This relationship is disabled to prevent SQL errors
-    // Use programType() relationship instead if needed
-    // If you need to access program, use campaigns relationship
 
 
     // Event handling for notifications

@@ -13,7 +13,7 @@
         <div class="container mx-auto px-4 max-w-7xl mb-6">
             <a href="{{ route('campaigns.index', $category) }}" 
                class="inline-flex items-center text-gray-500 hover:text-orange-600 transition-colors duration-200">
-                <i class="bi bi-arrow-left mr-2"></i>
+                <i class="bi bi-arrow-left-circle mr-2"></i>
                 Kembali ke Daftar Campaign
             </a>
         </div>

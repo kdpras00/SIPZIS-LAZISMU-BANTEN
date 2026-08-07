@@ -1,182 +1,225 @@
 @extends('layouts.app')
 
-@section('page-title', 'Setup Autentikasi Dua Faktor - Dashboard Muzakki')
+@section('page-title', 'Autentikasi Dua Faktor (2FA) - SIPZIS Lazismu Banten')
 
 @section('content')
-<div class="py-4 px-4 max-w-4xl mx-auto">
-    <!-- Header -->
-    <div class="flex items-center mb-6">
+<div class="py-6 px-4 max-w-3xl mx-auto">
+    <!-- Header Navigation & Title -->
+    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-[#f0ece6]">
         @php
             $backRoute = auth()->user()->role === 'admin' ? route('dashboard') : route('dashboard.management');
         @endphp
-        <a href="{{ $backRoute }}" class="text-gray-700 mr-3 hover:text-gray-900">
-            <i class="bi bi-arrow-left text-xl"></i>
+        <a href="{{ $backRoute }}" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white border border-[#e8e0d6] text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#f0ece6] transition-all shadow-sm">
+            <i class="bi bi-arrow-left text-lg"></i>
         </a>
-        <h5 class="text-xl font-semibold text-gray-900 mb-0">Setup Autentikasi Dua Faktor</h5>
+        <div>
+            <h1 class="text-xl font-bold text-[#1c0f0a] tracking-tight mb-0.5">Autentikasi Dua Faktor (2FA)</h1>
+            <p class="text-xs text-[#8b7e74] m-0">Tingkatkan keamanan akun Anda dengan verifikasi 6 digit dari aplikasi authenticator.</p>
+        </div>
     </div>
 
     @if($user->two_factor_enabled)
-    <!-- Already Enabled -->
-    <div class="bg-white rounded-xl shadow-md mb-6">
-        <div class="p-6">
-            <div class="bg-orange-50 border-l-4 border-orange-400 p-4 rounded-lg mb-4">
-                <div class="flex items-start">
-                    <i class="bi bi-check-circle text-orange-600 mr-2 mt-0.5"></i>
-                    <div>
-                        <p class="text-sm text-orange-800 m-0 font-semibold">Autentikasi Dua Faktor Aktif</p>
-                        <p class="text-sm text-orange-700 m-0 mt-1">Akun Anda dilindungi dengan autentikasi dua faktor.</p>
-                    </div>
-                </div>
+    <!-- State: Already Enabled -->
+    <div class="bg-white rounded-2xl border border-[#f0ece6] p-6 shadow-sm mb-6">
+        <!-- Active Status Banner -->
+        <div class="bg-emerald-50/80 border border-emerald-200/80 rounded-xl p-4 mb-6 flex items-start gap-3">
+            <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-700">
+                <i class="bi bi-shield-check text-xl"></i>
             </div>
+            <div>
+                <h2 class="text-sm font-semibold text-emerald-950 m-0">Autentikasi Dua Faktor Aktif</h2>
+                <p class="text-xs text-emerald-800 m-0 mt-1 leading-relaxed">
+                    Akun Anda terlindungi dengan keamanan dua lapis. Setiap kali Anda login, kode unik 6 digit akan diminta.
+                </p>
+            </div>
+        </div>
 
-            <!-- Disable Form -->
-            <form method="POST" action="{{ route('dashboard.two-factor.disable') }}" class="mt-4">
+        <!-- Disable 2FA Form -->
+        <div class="pt-2 border-t border-[#f0ece6]">
+            <h3 class="text-sm font-semibold text-[#1c0f0a] mb-2">Nonaktifkan 2FA</h3>
+            <p class="text-xs text-[#8b7e74] mb-4">
+                Jika Anda ingin mematikan fitur ini, masukkan kode 6 digit terbaru dari aplikasi Authenticator Anda untuk konfirmasi.
+            </p>
+
+            <form method="POST" action="{{ route('dashboard.two-factor.disable') }}" class="space-y-4">
                 @csrf
-                <div class="mb-4">
-                    <label for="disable_code" class="block text-sm font-medium text-gray-700 mb-2">Masukkan Kode dari Aplikasi Authenticator</label>
+                <div>
+                    <label for="disable_code" class="block text-xs font-medium text-[#8b7e74] mb-1.5 uppercase tracking-wider">Kode Authenticator (6 Digit)</label>
                     <input type="text" 
-                           class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all text-center text-2xl tracking-widest" 
+                           class="w-full max-w-xs px-4 py-3 rounded-xl border border-[#e8e0d6] bg-white text-center text-2xl tracking-[0.3em] font-semibold text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none" 
                            id="disable_code" 
                            name="code" 
                            placeholder="000000" 
                            maxlength="6"
                            pattern="[0-9]{6}"
                            required
+                           inputmode="numeric"
                            autocomplete="off">
-                    <p class="text-xs text-gray-500 mt-2">Masukkan kode 6 digit dari aplikasi Google Authenticator untuk menonaktifkan 2FA</p>
+                    @error('code')
+                        <span class="text-red-600 text-xs mt-1.5 block font-medium">{{ $message }}</span>
+                    @enderror
                 </div>
-                <button type="submit" class="w-full px-5 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors shadow-md hover:shadow-lg">
-                    <i class="bi bi-x-circle mr-1"></i> Nonaktifkan Autentikasi Dua Faktor
+                <button type="submit" class="inline-flex items-center justify-center px-5 py-2.5 text-xs font-medium text-red-700 bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 hover:text-red-800 active:scale-[0.99] transition-all shadow-sm">
+                    <i class="bi bi-shield-x mr-1.5 text-sm"></i> Nonaktifkan Autentikasi Dua Faktor
                 </button>
             </form>
         </div>
     </div>
     @else
-    <!-- Setup Instructions -->
-    <div class="bg-white rounded-xl shadow-md mb-6">
-        <div class="p-6">
-            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg mb-6">
-                <div class="flex items-start">
-                    <i class="bi bi-info-circle text-blue-600 mr-2 mt-0.5"></i>
-                    <div class="text-sm text-blue-800">
-                        <p class="m-0 font-semibold mb-1">Cara Mengaktifkan Autentikasi Dua Faktor:</p>
-                        <ol class="list-decimal list-inside space-y-1 mt-2">
-                            <li>Install aplikasi Google Authenticator di smartphone Anda</li>
-                            <li>Scan QR Code di bawah ini dengan aplikasi Google Authenticator</li>
-                            <li>Masukkan kode 6 digit yang muncul di aplikasi untuk verifikasi</li>
-                        </ol>
-                    </div>
-                </div>
+    <!-- State: Setup Mode -->
+    <div class="bg-white rounded-2xl border border-[#f0ece6] p-6 shadow-sm mb-6 space-y-8">
+        
+        <!-- Step 1: Install App -->
+        <div class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-full bg-[#fff7ed] border border-[#ffedd5] text-[#c2410c] font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
+                1
             </div>
-
-            <!-- QR Code Section - PROMINENT -->
-            <div class="text-center mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                    📱 Scan QR Code Ini
-                </h3>
-                
-                <!-- Larger QR Code with better styling -->
-                <div class="inline-block p-6 bg-white border-4 border-orange-500 rounded-2xl shadow-lg">
-                    <img src="{{ $qrCode }}" 
-                         alt="QR Code" 
-                         class="mx-auto" 
-                         style="width: 350px; height: 350px;">
-                </div>
-                
-                <p class="text-sm text-gray-600 mt-4 font-medium">
-                    Gunakan aplikasi <strong>Google Authenticator</strong> untuk scan
+            <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-semibold text-[#1c0f0a] m-0 mb-1">Unduh Aplikasi Authenticator</h3>
+                <p class="text-xs text-[#8b7e74] leading-relaxed m-0 mb-3">
+                    Unduh dan pasang aplikasi TOTP seperti <strong>Google Authenticator</strong>, <strong>Microsoft Authenticator</strong>, atau <strong>Authy</strong> pada smartphone Anda.
                 </p>
-                
-                <!-- App Download Links -->
-                <div class="flex justify-center gap-4 mt-4 flex-wrap">
+                <div class="flex items-center gap-3 flex-wrap">
                     <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" 
                        target="_blank" 
-                       class="text-xs text-blue-600 hover:underline inline-flex items-center gap-1">
-                        <i class="bi bi-google-play"></i> Download untuk Android
+                       rel="noopener"
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#e8e0d6] bg-[#faf8f5] text-xs font-medium text-[#1c0f0a] hover:bg-[#f0ece6] transition-colors shadow-2xs">
+                        <i class="bi bi-google-play text-emerald-600"></i> Google Play (Android)
                     </a>
                     <a href="https://apps.apple.com/app/google-authenticator/id388497605" 
                        target="_blank" 
-                       class="text-xs text-blue-600 hover:underline inline-flex items-center gap-1">
-                        <i class="bi bi-apple"></i> Download untuk iOS
+                       rel="noopener"
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#e8e0d6] bg-[#faf8f5] text-xs font-medium text-[#1c0f0a] hover:bg-[#f0ece6] transition-colors shadow-2xs">
+                        <i class="bi bi-apple text-gray-800"></i> App Store (iOS)
                     </a>
                 </div>
             </div>
+        </div>
 
-            <!-- Manual Entry - Secondary Option (Collapsible) -->
-            <details class="bg-gray-50 rounded-lg p-4 mb-6">
-                <summary class="cursor-pointer text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors">
-                    ⚙️ Tidak bisa scan? Klik untuk manual entry
-                </summary>
-                <div class="mt-3">
-                    <p class="text-xs text-gray-600 mb-2">Masukkan kode berikut secara manual:</p>
-                    <div class="flex items-center justify-between bg-white p-3 rounded border border-gray-300">
-                        <code class="text-sm font-mono text-gray-900">{{ $secret }}</code>
-                        <button type="button" 
-                                class="ml-2 px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition-colors"
-                                onclick="copyToClipboard('{{ $secret }}')">
-                            <i class="bi bi-copy"></i> Copy
-                        </button>
+        <hr class="border-[#f0ece6] m-0">
+
+        <!-- Step 2: Scan QR Code or Manual Secret -->
+        <div class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-full bg-[#fff7ed] border border-[#ffedd5] text-[#c2410c] font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
+                2
+            </div>
+            <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-semibold text-[#1c0f0a] m-0 mb-1">Pindai QR Code</h3>
+                <p class="text-xs text-[#8b7e74] leading-relaxed m-0 mb-4">
+                    Buka aplikasi authenticator di smartphone Anda, pilih opsi <strong>Pindai QR Code</strong>, dan arahkan kamera ke kode di bawah ini.
+                </p>
+                
+                <!-- QR Code Box -->
+                <div class="flex flex-col sm:flex-row items-center gap-6 bg-[#faf8f5] p-5 rounded-2xl border border-[#f0ece6]">
+                    <div class="bg-white p-3 rounded-xl border border-[#e8e0d6] shadow-sm flex-shrink-0">
+                        <img src="{{ $qrCode }}" 
+                             alt="2FA QR Code" 
+                             class="w-48 h-48 object-contain">
+                    </div>
+                    <div class="space-y-3 text-center sm:text-left">
+                        <div>
+                            <span class="text-[11px] font-semibold uppercase tracking-wider text-[#8b7e74]">Alternatif Entri Manual</span>
+                            <p class="text-xs text-[#8b7e74] mt-0.5">Jika kamera tidak bisa memindai, masukkan Setup Key ini secara manual:</p>
+                        </div>
+                        <div class="inline-flex items-center gap-2 bg-white px-3 py-2 rounded-xl border border-[#e8e0d6] shadow-2xs">
+                            <code class="text-xs font-semibold text-[#1c0f0a] tracking-wider">{{ $secret }}</code>
+                            <button type="button" 
+                                    id="btn-copy-secret"
+                                    class="p-1 text-[#8b7e74] hover:text-[#c2410c] transition-colors rounded"
+                                    title="Salin Kunci"
+                                    onclick="copySecretKey('{{ $secret }}')">
+                                <i class="bi bi-copy text-sm"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </details>
-
-            <!-- Verification Form -->
-            <form method="POST" action="{{ route('dashboard.two-factor.enable') }}">
-                @csrf
-                <div class="mb-4">
-                    <label for="enable_code" class="block text-sm font-medium text-gray-700 mb-2">Masukkan Kode Verifikasi</label>
-                    <input type="text" 
-                           class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all text-center text-2xl tracking-widest @error('code') border-red-500 @enderror" 
-                           id="enable_code" 
-                           name="code" 
-                           placeholder="000000" 
-                           maxlength="6"
-                           pattern="[0-9]{6}"
-                           required
-                           autocomplete="off">
-                    @error('code')
-                        <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span>
-                    @enderror
-                    <p class="text-xs text-gray-500 mt-2">Masukkan kode 6 digit dari aplikasi Google Authenticator</p>
-                </div>
-                <button type="submit" class="w-full px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all shadow-md hover:shadow-lg">
-                    <i class="bi bi-check-circle mr-1"></i> Aktifkan Autentikasi Dua Faktor
-                </button>
-            </form>
+            </div>
         </div>
+
+        <hr class="border-[#f0ece6] m-0">
+
+        <!-- Step 3: Verify 6-digit Code -->
+        <div class="flex items-start gap-4">
+            <div class="w-8 h-8 rounded-full bg-[#fff7ed] border border-[#ffedd5] text-[#c2410c] font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
+                3
+            </div>
+            <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-semibold text-[#1c0f0a] m-0 mb-1">Verifikasi Kode 6 Digit</h3>
+                <p class="text-xs text-[#8b7e74] leading-relaxed m-0 mb-4">
+                    Masukkan 6 digit angka yang muncul di aplikasi Authenticator untuk menyelesaikan pengaktifan.
+                </p>
+
+                <form method="POST" action="{{ route('dashboard.two-factor.enable') }}" class="space-y-4 max-w-sm">
+                    @csrf
+                    <div>
+                        <label for="enable_code" class="block text-xs font-medium text-[#8b7e74] mb-1.5 uppercase tracking-wider">Kode Verifikasi</label>
+                        <input type="text" 
+                               class="w-full px-4 py-3 rounded-xl border @error('code') border-red-500 focus:ring-red-200 @else border-[#e8e0d6] focus:border-[#c2410c] focus:ring-[#c2410c]/10 @enderror bg-white text-center text-2xl tracking-[0.3em] font-semibold text-[#1c0f0a] focus:ring-2 transition-all outline-none" 
+                               id="enable_code" 
+                               name="code" 
+                               placeholder="000000" 
+                               maxlength="6"
+                               pattern="[0-9]{6}"
+                               required
+                               inputmode="numeric"
+                               autocomplete="off">
+                        @error('code')
+                            <span class="text-red-600 text-xs mt-1.5 block font-medium">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <button type="submit" class="w-full inline-flex items-center justify-center px-5 py-3 text-xs font-semibold text-white bg-[#c2410c] rounded-xl hover:bg-[#9a3412] active:scale-[0.99] transition-all shadow-sm hover:shadow-md">
+                        <i class="bi bi-shield-check mr-1.5 text-base"></i> Aktifkan Autentikasi Dua Faktor
+                    </button>
+                </form>
+            </div>
+        </div>
+
     </div>
     @endif
 </div>
 
 @push('scripts')
 <script>
-    // Auto-focus and format code input
     document.addEventListener('DOMContentLoaded', function() {
         const codeInputs = document.querySelectorAll('input[name="code"]');
         codeInputs.forEach(input => {
-            // Format input to only accept numbers
-            input.addEventListener('input', function(e) {
+            // Keep numeric only
+            input.addEventListener('input', function() {
                 this.value = this.value.replace(/[^0-9]/g, '');
-            });
-
-            // Auto-submit when 6 digits entered
-            input.addEventListener('input', function(e) {
-                if (this.value.length === 6) {
-                    // Optional: auto-submit after a short delay
-                    // setTimeout(() => this.form.submit(), 500);
-                }
             });
         });
     });
 
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(function() {
-            alert('Kode berhasil disalin!');
-        }, function(err) {
-            console.error('Failed to copy: ', err);
-        });
+    function copySecretKey(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => showToast('Kunci rahasia berhasil disalin!'));
+        } else {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast('Kunci rahasia berhasil disalin!');
+        }
+    }
+
+    function showToast(msg) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: msg,
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true
+            });
+        } else {
+            alert(msg);
+        }
     }
 </script>
 @endpush
 @endsection
-

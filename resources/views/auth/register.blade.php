@@ -1,18 +1,18 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12">
+    <div class="min-h-screen flex items-center justify-center py-12" style="background: #faf8f5;">
         <div class="w-full max-w-md px-6">
-            <div class="bg-white rounded-lg shadow-md p-8">
-                <!-- Back Button & Title -->
-                <!-- Back Button & Logo -->
+            <div class="bg-white rounded-2xl p-8" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06), 0 4px 16px rgba(28,15,10,0.06);">
                 <div class="mb-8 text-center relative">
                     <a href="{{ route('login') }}" class="absolute left-0 top-0 inline-flex items-center text-orange-600 hover:text-orange-700">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
                     </a>
-                    <img src="{{ asset('storage/lazismu-icon.png') }}" alt="Lazismu" class="h-20 mx-auto mb-2">
+                    <div class="mx-auto mb-2" style="width: 120px;">
+                        <img src="{{ asset('img/logo.png') }}" alt="Lazismu" class="w-full object-contain">
+                    </div>
                 </div>
 
                 <!-- Register Form -->
@@ -221,17 +221,25 @@
                 }
             });
 
+            // Name Input Guard (Letters only)
+            const nameInput = document.getElementById('name');
+            if (nameInput) {
+                nameInput.addEventListener('input', function() {
+                    this.value = this.value.replace(/[^a-zA-Z\s\.\'\`-]/g, '');
+                });
+            }
+
             // Generate reCAPTCHA v3 token before form submission
             registerForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const submitForm = () => registerForm.submit();
                 try {
                     if (!window.grecaptcha || !window.grecaptcha.execute) {
-                        alert('Memuat reCAPTCHA... silakan coba lagi.');
+                        Swal.fire({ icon: 'warning', title: 'Memuat reCAPTCHA', text: 'Silakan tunggu sejenak dan coba lagi.', confirmButtonColor: '#c2410c' });
                         return false;
                     }
                     if (!recaptchaSiteKey) {
-                        alert('Site key reCAPTCHA tidak terbaca. Coba refresh atau hubungi admin.');
+                        Swal.fire({ icon: 'error', title: 'Kesalahan Konfigurasi', text: 'Site key reCAPTCHA tidak terbaca. Silakan hubungi admin.', confirmButtonColor: '#c2410c' });
                         return false;
                     }
                     window.grecaptcha.ready(function() {
@@ -263,12 +271,12 @@
                             })
                             .catch(function(err) {
                                 console.error('reCAPTCHA execute error:', err);
-                                alert('Validasi reCAPTCHA gagal. Coba lagi.');
+                                Swal.fire({ icon: 'error', title: 'Validasi Gagal', text: 'Validasi reCAPTCHA gagal. Silakan coba lagi.', confirmButtonColor: '#c2410c' });
                             });
                     });
                 } catch (err) {
                     console.error('reCAPTCHA setup failed:', err);
-                    alert('Validasi reCAPTCHA gagal. Coba lagi.');
+                    Swal.fire({ icon: 'error', title: 'Validasi Gagal', text: 'Validasi reCAPTCHA gagal. Silakan coba lagi.', confirmButtonColor: '#c2410c' });
                     return false;
                 }
             });
@@ -277,7 +285,7 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/css/intlTelInput.css">
+    <link rel="stylesheet" href="{{ asset('vendor/intl-tel-input/css/intlTelInput.css') }}">
     <style>
         /* Optimized styles for intl-tel-input */
         .iti {
@@ -347,13 +355,13 @@
 @endpush
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/js/intlTelInput.min.js" defer></script>
+    <script src="{{ asset('vendor/intl-tel-input/js/intlTelInput.min.js') }}" defer></script>
     <script>
         let iti;
         const itiConfig = {
             initialCountry: "id",
             preferredCountries: ["id", "my", "sg"],
-            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/js/utils.js",
+            utilsScript: "{{ asset('vendor/intl-tel-input/js/utils.js') }}",
             separateDialCode: true,
             autoPlaceholder: "aggressive",
             formatOnDisplay: true,

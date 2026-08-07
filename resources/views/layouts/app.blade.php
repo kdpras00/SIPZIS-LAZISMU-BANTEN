@@ -5,10 +5,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="{{ $meta_description ?? 'Sistem Informasi Pengelolaan Zakat, Infaq, dan Sadaqah (SIPZIS) Lazismu Banten. Portal resmi untuk mengelola dan menyalurkan ZIS.' }}">
+    <meta name="theme-color" content="#c2410c">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ isset($title) ? $title . ' - SIPZIS Lazismu' : 'SIPZIS - Lazismu Banten' }}">
+    <meta property="og:description" content="{{ $meta_description ?? 'Sistem Informasi Pengelolaan Zakat, Infaq, dan Sadaqah (SIPZIS) Lazismu Banten.' }}">
+    <meta property="og:image" content="{{ asset('img/logo.png') }}">
 
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="{{ isset($title) ? $title . ' - SIPZIS Lazismu' : 'SIPZIS - Lazismu Banten' }}">
+    <meta property="twitter:description" content="{{ $meta_description ?? 'Sistem Informasi Pengelolaan Zakat, Infaq, dan Sadaqah (SIPZIS) Lazismu Banten.' }}">
+    <meta property="twitter:image" content="{{ asset('img/logo.png') }}">
 
     <link rel="icon" type="image/png" href="{{ asset('img/lazismu-icon.ico') }}">
-    <title>{{ isset($title) ? $title . ' - ' : '' }}SIPZIS</title>
+    <title>{{ isset($title) ? $title . ' - SIPZIS Lazismu Banten' : 'SIPZIS - Lazismu Banten' }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,11 +66,13 @@
         }
 
         a,
-        button,
+        button {
+            transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+        }
         input,
         select,
         textarea {
-            transition: all 0.3s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         /* Remove underline from all links by default */
@@ -285,6 +302,52 @@
             outline: none !important;
         }
 
+        /* --- Date Input Custom Calendar Icon & Click-to-Open --- */
+        input[type="date"] {
+            position: relative;
+            cursor: pointer;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: invert(34%) sepia(82%) saturate(2284%) hue-rotate(349deg) brightness(92%) contrast(92%);
+            opacity: 0.8;
+            transition: opacity 0.2s, transform 0.2s;
+            padding: 2px;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+
+        /* --- Transparent & Minimalist Sleek Scrollbars for Tables & Containers --- */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 126, 116, 0.15);
+            border-radius: 9999px;
+            transition: background 0.2s ease;
+        }
+        *:hover::-webkit-scrollbar-thumb {
+            background: rgba(194, 65, 12, 0.35);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(194, 65, 12, 0.6) !important;
+        }
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        /* Firefox Smooth Transparent Scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(139, 126, 116, 0.2) transparent;
+        }
+
         /* --- Primary Buttons: orange accent --- */
         main .bg-blue-600,
         main .bg-blue-500,
@@ -382,13 +445,11 @@
         <div class="flex min-h-screen">
             @auth
                 @if (auth()->user()->role !== 'muzakki')
-                    <aside class="flex-shrink-0 hidden md:block" style="width: 272px;">
-                        @include('components.sidebar', [
-                            'user' => auth()->user(),
-                            'currentRoute' => request()->route()->getName() ?? '',
-                        ])
-                    </aside>
-                    <main class="flex-1 min-w-0">
+                    @include('components.sidebar', [
+                        'user' => auth()->user(),
+                        'currentRoute' => request()->route()->getName() ?? '',
+                    ])
+                    <main class="flex-1 min-w-0 w-full">
                         @include('components.navbar')
                         <div>
                             @yield('content')
@@ -416,445 +477,132 @@
 
     @include('components.two-factor-reminder')
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const useSweetAlert = {{ auth()->check() && auth()->user()->role !== 'muzakki' ? 'true' : 'false' }};
-
-            if (!useSweetAlert || typeof Swal === 'undefined') {
-                return;
-            }
-
-            const flash = {
-                success: @json(session('success')),
-                error: @json(session('error')),
-                warning: @json(session('warning')),
-                info: @json(session('info'))
-            };
-
-            const swalBase = {
-                confirmButtonColor: '#ea580c',
-                confirmButtonText: 'Mengerti',
-                allowOutsideClick: false,
-                buttonsStyling: true,
-            };
-
-            if (flash.success) {
-                Swal.fire({
-                    ...swalBase,
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: flash.success,
-                });
-            } else if (flash.error) {
-                Swal.fire({
-                    ...swalBase,
-                    icon: 'error',
-                    title: 'Gagal',
-                    text: flash.error,
-                });
-            } else if (flash.warning) {
-                Swal.fire({
-                    ...swalBase,
-                    icon: 'warning',
-                    title: 'Perhatian',
-                    text: flash.warning,
-                });
-            } else if (flash.info) {
-                Swal.fire({
-                    ...swalBase,
-                    icon: 'info',
-                    title: 'Informasi',
-                    text: flash.info,
-                });
-            }
-
-            const validationErrors = @json($errors->all());
-            if (validationErrors.length) {
-                const errorList = validationErrors.map(err => `<li class="mb-1">${err}</li>`).join('');
-                Swal.fire({
-                    ...swalBase,
-                    icon: 'error',
-                    title: 'Terjadi Kesalahan',
-                    html: `<ul class="text-left list-disc pl-4 text-sm text-gray-700">${errorList}</ul>`
-                });
-            }
-
-            const extractMessage = (str) => {
-                if (!str) {
-                    return null;
-                }
-                const match = str.match(/confirm\s*\(\s*(['"])(.*?)\1\s*\)/);
-                return match ? match[2].replace(/\\'/g, "'").replace(/\\"/g, '"') : null;
-            };
-
-            const confirmOptions = {
-                icon: 'warning',
-                title: 'Anda yakin?',
-                confirmButtonText: 'Ya, lanjutkan',
-                cancelButtonText: 'Batal',
-                confirmButtonColor: '#dc2626',
-                cancelButtonColor: '#6b7280',
-                showCancelButton: true,
-                reverseButtons: true,
-                focusCancel: true,
-            };
-
-            const bindFormConfirm = (form, message) => {
-                if (!message || form.dataset.swalConfirmBound === 'true') {
-                    return;
-                }
-                form.dataset.swalConfirmBound = 'true';
-                form.removeAttribute('onsubmit');
-
-                form.addEventListener('submit', function(e) {
-                    if (form.dataset.swalConfirmed === 'true') {
-                        form.dataset.swalConfirmed = 'false';
-                        return;
-                    }
-
-                    e.preventDefault();
-                    Swal.fire({
-                        ...confirmOptions,
-                        text: message
-                    }).then(result => {
-                        if (result.isConfirmed) {
-                            form.dataset.swalConfirmed = 'true';
-                            form.submit();
-                        }
-                    });
-                });
-            };
-
-            const bindClickConfirm = (element, message) => {
-                if (!message || element.dataset.swalConfirmBound === 'true') {
-                    return;
-                }
-
-                const isLink = element.tagName === 'A';
-                const href = element.getAttribute('href');
-
-                element.dataset.swalConfirmBound = 'true';
-                element.removeAttribute('onclick');
-
-                element.addEventListener('click', function(e) {
-                    if (element.dataset.swalConfirmed === 'true') {
-                        element.dataset.swalConfirmed = 'false';
-                        return;
-                    }
-
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-
-                    Swal.fire({
-                        ...confirmOptions,
-                        text: message
-                    }).then(result => {
-                        if (!result.isConfirmed) {
-                            return;
-                        }
-
-                        element.dataset.swalConfirmed = 'true';
-
-                        if (element.type === 'submit' && element.form) {
-                            if (element.form.dataset.swalConfirmBound === 'true') {
-                                element.form.dataset.swalConfirmed = 'true';
-                            }
-                            if (typeof element.form.requestSubmit === 'function') {
-                                element.form.requestSubmit(element);
-                            } else {
-                                element.form.submit();
-                            }
-                        } else if (isLink && href) {
-                            window.location.href = href;
-                        } else {
-                            element.dataset.swalConfirmed = 'false';
-                        }
-                    });
-                });
-            };
-
-            const scanConfirmables = (root = document) => {
-                const forms = root === document
-                    ? document.querySelectorAll('form[onsubmit]')
-                    : root.matches?.('form[onsubmit]')
-                        ? [root, ...root.querySelectorAll('form[onsubmit]')]
-                        : root.querySelectorAll
-                            ? root.querySelectorAll('form[onsubmit]')
-                            : [];
-
-                forms.forEach(form => {
-                    const attr = form.getAttribute('onsubmit');
-                    if (!attr || !attr.includes('confirm')) {
-                        return;
-                    }
-                    const message = extractMessage(attr);
-                    bindFormConfirm(form, message || 'Apakah Anda yakin ingin melanjutkan tindakan ini?');
-                });
-
-                const clickables = root === document
-                    ? document.querySelectorAll('[onclick]')
-                    : root.matches?.('[onclick]')
-                        ? [root, ...root.querySelectorAll('[onclick]')]
-                        : root.querySelectorAll
-                            ? root.querySelectorAll('[onclick]')
-                            : [];
-
-                clickables.forEach(element => {
-                    const attr = element.getAttribute('onclick');
-                    if (!attr || !attr.includes('confirm(')) {
-                        return;
-                    }
-                    const message = extractMessage(attr);
-                    bindClickConfirm(element, message || 'Apakah Anda yakin ingin melanjutkan tindakan ini?');
-                });
-            };
-
-            scanConfirmables();
-
-            const observer = new MutationObserver(mutations => {
-                mutations.forEach(mutation => {
-                    if (mutation.type === 'attributes') {
-                        scanConfirmables(mutation.target);
-                        return;
-                    }
-
-                    mutation.addedNodes.forEach(node => {
-                        if (node.nodeType !== 1) {
-                            return;
-                        }
-                        scanConfirmables(node);
-                    });
-                });
-            });
-
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true,
-                attributes: true,
-                attributeFilter: ['onsubmit', 'onclick']
-            });
-        });
-    </script>
-
-    @stack('scripts')
-
-    <!-- Cleanup script - only removes leftover backdrops, doesn't close user-opened modals -->
-    <script>
-        (function() {
-            // Track which modals were opened by user
-            const userOpenedModals = new Set();
-            
-            // Track when user clicks modal trigger buttons
-            document.addEventListener('click', function(e) {
-                const trigger = e.target.closest('[data-bs-toggle="modal"]') || 
-                               e.target.closest('[data-bs-target*="Modal"]');
-                if (trigger) {
-                    const targetId = trigger.getAttribute('data-bs-target') || 
-                                   trigger.getAttribute('href');
-                    if (targetId) {
-                        const modalId = targetId.replace('#', '');
-                        userOpenedModals.add(modalId);
-                        // Remove from set after modal is closed (handled by event listener below)
-                    }
-                }
-            }, true);
-            
-            // Cleanup function - only removes backdrops when no modals are showing
-            const cleanupBackdrops = () => {
-                const showingModals = document.querySelectorAll('.modal.show');
-                
-                // Only cleanup if NO modals are showing
-                if (showingModals.length === 0) {
-                    // Remove ALL backdrops
-                    document.querySelectorAll('.modal-backdrop').forEach(el => {
-                        el.remove();
-                    });
-                    
-                    // Reset body
-                    document.body.classList.remove('modal-open');
-                    document.body.style.overflow = '';
-                    document.body.style.paddingRight = '';
-                }
-            };
-            
-            // Cleanup on page load only - close modals that opened automatically
-            const initialCleanup = () => {
-                // Close any modals that are open on page load (not user-opened)
-                const openModals = document.querySelectorAll('.modal.show');
-                openModals.forEach(modal => {
-                    const modalId = modal.id;
-                    // Only close if not opened by user (userOpenedModals will be empty on page load)
-                    if (!userOpenedModals.has(modalId)) {
-                        modal.classList.remove('show');
-                        modal.style.display = 'none';
-                        modal.setAttribute('aria-hidden', 'true');
-                    }
-                });
-                cleanupBackdrops();
-            };
-            
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initialCleanup);
-            } else {
-                // Run after a small delay to ensure modals are initialized
-                setTimeout(initialCleanup, 100);
-            }
-            
-            // Cleanup when modals are closed by user (X button, backdrop click, etc)
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('.modal').forEach(modal => {
-                    // When modal is hidden, remove from userOpenedModals and cleanup
-                    modal.addEventListener('hidden.bs.modal', function() {
-                        const modalId = this.id;
-                        userOpenedModals.delete(modalId);
-                        // Small delay to ensure Bootstrap has finished
-                        setTimeout(cleanupBackdrops, 100);
-                    });
-                });
-            });
-        })();
-    </script>
-
-    <script>
-        // Wait for Bootstrap to be fully loaded
-        (function() {
-            function initializeBootstrap() {
-                // Check if bootstrap is available
-                if (typeof bootstrap === 'undefined') {
-                    console.warn('Bootstrap is not loaded yet, retrying...');
-                    setTimeout(initializeBootstrap, 100);
-                    return;
-                }
-
-                // Initialize all Bootstrap dropdowns when DOM is ready
-                document.addEventListener('DOMContentLoaded', function() {
-                    // Wait a bit longer to ensure everything is loaded
-                    setTimeout(function() {
-                        // Initialize all Bootstrap dropdowns manually
-                        const dropdownElementList = document.querySelectorAll(
-                            '[data-bs-toggle="dropdown"]');
-                        dropdownElementList.forEach(dropdownToggleEl => {
-                            try {
-                                // Destroy existing dropdown instance if any
-                                const existingDropdown = bootstrap.Dropdown.getInstance(
-                                    dropdownToggleEl);
-                                if (existingDropdown) {
-                                    existingDropdown.dispose();
-                                }
-
-                                // Create new dropdown instance
-                                const newDropdown = new bootstrap.Dropdown(dropdownToggleEl, {
-                                    boundary: 'viewport',
-                                    popperConfig: {
-                                        modifiers: [{
-                                            name: 'preventOverflow',
-                                            options: {
-                                                boundary: 'viewport'
-                                            }
-                                        }]
-                                    }
-                                });
-
-                                console.log('Dropdown initialized:', dropdownToggleEl);
-                            } catch (e) {
-                                console.error('Error initializing dropdown:', e,
-                                    dropdownToggleEl);
-                            }
-                        });
-                    }, 300);
-
-                    // Auto-hide alerts after 5 seconds
-                    const alerts = document.querySelectorAll('.alert');
-                    alerts.forEach(alert => {
-                        setTimeout(() => {
-                            try {
-                                const bsAlert = new bootstrap.Alert(alert);
-                                bsAlert.close();
-                            } catch (e) {
-                                console.error('Error closing alert:', e);
-                            }
-                        }, 5000);
-                    });
-
-                    // Add loading state to forms
-                    const forms = document.querySelectorAll('form');
-                    forms.forEach(form => {
-                        form.addEventListener('submit', function() {
-                            const submitBtn = this.querySelector('button[type="submit"]');
-                            if (submitBtn) {
-                                submitBtn.disabled = true;
-                                submitBtn.innerHTML =
-                                    '<i class="fas fa-spinner fa-spin"></i> Loading...';
-                            }
-                        });
-                    });
-
-                    // Ensure navbar dropdowns are clickable (fix z-index issues)
-                    const navbar = document.querySelector('.navbar');
-                    if (navbar) {
-                        navbar.style.zIndex = '1051';
-                    }
-
-                    // Fix dropdown menu positioning
-                    const dropdownMenus = document.querySelectorAll('.navbar .dropdown-menu');
-                    dropdownMenus.forEach(menu => {
-                        menu.style.zIndex = '1053';
-                    });
-
-                    // Simple cleanup for modal backdrops
-                    function cleanupModals() {
-                        // Only cleanup if no modal is currently being shown
-                        const showingModals = document.querySelectorAll('.modal.show');
-                        if (showingModals.length === 0) {
-                            // Remove any leftover backdrops
-                            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-                            
-                            // Reset body
-                            document.body.classList.remove('modal-open');
-                            document.body.style.overflow = '';
-                            document.body.style.paddingRight = '';
-                        }
-                    }
-                    
-                    // Don't clean up on page load - let Bootstrap handle initialization
-                    // Only clean up when modals are actually hidden
-                    document.querySelectorAll('.modal').forEach(modal => {
-                        modal.addEventListener('hidden.bs.modal', function() {
-                            // Small delay to ensure Bootstrap has finished
-                            setTimeout(cleanupModals, 100);
-                        });
-                    });
-                });
-            }
-
-            // Start initialization
-            initializeBootstrap();
-        })();
-
-        // CSRF Token for AJAX requests
-        const csrfToken = document.querySelector('meta[name="csrf-token"]');
-        if (csrfToken) {
-            // Cek jika axios sudah ada sebelum menggunakannya
-            if (typeof axios !== 'undefined') {
-                window.axios = axios;
+            // CSRF Token for AJAX requests
+            const csrfToken = document.querySelector('meta[name="csrf-token"]');
+            if (csrfToken && typeof axios !== 'undefined') {
                 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken.content;
             }
-        }
+
+            // SweetAlert Notifications
+            @if(session('success'))
+                Swal.fire({ icon: 'success', title: 'Berhasil', text: @json(session('success')), confirmButtonColor: '#ea580c' });
+            @elseif(session('error'))
+                Swal.fire({ icon: 'error', title: 'Gagal', text: @json(session('error')), confirmButtonColor: '#ea580c' });
+            @elseif(session('warning'))
+                Swal.fire({ icon: 'warning', title: 'Perhatian', text: @json(session('warning')), confirmButtonColor: '#ea580c' });
+            @elseif(session('info'))
+                Swal.fire({ icon: 'info', title: 'Informasi', text: @json(session('info')), confirmButtonColor: '#ea580c' });
+            @endif
+
+            @if($errors->any())
+                const errors = {!! json_encode($errors->all()) !!};
+                const errorHtml = `<ul class="text-left list-disc pl-4 text-sm text-gray-700">${errors.map(e => `<li class="mb-1">${e}</li>`).join('')}</ul>`;
+                Swal.fire({ icon: 'error', title: 'Terjadi Kesalahan', html: errorHtml, confirmButtonColor: '#ea580c' });
+            @endif
+
+            // Simple Event Delegation for Confirmations
+            document.body.addEventListener('click', function(e) {
+                // Find nearest element with onclick="confirm(...)"
+                let target = e.target.closest('[onclick*="confirm("]');
+                if (!target) return;
+
+                const match = target.getAttribute('onclick').match(/confirm\s*\(\s*(['"])(.*?)\1\s*\)/);
+                if (match) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Anda yakin?',
+                        text: match[2],
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc2626',
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Ya, lanjutkan',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            target.removeAttribute('onclick');
+                            if (target.tagName === 'A') {
+                                window.location.href = target.href;
+                            } else if (target.type === 'submit' && target.form) {
+                                target.form.submit();
+                            }
+                        }
+                    });
+                }
+            }, true);
+
+            // Simple Event Delegation for form onsubmit="confirm(...)"
+            document.body.addEventListener('submit', function(e) {
+                const form = e.target;
+                const onsubmitAttr = form.getAttribute('onsubmit');
+                
+                if (onsubmitAttr && onsubmitAttr.includes('confirm(')) {
+                    e.preventDefault();
+                    const match = onsubmitAttr.match(/confirm\s*\(\s*(['"])(.*?)\1\s*\)/);
+                    if (match) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Anda yakin?',
+                            text: match[2],
+                            showCancelButton: true,
+                            confirmButtonColor: '#dc2626',
+                            cancelButtonColor: '#6b7280',
+                            confirmButtonText: 'Ya, lanjutkan',
+                            cancelButtonText: 'Batal',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                form.removeAttribute('onsubmit');
+                                form.submit();
+                            }
+                        });
+                    }
+                } else {
+                    // Loading state
+                    const btn = form.querySelector('button[type="submit"]');
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                    }
+                }
+            });
+
+            // Clean modal backdrops on hide
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('hidden.bs.modal', function() {
+                    if (!document.querySelector('.modal.show')) {
+                        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                        document.body.classList.remove('modal-open');
+                        document.body.style.overflow = '';
+                        document.body.style.paddingRight = '';
+                    }
+                });
+            });
+
+            // Auto-hide Bootstrap alerts
+            setTimeout(() => {
+                document.querySelectorAll('.alert-dismissible').forEach(alert => {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+        });
     </script>
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    @stack('scripts')
 </body>
 
 </html>

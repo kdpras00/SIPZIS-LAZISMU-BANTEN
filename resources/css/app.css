@@ -1,3 +1,6 @@
+/* DataTables — SIPZIS theme overrides */
+@import "./datatables.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

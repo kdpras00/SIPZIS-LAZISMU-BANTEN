@@ -65,20 +65,27 @@ class MustahikController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'nik' => 'nullable|string|max:20|unique:mustahik,nik',
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'nik' => ['nullable', 'string', 'regex:/^[0-9]{16}$/', 'unique:mustahik,nik'],
             'gender' => 'required|in:male,female',
             'address' => 'nullable|string',
-            'city' => 'nullable|string|max:255',
-            'province' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'city' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'province' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'phone' => ['nullable', 'string', 'regex:/^[0-9]{10,15}$/'],
             'date_of_birth' => 'nullable|date',
             'category' => 'required|in:fakir,miskin,amil,muallaf,riqab,gharim,fisabilillah,ibnu_sabil',
             'category_description' => 'nullable|string',
             'family_status' => 'nullable|in:single,married,divorced,widow/widower',
-            'family_members' => 'required|integer|min:1',
+            'family_members' => 'nullable|integer|min:1',
             'monthly_income' => 'nullable|numeric|min:0',
             'income_source' => 'nullable|string',
+        ], [
+            'name.regex' => 'Nama hanya boleh berisi huruf, spasi, titik, dan tanda petik.',
+            'city.regex' => 'Nama kota/kabupaten hanya boleh berisi huruf dan tidak boleh angka.',
+            'province.regex' => 'Nama provinsi hanya boleh berisi huruf dan tidak boleh angka.',
+            'phone.regex' => 'Nomor telepon harus berupa 10 hingga 15 digit angka.',
+            'nik.regex' => 'NIK harus terdiri dari tepat 16 digit angka.',
+            'nik.unique' => 'NIK ini sudah terdaftar dalam sistem.',
         ]);
 
         $data = $request->all();
@@ -125,21 +132,28 @@ class MustahikController extends Controller
     public function update(Request $request, Mustahik $mustahik)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'nik' => ['nullable', 'string', 'max:20', Rule::unique('mustahik', 'nik')->ignore($mustahik->id)],
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'nik' => ['nullable', 'string', 'regex:/^[0-9]{16}$/', Rule::unique('mustahik', 'nik')->ignore($mustahik->id)],
             'gender' => 'required|in:male,female',
             'address' => 'nullable|string',
-            'city' => 'nullable|string|max:255',
-            'province' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'city' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'province' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'phone' => ['nullable', 'string', 'regex:/^[0-9]{10,15}$/'],
             'date_of_birth' => 'nullable|date',
             'category' => 'required|in:fakir,miskin,amil,muallaf,riqab,gharim,fisabilillah,ibnu_sabil',
             'category_description' => 'nullable|string',
             'family_status' => 'nullable|in:single,married,divorced,widow/widower',
-            'family_members' => 'required|integer|min:1',
+            'family_members' => 'nullable|integer|min:1',
             'monthly_income' => 'nullable|numeric|min:0',
             'income_source' => 'nullable|string',
             'is_active' => 'boolean',
+        ], [
+            'name.regex' => 'Nama hanya boleh berisi huruf, spasi, titik, dan tanda petik.',
+            'city.regex' => 'Nama kota/kabupaten hanya boleh berisi huruf dan tidak boleh angka.',
+            'province.regex' => 'Nama provinsi hanya boleh berisi huruf dan tidak boleh angka.',
+            'phone.regex' => 'Nomor telepon harus berupa 10 hingga 15 digit angka.',
+            'nik.regex' => 'NIK harus terdiri dari tepat 16 digit angka.',
+            'nik.unique' => 'NIK ini sudah terdaftar dalam sistem.',
         ]);
 
         $data = $request->all();

@@ -1,109 +1,77 @@
 @if ($payments->count() > 0)
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-[#f0ece6]">
+            <thead style="background: #faf8f5;">
                 <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Kode Pembayaran</th>
+                    <th scope="col" class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Kode Pembayaran</th>
                     @if (auth()->user()->role !== 'muzakki')
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Muzakki</th>
+                        <th scope="col" class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Muzakki</th>
                     @endif
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Jumlah Bayar</th>
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Tanggal</th>
-                    <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
+                    <th scope="col" class="px-5 py-3.5 text-center text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Jumlah Bayar</th>
+                    <th scope="col" class="px-5 py-3.5 text-center text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Status</th>
+                    <th scope="col" class="px-5 py-3.5 text-center text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Tanggal</th>
+                    <th scope="col" class="px-5 py-3.5 text-center text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Aksi</th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-white divide-y divide-[#f0ece6]">
                 @foreach ($payments as $payment)
-                    <tr class="hover:bg-gray-50 transition-colors duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap">
+                    <tr class="hover:bg-[#faf8f5]/60 transition-colors duration-150">
+                        <td class="px-5 py-4 whitespace-nowrap">
                             <div class="flex items-center">
-                                <div class="bg-blue-100 rounded-lg p-2 mr-3">
-                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                                    </svg>
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 border border-[#f0ece6] flex-shrink-0" style="background: #faf8f5;">
+                                    <i class="bi bi-credit-card text-sm" style="color: #c2410c;"></i>
                                 </div>
                                 <div>
-                                    <div class="text-sm font-semibold text-gray-900">{{ $payment->payment_code }}</div>
-                                    <div class="text-sm text-gray-500">{{ $payment->receipt_number }}</div>
+                                    <div class="text-xs font-bold" style="color: #1c0f0a;">{{ $payment->payment_code }}</div>
+                                    <div class="text-[11px]" style="color: #8b7e74;">{{ $payment->receipt_number }}</div>
                                 </div>
                             </div>
                         </td>
                         @if (auth()->user()->role !== 'muzakki')
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-semibold text-gray-900">{{ $payment->muzakki->name }}</div>
+                            <td class="px-5 py-4 whitespace-nowrap">
+                                <div class="text-xs font-bold" style="color: #1c0f0a;">{{ $payment->muzakki->name }}</div>
                                 @if ($payment->muzakki->phone)
-                                    <div class="text-sm text-gray-500">{{ $payment->muzakki->phone }}</div>
+                                    <div class="text-[11px]" style="color: #8b7e74;">{{ $payment->muzakki->phone }}</div>
                                 @endif
                             </td>
                         @endif
-                        <td class="px-6 py-4 whitespace-nowrap text-center">
-                            <div class="text-sm font-bold text-gray-900">Rp {{ number_format($payment->paid_amount, 0, ',', '.') }}</div>
+                        <td class="px-5 py-4 whitespace-nowrap text-center">
+                            <div class="text-xs font-bold text-[#c2410c]">Rp {{ number_format($payment->paid_amount, 0, ',', '.') }}</div>
                             @if ($payment->zakat_amount)
-                                <div class="text-xs text-gray-500">Zakat: Rp {{ number_format($payment->zakat_amount, 0, ',', '.') }}</div>
+                                <div class="text-[11px]" style="color: #8b7e74;">Zakat: Rp {{ number_format($payment->zakat_amount, 0, ',', '.') }}</div>
                             @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                        <td class="px-5 py-4 whitespace-nowrap text-center">
                             @switch($payment->status)
                                 @case('pending')
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Menunggu</span>
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">Menunggu</span>
                                 @break
                                 @case('completed')
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">Selesai</span>
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">Selesai</span>
                                 @break
                                 @case('cancelled')
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Dibatalkan</span>
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fef2f2; color: #dc2626;">Dibatalkan</span>
                                 @break
                                 @default
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{{ ucwords($payment->status) }}</span>
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #8b7e74;">{{ ucwords($payment->status) }}</span>
                             @endswitch
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900">
+                        <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-medium" style="color: #1c0f0a;">
                             {{ $payment->payment_date->format('d M Y') }}
                         </td>
 
-                        <td class="px-6 py-4 whitespace-nowrap text-center">
-                            <div class="flex items-center justify-center space-x-2">
+                        <td class="px-5 py-4 whitespace-nowrap text-center">
+                            <div class="flex items-center justify-center gap-1.5">
                                 <a href="{{ route('payments.show', $payment->payment_code) }}"
-                                    class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-                                    title="Lihat Detail">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                    </svg>
+                                   class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium transition-colors" style="background: #f0ece6; color: #1c0f0a;"
+                                   title="Lihat Detail">
+                                    <i class="bi bi-eye text-xs"></i>
                                 </a>
                                 <a href="{{ route('payments.receipt', $payment) }}"
-                                    class="inline-flex items-center px-3 py-1.5 border border-orange-300 shadow-sm text-sm font-medium rounded-md text-orange-700 bg-white hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200"
-                                    title="Kwitansi" target="_blank">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
+                                   class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium transition-colors border border-[#ffedd5]" style="background: #fff7ed; color: #c2410c;"
+                                   title="Kwitansi" target="_blank">
+                                    <i class="bi bi-file-earmark-pdf text-xs"></i>
                                 </a>
-                                    {{-- Edit button removed as payments.edit route was intentionally disabled --}}
-                                    {{-- <a href="{{ route('payments.edit', $payment) }}"
-                                        class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200"
-                                        title="Edit">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                        </svg>
-                                    </a> --}}
-                                    {{-- Delete button removed as payments.destroy route was intentionally disabled --}}
-                                    {{-- @if ($payment->status !== 'completed')
-                                        <form action="{{ route('payments.destroy', $payment) }}" 
-                                              method="POST" 
-                                            class="inline"
-                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus pembayaran ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                class="inline-flex items-center px-3 py-1.5 border border-red-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
-                                                title="Hapus">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                </svg>
-                                            </button>
-                                        </form>
-                                    @endif --}}
                             </div>
                         </td>
                     </tr>
@@ -113,17 +81,15 @@
     </div>
 
     @if ($payments->hasPages())
-        <div class="px-6 py-4 bg-white border-t border-gray-200">
+        <div class="px-5 py-4 border-t border-[#f0ece6]" style="background: #fff;">
             {{ $payments->withQueryString()->links() }}
         </div>
     @endif
 @else
     <div class="text-center py-12 px-6">
-        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-        </svg>
-        <h5 class="text-lg font-medium text-gray-900 mb-2">Tidak ada data pembayaran</h5>
-        <p class="text-gray-600 mb-4">
+        <i class="bi bi-wallet2 text-4xl mb-2 block" style="color: #d1cbc4;"></i>
+        <p class="text-sm font-semibold mb-0" style="color: #1c0f0a;">Tidak ada data pembayaran</p>
+        <p class="text-xs mt-1 mb-4" style="color: #8b7e74;">
             @if (auth()->user()->role === 'muzakki')
                 Belum ada pembayaran zakat yang tercatat
             @else
@@ -132,11 +98,8 @@
         </p>
         @if (auth()->user()->role === 'muzakki')
             <a href="{{ route('payments.create') }}"
-                class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-colors duration-200">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                </svg>
-                Bayar Zakat Sekarang
+               class="inline-flex items-center px-4 py-2 text-white font-medium rounded-xl transition-colors text-xs shadow-xs" style="background: #c2410c;">
+                <i class="bi bi-plus-circle-fill mr-1.5"></i> Bayar Zakat Sekarang
             </a>
         @endif
     </div>

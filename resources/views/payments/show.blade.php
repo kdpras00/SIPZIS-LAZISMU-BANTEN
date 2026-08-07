@@ -3,29 +3,25 @@
 @section('page-title', 'Detail Pembayaran - ' . $payment->payment_code)
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+<div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">Detail Pembayaran Zakat</h1>
-            <p class="text-gray-600 mt-1">{{ $payment->payment_code }}</p>
+            <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Detail Pembayaran Zakat</h2>
+            <p class="text-sm font-mono" style="color: #8b7e74;">{{ $payment->payment_code }}</p>
         </div>
         <div class="flex gap-2">
+            <a href="{{ route('payments.index') }}"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium transition-colors duration-200"
+                style="background: #f0ece6; color: #1c0f0a;">
+                <i class="bi bi-arrow-left"></i> Kembali
+            </a>
             @if($payment->status === 'completed')
             <a href="{{ route('payments.receipt', $payment) }}" target="_blank" 
-                class="inline-flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
-                <i class="bi bi-receipt mr-2"></i>
-                Kwitansi
+                class="inline-flex items-center px-4 py-2 text-white font-medium rounded-xl transition-colors duration-200 text-xs shadow-xs" style="background: #c2410c;">
+                <i class="bi bi-receipt-cutoff mr-1.5"></i> Kwitansi
             </a>
             @endif
-            {{-- Edit button removed as payments.edit route was intentionally disabled --}}
-            {{-- @if(auth()->user()->role === 'admin' && $payment->status !== 'completed')
-            <a href="{{ route('payments.edit', $payment) }}" 
-                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                <i class="bi bi-pencil mr-2"></i>
-                Edit
-            </a>
-            @endif --}}
         </div>
     </div>
 
@@ -36,7 +32,7 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-gradient-to-r from-orange-600 to-orange-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
-                        <i class="bi bi-credit-card mr-2"></i>
+                        <i class="bi bi-credit-card-fill mr-2"></i>
                         Informasi Pembayaran
                     </h2>
                 </div>
@@ -49,7 +45,7 @@
                                 <div class="flex items-center mt-1">
                                     <p class="text-xl font-bold text-gray-900 font-mono">{{ $payment->payment_code }}</p>
                                     <button class="ml-2 text-gray-400 hover:text-blue-600 transition-colors" onclick="navigator.clipboard.writeText('{{ $payment->payment_code }}')" title="Salin Kode">
-                                        <i class="bi bi-clipboard"></i>
+                                        <i class="bi bi-clipboard-fill"></i>
                                     </button>
                                 </div>
                             </div>
@@ -70,7 +66,7 @@
                                         </div>
                                     @elseif($payment->program)
                                         <div class="flex items-start p-3 bg-blue-50 rounded-lg border border-blue-100">
-                                            <i class="bi bi-box-seam text-blue-600 mt-1 mr-3"></i>
+                                            <i class="bi bi-archive-fill text-blue-600 mt-1 mr-3"></i>
                                             <div>
                                                 <p class="font-semibold text-blue-900">{{ $payment->program->name }}</p>
                                                 <p class="text-xs text-blue-700 mt-1">Program Lazismu</p>
@@ -86,7 +82,7 @@
                                         </div>
                                     @else
                                         <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-100">
-                                            <i class="bi bi-wallet2 text-gray-500 mt-1 mr-3"></i>
+                                            <i class="bi bi-wallet-fill text-gray-500 mt-1 mr-3"></i>
                                             <div>
                                                 <p class="font-semibold text-gray-900">Donasi Umum</p>
                                                 <p class="text-xs text-gray-500 mt-1">Tidak ada program spesifik</p>
@@ -124,7 +120,7 @@
                                         @break
                                         @case('pending')
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                            <i class="bi bi-hourglass-split mr-1.5"></i> Menunggu
+                                            <i class="bi bi-hourglass-fill mr-1.5"></i> Menunggu
                                         </span>
                                         @break
                                         @case('cancelled')
@@ -145,7 +141,7 @@
                                         @switch($payment->payment_method)
                                         @case('cash')
                                         <span class="inline-flex items-center text-sm font-medium text-gray-900">
-                                            <i class="bi bi-cash text-orange-600 mr-2"></i>Tunai
+                                            <i class="bi bi-cash-stack text-orange-600 mr-2"></i>Tunai
                                         </span>
                                         @break
                                         @case('transfer')
@@ -160,7 +156,7 @@
                                         @break
                                         @default
                                         <span class="inline-flex items-center text-sm font-medium text-gray-900">
-                                            <i class="bi bi-credit-card text-gray-600 mr-2"></i>{{ ucfirst($payment->payment_method) }}
+                                            <i class="bi bi-credit-card-fill text-gray-600 mr-2"></i>{{ ucfirst($payment->payment_method) }}
                                         </span>
                                         @endswitch
                                     </div>
@@ -170,10 +166,10 @@
                             <div>
                                 <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Waktu Transaksi</label>
                                 <div class="flex items-center mt-1 text-gray-900">
-                                    <i class="bi bi-calendar3 text-gray-400 mr-2"></i>
+                                    <i class="bi bi-calendar3-fill text-gray-400 mr-2"></i>
                                     <span>{{ $payment->payment_date->format('d F Y') }}</span>
                                     <span class="mx-2 text-gray-300">|</span>
-                                    <i class="bi bi-clock text-gray-400 mr-2"></i>
+                                    <i class="bi bi-clock-fill text-gray-400 mr-2"></i>
                                     <span>{{ $payment->created_at->format('H:i') }} WIB</span>
                                 </div>
                                 @if($payment->hijri_year)
@@ -232,7 +228,7 @@
                     @if($payment->zakat_amount && $payment->paid_amount > $payment->zakat_amount)
                     <div class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
                         <div class="flex items-start">
-                            <i class="bi bi-info-circle text-blue-600 mr-2 mt-0.5"></i>
+                            <i class="bi bi-info-circle-fill text-blue-600 mr-2 mt-0.5"></i>
                             <div>
                                 <strong class="text-blue-900">Kelebihan Pembayaran:</strong>
                                 <p class="text-blue-800 mt-1">Rp {{ number_format($payment->paid_amount - $payment->zakat_amount, 0, ',', '.') }}</p>
@@ -243,7 +239,7 @@
                     @elseif($payment->zakat_amount && $payment->paid_amount < $payment->zakat_amount)
                     <div class="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                         <div class="flex items-start">
-                            <i class="bi bi-exclamation-triangle text-yellow-600 mr-2 mt-0.5"></i>
+                            <i class="bi bi-exclamation-triangle-fill text-yellow-600 mr-2 mt-0.5"></i>
                             <div>
                                 <strong class="text-yellow-900">Kekurangan Pembayaran:</strong>
                                 <p class="text-yellow-800 mt-1">Rp {{ number_format($payment->zakat_amount - $payment->paid_amount, 0, ',', '.') }}</p>
@@ -253,7 +249,7 @@
                     @elseif($payment->zakat_amount)
                     <div class="mt-4 bg-orange-50 border border-orange-200 rounded-lg p-4">
                         <div class="flex items-start">
-                            <i class="bi bi-check-circle text-orange-600 mr-2 mt-0.5"></i>
+                            <i class="bi bi-check-circle-fill text-orange-600 mr-2 mt-0.5"></i>
                             <div>
                                 <strong class="text-orange-900">Pembayaran Pas:</strong>
                                 <p class="text-orange-800 mt-1">Jumlah yang dibayar sesuai dengan kewajiban zakat.</p>
@@ -269,7 +265,7 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-gradient-to-r from-orange-600 to-orange-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
-                        <i class="bi bi-sticky mr-2"></i>
+                        <i class="bi bi-sticky-fill mr-2"></i>
                         Catatan
                     </h2>
                 </div>
@@ -286,7 +282,7 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-gradient-to-r from-orange-600 to-orange-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
-                        <i class="bi bi-person-circle mr-2"></i>
+                        <i class="bi bi-person-fill mr-2"></i>
                         Informasi Muzakki
                     </h2>
                 </div>
@@ -349,7 +345,7 @@
                     <div class="border-t pt-4 mt-4">
                         <a href="{{ route('muzakki.show', $payment->muzakki) }}" 
                             class="w-full inline-flex justify-center items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm">
-                            <i class="bi bi-eye mr-2"></i> Lihat Detail Muzakki
+                            <i class="bi bi-eye-fill mr-2"></i> Lihat Detail Muzakki
                         </a>
                     </div>
                     @endif
@@ -360,7 +356,7 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-gradient-to-r from-orange-600 to-orange-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
-                        <i class="bi bi-clock-history mr-2"></i>
+                        <i class="bi bi-clock-fill mr-2"></i>
                         Timeline Pembayaran
                     </h2>
                 </div>

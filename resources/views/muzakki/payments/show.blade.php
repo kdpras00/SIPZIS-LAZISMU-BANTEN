@@ -7,7 +7,7 @@
     <!-- Header -->
     <div class="mb-6">
         <a href="{{ route('dashboard') }}" class="inline-flex items-center text-gray-700 hover:text-gray-900 mb-3">
-            <i class="bi bi-arrow-left text-xl"></i>
+            <i class="bi bi-arrow-left-circle text-xl"></i>
             <span class="ml-2">Kembali</span>
         </a>
         <div>
@@ -26,17 +26,17 @@
                         @switch($payment->status)
                         @case('completed')
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-orange-100 text-orange-700">
-                            <i class="bi bi-check-circle mr-2"></i>Selesai
+                            <i class="bi bi-check-circle-fill mr-2"></i>Selesai
                         </span>
                         @break
                         @case('pending')
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-amber-100 text-amber-700">
-                            <i class="bi bi-clock mr-2"></i>Menunggu Pembayaran
+                            <i class="bi bi-clock-fill mr-2"></i>Menunggu Pembayaran
                         </span>
                         @break
                         @case('cancelled')
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-red-100 text-red-700">
-                            <i class="bi bi-x-circle mr-2"></i>Dibatalkan
+                            <i class="bi bi-x-circle-fill mr-2"></i>Dibatalkan
                         </span>
                         @break
                         @default
@@ -49,7 +49,7 @@
                 @if($payment->status === 'completed')
                 <a href="{{ route('payments.receipt', $payment) }}" target="_blank" 
                     class="inline-flex items-center px-4 py-2 bg-white text-orange-600 rounded-lg hover:bg-gray-50 transition-colors font-medium">
-                    <i class="bi bi-receipt mr-2"></i>Kwitansi
+                    <i class="bi bi-receipt-cutoff mr-2"></i>Kwitansi
                 </a>
                 @endif
             </div>
@@ -60,7 +60,7 @@
     <div class="bg-white rounded-xl shadow-md mb-6">
         <div class="p-6">
             <h6 class="font-semibold text-gray-900 mb-4 flex items-center">
-                <i class="bi bi-info-circle text-orange-600 mr-2"></i>
+                <i class="bi bi-info-circle-fill text-orange-600 mr-2"></i>
                 Informasi Pembayaran
             </h6>
             <div class="space-y-4">
@@ -95,7 +95,7 @@
                         @switch($payment->payment_method)
                         @case('cash')
                         <span class="inline-flex items-center">
-                            <i class="bi bi-cash mr-1"></i>Tunai
+                            <i class="bi bi-cash-stack mr-1"></i>Tunai
                         </span>
                         @break
                         @case('transfer')
@@ -116,13 +116,13 @@
                 @if($payment->payment_reference)
                 <div class="flex justify-between items-start py-3 border-b border-gray-100">
                     <span class="text-gray-600 text-sm">Referensi</span>
-                    <span class="text-gray-900 font-mono text-sm text-right">{{ $payment->payment_reference }}</span>
+                    <span class="text-gray-900 text-sm text-right">{{ $payment->payment_reference }}</span>
                 </div>
                 @endif
                 @if($payment->receipt_number)
                 <div class="flex justify-between items-start py-3">
                     <span class="text-gray-600 text-sm">No. Kwitansi</span>
-                    <span class="text-gray-900 font-mono text-sm text-right">{{ $payment->receipt_number }}</span>
+                    <span class="text-gray-900 text-sm text-right">{{ $payment->receipt_number }}</span>
                 </div>
                 @endif
             </div>
@@ -155,7 +155,7 @@
     <div class="bg-white rounded-xl shadow-md mb-6">
         <div class="p-6">
             <h6 class="font-semibold text-gray-900 mb-4 flex items-center">
-                <i class="bi bi-clock-history text-orange-600 mr-2"></i>
+                <i class="bi bi-clock-fill text-orange-600 mr-2"></i>
                 Timeline
             </h6>
             <div class="space-y-4">
@@ -203,7 +203,7 @@
     <div class="bg-white rounded-xl shadow-md mb-6">
         <div class="p-6">
             <h6 class="font-semibold text-gray-900 mb-3 flex items-center">
-                <i class="bi bi-sticky text-yellow-600 mr-2"></i>
+                <i class="bi bi-sticky-fill text-yellow-600 mr-2"></i>
                 Catatan
             </h6>
             <p class="text-gray-700 text-sm">{{ $payment->notes }}</p>
@@ -215,7 +215,7 @@
     <div class="flex justify-center mt-6">
         <a href="{{ route('dashboard') }}" 
             class="inline-flex items-center px-6 py-3 bg-orange-600 text-white rounded-full hover:bg-orange-700 transition-colors font-medium">
-            <i class="bi bi-arrow-left mr-2"></i>Kembali ke Dashboard
+            <i class="bi bi-arrow-left-circle mr-2"></i>Kembali ke Dashboard
         </a>
     </div>
 </div>

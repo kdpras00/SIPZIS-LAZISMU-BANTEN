@@ -5,81 +5,114 @@
 @section('content')
 <div class="py-4 px-4 max-w-4xl mx-auto">
     <div class="flex items-center mb-6">
-        <a href="{{ route('dashboard.recurring') }}" class="text-gray-700 mr-3 hover:text-gray-900">
-            <i class="bi bi-arrow-left text-xl"></i>
+        <a href="{{ route('dashboard.recurring') }}" class="text-[#8b7e74] mr-3 hover:text-[#1c0f0a]">
+            <i class="bi bi-arrow-left-circle text-xl"></i>
         </a>
         <div>
-            <h5 class="text-xl font-semibold text-gray-900 mb-1">Buat Donasi Rutin</h5>
-            <p class="text-sm text-gray-600 mb-0">Atur donasi otomatis agar ibadah berbagi tetap konsisten</p>
+            <h5 class="text-xl font-semibold text-[#1c0f0a] mb-1">Buat Donasi Rutin</h5>
+            <p class="text-sm text-[#8b7e74] mb-0">Atur donasi otomatis agar ibadah berbagi tetap konsisten</p>
         </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-lg p-6">
-        <form method="POST" action="{{ route('dashboard.recurring-donations.store') }}" class="space-y-5">
+    <div class="bg-white rounded-2xl shadow-lg p-6 border border-[#f0ece6]">
+        <form method="POST" action="{{ route('dashboard.recurring-donations.store') }}" id="recurringForm" class="space-y-5">
             @csrf
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Program</label>
-                <select name="program_id" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
-                    <option value="">Pilih program</option>
-                    @foreach($programs as $program)
-                        <option value="{{ $program->id }}" {{ old('program_id') == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
-                    @endforeach
-                </select>
+                <label class="block text-xs font-semibold text-[#1c0f0a] mb-1.5">Program Donasi <span class="text-red-500">*</span></label>
+                @php
+                    $progOptions = [];
+                    foreach ($programs as $prog) {
+                        $progOptions[$prog->id] = $prog->name;
+                    }
+                @endphp
+                <x-custom-select
+                    id="program_id"
+                    name="program_id"
+                    placeholder="Pilih Program Donasi"
+                    :selected="old('program_id')"
+                    :options="$progOptions"
+                />
             </div>
+
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nominal donasi</label>
-                <input type="number" min="10000" name="amount" value="{{ old('amount') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200" placeholder="Minimal Rp10.000" required>
+                <label class="block text-xs font-semibold text-[#1c0f0a] mb-1.5">Nominal Donasi (Minimal Rp10.000) <span class="text-red-500">*</span></label>
+                <div class="relative">
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold" style="color: #8b7e74;">Rp</span>
+                    <input type="text" id="amount_display"
+                        class="w-full h-11 pl-10 pr-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-bold text-[#c2410c] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none"
+                        value="{{ old('amount') ? number_format(old('amount'), 0, ',', '.') : '' }}"
+                        placeholder="10.000" required>
+                    <input type="hidden" id="amount" name="amount" value="{{ old('amount') }}">
+                </div>
             </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Frekuensi</label>
-                    <select name="frequency" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
-                        <option value="monthly" {{ old('frequency') === 'monthly' ? 'selected' : '' }}>Bulanan</option>
-                        <option value="weekly" {{ old('frequency') === 'weekly' ? 'selected' : '' }}>Mingguan</option>
-                    </select>
+                    <label class="block text-xs font-semibold text-[#1c0f0a] mb-1.5">Frekuensi Donasi <span class="text-red-500">*</span></label>
+                    <x-custom-select
+                        id="frequency"
+                        name="frequency"
+                        placeholder="Pilih Frekuensi"
+                        :selected="old('frequency', 'monthly')"
+                        :options="['monthly' => 'Bulanan', 'weekly' => 'Mingguan']"
+                    />
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Mulai tanggal</label>
-                    <input type="date" name="start_date" value="{{ old('start_date') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200">
+                    <label class="block text-xs font-semibold text-[#1c0f0a] mb-1.5">Mulai Tanggal <span class="text-red-500">*</span></label>
+                    <x-custom-date-picker
+                        id="start_date"
+                        name="start_date"
+                        :value="old('start_date', date('Y-m-d'))"
+                        placeholder="Pilih Tanggal Mulai"
+                    />
                 </div>
             </div>
+
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Catatan (opsional)</label>
-                <textarea name="notes" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-orange-500 focus:ring-2 focus:ring-orange-200" placeholder="Tambahkan doa atau niat khusus">{{ old('notes') }}</textarea>
+                <label class="block text-xs font-semibold text-[#1c0f0a] mb-1.5">Catatan / Doa (Opsional)</label>
+                <textarea name="notes" rows="3"
+                    class="w-full p-3 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none"
+                    placeholder="Tambahkan doa atau niat khusus">{{ old('notes') }}</textarea>
             </div>
-            <div class="flex items-center justify-between pt-4">
-                <a href="{{ route('dashboard.recurring') }}" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">Batal</a>
-                <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-orange-600 rounded-lg hover:bg-orange-700 transition-colors">Simpan</button>
+
+            <div class="flex items-center justify-between pt-4 border-t border-[#f0ece6]">
+                <a href="{{ route('dashboard.recurring') }}" class="px-5 py-2.5 text-xs font-semibold text-[#1c0f0a] bg-[#f0ece6] rounded-xl transition-colors">Batal</a>
+                <button type="submit" class="px-6 py-2.5 text-xs font-semibold text-white bg-[#c2410c] rounded-xl transition-colors shadow-xs">Simpan Donasi Rutin</button>
             </div>
         </form>
     </div>
 </div>
 
-<div class="bg-white rounded-t-xl shadow-lg fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-4xl z-50 border-t border-gray-200">
-    <div class="flex justify-around items-center text-center py-4">
-        <a href="{{ route('home') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-            <i class="bi bi-house text-xl block mb-1"></i>
-            <small class="text-xs">Home</small>
-        </a>
-        <a href="{{ route('donation') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-            <i class="bi bi-heart text-xl block mb-1"></i>
-            <small class="text-xs">Donasi</small>
-        </a>
-        <a href="{{ route('fundraising') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-            <i class="bi bi-box-seam text-xl block mb-1"></i>
-            <small class="text-xs">Galang Dana</small>
-        </a>
-        <a href="{{ route('amalanku') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-            <i class="bi bi-person text-xl block mb-1"></i>
-            <small class="text-xs">Amalanku</small>
-        </a>
-    </div>
-</div>
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const amountDisplay = document.getElementById('amount_display');
+    const amountRaw = document.getElementById('amount');
+    const form = document.getElementById('recurringForm');
 
-<style>
-    body {
-        padding-bottom: 80px !important;
+    if (amountDisplay && amountRaw) {
+        amountDisplay.addEventListener('input', function() {
+            let val = this.value.replace(/[^\d]/g, '');
+            amountRaw.value = val;
+            this.value = val ? parseInt(val).toLocaleString('id-ID') : '';
+        });
     }
-</style>
-@endsection
 
+    form.addEventListener('submit', function(e) {
+        const val = parseFloat(amountRaw.value) || 0;
+        if (val < 10000) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Nominal Kurang',
+                text: 'Nominal donasi rutin minimal Rp 10.000!',
+                confirmButtonColor: '#c2410c'
+            });
+            amountDisplay.focus();
+            return false;
+        }
+    });
+});
+</script>
+@endpush
+@endsection

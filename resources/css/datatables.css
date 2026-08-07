@@ -1,0 +1,106 @@
+/*
+ * SIPZIS DataTables — theme overrides
+ * Burnt-clay design system: accent #c2410c, bg #faf8f5, border #f0ece6
+ */
+
+/* ── Responsive +/- child-row toggle ── */
+table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control {
+    cursor: pointer;
+    position: relative;
+    padding-left: 38px !important;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control::before,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control::before {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid #c2410c;
+    border-radius: 50%;
+    content: '+';
+    color: #c2410c;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    background: #fff7ed;
+    box-shadow: 0 1px 2px rgba(194,65,12,0.10);
+    transition: background 0.15s, color 0.15s;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr.dtr-expanded > td.dtr-control::before,
+table.dataTable.dtr-inline.collapsed > tbody > tr.dtr-expanded > th.dtr-control::before {
+    content: '-';
+    background: #c2410c;
+    color: #fff;
+    border-color: #c2410c;
+}
+
+/* ── Child row container ── */
+table.dataTable > tbody > tr.child {
+    background: #faf8f5 !important;
+}
+
+table.dataTable > tbody > tr.child td.child {
+    padding: 10px 16px 10px 38px;
+    background: #faf8f5;
+}
+
+/* ── Child row detail list ── */
+table.dataTable > tbody > tr.child td.child ul.dtr-details {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+table.dataTable > tbody > tr.child td.child ul.dtr-details > li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0ece6;
+    font-size: 0.8125rem;
+}
+
+table.dataTable > tbody > tr.child td.child ul.dtr-details > li:last-child {
+    border-bottom: none;
+}
+
+table.dataTable > tbody > tr.child td.child ul.dtr-details > li span.dtr-title {
+    font-weight: 600;
+    color: #8b7e74;
+    min-width: 130px;
+    flex-shrink: 0;
+}
+
+table.dataTable > tbody > tr.child td.child ul.dtr-details > li span.dtr-data {
+    color: #1c0f0a;
+    flex: 1;
+    min-width: 0;
+}
+
+/* ── Strip DT default margins / padding ── */
+div.dataTables_wrapper {
+    margin: 0;
+    padding: 0;
+}
+
+div.dataTables_wrapper div.dataTables_length,
+div.dataTables_wrapper div.dataTables_filter,
+div.dataTables_wrapper div.dataTables_info,
+div.dataTables_wrapper div.dataTables_paginate {
+    display: none; /* we manage search/paging ourselves */
+}
+
+/* ── Hover on expanded row ── */
+table.dataTable > tbody > tr.dtr-expanded:hover > td,
+table.dataTable > tbody > tr.dtr-expanded:hover > th {
+    background: #fff7ed !important;
+}

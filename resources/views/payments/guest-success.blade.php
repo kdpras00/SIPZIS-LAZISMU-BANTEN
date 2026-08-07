@@ -140,36 +140,32 @@
                 @endif
 
                 <!-- Action Buttons -->
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
                     <a href="{{ route('guest.payment.receipt.download', $payment->payment_code) }}"
-                        class="bg-gradient-to-r from-orange-600 to-orange-600 text-white w-[280px] px-12 py-3 rounded-2xl
-               hover:from-orange-700 hover:to-orange-700 transition-all duration-300 font-bold shadow-lg
-               hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center whitespace-nowrap">
-                        <i class="fas fa-download mr-2"></i>
+                        class="inline-flex items-center justify-center gap-2 w-full sm:w-auto text-sm font-semibold text-white px-8 py-3 rounded-xl transition-colors duration-200 whitespace-nowrap"
+                        style="background: #c2410c;">
+                        <i class="fas fa-download"></i>
                         Unduh Kwitansi
                     </a>
 
                     <a href="{{ route('guest.payment.receipt', $payment->payment_code) }}"
-                        class="bg-gradient-to-r from-orange-600 to-orange-600 text-white w-[280px] px-12 py-3 rounded-2xl
-               hover:from-orange-700 hover:to-orange-700 transition-all duration-300 font-bold shadow-lg
-               hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center whitespace-nowrap">
-                        <i class="fas fa-eye mr-2"></i>
+                        class="inline-flex items-center justify-center gap-2 w-full sm:w-auto text-sm font-semibold text-white px-8 py-3 rounded-xl transition-colors duration-200 whitespace-nowrap"
+                        style="background: #c2410c;">
+                        <i class="fas fa-eye"></i>
                         Lihat Kwitansi
                     </a>
 
                     <a href="{{ route('guest.payment.create') }}"
-                        class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white w-[280px] px-12 py-3 rounded-2xl
-               hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-bold shadow-lg
-               hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center whitespace-nowrap">
-                        <i class="fas fa-plus mr-2"></i>
+                        class="inline-flex items-center justify-center gap-2 w-full sm:w-auto text-sm font-semibold px-8 py-3 rounded-xl transition-colors duration-200 whitespace-nowrap"
+                        style="background: #f0ece6; color: #1c0f0a;">
+                        <i class="fas fa-plus"></i>
                         Bayar Lagi
                     </a>
 
                     <a href="{{ route('home') }}"
-                        class="bg-gradient-to-r from-gray-500 to-gray-600 text-white w-[280px] px-12 py-3 rounded-2xl
-               hover:from-gray-600 hover:to-gray-700 transition-all duration-300 font-bold shadow-lg
-               hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center whitespace-nowrap">
-                        <i class="fas fa-home mr-2"></i>
+                        class="inline-flex items-center justify-center gap-2 w-full sm:w-auto text-sm font-semibold px-8 py-3 rounded-xl transition-colors duration-200 whitespace-nowrap"
+                        style="background: #f0ece6; color: #1c0f0a;">
+                        <i class="fas fa-home"></i>
                         Kembali ke Beranda
                     </a>
                 </div>

@@ -69,25 +69,31 @@ class MuzakkiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
             'email' => 'nullable|email|unique:muzakki,email',
-            'phone' => 'nullable|string|max:20',
+            'phone' => ['nullable', 'string', 'regex:/^[0-9]{10,15}$/'],
+            'nik' => ['nullable', 'string', 'regex:/^[0-9]{16}$/', 'unique:muzakki,nik'],
             'gender' => 'required|in:male,female',
             'address' => 'nullable|string',
-            'city' => 'nullable|string|max:255',
-            'province' => 'nullable|string|max:255',
-            'district' => 'nullable|string|max:255',
-            'village' => 'nullable|string|max:255',
+            'city' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'province' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'district' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'village' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
             'postal_code' => 'nullable|string|digits:5',
-            'occupation' => 'nullable|string|max:100',
+            'occupation' => ['nullable', 'string', 'max:100', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
             'date_of_birth' => 'nullable|date',
-            'country' => 'required|string|max:255', // Add country validation
-            'bio' => 'nullable|string', // Add bio validation
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Add profile photo validation
-            'ktp_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Add KTP photo validation
             'create_user_account' => 'boolean',
             'password' => 'required_if:create_user_account,1|nullable|string|min:8',
         ], [
+            'name.regex' => 'Nama hanya boleh berisi huruf, spasi, titik, dan tanda petik.',
+            'city.regex' => 'Nama kota/kabupaten hanya boleh berisi huruf dan tidak boleh angka.',
+            'province.regex' => 'Nama provinsi hanya boleh berisi huruf dan tidak boleh angka.',
+            'district.regex' => 'Nama kecamatan hanya boleh berisi huruf dan tidak boleh angka.',
+            'village.regex' => 'Nama kelurahan hanya boleh berisi huruf dan tidak boleh angka.',
+            'occupation.regex' => 'Nama pekerjaan hanya boleh berisi huruf dan tidak boleh angka.',
+            'phone.regex' => 'Nomor telepon harus berupa 10 hingga 15 digit angka.',
+            'nik.regex' => 'NIK harus terdiri dari tepat 16 digit angka.',
+            'nik.unique' => 'NIK ini sudah terdaftar dalam sistem.',
             'postal_code.digits' => 'Kode pos harus terdiri dari 5 digit angka.',
         ]);
 
@@ -183,7 +189,7 @@ class MuzakkiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Muzakki $muzakki = null)
+    public function edit(?Muzakki $muzakki = null)
     {
         // If no muzakki is provided, get current user's muzakki profile (for profile editing)
         if (!$muzakki) {
@@ -203,20 +209,14 @@ class MuzakkiController extends Controller
             }
         }
 
-        // Check if the current user is an admin
-    if (Auth::user()->role === 'admin') {
-        // Admin always sees the admin-specific view, whether editing their own profile or others
-        return view('muzakki.edit-admin', compact('muzakki'));
-    }
-
-    // Regular muzakki editing their own profile - use profile edit view
-    return view('muzakki.edit', compact('muzakki'));
+        // Return the unified profile edit view for both admin & muzakki
+        return view('muzakki.edit', compact('muzakki'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Muzakki $muzakki = null)
+    public function update(Request $request, ?Muzakki $muzakki = null)
     {
         // If no muzakki is provided, get current user's muzakki profile
         if (!$muzakki) {
@@ -264,45 +264,53 @@ class MuzakkiController extends Controller
 
         // Validation rules
         $rules = [
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
             'email' => [
-                'required', // Make email required
+                'required',
                 'email',
                 Rule::unique('muzakki')->ignore($muzakki->id),
                 Rule::unique('users')->ignore($muzakki->user_id),
             ],
             'phone' => [
-                'required',
+                'nullable',
                 'string',
-                'max:20',
-                Rule::unique('users')->ignore($muzakki->user_id),
+                'regex:/^[0-9]{10,15}$/',
             ],
             'nik' => [
                 'nullable',
                 'string',
-                'max:20',
+                'regex:/^[0-9]{16}$/',
                 Rule::unique('muzakki')->ignore($muzakki->id),
             ],
             'gender' => 'required|in:male,female',
             'address' => 'nullable|string',
-            'city' => 'nullable|string|max:255',
-            'province' => 'nullable|string|max:255',
-            'district' => 'nullable|string|max:255',
-            'village' => 'nullable|string|max:255',
-            'postal_code' => 'nullable|string|max:10',
-            'occupation' => 'nullable|string|max:100',
+            'city' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'province' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'district' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'village' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
+            'postal_code' => 'nullable|string|digits:5',
+            'occupation' => ['nullable', 'string', 'max:100', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
             'monthly_income' => 'nullable|numeric|min:0',
             'date_of_birth' => 'nullable|date',
             'bio' => 'nullable|string',
             'is_active' => 'boolean',
             'country' => 'nullable|string|max:255',
             'campaign_url' => 'nullable|url|max:500',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Add profile photo validation
-            'ktp_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Add KTP photo validation
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'ktp_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
 
         $request->validate($rules, [
-            'postal_code.max' => 'Kode pos maksimal 10 karakter.',
+            'name.regex' => 'Nama hanya boleh berisi huruf, spasi, titik, dan tanda petik.',
+            'city.regex' => 'Nama kota/kabupaten hanya boleh berisi huruf dan tidak boleh angka.',
+            'province.regex' => 'Nama provinsi hanya boleh berisi huruf dan tidak boleh angka.',
+            'district.regex' => 'Nama kecamatan hanya boleh berisi huruf dan tidak boleh angka.',
+            'village.regex' => 'Nama kelurahan hanya boleh berisi huruf dan tidak boleh angka.',
+            'occupation.regex' => 'Nama pekerjaan hanya boleh berisi huruf dan tidak boleh angka.',
+            'phone.regex' => 'Nomor telepon harus berupa 10 hingga 15 digit angka.',
+            'nik.regex' => 'NIK harus terdiri dari tepat 16 digit angka.',
+            'nik.unique' => 'NIK ini sudah terdaftar dalam sistem.',
+            'postal_code.digits' => 'Kode pos harus terdiri dari 5 digit angka.',
         ]);
 
         // Construct date_of_birth from parts if available

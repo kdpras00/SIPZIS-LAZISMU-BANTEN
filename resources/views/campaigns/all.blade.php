@@ -7,12 +7,12 @@
 @endsection
 
 @section('content')
-<div class="min-h-screen relative bg-gray-50 pb-20 pt-10 overflow-hidden">
+<div class="min-h-screen relative bg-gray-50 pb-20 pt-28 overflow-hidden">
     
     <!-- Background Image & Overlay -->
     <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-cover bg-center opacity-10"
-             style="background-image: url('{{ asset('img/masjid.webp') }}');">
+             style="background-image: url('{{ asset('img/masjidbanten.png') }}');">
         </div>
         <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/80 to-white/60"></div>
     </div>
@@ -20,9 +20,7 @@
     <div class="container relative z-10 mx-auto px-4 max-w-7xl">
         <!-- Header Section -->
         <div class="text-center mb-16 pt-10 animate-fadeInUp">
-            <span class="inline-block px-4 py-1.5 rounded-full bg-orange-100 text-orange-600 text-sm font-bold mb-4 border border-white/20 backdrop-blur-sm">
-                MARI BERBAGI KEBAIKAN
-            </span>
+            
             <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                 Daftar Program & Campaign
             </h1>
@@ -48,11 +46,6 @@
                 </div>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Belum Ada Campaign</h3>
                 <p class="text-gray-500">Mohon maaf, saat ini belum ada campaign yang tersedia.</p>
-                <div class="mt-8">
-                    <a href="{{ route('home') }}" class="inline-flex items-center text-orange-600 font-semibold hover:text-orange-700">
-                        <i class="bi bi-arrow-left mr-2"></i> Kembali ke Beranda
-                    </a>
-                </div>
             </div>
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
@@ -77,7 +70,7 @@
                                 $categoryTitle = $categoryNames[$campaign->program_category] ?? ucfirst($campaign->program_category);
                                 
                                 // Image Logic
-                                $imageUrl = asset('img/masjid.webp'); // Default
+                                $imageUrl = asset('img/masjidbanten.png'); // Default
                                 if ($campaign->photo) {
                                     if (filter_var($campaign->photo, FILTER_VALIDATE_URL)) {
                                         $imageUrl = $campaign->photo;

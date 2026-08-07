@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use App\Services\WhatsAppService;
+use App\Jobs\SendPaymentNotificationJob;
 
 class ZakatPaymentObserver
 {
@@ -41,17 +42,8 @@ class ZakatPaymentObserver
             $this->updateCampaignAndProgramTotals($zakatPayment);
         }
 
-        // Send notifications based on payment status
-        // For pending status: only send WhatsApp (no email to avoid spam)
-        // For other statuses: send both email and WhatsApp
-        if ($zakatPayment->status === 'pending') {
-            // Send WhatsApp notification for pending payments
-            $this->sendWhatsAppNotification($zakatPayment);
-        } else {
-            // Send both email and WhatsApp for non-pending statuses
-            $this->sendPaymentEmail($zakatPayment);
-            $this->sendWhatsAppNotification($zakatPayment);
-        }
+        // Dispatch asynchronous notification job (Decoupled network I/O)
+        SendPaymentNotificationJob::dispatch($zakatPayment);
     }
 
     /**
@@ -66,22 +58,12 @@ class ZakatPaymentObserver
 
         // Send notifications when payment status changes
         if ($zakatPayment->isDirty('status')) {
-            // Get the original status before update
             $originalStatus = $zakatPayment->getOriginal('status');
             $newStatus = $zakatPayment->status;
 
-            // Only send notifications if status actually changed
             if ($originalStatus !== $newStatus) {
-                // For pending status: only send WhatsApp (no email to avoid spam)
-                // For other statuses: send both email and WhatsApp
-                if ($newStatus === 'pending') {
-                    // Send WhatsApp notification for pending payments
-                    $this->sendWhatsAppNotification($zakatPayment);
-                } else {
-                    // Send both email and WhatsApp for non-pending statuses
-                    $this->sendPaymentEmail($zakatPayment);
-                    $this->sendWhatsAppNotification($zakatPayment);
-                }
+                // Dispatch asynchronous notification job (Decoupled network I/O)
+                SendPaymentNotificationJob::dispatch($zakatPayment, $originalStatus);
             }
         }
     }

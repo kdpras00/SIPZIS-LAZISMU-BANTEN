@@ -1,44 +1,57 @@
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <i class="bi bi-check-circle-fill me-2"></i>
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    @if(session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: @json(session('success')),
+            confirmButtonColor: '#c2410c',
+            customClass: { popup: 'rounded-2xl' }
+        });
+    @endif
 
-@if(session('error'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="bi bi-exclamation-circle-fill me-2"></i>
-    {{ session('error') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
+    @if(session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: @json(session('error')),
+            confirmButtonColor: '#c2410c',
+            customClass: { popup: 'rounded-2xl' }
+        });
+    @endif
 
-@if(session('warning'))
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-    {{ session('warning') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
+    @if(session('warning'))
+        Swal.fire({
+            icon: 'warning',
+            title: 'Perhatian',
+            text: @json(session('warning')),
+            confirmButtonColor: '#c2410c',
+            customClass: { popup: 'rounded-2xl' }
+        });
+    @endif
 
-@if(session('info'))
-<div class="alert alert-info alert-dismissible fade show" role="alert">
-    <i class="bi bi-info-circle-fill me-2"></i>
-    {{ session('info') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
+    @if(session('info'))
+        Swal.fire({
+            icon: 'info',
+            title: 'Informasi',
+            text: @json(session('info')),
+            confirmButtonColor: '#c2410c',
+            customClass: { popup: 'rounded-2xl' }
+        });
+    @endif
 
-@if($errors->any())
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="bi bi-exclamation-circle-fill me-2"></i>
-    <strong>Terjadi kesalahan:</strong>
-    <ul class="mb-0 mt-2">
-        @foreach($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
+    @if($errors->any())
+        const errorList = {!! json_encode($errors->all()) !!};
+        const htmlContent = `<ul class="text-left text-xs text-red-600 list-disc pl-4 space-y-1">${errorList.map(err => `<li>${err}</li>`).join('')}</ul>`;
+        Swal.fire({
+            icon: 'error',
+            title: 'Terjadi Kesalahan Validasi',
+            html: htmlContent,
+            confirmButtonColor: '#c2410c',
+            customClass: { popup: 'rounded-2xl' }
+        });
+    @endif
+});
+</script>
+@endpush

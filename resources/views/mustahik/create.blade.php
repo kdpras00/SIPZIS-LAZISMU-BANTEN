@@ -3,345 +3,258 @@
 @section('page-title', 'Tambah Mustahik')
 
 @section('content')
-    <div class="flex justify-between items-center mb-6">
+<div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
+    {{-- Header --}}
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
-            <h2 class="text-2xl font-semibold mb-1 text-gray-900">Tambah Mustahik Baru</h2>
-            <p class="text-gray-500 text-sm">Menambahkan data mustahik (penerima zakat) baru ke dalam sistem</p>
+            <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Tambah Mustahik Baru</h2>
+            <p class="text-sm" style="color: #8b7e74;">Menambahkan data mustahik (penerima zakat) baru ke dalam sistem</p>
         </div>
-        <div>
-            <a href="{{ route('mustahik.index') }}"
-                class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-medium rounded-lg transition-colors duration-200">
-                <i class="bi bi-arrow-left mr-2"></i> Kembali
-            </a>
-        </div>
+        <a href="{{ route('mustahik.index') }}"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium transition-colors duration-200"
+            style="background: #f0ece6; color: #1c0f0a;">
+            <i class="bi bi-arrow-left"></i> Kembali
+        </a>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="lg:col-span-2">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-                <div class="px-6 py-4 border-b border-gray-200 bg-white">
-                    <h5 class="text-lg font-semibold text-gray-900 mb-0">
-                        <i class="bi bi-person-heart mr-2"></i> Form Data Mustahik
-                    </h5>
-                </div>
-                <div class="p-6">
-                    <form action="{{ route('mustahik.store') }}" method="POST" id="mustahikForm">
-                        @csrf
+    <div class="rounded-2xl p-5 sm:p-6 bg-white border border-[#f0ece6]" style="box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+        <form action="{{ route('mustahik.store') }}" method="POST" id="mustahikForm">
+            @csrf
 
-                        <!-- Personal Information Section -->
-                        <div class="mb-6">
-                            <h6 class="text-blue-600 font-semibold mb-4 flex items-center">
-                                <i class="bi bi-person-circle mr-2"></i> Informasi Personal
-                            </h6>
+            {{-- Personal Information Section --}}
+            <div class="mb-6">
+                <h6 class="text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2" style="color: #c2410c;">
+                    <i class="bi bi-person-fill text-sm"></i> Informasi Personal
+                </h6>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Nama Lengkap <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('name') border-red-500 @enderror"
-                                        id="name" name="name" value="{{ old('name') }}" required>
-                                    @error('name')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label for="nik" class="block text-sm font-medium text-gray-700 mb-2">NIK</label>
-                                    <input type="text"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('nik') border-red-500 @enderror"
-                                        id="nik" name="nik" value="{{ old('nik') }}" maxlength="16"
-                                        placeholder="1234567890123456">
-                                    @error('nik')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label for="gender" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Jenis Kelamin <span class="text-red-500">*</span>
-                                    </label>
-                                    <select
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white @error('gender') border-red-500 @enderror"
-                                        id="gender" name="gender" required>
-                                        <option value="">Pilih Jenis Kelamin</option>
-                                        <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Laki-laki
-                                        </option>
-                                        <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Perempuan
-                                        </option>
-                                    </select>
-                                    @error('gender')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label for="date_of_birth" class="block text-sm font-medium text-gray-700 mb-2">Tanggal
-                                        Lahir</label>
-                                    <input type="date"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('date_of_birth') border-red-500 @enderror"
-                                        id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth') }}">
-                                    @error('date_of_birth')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="md:w-1/2">
-                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Nomor
-                                    Telepon</label>
-                                <input type="text"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('phone') border-red-500 @enderror"
-                                    id="phone" name="phone" value="{{ old('phone') }}" placeholder="08xxxxxxxxxx">
-                                @error('phone')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <!-- Address Information Section -->
-                        <div class="mb-6">
-                            <h6 class="text-blue-600 font-semibold mb-4 flex items-center">
-                                <i class="bi bi-geo-alt mr-2"></i> Informasi Alamat
-                            </h6>
-
-                            <div class="mb-4">
-                                <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Alamat
-                                    Lengkap</label>
-                                <textarea
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('address') border-red-500 @enderror"
-                                    id="address" name="address" rows="3" placeholder="Jalan, RT/RW, Kelurahan, Kecamatan">{{ old('address') }}</textarea>
-                                @error('address')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="city"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Kota/Kabupaten</label>
-                                    <input type="text"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('city') border-red-500 @enderror"
-                                        id="city" name="city" value="{{ old('city') }}" placeholder="Jakarta">
-                                    @error('city')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label for="province"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Provinsi</label>
-                                    <input type="text"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('province') border-red-500 @enderror"
-                                        id="province" name="province" value="{{ old('province') }}"
-                                        placeholder="DKI Jakarta">
-                                    @error('province')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Category Information Section -->
-                        <div class="mb-6">
-                            <h6 class="text-blue-600 font-semibold mb-4 flex items-center">
-                                <i class="bi bi-tags mr-2"></i> Kategori Mustahik (Asnaf)
-                            </h6>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Kategori <span class="text-red-500">*</span>
-                                    </label>
-                                    <select
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white @error('category') border-red-500 @enderror"
-                                        id="category" name="category" required>
-                                        <option value="">Pilih Kategori</option>
-                                        @foreach ($categories as $key => $label)
-                                            <option value="{{ $key }}"
-                                                {{ old('category') == $key ? 'selected' : '' }}>
-                                                {{ ucfirst(str_replace('_', ' ', $key)) }} -
-                                                {{ explode(' - ', $label)[1] ?? $label }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('category')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label for="family_members" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Jumlah Anggota Keluarga <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="number"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('family_members') border-red-500 @enderror"
-                                        id="family_members" name="family_members" value="{{ old('family_members', 1) }}"
-                                        min="1" required>
-                                    @error('family_members')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div>
-                                <label for="category_description"
-                                    class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Kondisi</label>
-                                <textarea
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('category_description') border-red-500 @enderror"
-                                    id="category_description" name="category_description" rows="3"
-                                    placeholder="Jelaskan kondisi yang dialami...">{{ old('category_description') }}</textarea>
-                                @error('category_description')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <!-- Family & Economic Information Section -->
-                        <div class="mb-6">
-                            <h6 class="text-blue-600 font-semibold mb-4 flex items-center">
-                                <i class="bi bi-house-heart mr-2"></i> Informasi Keluarga & Ekonomi
-                            </h6>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label for="family_status" class="block text-sm font-medium text-gray-700 mb-2">Status
-                                        Keluarga</label>
-                                    <select
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white @error('family_status') border-red-500 @enderror"
-                                        id="family_status" name="family_status">
-                                        <option value="">Pilih Status Keluarga</option>
-                                        <option value="single" {{ old('family_status') == 'single' ? 'selected' : '' }}>
-                                            Lajang</option>
-                                        <option value="married" {{ old('family_status') == 'married' ? 'selected' : '' }}>
-                                            Menikah</option>
-                                        <option value="divorced"
-                                            {{ old('family_status') == 'divorced' ? 'selected' : '' }}>Cerai</option>
-                                        <option value="widow/widower"
-                                            {{ old('family_status') == 'widow/widower' ? 'selected' : '' }}>Janda/Duda
-                                        </option>
-                                    </select>
-                                    @error('family_status')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label for="monthly_income"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Penghasilan Bulanan</label>
-                                    <input type="number"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('monthly_income') border-red-500 @enderror"
-                                        id="monthly_income" name="monthly_income" value="{{ old('monthly_income') }}"
-                                        min="0" placeholder="0">
-                                    @error('monthly_income')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div>
-                                <label for="income_source" class="block text-sm font-medium text-gray-700 mb-2">Sumber
-                                    Penghasilan</label>
-                                <input type="text"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('income_source') border-red-500 @enderror"
-                                    id="income_source" name="income_source" value="{{ old('income_source') }}"
-                                    placeholder="Buruh harian, pedagang kecil, tidak bekerja, dll">
-                                @error('income_source')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end gap-4 mt-8">
-                            <a href="{{ route('mustahik.index') }}"
-                                class="px-6 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-100 transition-all">
-                                Batal
-                            </a>
-                            <button type="submit"
-                                class="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-all flex items-center">
-                                <i class="bi bi-save mr-2"></i> Simpan Data
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="lg:col-span-1">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-                <div class="px-6 py-4 bg-blue-600 text-white rounded-t-lg">
-                    <h6 class="text-lg font-semibold mb-0">
-                        <i class="bi bi-info-circle mr-2"></i> 8 Asnaf (Kategori Mustahik)
-                    </h6>
-                </div>
-                <div class="p-6">
-                    <div class="text-sm text-gray-600 space-y-2">
-                        <ul class="list-none space-y-2">
-                            <li><strong class="text-gray-900">Fakir:</strong> Yang tidak memiliki harta/pekerjaan</li>
-                            <li><strong class="text-gray-900">Miskin:</strong> Yang memiliki harta/pekerjaan tapi tidak
-                                mencukupi</li>
-                            <li><strong class="text-gray-900">Amil:</strong> Petugas pengumpul dan pembagi zakat</li>
-                            <li><strong class="text-gray-900">Muallaf:</strong> Yang baru masuk Islam</li>
-                            <li><strong class="text-gray-900">Riqab:</strong> Memerdekakan budak/tawanan</li>
-                            <li><strong class="text-gray-900">Gharim:</strong> Yang berutang untuk kebaikan</li>
-                            <li><strong class="text-gray-900">Fi Sabilillah:</strong> Untuk kepentingan umum di jalan Allah
-                            </li>
-                            <li><strong class="text-gray-900">Ibnu Sabil:</strong> Musafir yang kehabisan bekal</li>
-                        </ul>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="name" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Nama Lengkap <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="name" name="name"
+                            class="w-full h-11 px-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none @error('name') border-red-500 @enderror"
+                            placeholder="Masukkan nama lengkap (huruf saja)"
+                            value="{{ old('name') }}" required>
+                        @error('name')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
-                        <div class="flex items-start">
-                            <i class="bi bi-exclamation-triangle mr-2 mt-0.5"></i>
-                            <span>Pastikan kategori sesuai dengan kondisi mustahik yang sebenarnya.</span>
-                        </div>
+                    <div>
+                        <label for="nik" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            NIK (Wajib Tepat 16 Angka)
+                        </label>
+                        <input type="text" id="nik" name="nik"
+                            class="w-full h-11 px-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none @error('nik') border-red-500 @enderror"
+                            placeholder="16 digit angka NIK"
+                            maxlength="16"
+                            value="{{ old('nik') }}">
+                        @error('nik')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="phone" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Nomor Telepon (10 - 15 Angka)
+                        </label>
+                        <input type="text" id="phone" name="phone"
+                            class="w-full h-11 px-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none @error('phone') border-red-500 @enderror"
+                            placeholder="08xxxxxxxxxx"
+                            maxlength="15"
+                            value="{{ old('phone') }}">
+                        @error('phone')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="category" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Kategori Mustahik (8 Asnaf) <span class="text-red-500">*</span>
+                        </label>
+                        <x-custom-select
+                            id="category"
+                            name="category"
+                            placeholder="Pilih Kategori Asnaf"
+                            :selected="old('category')"
+                            :options="[
+                                'fakir' => 'Fakir',
+                                'miskin' => 'Miskin',
+                                'amil' => 'Amil',
+                                'muallaf' => 'Muallaf',
+                                'riqab' => 'Riqab (Hamba Sahaya)',
+                                'gharim' => 'Gharim (Orang Berhutang)',
+                                'fisabilillah' => 'Fisabilillah',
+                                'ibnu_sabil' => 'Ibnu Sabil (Musafir)'
+                            ]"
+                        />
+                        @error('category')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="gender" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Jenis Kelamin
+                        </label>
+                        <x-custom-select
+                            id="gender"
+                            name="gender"
+                            placeholder="Pilih Jenis Kelamin"
+                            :selected="old('gender')"
+                            :options="['male' => 'Laki-laki', 'female' => 'Perempuan']"
+                        />
+                        @error('gender')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="is_active" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Status Aktif <span class="text-red-500">*</span>
+                        </label>
+                        <x-custom-select
+                            id="is_active"
+                            name="is_active"
+                            placeholder="Pilih Status"
+                            :selected="old('is_active', '1')"
+                            :options="['1' => 'Aktif (Berhak Menerima)', '0' => 'Tidak Aktif']"
+                        />
+                        @error('is_active')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
             </div>
-        </div>
+
+            {{-- Address & Details Section --}}
+            <div class="mb-6 pt-5 border-t border-[#f0ece6]">
+                <h6 class="text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2" style="color: #c2410c;">
+                    <i class="bi bi-geo-alt-fill text-sm"></i> Alamat & Detail Tambahan
+                </h6>
+
+                <div class="mb-4">
+                    <label for="address" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                        Alamat Lengkap
+                    </label>
+                    <textarea id="address" name="address" rows="3"
+                        class="w-full p-3 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none @error('address') border-red-500 @enderror"
+                        placeholder="Jalan, No. Rumah, RT/RW, Kelurahan, Kecamatan">{{ old('address') }}</textarea>
+                    @error('address')
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="city" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Kota / Kabupaten
+                        </label>
+                        <input type="text" id="city" name="city"
+                            class="w-full h-11 px-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none @error('city') border-red-500 @enderror"
+                            placeholder="Kota / Kabupaten"
+                            value="{{ old('city') }}">
+                        @error('city')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="notes" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Catatan Tambahan
+                        </label>
+                        <input type="text" id="notes" name="notes"
+                            class="w-full h-11 px-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none @error('notes') border-red-500 @enderror"
+                            placeholder="Catatan kondisi/keterangan mustahik"
+                            value="{{ old('notes') }}">
+                        @error('notes')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+
+            {{-- Actions --}}
+            <div class="flex justify-end gap-3 pt-5 border-t border-[#f0ece6]">
+                <a href="{{ route('mustahik.index') }}"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors" style="background: #f0ece6; color: #1c0f0a;">
+                    Batal
+                </a>
+                <button type="submit"
+                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-semibold text-white transition-colors shadow-xs" style="background: #c2410c;">
+                    <i class="bi bi-check-lg text-sm"></i> Simpan Mustahik
+                </button>
+            </div>
+        </form>
     </div>
-@endsection
+</div>
 
 @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // NIK validation (numeric only, max 16 digits)
-            document.getElementById('nik').addEventListener('input', function() {
-                this.value = this.value.replace(/[^0-9]/g, '').substring(0, 16);
-            });
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.getElementById('name');
+    const nikInput = document.getElementById('nik');
+    const phoneInput = document.getElementById('phone');
+    const cityInput = document.getElementById('city');
+    const form = document.getElementById('mustahikForm');
 
-            // Phone validation (numeric only)
-            document.getElementById('phone').addEventListener('input', function() {
-                this.value = this.value.replace(/[^0-9]/g, '');
-            });
-
-            // Format monthly income
-            document.getElementById('monthly_income').addEventListener('input', function() {
-                let value = this.value.replace(/[^0-9]/g, '');
-                this.value = value;
-            });
-
-            // Category change handler - show description
-            document.getElementById('category').addEventListener('change', function() {
-                const descriptions = {
-                    'fakir': 'Orang yang tidak memiliki harta dan pekerjaan untuk mencukupi kebutuhan dasar',
-                    'miskin': 'Orang yang memiliki harta atau pekerjaan tetapi tidak mencukupi kebutuhan dasar',
-                    'amil': 'Petugas yang bertugas mengumpulkan dan membagikan zakat',
-                    'muallaf': 'Orang yang baru masuk Islam atau yang hatinya perlu diperkuat imannya',
-                    'riqab': 'Untuk memerdekakan budak atau membebaskan muslim dari tawanan',
-                    'gharim': 'Orang yang berutang untuk kepentingan yang tidak maksiat dan tidak mampu membayar',
-                    'fisabilillah': 'Untuk kepentingan umum di jalan Allah seperti pendidikan, dakwah, dll',
-                    'ibnu_sabil': 'Musafir yang kehabisan bekal dalam perjalanan yang halal'
-                };
-
-                const descField = document.getElementById('category_description');
-                if (this.value && descriptions[this.value]) {
-                    descField.placeholder = descriptions[this.value];
-                }
-            });
+    // Strict Realtime Blackbox Input Rules
+    if (nameInput) {
+        nameInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z\s\.\'\`-]/g, '');
         });
-    </script>
+    }
+
+    if (cityInput) {
+        cityInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z\s\.\'\`-]/g, '');
+        });
+    }
+
+    if (nikInput) {
+        nikInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^\d]/g, '').slice(0, 16);
+        });
+    }
+
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^\d]/g, '').slice(0, 15);
+        });
+    }
+
+    // Form Submission SweetAlert Validation
+    form.addEventListener('submit', function(e) {
+        if (nikInput && nikInput.value.trim() !== '' && nikInput.value.trim().length !== 16) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Format NIK Salah',
+                text: 'NIK harus terdiri dari tepat 16 digit angka!',
+                confirmButtonColor: '#c2410c'
+            });
+            nikInput.focus();
+            return false;
+        }
+
+        if (phoneInput && phoneInput.value.trim() !== '' && phoneInput.value.trim().length < 10) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Nomor Telepon Kurang',
+                text: 'Nomor telepon minimal terdiri dari 10 digit angka!',
+                confirmButtonColor: '#c2410c'
+            });
+            phoneInput.focus();
+            return false;
+        }
+    });
+});
+</script>
 @endpush
+@endsection

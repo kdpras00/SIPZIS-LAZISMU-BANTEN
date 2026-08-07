@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\ZakatPayment;
 use App\Models\ZakatDistribution;
 use App\Models\Mustahik;
-use App\Models\ZakatType;
-use App\Models\ProgramType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -16,7 +14,7 @@ class ReportsController extends Controller
     public function incoming(Request $request)
     {
         // Build query for zakat payments
-        $query = ZakatPayment::with(['muzakki', 'programType', 'receivedBy']);
+        $query = ZakatPayment::with(['muzakki', 'program', 'receivedBy']);
 
         // Search functionality
         if ($request->has('search')) {
@@ -65,21 +63,18 @@ class ReportsController extends Controller
         // Get paginated results
         $payments = $query->latest('payment_date')->paginate(15)->withQueryString();
 
-        // Get summary statistics
+        // Stats scoped to the active filters so numbers match what's on screen
+        $filteredQuery = clone $query;
         $stats = [
-            'total_amount' => ZakatPayment::completed()->sum('paid_amount'),
-            'total_count' => ZakatPayment::completed()->count(),
-            'this_month' => ZakatPayment::completed()->whereMonth('payment_date', date('m'))->sum('paid_amount'),
-            'pending' => ZakatPayment::where('status', 'pending')->count(),
+            'total_amount' => (clone $filteredQuery)->where('status', 'completed')->sum('paid_amount'),
+            'total_count'  => (clone $filteredQuery)->where('status', 'completed')->count(),
+            'this_month'   => (clone $filteredQuery)->where('status', 'completed')->whereMonth('payment_date', date('m'))->sum('paid_amount'),
+            'pending'      => (clone $filteredQuery)->where('status', 'pending')->count(),
         ];
-
-        // Get program types for filter dropdown
-        $programTypes = ProgramType::all();
 
         return view('reports.incoming', compact(
             'payments',
-            'stats',
-            'programTypes'
+            'stats'
         ));
     }
 
@@ -139,14 +134,14 @@ class ReportsController extends Controller
         // Get paginated results
         $distributions = $query->latest('distribution_date')->paginate(15)->withQueryString();
 
-        // Get filter options and statistics
         $categories = array_keys(Mustahik::CATEGORIES);
 
+        $filteredQuery = clone $query;
         $stats = [
-            'total_amount' => ZakatDistribution::sum('amount'),
-            'total_count' => ZakatDistribution::count(),
-            'this_month' => ZakatDistribution::whereMonth('distribution_date', date('m'))->sum('amount'),
-            'pending_receipt' => ZakatDistribution::where('is_received', false)->count(),
+            'total_amount'     => (clone $filteredQuery)->sum('amount'),
+            'total_count'      => (clone $filteredQuery)->count(),
+            'this_month'       => (clone $filteredQuery)->whereMonth('distribution_date', date('m'))->sum('amount'),
+            'pending_receipt'  => (clone $filteredQuery)->where('is_received', false)->count(),
             'available_balance' => ZakatPayment::completed()->sum('paid_amount') - ZakatDistribution::sum('amount'),
         ];
 
@@ -231,7 +226,7 @@ class ReportsController extends Controller
                 fputcsv($file, [
                     $index + 1,
                     $payment->payment_code,
-                    $payment->muzakki->name,
+                    $payment->muzakki?->name ?? 'Tamu',
                     '-',
                     $this->getPaymentMethodLabel($payment->payment_method),
                     'Rp ' . number_format($payment->paid_amount, 0, ',', '.'),

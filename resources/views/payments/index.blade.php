@@ -3,7 +3,7 @@
 @section('page-title', 'Manajemen Pembayaran Zakat')
 
 @section('content')
-    <div class="px-6 py-5" style="max-width: 1280px;">
+    <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">
@@ -24,11 +24,11 @@
         <!-- <div>
                                                         @if (auth()->user()->role !== 'muzakki')
     <a href="{{ route('payments.create') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
-                                                            <i class="bi bi-plus-circle"></i> Tambah Pembayaran
+                                                            <i class="bi bi-plus-circle-fill ></i> Tambah Pembayaran
                                                         </a>
 @else
     <a href="{{ route('muzakki.payments.create') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
-                                                            <i class="bi bi-plus-circle"></i> Bayar Zakat
+                                                            <i class="bi bi-plus-circle-fill ></i> Bayar Zakat
                                                         </a>
     @endif
                                                     </div> -->
@@ -36,34 +36,26 @@
 
     <!-- Filter Section -->
     <div class="rounded-2xl mb-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
-        <div class="px-5 py-3 flex items-center justify-between" style="border-bottom: 1px solid #f0ece6;">
+        <div class="px-5 py-3.5 flex items-center justify-between" style="border-bottom: 1px solid #f0ece6;">
             <div class="flex items-center gap-2">
-                <i class="bi bi-funnel text-sm" style="color: #8b7e74;"></i>
-                <span class="text-sm font-semibold" style="color: #1c0f0a;">Filter</span>
+                <i class="bi bi-funnel-fill text-xs" style="color: #c2410c;"></i>
+                <span class="text-xs font-bold uppercase tracking-wider" style="color: #1c0f0a;">Filter Data Pembayaran ZIS</span>
             </div>
-            <button type="button" id="reset-filters" class="text-xs font-medium px-3 py-1.5 rounded-lg" style="color: #c2410c; border: 1px solid #f0ece6; background: #fff;">
-                Reset
-            </button>
         </div>
         
-        <div class="p-6">
+        <div class="p-5 sm:p-6">
             <!-- Search Input -->
             <div class="mb-5">
-                <label for="search-input" class="block text-sm font-medium text-gray-700 mb-2">
-                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                    Pencarian Cepat
+                <label for="search-input" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                    <i class="bi bi-search mr-1" style="color: #8b7e74;"></i> Pencarian Cepat
                 </label>
                 <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-[#8b7e74]">
+                        <i class="bi bi-search text-xs"></i>
                     </span>
                     <input type="text" id="search-input"
-                        class="w-full pl-12 pr-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 hover:bg-white"
-                        placeholder="Ketik kode pembayaran, nomor kwitansi, atau nama muzakki..." value="{{ request('search') }}">
+                        class="w-full h-11 pl-10 pr-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none"
+                        placeholder="Ketik kode transaksi, nama muzakki, atau email..." value="{{ request('search') }}">
                 </div>
             </div>
 
@@ -71,54 +63,62 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 <div>
                     <label for="zakat-type-filter" class="block text-sm font-medium text-gray-700 mb-2">
-                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                        </svg>
+                        <i class="bi bi-tag-fill mr-1 text-[#c2410c]"></i>
                         Jenis Zakat
                     </label>
-                    <select id="zakat-type-filter"
-                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400">
-                        <option value="">Semua Jenis</option>
-                        @foreach ($zakatTypes as $type)
-                            <option value="{{ $type->id }}" {{ request('zakat_type') == $type->id ? 'selected' : '' }}>
-                                {{ $type->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    @php
+                        $zakatOptions = ['' => 'Semua Jenis'];
+                        foreach ($zakatTypes as $type) {
+                            $zakatOptions[$type->id] = $type->name;
+                        }
+                    @endphp
+                    <x-custom-select 
+                        id="zakat-type-filter"
+                        name="zakat_type"
+                        :options="$zakatOptions"
+                        :selected="request('zakat_type', '')"
+                        placeholder="Semua Jenis"
+                    />
                 </div>
                 
                 <div>
                     <label for="payment-method-filter" class="block text-sm font-medium text-gray-700 mb-2">
-                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                        </svg>
+                        <i class="bi bi-credit-card-2-front-fill mr-1 text-[#c2410c]"></i>
                         Metode Pembayaran
                     </label>
-                    <select id="payment-method-filter"
-                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400">
-                        <option value="">Semua Metode</option>
-                        <option value="cash" {{ request('payment_method') == 'cash' ? 'selected' : '' }}>💵 Tunai</option>
-                        <option value="transfer" {{ request('payment_method') == 'transfer' ? 'selected' : '' }}>🏦 Transfer Bank</option>
-                        <option value="check" {{ request('payment_method') == 'check' ? 'selected' : '' }}>📝 Cek</option>
-                        <option value="online" {{ request('payment_method') == 'online' ? 'selected' : '' }}>🌐 Online</option>
-                        <option value="midtrans" {{ request('payment_method') == 'midtrans' ? 'selected' : '' }}>💳 Midtrans</option>
-                    </select>
+                    <x-custom-select 
+                        id="payment-method-filter"
+                        name="payment_method"
+                        :options="[
+                            '' => 'Semua Metode',
+                            'cash' => '💵 Tunai',
+                            'transfer' => '🏦 Transfer Bank',
+                            'check' => '📝 Cek',
+                            'online' => '🌐 Online',
+                            'midtrans' => '💳 Midtrans'
+                        ]"
+                        :selected="request('payment_method', '')"
+                        placeholder="Semua Metode"
+                    />
                 </div>
                 
                 <div>
                     <label for="status-filter" class="block text-sm font-medium text-gray-700 mb-2">
-                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+                        <i class="bi bi-[#c2410c] bi-check-circle-fill mr-1 text-[#c2410c]"></i>
                         Status
                     </label>
-                    <select id="status-filter"
-                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400">
-                        <option value="">Semua Status</option>
-                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>⏳ Menunggu</option>
-                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>✅ Selesai</option>
-                        <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>❌ Dibatalkan</option>
-                    </select>
+                    <x-custom-select 
+                        id="status-filter"
+                        name="status"
+                        :options="[
+                            '' => 'Semua Status',
+                            'pending' => '⏳ Menunggu',
+                            'completed' => '✅ Selesai',
+                            'cancelled' => '❌ Dibatalkan'
+                        ]"
+                        :selected="request('status', '')"
+                        placeholder="Semua Status"
+                    />
                 </div>
                 
                 <div class="lg:col-span-2">
@@ -129,12 +129,20 @@
                         Rentang Tanggal
                     </label>
                     <div class="grid grid-cols-2 gap-3">
-                        <input type="date" id="date-from"
-                            class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400"
-                            value="{{ request('date_from') }}" placeholder="Dari tanggal">
-                        <input type="date" id="date-to"
-                            class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200 hover:border-gray-400"
-                            value="{{ request('date_to') }}" placeholder="Sampai tanggal">
+                        <x-custom-date-picker
+                            id="date-from"
+                            name="date_from"
+                            :value="request('date_from')"
+                            placeholder="Dari tanggal"
+                            onChange="performSearch(1)"
+                        />
+                        <x-custom-date-picker
+                            id="date-to"
+                            name="date_to"
+                            :value="request('date_to')"
+                            placeholder="Sampai tanggal"
+                            onChange="performSearch(1)"
+                        />
                     </div>
                 </div>
             </div>
@@ -152,31 +160,24 @@
     <!-- Stats -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fff7ed;"><i class="bi bi-credit-card" style="color: #c2410c;"></i></div>
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total terkumpul</p>
             <h4 class="text-xl font-bold mb-0" id="total-amount" style="color: #1c0f0a;">Rp {{ number_format($stats['total_amount'], 0, ',', '.') }}</h4>
-            <small class="text-xs" style="color: #8b7e74;">Total terkumpul</small>
         </div>
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #f0fdf4;"><i class="bi bi-check-circle" style="color: #15803d;"></i></div>
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total transaksi</p>
             <h4 class="text-2xl font-bold mb-0" id="total-count" style="color: #1c0f0a;">{{ number_format($stats['total_count']) }}</h4>
-            <small class="text-xs" style="color: #8b7e74;">Total transaksi</small>
         </div>
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #eff6ff;"><i class="bi bi-calendar-month" style="color: #0369a1;"></i></div>
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Bulan ini</p>
             <h4 class="text-xl font-bold mb-0" id="thismonth-amount" style="color: #1c0f0a;">Rp {{ number_format($stats['this_month'], 0, ',', '.') }}</h4>
-            <small class="text-xs" style="color: #8b7e74;">Bulan ini</small>
         </div>
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fef3c7;"><i class="bi bi-clock" style="color: #b45309;"></i></div>
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Menunggu verifikasi</p>
             <h4 class="text-2xl font-bold mb-0" id="pending-count" style="color: #1c0f0a;">{{ $stats['pending'] }}</h4>
-            <small class="text-xs" style="color: #8b7e74;">Menunggu verifikasi</small>
         </div>
     </div>
 
     <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
-        <div class="px-5 py-4" style="border-bottom: 1px solid #f0ece6;">
-            <h5 class="text-base font-bold mb-0" style="color: #1c0f0a;">Daftar Pembayaran</h5>
-        </div>
         <div class="p-0" id="payments-table-container">
             @include('payments.partials.table')
         </div>

@@ -35,7 +35,7 @@
                 <button onclick="window.history.back()"
                     class="inline-flex items-center justify-center px-6 py-3 rounded-2xl border-2 border-rose-200 text-rose-700 font-semibold hover:bg-rose-50 transition-colors">
                     Kembali ke Halaman Sebelumnya
-                    <i class="bi bi-arrow-left text-lg ml-2"></i>
+                    <i class="bi bi-arrow-left-circle text-lg ml-2"></i>
                 </button>
             </div>
 

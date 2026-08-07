@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ZakatPaymentController;
+use App\Http\Controllers\PaymentNotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +14,8 @@ use App\Http\Controllers\ZakatPaymentController;
 |
 */
 
-Route::post('/midtrans/notification', [ZakatPaymentController::class, 'handleNotification'])
+Route::post('/midtrans/notification', [PaymentNotificationController::class, 'handleNotification'])
     ->name('midtrans.notification');
 
-Route::post('/midtrans/callback', [ZakatPaymentController::class, 'midtransCallback'])
+Route::post('/midtrans/callback', [PaymentNotificationController::class, 'midtransCallback'])
     ->name('midtrans.callback');
-
-// 

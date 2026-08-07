@@ -26,11 +26,6 @@ class Program extends Model
     // ========================
     // 🔗 Relationships
     // ========================
-    public function programType()
-    {
-        return $this->belongsTo(ProgramType::class);
-    }
-
     public function campaigns()
     {
         return $this->hasMany(Campaign::class);
@@ -70,7 +65,7 @@ class Program extends Model
 
         // If image path is empty, return a default image
         if (empty($imagePath)) {
-            return asset('img/masjid.webp');
+            return asset('img/masjidbanten.png');
         }
 
         // Check if image path is a full URL (CDN)
@@ -86,6 +81,11 @@ class Program extends Model
     // Total dana terkumpul dari payments yang langsung terikat ke program ini
     public function getTotalCollectedAttribute()
     {
+        // Check if sum was eager loaded
+        if (array_key_exists('zakat_payments_sum_paid_amount', $this->attributes)) {
+            return (float) $this->attributes['zakat_payments_sum_paid_amount'];
+        }
+
         // Get payments directly linked to this program via program_id with status completed
         return ZakatPayment::where('program_id', $this->id)
             ->where('status', 'completed')
@@ -231,28 +231,15 @@ class Program extends Model
 
         // When a program is created
         static::created(function ($program) {
-            // Buat notifikasi untuk semua muzakki tentang program baru
             if ($program->status === 'active') {
-                $muzakkiList = \App\Models\Muzakki::whereNotNull('user_id')->get();
-                foreach ($muzakkiList as $muzakki) {
-                    if ($muzakki->user) {
-                        \App\Models\Notification::createProgramNotification($muzakki->user, $program, 'program');
-                    }
-                }
+                \App\Jobs\SendProgramNotifications::dispatch($program);
             }
         });
 
         // When a program is updated
         static::updated(function ($program) {
-            // Check if status has changed to active
             if ($program->isDirty('status') && $program->status === 'active') {
-                // Buat notifikasi untuk semua muzakki tentang program yang diaktifkan
-                $muzakkiList = \App\Models\Muzakki::whereNotNull('user_id')->get();
-                foreach ($muzakkiList as $muzakki) {
-                    if ($muzakki->user) {
-                        \App\Models\Notification::createProgramNotification($muzakki->user, $program, 'program');
-                    }
-                }
+                \App\Jobs\SendProgramNotifications::dispatch($program);
             }
         });
     }

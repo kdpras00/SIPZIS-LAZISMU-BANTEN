@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Campaign;
-use App\Models\ProgramType;
 use Illuminate\Support\Facades\Auth;
 
 class DonationController extends Controller
@@ -35,7 +34,6 @@ class DonationController extends Controller
             'umum'          => 'Bersama Kita Wujudkan Kebaikan',
         ];
 
-        // Tentukan subtitle dan warna berdasarkan kategori
         $subtitle = $categoryMap[$campaign->program_category] ?? 'Bersama Kita Wujudkan Kebaikan';
         $textColor = match ($campaign->program_category) {
             'pendidikan' => 'text-blue-800',
@@ -50,14 +48,6 @@ class DonationController extends Controller
             default => 'text-emerald-800',
         };
 
-        // Cek apakah ada tipe program yang ditentukan lewat query
-        $programTypeId = $request->query('program_type_id');
-        $programType = $programTypeId ? ProgramType::find($programTypeId) : null;
-
-        // Tentukan display title dan subtitle final
-        $displayTitle = $programType->name ?? $campaign->title;
-        $displaySubtitle = $programType->description ?? $subtitle;
-
         // Ambil user yang login (jika muzakki)
         $loggedInMuzakki = Auth::check() && Auth::user()->role === 'muzakki'
             ? Auth::user()
@@ -65,8 +55,8 @@ class DonationController extends Controller
 
         return view('pages.donasi', [
             'campaign' => $campaign,
-            'displayTitle' => $displayTitle,
-            'displaySubtitle' => $displaySubtitle,
+            'displayTitle' => $campaign->title,
+            'displaySubtitle' => $subtitle,
             'programCategory' => $campaign->program_category,
             'textColor' => $textColor,
             'loggedInMuzakki' => $loggedInMuzakki,

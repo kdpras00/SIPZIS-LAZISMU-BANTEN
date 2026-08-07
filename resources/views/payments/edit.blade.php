@@ -1,188 +1,189 @@
 @extends('layouts.app')
 
-@section('page-title', 'Edit Pembayaran')
+@section('page-title', 'Edit Pembayaran - ' . $payment->payment_code)
 
 @section('content')
-<div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="card mb-4">
-                <div class="card-header pb-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h6>Edit Pembayaran</h6>
+<div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
+    {{-- Header Section --}}
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
+        <div>
+            <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Edit Data Pembayaran</h2>
+            <p class="text-sm font-mono" style="color: #8b7e74;">{{ $payment->payment_code }} - {{ $payment->muzakki?->name ?? 'Muzakki Umum' }}</p>
+        </div>
+        <a href="{{ route('payments.index') }}"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium transition-colors duration-200"
+            style="background: #f0ece6; color: #1c0f0a;">
+            <i class="bi bi-arrow-left"></i> Kembali
+        </a>
+    </div>
+
+    <div class="rounded-2xl p-5 sm:p-6 bg-white border border-[#f0ece6]" style="box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+        <form action="{{ route('payments.update', $payment) }}" method="POST" id="paymentEditForm">
+            @csrf
+            @method('PUT')
+
+            <div class="mb-6">
+                <h6 class="text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2" style="color: #c2410c;">
+                    <i class="bi bi-credit-card-fill text-sm"></i> Informasi Transaksi
+                </h6>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="muzakki_id" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Muzakki <span class="text-red-500">*</span>
+                        </label>
+                        @php
+                            $muzakkiOptions = [];
+                            foreach ($allMuzakki as $m) {
+                                $muzakkiOptions[$m->id] = $m->name . ($m->email ? ' (' . $m->email . ')' : '');
+                            }
+                        @endphp
+                        <x-custom-select
+                            id="muzakki_id"
+                            name="muzakki_id"
+                            placeholder="Pilih Muzakki"
+                            :selected="old('muzakki_id', $payment->muzakki_id)"
+                            :options="$muzakkiOptions"
+                        />
+                        @error('muzakki_id')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="payment_date" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Tanggal Pembayaran <span class="text-red-500">*</span>
+                        </label>
+                        <x-custom-date-picker
+                            id="payment_date"
+                            name="payment_date"
+                            :value="old('payment_date', $payment->payment_date->format('Y-m-d'))"
+                            placeholder="Pilih Tanggal Pembayaran"
+                        />
+                        @error('payment_date')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
-                <div class="card-body">
-                    <form action="{{ route('payments.update', $payment) }}" method="POST">
-                        @csrf
-                        @method('PUT')
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="muzakki_id" class="form-control-label">Muzakki</label>
-                                    <select class="form-control @error('muzakki_id') is-invalid @enderror"
-                                        id="muzakki_id"
-                                        name="muzakki_id"
-                                        required>
-                                        <option value="">Pilih Muzakki</option>
-                                        @foreach($allMuzakki as $muzakki)
-                                        <option value="{{ $muzakki->id }}" {{ old('muzakki_id', $payment->muzakki_id) == $muzakki->id ? 'selected' : '' }}>
-                                            {{ $muzakki->name }} ({{ $muzakki->email }})
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                    @error('muzakki_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="payment_date" class="form-control-label">Tanggal Pembayaran</label>
-                                    <input class="form-control @error('payment_date') is-invalid @enderror"
-                                        type="date"
-                                        id="payment_date"
-                                        name="payment_date"
-                                        value="{{ old('payment_date', $payment->payment_date->format('Y-m-d')) }}"
-                                        required>
-                                    @error('payment_date')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="paid_amount" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Jumlah Nominal (Rp) <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold" style="color: #8b7e74;">Rp</span>
+                            <input type="text" id="paid_amount_display"
+                                class="w-full h-11 pl-10 pr-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-bold text-[#c2410c] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none @error('paid_amount') border-red-500 @enderror"
+                                value="{{ old('paid_amount', number_format($payment->paid_amount, 0, ',', '.')) }}"
+                                placeholder="0" required>
+                            <input type="hidden" id="paid_amount" name="paid_amount" value="{{ old('paid_amount', $payment->paid_amount) }}">
                         </div>
+                        @error('paid_amount')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="paid_amount" class="form-control-label">Jumlah Pembayaran (Rp)</label>
-                                    <input class="form-control @error('paid_amount') is-invalid @enderror"
-                                        type="number"
-                                        id="paid_amount"
-                                        name="paid_amount"
-                                        value="{{ old('paid_amount', $payment->paid_amount) }}"
-                                        min="0"
-                                        step="0.01"
-                                        required>
-                                    @error('paid_amount')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
+                    <div>
+                        <label for="payment_method" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Metode Pembayaran <span class="text-red-500">*</span>
+                        </label>
+                        <x-custom-select
+                            id="payment_method"
+                            name="payment_method"
+                            placeholder="Pilih Metode"
+                            :selected="old('payment_method', $payment->payment_method)"
+                            :options="[
+                                'cash' => 'Tunai',
+                                'transfer' => 'Transfer Bank',
+                                'check' => 'Cek',
+                                'online' => 'Online',
+                                'bca_va' => 'BCA Virtual Account',
+                                'bri_va' => 'BRI Virtual Account',
+                                'bni_va' => 'BNI Virtual Account',
+                                'mandiri_va' => 'Mandiri Virtual Account',
+                                'qris' => 'QRIS'
+                            ]"
+                        />
+                        @error('payment_method')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="payment_method" class="form-control-label">Metode Pembayaran</label>
-                                    <select class="form-control @error('payment_method') is-invalid @enderror"
-                                        id="payment_method"
-                                        name="payment_method"
-                                        required>
-                                        <option value="cash" {{ old('payment_method', $payment->payment_method) == 'cash' ? 'selected' : '' }}>
-                                            Tunai
-                                        </option>
-                                        <option value="transfer" {{ old('payment_method', $payment->payment_method) == 'transfer' ? 'selected' : '' }}>
-                                            Transfer Bank
-                                        </option>
-                                        <option value="check" {{ old('payment_method', $payment->payment_method) == 'check' ? 'selected' : '' }}>
-                                            Cek
-                                        </option>
-                                        <option value="online" {{ old('payment_method', $payment->payment_method) == 'online' ? 'selected' : '' }}>
-                                            Online
-                                        </option>
-                                        <option value="bca_va" {{ old('payment_method', $payment->payment_method) == 'bca_va' ? 'selected' : '' }}>
-                                            BCA VA
-                                        </option>
-                                        <option value="bri_va" {{ old('payment_method', $payment->payment_method) == 'bri_va' ? 'selected' : '' }}>
-                                            BRI VA
-                                        </option>
-                                        <option value="bni_va" {{ old('payment_method', $payment->payment_method) == 'bni_va' ? 'selected' : '' }}>
-                                            BNI VA
-                                        </option>
-                                        <option value="mandiri_va" {{ old('payment_method', $payment->payment_method) == 'mandiri_va' ? 'selected' : '' }}>
-                                            Mandiri VA
-                                        </option>
-                                        <option value="permata_va" {{ old('payment_method', $payment->payment_method) == 'permata_va' ? 'selected' : '' }}>
-                                            Permata VA
-                                        </option>
-                                        <option value="gopay" {{ old('payment_method', $payment->payment_method) == 'gopay' ? 'selected' : '' }}>
-                                            GoPay
-                                        </option>
-                                        <option value="dana" {{ old('payment_method', $payment->payment_method) == 'dana' ? 'selected' : '' }}>
-                                            DANA
-                                        </option>
-                                        <option value="shopeepay" {{ old('payment_method', $payment->payment_method) == 'shopeepay' ? 'selected' : '' }}>
-                                            ShopeePay
-                                        </option>
-                                        <option value="qris" {{ old('payment_method', $payment->payment_method) == 'qris' ? 'selected' : '' }}>
-                                            QRIS
-                                        </option>
-                                    </select>
-                                    @error('payment_method')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="payment_reference" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Referensi Pembayaran / No. Rekening
+                        </label>
+                        <input type="text" id="payment_reference" name="payment_reference"
+                            class="w-full h-11 px-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none @error('payment_reference') border-red-500 @enderror"
+                            value="{{ old('payment_reference', $payment->payment_reference) }}"
+                            placeholder="Nomor referensi / bukti transaksi">
+                        @error('payment_reference')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                        <div class="form-group mb-3">
-                            <label for="payment_reference" class="form-control-label">Referensi Pembayaran</label>
-                            <input class="form-control @error('payment_reference') is-invalid @enderror"
-                                type="text"
-                                id="payment_reference"
-                                name="payment_reference"
-                                value="{{ old('payment_reference', $payment->payment_reference) }}"
-                                placeholder="Nomor referensi, rekening, dll.">
-                            @error('payment_reference')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div>
+                        <label for="status" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                            Status Pembayaran <span class="text-red-500">*</span>
+                        </label>
+                        <x-custom-select
+                            id="status"
+                            name="status"
+                            placeholder="Pilih Status"
+                            :selected="old('status', $payment->status)"
+                            :options="['pending' => 'Menunggu Verifikasi', 'completed' => 'Selesai / Terverifikasi', 'cancelled' => 'Dibatalkan']"
+                        />
+                        @error('status')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
 
-                        <div class="form-group mb-3">
-                            <label for="notes" class="form-control-label">Catatan</label>
-                            <textarea class="form-control @error('notes') is-invalid @enderror"
-                                id="notes"
-                                name="notes"
-                                rows="3">{{ old('notes', $payment->notes) }}</textarea>
-                            @error('notes')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label for="status" class="form-control-label">Status</label>
-                            <select class="form-control @error('status') is-invalid @enderror"
-                                id="status"
-                                name="status"
-                                required>
-                                <option value="pending" {{ old('status', $payment->status) == 'pending' ? 'selected' : '' }}>
-                                    Pending
-                                </option>
-                                <option value="completed" {{ old('status', $payment->status) == 'completed' ? 'selected' : '' }}>
-                                    Selesai
-                                </option>
-                                <option value="cancelled" {{ old('status', $payment->status) == 'cancelled' ? 'selected' : '' }}>
-                                    Dibatalkan
-                                </option>
-                            </select>
-                            @error('status')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="d-flex justify-content-between mt-4">
-                            <a href="{{ route('payments.index') }}" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left"></i> Kembali
-                            </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Update Pembayaran
-                            </button>
-                        </div>
-                    </form>
+                <div class="mb-4">
+                    <label for="notes" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                        Catatan
+                    </label>
+                    <textarea id="notes" name="notes" rows="3"
+                        class="w-full p-3 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none @error('notes') border-red-500 @enderror"
+                        placeholder="Catatan tambahan mengenai pembayaran ini...">{{ old('notes', $payment->notes) }}</textarea>
+                    @error('notes')
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
-        </div>
+
+            {{-- Actions --}}
+            <div class="flex justify-end gap-3 pt-5 border-t border-[#f0ece6]">
+                <a href="{{ route('payments.index') }}"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors" style="background: #f0ece6; color: #1c0f0a;">
+                    Batal
+                </a>
+                <button type="submit"
+                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-semibold text-white transition-colors shadow-xs" style="background: #c2410c;">
+                    <i class="bi bi-check-lg text-sm"></i> Simpan Perubahan
+                </button>
+            </div>
+        </form>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const amountDisplay = document.getElementById('paid_amount_display');
+    const amountRaw = document.getElementById('paid_amount');
+
+    if (amountDisplay && amountRaw) {
+        amountDisplay.addEventListener('input', function() {
+            let val = this.value.replace(/[^\d]/g, '');
+            amountRaw.value = val;
+            this.value = val ? parseInt(val).toLocaleString('id-ID') : '';
+        });
+    }
+});
+</script>
+@endpush
 @endsection

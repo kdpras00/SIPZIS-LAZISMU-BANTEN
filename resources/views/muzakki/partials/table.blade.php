@@ -1,96 +1,85 @@
 @if ($muzakki->count() > 0)
     <div class="overflow-x-auto">
-        <table class="w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+        <table id="table-muzakki" class="min-w-full divide-y divide-[#f0ece6]">
+            <thead style="background: #faf8f5;">
                 <tr>
-                    <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        style="width: 28%;">Nama</th>
-                    <th class="px-2 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        style="width: 12%;">Kategori</th>
-                    <th class="px-2 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        style="width: 12%;">Telepon</th>
-                    <th class="px-2 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        style="width: 12%;">Kota</th>
-                    <th class="px-2 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        style="width: 12%;">Status Verifikasi</th>
-                    <th class="px-2 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        style="width: 12%;">Terdaftar</th>
-                    <th class="px-2 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        style="width: 12%;">Aksi</th>
+                    <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Nama</th>
+                    <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Kategori</th>
+                    <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Telepon</th>
+                    <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Kota</th>
+                    <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Status Verifikasi</th>
+                    <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Terdaftar</th>
+                    <th class="px-5 py-3.5 text-center text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Aksi</th>
                 </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody class="bg-white divide-y divide-[#f0ece6]">
                 @foreach ($muzakki as $item)
-                    <tr class="hover:bg-gray-50 transition-colors {{ $loop->even ? 'bg-gray-50' : 'bg-white' }}">
-                        <td class="px-4 py-3">
+                    <tr class="hover:bg-[#faf8f5]/60 transition-colors duration-150">
+                        <td class="px-5 py-4 whitespace-nowrap">
                             <div class="flex items-center">
-                                <div class="bg-orange-100 rounded-full p-1.5 mr-2 flex-shrink-0">
-                                    <i class="fas fa-user text-orange-600 text-xs"></i>
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 border border-[#f0ece6] flex-shrink-0" style="background: #faf8f5;">
+                                    <i class="bi bi-person-heart text-sm" style="color: #c2410c;"></i>
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="font-semibold text-gray-900 truncate">{{ $item->name }}</div>
+                                    <div class="text-xs font-bold truncate" style="color: #1c0f0a;">{{ $item->name }}</div>
                                     @if ($item->nik)
-                                        <small class="text-gray-500 text-xs">NIK: {{ $item->nik }}</small>
+                                        <div class="text-[11px]" style="color: #8b7e74;">NIK: {{ $item->nik }}</div>
                                     @endif
                                 </div>
                             </div>
                         </td>
-                        <td class="px-2 py-3">
+                        <td class="px-5 py-4 whitespace-nowrap">
                             @if ($item->occupation)
-                                <span
-                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 whitespace-nowrap">{{ ucwords(str_replace('_', ' ', $item->occupation)) }}</span>
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">{{ ucwords(str_replace('_', ' ', $item->occupation)) }}</span>
                             @else
-                                <span class="text-gray-400 text-xs">-</span>
+                                <span class="text-xs" style="color: #8b7e74;">-</span>
                             @endif
                         </td>
-                        <td class="px-2 py-3 text-gray-900 text-sm whitespace-nowrap">{{ $item->phone ?: '-' }}</td>
-                        <td class="px-2 py-3 text-gray-900 text-sm whitespace-nowrap">{{ $item->city ?: '-' }}</td>
-                        <td class="px-2 py-3">
+                        <td class="px-5 py-4 whitespace-nowrap text-xs font-medium" style="color: #1c0f0a;">{{ $item->phone ?: '-' }}</td>
+                        <td class="px-5 py-4 whitespace-nowrap text-xs font-medium" style="color: #1c0f0a;">{{ $item->city ?: '-' }}</td>
+                        <td class="px-5 py-4 whitespace-nowrap">
                             @if ($item->is_active)
-                                <span
-                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-600 text-white whitespace-nowrap">Terverifikasi</span>
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">Terverifikasi</span>
                             @else
-                                <span
-                                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-500 text-white whitespace-nowrap">Menunggu</span>
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">Menunggu</span>
                             @endif
                         </td>
-                        <td class="px-2 py-3 text-gray-900 text-sm whitespace-nowrap">
+                        <td class="px-5 py-4 whitespace-nowrap text-xs" style="color: #8b7e74;">
                             {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}
                         </td>
-                        <td class="px-2 py-3">
-                            <div class="flex items-center gap-1">
+                        <td class="px-5 py-4 whitespace-nowrap text-center text-xs">
+                            <div class="flex items-center justify-center gap-1.5">
                                 <a href="{{ route('muzakki.show', $item->id) }}"
-                                    class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                                    title="Lihat Detail">
-                                    <i class="bi bi-eye"></i>
+                                   class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium transition-colors" style="background: #f0ece6; color: #1c0f0a;"
+                                   title="Lihat Detail">
+                                    <i class="bi bi-eye text-xs"></i>
                                 </a>
                                 <a href="{{ route('muzakki.edit', $item->id) }}"
-                                    class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                                    title="Edit">
-                                    <i class="bi bi-pencil"></i>
+                                   class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium transition-colors" style="background: #f0ece6; color: #1c0f0a;"
+                                   title="Edit">
+                                    <i class="bi bi-pencil text-xs"></i>
                                 </a>
-                                <form action="{{ route('muzakki.toggle-status', $item->id) }}" method="POST"
-                                    class="inline">
+                                <form action="{{ route('muzakki.toggle-status', $item->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit"
-                                        class="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
+                                        class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium transition-colors border border-[#ffedd5]" style="background: #fff7ed; color: #c2410c;"
                                         title="Toggle Status">
-                                        <i class="bi bi-toggle-{{ $item->is_active ? 'on' : 'off' }}"></i>
+                                        <i class="bi bi-toggle-{{ $item->is_active ? 'on' : 'off' }} text-xs"></i>
                                     </button>
                                 </form>
-                                    @if ($item->zakat_payments_count == 0)
-                                        <form action="{{ route('muzakki.destroy', $item->id) }}" method="POST"
-                                            class="inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                                title="Hapus">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    @endif
+                                @if ($item->zakat_payments_count == 0)
+                                    <form action="{{ route('muzakki.destroy', $item->id) }}" method="POST"
+                                        class="inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
+                                            title="Hapus">
+                                            <i class="bi bi-trash text-xs"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -100,32 +89,31 @@
     </div>
 
     @if (isset($pagination))
-        <div class="px-6 py-4 bg-white border-t border-gray-200">
+        <div class="px-5 py-4 border-t border-[#f0ece6]" style="background: #fff;">
             <div class="flex justify-between items-center">
-                <div class="text-gray-600 text-sm">
-                    Menampilkan {{ $pagination['from'] ?? 1 }} sampai {{ $pagination['to'] ?? count($muzakki) }} dari
-                    {{ $pagination['total'] ?? count($muzakki) }} data
+                <div class="text-xs" style="color: #8b7e74;">
+                    Menampilkan {{ $pagination['from'] ?? 1 }} sampai {{ $pagination['to'] ?? count($muzakki) }} dari {{ $pagination['total'] ?? count($muzakki) }} data
                 </div>
                 @if ($pagination['last_page'] > 1)
                     <nav>
-                        <ul class="flex items-center space-x-1">
+                        <ul class="inline-flex items-center gap-1">
                             @if ($pagination['current_page'] > 1)
                                 <li>
-                                    <a class="pagination-link px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                                    <a class="pagination-link px-3 py-1.5 text-xs font-medium rounded-lg border border-[#f0ece6]" style="background: #fff; color: #1c0f0a;"
                                         href="#" data-page="{{ $pagination['current_page'] - 1 }}">‹</a>
                                 </li>
                             @endif
 
                             @for ($i = 1; $i <= $pagination['last_page']; $i++)
                                 <li>
-                                    <a class="pagination-link px-3 py-2 text-sm font-medium {{ $pagination['current_page'] == $i ? 'text-white bg-blue-600 border border-blue-600' : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50' }} rounded-lg transition-colors cursor-pointer"
+                                    <a class="pagination-link px-3 py-1.5 text-xs font-semibold rounded-lg {{ $pagination['current_page'] == $i ? 'text-white' : 'border border-[#f0ece6]' }}" style="{{ $pagination['current_page'] == $i ? 'background: #c2410c;' : 'background: #fff; color: #1c0f0a;' }}"
                                         href="#" data-page="{{ $i }}">{{ $i }}</a>
                                 </li>
                             @endfor
 
                             @if ($pagination['current_page'] < $pagination['last_page'])
                                 <li>
-                                    <a class="pagination-link px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                                    <a class="pagination-link px-3 py-1.5 text-xs font-medium rounded-lg border border-[#f0ece6]" style="background: #fff; color: #1c0f0a;"
                                         href="#" data-page="{{ $pagination['current_page'] + 1 }}">›</a>
                                 </li>
                             @endif
@@ -136,13 +124,12 @@
         </div>
     @endif
 @else
-    <div class="text-center py-12">
-        <i class="fas fa-inbox text-6xl text-gray-400 mb-4 block"></i>
-        <h5 class="text-lg font-semibold text-gray-600 mb-2">Tidak ada data muzakki</h5>
-        <p class="text-gray-500 mb-4">Tidak ada muzakki yang sesuai dengan kriteria pencarian</p>
-        <button type="button" id="clear-search"
-            class="px-4 py-2 border border-blue-600 text-blue-700 rounded-lg hover:bg-blue-50 transition-colors">
-            <i class="fas fa-redo mr-2"></i> Reset Pencarian
-        </button>
+    <div class="text-center py-12 px-6">
+        <i class="bi bi-people text-4xl mb-2 block" style="color: #d1cbc4;"></i>
+        <p class="text-sm font-semibold mb-0" style="color: #1c0f0a;">Tidak ada data muzakki</p>
+        <p class="text-xs mt-1 mb-4" style="color: #8b7e74;">Tidak ada muzakki yang sesuai dengan kriteria pencarian</p>
+        <a href="{{ route('muzakki.create') }}" class="inline-flex items-center px-4 py-2 text-white font-medium rounded-xl transition-colors text-xs shadow-xs" style="background: #c2410c;">
+            <i class="bi bi-plus-circle-fill mr-1.5"></i> Tambah Muzakki Pertama
+        </a>
     </div>
 @endif

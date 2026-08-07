@@ -97,7 +97,7 @@ class ZakatDistributionController extends Controller
         $mustahikId = $request->get('mustahik_id');
         $mustahik = $mustahikId ? Mustahik::findOrFail($mustahikId) : null;
 
-        $allMustahik = Mustahik::active()->orderBy('name')->get();
+        $allMustahik = cache()->remember('active_mustahik', 300, function() { return Mustahik::active()->orderBy('name')->get(); });
         $categories = array_keys(Mustahik::CATEGORIES);
         $availableBalance = self::availableBalance();
 
@@ -110,6 +110,11 @@ class ZakatDistributionController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has('amount')) {
+            $rawAmount = str_replace(['.', ','], '', $request->input('amount'));
+            $request->merge(['amount' => is_numeric($rawAmount) ? (float)$rawAmount : $request->input('amount')]);
+        }
+
         $request->validate([
             'mustahik_id' => 'required|exists:mustahik,id',
             'amount' => 'required|numeric|min:0',
@@ -121,18 +126,11 @@ class ZakatDistributionController extends Controller
             'location' => 'nullable|string|max:255',
         ]);
 
-        // Get amount and ensure it's numeric (remove any formatting)
-        $amount = $request->input('amount');
-        if ($amount && $amount !== '') {
-            $amount = str_replace(['.', ','], '', $amount);
-            $amount = is_numeric($amount) ? (float)$amount : 0;
-        } else {
-            $amount = 0;
-        }
+        $amount = (float) $request->input('amount', 0);
 
         $mustahik = Mustahik::active()->findOrFail($request->mustahik_id);
 
-        return DB::transaction(function () use ($request, $mustahik, $amount) {
+        $distribution = DB::transaction(function () use ($request, $mustahik, $amount) {
 
             // Lock database agar saldo akurat saat concurrent
             $paid = ZakatPayment::completed()->lockForUpdate()->sum('paid_amount');
@@ -142,12 +140,11 @@ class ZakatDistributionController extends Controller
             $available = max(0, $paid - $distributed);
 
             if ($request->distribution_type === 'cash' && $amount > $available) {
-                return back()->withInput()->with('error', 'Saldo zakat tidak mencukupi.');
+                return null;
             }
 
             $distributionCode = ZakatDistribution::generateDistributionCode();
 
-            // Determine program_id from request
             $programId = null;
             if ($request->filled('program_id')) {
                 $programId = $request->program_id;
@@ -158,7 +155,7 @@ class ZakatDistributionController extends Controller
                 }
             }
 
-            $distribution = ZakatDistribution::create([
+            return ZakatDistribution::create([
                 'distribution_code' => $distributionCode,
                 'mustahik_id' => $mustahik->id,
                 'amount' => $amount,
@@ -172,16 +169,13 @@ class ZakatDistributionController extends Controller
                 'location' => $request->location,
                 'is_received' => false,
             ]);
-
-            // Kirim notifikasi penyaluran kepada semua muzakki yang memiliki akun pengguna
-            $registeredMuzakki = \App\Models\Muzakki::whereNotNull('user_id')->get();
-
-            foreach ($registeredMuzakki as $muzakki) {
-                Notification::createDistributionNotification($muzakki, $distribution);
-            }
-
-            return redirect()->route('distributions.index')->with('success', 'Distribusi zakat berhasil dicatat.');
         });
+
+        if (!$distribution) {
+            return back()->withInput()->with('error', 'Saldo zakat tidak mencukupi.');
+        }
+
+        return redirect()->route('distributions.index')->with('success', 'Distribusi zakat berhasil dicatat.');
     }
 
     /**
@@ -199,7 +193,7 @@ class ZakatDistributionController extends Controller
      */
     public function edit(ZakatDistribution $distribution)
     {
-        $allMustahik = Mustahik::active()->orderBy('name')->get();
+        $allMustahik = cache()->remember('active_mustahik', 300, function() { return Mustahik::active()->orderBy('name')->get(); });
         $categories = array_keys(Mustahik::CATEGORIES);
         $availableBalance = self::availableBalance();
 
@@ -211,6 +205,11 @@ class ZakatDistributionController extends Controller
      */
     public function update(Request $request, ZakatDistribution $distribution)
     {
+        if ($request->has('amount')) {
+            $rawAmount = str_replace(['.', ','], '', $request->input('amount'));
+            $request->merge(['amount' => is_numeric($rawAmount) ? (float)$rawAmount : $request->input('amount')]);
+        }
+
         $request->validate([
             'mustahik_id' => 'required|exists:mustahik,id',
             'amount' => 'required|numeric|min:0',
@@ -224,14 +223,7 @@ class ZakatDistributionController extends Controller
             'location' => 'nullable|string|max:255',
         ]);
 
-        // Get amount and ensure it's numeric (remove any formatting)
-        $amount = $request->input('amount');
-        if ($amount && $amount !== '') {
-            $amount = str_replace(['.', ','], '', $amount);
-            $amount = is_numeric($amount) ? (float)$amount : 0;
-        } else {
-            $amount = 0;
-        }
+        $amount = (float) $request->input('amount', 0);
 
         return DB::transaction(function () use ($request, $distribution, $amount) {
 

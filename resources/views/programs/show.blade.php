@@ -7,12 +7,7 @@
 @endsection
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-b from-orange-800 via-orange-700 to-orange-800">
-    <!-- Simple Background Pattern -->
-    <div class="absolute inset-0 opacity-10">
-        <div class="absolute top-20 right-20 w-64 h-64 bg-orange-300 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-20 left-20 w-64 h-64 bg-orange-300 rounded-full blur-3xl"></div>
-    </div>
+<div class="min-h-screen bg-orange-700">
 
     <div class="relative container mx-auto px-4 py-8">
         <!-- Back Button -->
@@ -41,7 +36,7 @@
                         <img src="{{ $program->image_url }}"
                             alt="{{ $program->name }}"
                             class="w-full h-64 object-cover"
-                            onerror="this.onerror=null; this.src='{{ asset('img/masjid.webp') }}';">
+                            onerror="this.onerror=null; this.src='{{ asset('img/masjidbanten.png') }}';">
                     </div>
 
                     <!-- Donation Card -->
@@ -78,7 +73,7 @@
                         <!-- Progress Bar -->
                         <div class="mb-6">
                             <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                                <div class="bg-gradient-to-r from-orange-500 to-orange-500 h-3 rounded-full transition-all duration-500"
+                                <div class="bg-orange-500 h-3 rounded-full transition-all duration-500"
                                     style="width: {{ min(100, $program->progress_percentage) }}%"></div>
                             </div>
                         </div>
@@ -120,7 +115,7 @@
                         @else
                             {{-- Active donation button --}}
                             <a href="{{ route('guest.payment.create', ['program_id' => $program->id]) }}"
-                                class="inline-flex items-center justify-center w-full bg-gradient-to-r from-orange-600 to-orange-600 text-white px-6 py-3 rounded-lg hover:from-orange-700 hover:to-orange-700 transition-all font-semibold shadow-md">
+                                class="inline-flex items-center justify-center w-full bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-all font-semibold shadow-sm">
                                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                                     <path
                                         d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />

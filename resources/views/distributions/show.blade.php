@@ -17,34 +17,30 @@
     $typeLabel = $typeLabels[$distribution->distribution_type] ?? [ucwords($distribution->distribution_type), 'bg-gray-100 text-gray-700'];
 @endphp
 
-<div class="space-y-6">
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+<div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-6">
         <div>
-            <p class="text-sm font-medium text-orange-600">#{{ $distribution->distribution_code }}</p>
-            <h1 class="text-3xl font-semibold text-gray-900">Detail Distribusi</h1>
-            <p class="text-sm text-gray-500">Pantau status dan riwayat distribusi mustahik.</p>
+            <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Detail Distribusi</h2>
+            <p class="text-sm font-mono" style="color: #8b7e74;">#{{ $distribution->distribution_code }}</p>
         </div>
-        <div class="flex flex-wrap gap-3">
+        <div class="flex flex-wrap items-center gap-2">
             <a href="{{ route('distributions.index') }}"
-               class="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50">
-                <i class="bi bi-arrow-left text-base"></i>
-                Kembali
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium transition-colors duration-200"
+                style="background: #f0ece6; color: #1c0f0a;">
+                <i class="bi bi-arrow-left"></i> Kembali
             </a>
             <a href="{{ route('distributions.edit', $distribution) }}"
-               class="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100">
-                <i class="bi bi-pencil text-base"></i>
-                Edit
+                class="inline-flex items-center px-4 py-2 font-medium rounded-xl transition-all duration-200 text-xs hover:bg-gray-50" style="border: 1px solid #e8e0d6; color: #1c0f0a; background: #fff;">
+                <i class="bi bi-pencil-fill mr-1.5" style="color: #c2410c;"></i> Edit
             </a>
             <a href="{{ route('distributions.receipt', $distribution) }}" target="_blank"
-               class="inline-flex items-center gap-2 rounded-lg border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-medium text-orange-700 hover:bg-orange-100">
-                <i class="bi bi-receipt text-base"></i>
-                Kwitansi
+                class="inline-flex items-center px-4 py-2 text-white font-medium rounded-xl transition-colors duration-200 text-xs shadow-xs" style="background: #c2410c;">
+                <i class="bi bi-receipt-cutoff mr-1.5"></i> Kwitansi
             </a>
             @if (! $distribution->is_received)
                 <button type="button" data-open-mark-received
-                        class="inline-flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100">
-                    <i class="bi bi-check-circle text-base"></i>
-                    Tandai Diterima
+                        class="inline-flex items-center px-4 py-2 text-amber-800 bg-amber-100 hover:bg-amber-200 font-medium rounded-xl transition-colors duration-200 text-xs">
+                    <i class="bi bi-check-circle-fill mr-1.5"></i> Tandai Diterima
                 </button>
             @endif
         </div>
@@ -56,7 +52,7 @@
                 <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
                     <div class="flex items-center gap-3">
                         <span class="inline-flex items-center justify-center rounded-full bg-orange-50 p-2 text-orange-600">
-                            <i class="bi bi-hand-thumbs-up text-lg"></i>
+                            <i class="bi bi-hand-thumbs-up-fill text-lg"></i>
                         </span>
                         <h2 class="text-lg font-semibold text-gray-900">Informasi Distribusi</h2>
                     </div>
@@ -158,7 +154,7 @@
             <section class="rounded-2xl border border-gray-100 bg-white shadow-sm">
                 <div class="flex items-center gap-3 border-b border-gray-100 px-6 py-4">
                     <span class="inline-flex items-center justify-center rounded-full bg-indigo-50 p-2 text-indigo-600">
-                        <i class="bi bi-clock-history text-lg"></i>
+                        <i class="bi bi-clock-fill text-lg"></i>
                     </span>
                     <h2 class="text-lg font-semibold text-gray-900">Riwayat Aktivitas</h2>
                 </div>
@@ -209,14 +205,14 @@
             <section class="rounded-2xl border border-gray-100 bg-white shadow-sm">
                 <div class="flex items-center gap-3 border-b border-gray-100 px-6 py-4">
                     <span class="inline-flex items-center justify-center rounded-full bg-purple-50 p-2 text-purple-600">
-                        <i class="bi bi-person-heart text-lg"></i>
+                        <i class="bi bi-person-fill text-lg"></i>
                     </span>
                     <h2 class="text-lg font-semibold text-gray-900">Informasi Mustahik</h2>
                 </div>
                 <div class="space-y-5 p-6">
                     <div class="flex flex-col items-center text-center">
                         <div class="flex h-20 w-20 items-center justify-center rounded-full bg-purple-100 text-purple-600">
-                            <i class="bi bi-person text-3xl"></i>
+                            <i class="bi bi-person-fill text-3xl"></i>
                         </div>
                         <p class="mt-3 text-lg font-semibold text-gray-900">{{ $distribution->mustahik->name }}</p>
                         <span class="mt-1 inline-flex rounded-full bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-700">
@@ -248,7 +244,7 @@
 
                     <a href="{{ route('mustahik.show', $distribution->mustahik) }}"
                        class="inline-flex w-full items-center justify-center rounded-xl border border-purple-200 bg-white px-4 py-2.5 text-sm font-semibold text-purple-700 shadow-sm hover:bg-purple-50">
-                        <i class="bi bi-eye me-2 text-base"></i>
+                        <i class="bi bi-eye-fill me-2 text-base"></i>
                         Lihat Profil Mustahik
                     </a>
                 </div>
@@ -257,7 +253,7 @@
             <section class="rounded-2xl border border-gray-100 bg-white shadow-sm">
                 <div class="flex items-center gap-3 border-b border-gray-100 px-6 py-4">
                     <span class="inline-flex items-center justify-center rounded-full bg-orange-50 p-2 text-orange-600">
-                        <i class="bi bi-lightning text-lg"></i>
+                        <i class="bi bi-lightning-fill text-lg"></i>
                     </span>
                     <h2 class="text-lg font-semibold text-gray-900">Aksi Cepat</h2>
                 </div>
@@ -265,26 +261,26 @@
                     @if (! $distribution->is_received)
                         <button type="button" data-open-mark-received
                                 class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-orange-700">
-                            <i class="bi bi-check-circle text-base"></i>
+                            <i class="bi bi-check-circle-fill text-base"></i>
                             Tandai Sudah Diterima
                         </button>
                     @endif
 
                     <a href="{{ route('distributions.edit', $distribution) }}"
                        class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-700 hover:bg-blue-100">
-                        <i class="bi bi-pencil text-base"></i>
+                        <i class="bi bi-pencil-fill text-base"></i>
                         Edit Distribusi
                     </a>
 
                     <a href="{{ route('distributions.receipt', $distribution) }}" target="_blank"
                        class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-4 py-2.5 text-sm font-semibold text-orange-700 hover:bg-orange-100">
-                        <i class="bi bi-receipt text-base"></i>
+                        <i class="bi bi-receipt-cutoff text-base"></i>
                         Cetak Kwitansi
                     </a>
 
                     <a href="{{ route('distributions.create', ['mustahik' => $distribution->mustahik->id]) }}"
                        class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50">
-                        <i class="bi bi-plus-circle text-base"></i>
+                        <i class="bi bi-plus-circle-fill text-base"></i>
                         Distribusi Lagi ke Mustahik Ini
                     </a>
 
@@ -296,7 +292,7 @@
                             @method('DELETE')
                             <button type="submit"
                                     class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-100">
-                                <i class="bi bi-trash text-base"></i>
+                                <i class="bi bi-trash-fill text-base"></i>
                                 Hapus Distribusi
                             </button>
                         </form>

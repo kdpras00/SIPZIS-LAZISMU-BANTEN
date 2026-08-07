@@ -1,14 +1,14 @@
 @extends('layouts.main')
 
 @section('content')
-    <div class="min-h-screen flex items-center justify-center bg-gray-50">
+    <div class="min-h-screen flex items-center justify-center" style="background: #faf8f5;">
         <div class="w-full max-w-md px-6">
-            <div class="bg-white rounded-lg shadow-md p-8">
-                <!-- Logo & Title -->
-                <!-- Logo & Title -->
+            <div class="bg-white rounded-2xl p-8" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06), 0 4px 16px rgba(28,15,10,0.06);">
+
                 <div class="text-center mb-8">
-                    <img src="{{ asset('storage/lazismu-icon.png') }}" alt="Lazismu" class="h-20 mx-auto mb-4">
-                    <p class="text-gray-500 text-sm">Lupa Password</p>
+                    <div class="mx-auto mb-4" style="width: 120px;">
+                        <img src="{{ asset('img/logo.png') }}" alt="Lazismu" class="w-full object-contain">
+                    </div>
                 </div>
 
                 <!-- Success Message -->
@@ -33,7 +33,7 @@
                 <form method="POST" action="{{ route('password.email') }}" class="space-y-4" id="forgotPasswordForm">
                     @csrf
 
-                    <p class="text-sm text-gray-600 mb-4">
+                    <p class="text-sm text-gray-600 mb-4 text-justify">
                         Masukkan email Anda dan kami akan mengirimkan link untuk mereset password Anda.
                     </p>
 

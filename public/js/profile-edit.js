@@ -405,13 +405,19 @@ document.addEventListener("DOMContentLoaded", function () {
       if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
-          document.getElementById("profilePhotoPreview").src = e.target.result;
-          // Hide "Belum ada foto profil" text
+          const preview = document.getElementById("profilePhotoPreview");
+          const defaultAvatar = document.getElementById("defaultAvatarIcon");
+          if (preview) {
+            preview.src = e.target.result;
+            preview.style.display = "block";
+          }
+          if (defaultAvatar) {
+            defaultAvatar.style.display = "none";
+          }
           const profilePhotoText = document.getElementById("profilePhotoText");
           if (profilePhotoText) {
-            profilePhotoText.textContent = "";
+            profilePhotoText.textContent = "Preview foto terpilih";
           }
-          // Update progress bar
           calculateCompletion();
         };
         reader.readAsDataURL(file);
@@ -605,8 +611,116 @@ document.addEventListener("DOMContentLoaded", function () {
   const districtSelect = document.querySelector("#district");
   const villageSelect = document.querySelector("#village");
 
+  function initTomSelect(el, options = {}) {
+    if (typeof TomSelect !== "undefined" && el) {
+      const defaultOptions = {
+        create: false,
+        placeholder: el.querySelector('option[value=""]') ? el.querySelector('option[value=""]').textContent : "Pilih...",
+        allowEmptyOption: true,
+        plugins: [], // completely remove clear_button plugin to hide the 'x'
+        controlInput: null,
+        render: {
+          no_results: function(data, escape) {
+            return '<div class="no-results text-xs text-[#8b7e74] p-2">Tidak ditemukan "' + escape(data.input) + '"</div>';
+          }
+        }
+      };
+      
+      const mergedOptions = Object.assign({}, defaultOptions, options);
+      if (el.tomselect) {
+        el.tomselect.destroy();
+      }
+      
+      const ts = new TomSelect(el, mergedOptions);
+      
+      // If search is disabled (controlInput: null), add no-search class to wrapper
+      if (mergedOptions.controlInput === null && ts.wrapper) {
+        ts.wrapper.classList.add("no-search");
+      }
+      
+      return ts;
+    }
+    return null;
+  }
+
   function resetDropdown(select, placeholder) {
-    select.innerHTML = `<option value="">${placeholder}</option>`;
+    if (select.tomselect) {
+      select.tomselect.clear(true);
+      select.tomselect.clearOptions();
+      select.tomselect.addOption({ value: "", text: placeholder });
+      select.tomselect.setValue("");
+    } else {
+      select.innerHTML = `<option value="">${placeholder}</option>`;
+    }
+  }
+
+  function addSelectOption(select, value, text) {
+    if (select.tomselect) {
+      select.tomselect.addOption({ value: value, text: text });
+    } else {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = text;
+      select.appendChild(option);
+    }
+  }
+
+  function selectOptionByText(select, savedText, triggerChange = true) {
+    if (!savedText) return;
+    
+    if (select.tomselect) {
+      const tsOptions = select.tomselect.options;
+      let matchValue = "";
+      for (const val in tsOptions) {
+        if (tsOptions[val].text.trim().toLowerCase() === savedText.trim().toLowerCase()) {
+          matchValue = val;
+          break;
+        }
+      }
+      if (matchValue) {
+        select.tomselect.setValue(matchValue, !triggerChange);
+        if (triggerChange) {
+          const event = new Event("change");
+          select.dispatchEvent(event);
+        }
+      }
+    } else {
+      const options = select.options;
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].text.trim().toLowerCase() === savedText.trim().toLowerCase()) {
+          select.selectedIndex = i;
+          if (triggerChange) {
+            const event = new Event("change");
+            select.dispatchEvent(event);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  // Initialize Tom Select on page load
+  if (typeof TomSelect !== "undefined") {
+    const genderSelect = document.querySelector("#gender");
+    if (genderSelect) initTomSelect(genderSelect, { controlInput: null });
+
+    const occupationSelect = document.querySelector("#occupation");
+    if (occupationSelect) initTomSelect(occupationSelect, { controlInput: null });
+
+    const birthDaySelect = document.querySelector('select[name="birth_day"]');
+    if (birthDaySelect) initTomSelect(birthDaySelect, { controlInput: null });
+
+    const birthMonthSelect = document.querySelector('select[name="birth_month"]');
+    if (birthMonthSelect) initTomSelect(birthMonthSelect, { controlInput: null });
+
+    const birthYearSelect = document.querySelector('select[name="birth_year"]');
+    if (birthYearSelect) initTomSelect(birthYearSelect, { controlInput: null });
+
+    if (countrySelect) initTomSelect(countrySelect, { controlInput: null });
+    if (provinceSelect) initTomSelect(provinceSelect, { controlInput: null });
+    if (citySelect) initTomSelect(citySelect, { controlInput: null });
+    if (districtSelect) initTomSelect(districtSelect, { controlInput: null });
+    if (villageSelect) initTomSelect(villageSelect, { controlInput: null });
   }
 
   function fetchCountries() {
@@ -615,30 +729,29 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         resetDropdown(countrySelect, "Pilih Negara");
         data.forEach((country) => {
-          const option = document.createElement("option");
-          option.value = country.name;
-          option.textContent = country.name;
-          countrySelect.appendChild(option);
+          addSelectOption(countrySelect, country.name, country.name);
         });
 
-        // Set value if existing data
-        const savedCountry = config.savedCountry;
-        if (savedCountry) {
-          countrySelect.value = savedCountry;
-          if (savedCountry.toLowerCase() === "indonesia") {
-            // Show Indonesia-specific fields
-            showIndonesiaFields();
-            fetchProvinces();
-          } else {
-            // Hide Indonesia-specific fields for other countries
-            hideIndonesiaFields();
-          }
+        // Set value if existing data (default to Indonesia)
+        const savedCountry = config.savedCountry || "Indonesia";
+        if (countrySelect.tomselect) {
+          countrySelect.tomselect.setValue(savedCountry);
         } else {
-          // No default country - hide Indonesia fields initially
+          countrySelect.value = savedCountry;
+        }
+
+        if (!config.savedCountry || savedCountry.toLowerCase() === "indonesia") {
+          showIndonesiaFields();
+          fetchProvinces();
+        } else {
           hideIndonesiaFields();
         }
       })
-      .catch((err) => console.error("Gagal memuat negara:", err));
+      .catch((err) => {
+        console.error("Gagal memuat negara:", err);
+        showIndonesiaFields();
+        fetchProvinces();
+      });
   }
 
   // Helper functions to show/hide Indonesia-specific fields
@@ -646,18 +759,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const fields = ["province", "city", "district", "village", "postal_code"];
     fields.forEach((fieldId) => {
       const field = document.getElementById(fieldId);
-      if (field && field.closest(".mb-5")) {
-        field.closest(".mb-5").style.display = "block";
+      if (field) {
+        const wrapper = field.closest("div");
+        if (wrapper) wrapper.style.display = "";
+        if (field.tomselect) {
+          field.tomselect.enable();
+        }
       }
     });
   }
 
+  // Helper functions to show/hide Indonesia-specific fields
   function hideIndonesiaFields() {
     const fields = ["province", "city", "district", "village", "postal_code"];
     fields.forEach((fieldId) => {
       const field = document.getElementById(fieldId);
-      if (field && field.closest(".mb-5")) {
-        field.closest(".mb-5").style.display = "none";
+      if (field) {
+        const wrapper = field.closest("div");
+        if (wrapper) wrapper.style.display = "none";
+        if (field.tomselect) {
+          field.tomselect.disable();
+        }
       }
     });
   }
@@ -668,29 +790,13 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         resetDropdown(provinceSelect, "Pilih Provinsi");
         data.forEach((prov) => {
-          const option = document.createElement("option");
-          option.value = prov.id;
-          option.textContent = prov.name;
-          provinceSelect.appendChild(option);
+          addSelectOption(provinceSelect, prov.id, prov.name);
         });
 
         // Set value if existing data
         const savedProvince = config.savedProvince;
         if (savedProvince) {
-          // Find the option with matching text content (trimmed for whitespace)
-          const options = provinceSelect.options;
-          for (let i = 0; i < options.length; i++) {
-            if (
-              options[i].text.trim().toLowerCase() ===
-              savedProvince.trim().toLowerCase()
-            ) {
-              provinceSelect.selectedIndex = i;
-              // Trigger change event to load cities
-              const event = new Event("change");
-              provinceSelect.dispatchEvent(event);
-              break;
-            }
-          }
+          selectOptionByText(provinceSelect, savedProvince, true);
         }
       })
       .catch((err) => console.error("Gagal memuat provinsi:", err));
@@ -704,29 +810,13 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         resetDropdown(citySelect, "Pilih Kota/Kabupaten");
         data.forEach((city) => {
-          const option = document.createElement("option");
-          option.value = city.id;
-          option.textContent = city.name;
-          citySelect.appendChild(option);
+          addSelectOption(citySelect, city.id, city.name);
         });
 
         // Set value if existing data
         const savedCity = config.savedCity;
         if (savedCity) {
-          // Find the option with matching text content (trimmed for whitespace)
-          const options = citySelect.options;
-          for (let i = 0; i < options.length; i++) {
-            if (
-              options[i].text.trim().toLowerCase() ===
-              savedCity.trim().toLowerCase()
-            ) {
-              citySelect.selectedIndex = i;
-              // Trigger change event to load districts
-              const event = new Event("change");
-              citySelect.dispatchEvent(event);
-              break;
-            }
-          }
+          selectOptionByText(citySelect, savedCity, true);
         }
       })
       .catch((err) => console.error("Gagal memuat kota:", err));
@@ -740,29 +830,13 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         resetDropdown(districtSelect, "Pilih Kecamatan");
         data.forEach((dist) => {
-          const option = document.createElement("option");
-          option.value = dist.id;
-          option.textContent = dist.name;
-          districtSelect.appendChild(option);
+          addSelectOption(districtSelect, dist.id, dist.name);
         });
 
         // Set value if existing data
         const savedDistrict = config.savedDistrict;
         if (savedDistrict) {
-          // Find the option with matching text content (trimmed for whitespace)
-          const options = districtSelect.options;
-          for (let i = 0; i < options.length; i++) {
-            if (
-              options[i].text.trim().toLowerCase() ===
-              savedDistrict.trim().toLowerCase()
-            ) {
-              districtSelect.selectedIndex = i;
-              // Trigger change event to load villages
-              const event = new Event("change");
-              districtSelect.dispatchEvent(event);
-              break;
-            }
-          }
+          selectOptionByText(districtSelect, savedDistrict, true);
         }
       })
       .catch((err) => console.error("Gagal memuat kecamatan:", err));
@@ -776,36 +850,39 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         resetDropdown(villageSelect, "Pilih Kelurahan");
         data.forEach((village) => {
-          const option = document.createElement("option");
-          option.value = village.id;
-          option.textContent = village.name;
-          villageSelect.appendChild(option);
+          addSelectOption(villageSelect, village.id, village.name);
         });
 
         // Set value if existing data
         const savedVillage = config.savedVillage;
         if (savedVillage) {
-          // Try to match by value (ID) first
-          const options = villageSelect.options;
-          let matched = false;
-
-          for (let i = 0; i < options.length; i++) {
-            if (options[i].value === savedVillage) {
-              villageSelect.selectedIndex = i;
-              matched = true;
-              break;
+          if (villageSelect.tomselect) {
+            if (villageSelect.tomselect.options[savedVillage]) {
+              villageSelect.tomselect.setValue(savedVillage);
+            } else {
+              selectOptionByText(villageSelect, savedVillage, false);
             }
-          }
+          } else {
+            const options = villageSelect.options;
+            let matched = false;
 
-          // If no match by ID, try matching by name (for backward compatibility)
-          if (!matched) {
             for (let i = 0; i < options.length; i++) {
-              if (
-                options[i].text.trim().toLowerCase() ===
-                savedVillage.trim().toLowerCase()
-              ) {
+              if (options[i].value === savedVillage) {
                 villageSelect.selectedIndex = i;
+                matched = true;
                 break;
+              }
+            }
+
+            if (!matched) {
+              for (let i = 0; i < options.length; i++) {
+                if (
+                  options[i].text.trim().toLowerCase() ===
+                  savedVillage.trim().toLowerCase()
+                ) {
+                  villageSelect.selectedIndex = i;
+                  break;
+                }
               }
             }
           }

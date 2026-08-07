@@ -110,6 +110,9 @@ class ProgramSeeder extends Seeder
         ];
 
         foreach ($programs as $program) {
+            if (!isset($program['slug'])) {
+                $program['slug'] = \Illuminate\Support\Str::slug($program['name']);
+            }
             Program::updateOrCreate(
                 ['category' => $program['category']],
                 $program

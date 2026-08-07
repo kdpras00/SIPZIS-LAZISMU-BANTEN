@@ -3,152 +3,107 @@
 @section('page-title', 'Laporan Distribusi per Asnaf')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h2 class="mb-1">Laporan Distribusi per Asnaf</h2>
-        <p class="text-muted">Laporan distribusi zakat berdasarkan kategori mustahik (8 Asnaf)</p>
+<div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
+    {{-- Header Section --}}
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
+        <div>
+            <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Laporan Distribusi per Asnaf</h2>
+            <p class="text-sm" style="color: #8b7e74;">Laporan distribusi zakat berdasarkan kategori mustahik (8 Asnaf)</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="{{ route('distributions.index') }}"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium transition-colors duration-200"
+                style="background: #f0ece6; color: #1c0f0a;">
+                <i class="bi bi-arrow-left"></i> Kembali
+            </a>
+            <button class="inline-flex items-center px-4 py-2 text-white font-medium rounded-xl transition-colors duration-200 text-xs shadow-xs" style="background: #c2410c;" onclick="window.print()">
+                <i class="bi bi-printer mr-1.5"></i> Cetak Laporan
+            </button>
+        </div>
     </div>
-    <div>
-        <a href="{{ route('distributions.index') }}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Kembali
-        </a>
-        <button class="btn btn-primary" onclick="window.print()">
-            <i class="bi bi-printer"></i> Cetak Laporan
-        </button>
-    </div>
-</div>
 
-<!-- Year Filter -->
-<div class="card mb-4">
-    <div class="card-body">
-        <form method="GET" action="{{ route('distributions.report.category') }}" class="row g-3 align-items-end">
-            <div class="col-md-3">
-                <label for="year" class="form-label">Filter Tahun</label>
-                <select name="year" id="year" class="form-select" onchange="this.form.submit()">
-                    @for ($y = date('Y'); $y >= 2020; $y--)
-                    <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>{{ $y }}</option>
-                    @endfor
-                </select>
-            </div>
-            <div class="col-md-9">
-                <div class="text-muted">
-                    <i class="bi bi-info-circle me-1"></i>
-                    Menampilkan data distribusi untuk tahun {{ $year }}
+    {{-- Year Filter --}}
+    <div class="rounded-2xl p-5 mb-6" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+        <form method="GET" action="{{ route('distributions.report.category') }}" class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <label for="year" class="text-xs font-bold whitespace-nowrap" style="color: #1c0f0a;">Filter Tahun:</label>
+                @php
+                    $yearOptions = [];
+                    for ($y = date('Y'); $y >= 2020; $y--) {
+                        $yearOptions[$y] = (string)$y;
+                    }
+                @endphp
+                <div class="w-[140px]">
+                    <x-custom-select 
+                        id="year"
+                        name="year"
+                        :options="$yearOptions"
+                        :selected="$year"
+                        placeholder="Tahun"
+                        onChange="this.$refs.hiddenInput.form.submit()"
+                    />
                 </div>
+            </div>
+            <div class="text-xs" style="color: #8b7e74;">
+                <i class="bi bi-info-circle-fill me-1" style="color: #c2410c;"></i>
+                Menampilkan data distribusi untuk tahun <span class="font-bold" style="color: #1c0f0a;">{{ $year }}</span>
             </div>
         </form>
     </div>
-</div>
 
-<!-- Summary Statistics -->
-<div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card bg-primary text-white">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h6 class="card-title">Total Kategori</h6>
-                        <h3 class="mb-0">{{ count($distributions) }}</h3>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="bi bi-collection fs-2"></i>
-                    </div>
-                </div>
-            </div>
+    {{-- Summary Statistics --}}
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total Kategori</p>
+            <p class="text-2xl font-bold mb-0" style="color: #1c0f0a;">{{ count($distributions) }}</p>
+        </div>
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total Distribusi</p>
+            <p class="text-2xl font-bold mb-0" style="color: #1c0f0a;">{{ $distributions->sum('count') }}</p>
+        </div>
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total Mustahik</p>
+            <p class="text-2xl font-bold mb-0" style="color: #1c0f0a;">{{ $distributions->sum(function($group) { return $group['mustahik']->count(); }) }}</p>
+        </div>
+        <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total Nilai</p>
+            <p class="text-xl font-bold mb-0 text-[#c2410c]">Rp {{ number_format($distributions->sum('total_amount'), 0, ',', '.') }}</p>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card bg-success text-white">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h6 class="card-title">Total Distribusi</h6>
-                        <h3 class="mb-0">{{ $distributions->sum('count') }}</h3>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="bi bi-box-seam fs-2"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card bg-info text-white">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h6 class="card-title">Total Mustahik</h6>
-                        <h3 class="mb-0">{{ $distributions->sum(function($group) { return $group['mustahik']->count(); }) }}</h3>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="bi bi-people fs-2"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card bg-warning text-white">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h6 class="card-title">Total Nilai</h6>
-                        <h3 class="mb-0">Rp {{ number_format($distributions->sum('total_amount'), 0, ',', '.') }}</h3>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="bi bi-currency-dollar fs-2"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Distribution Chart -->
-<div class="row mb-4">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Distribusi per Kategori Asnaf</h5>
+    {{-- Distribution Chart --}}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div class="lg:col-span-2 rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+            <h5 class="text-xs font-bold uppercase tracking-wider mb-4" style="color: #8b7e74;">Distribusi per Kategori Asnaf</h5>
+            <div class="h-[300px]">
+                <canvas id="distributionChart"></canvas>
             </div>
-            <div class="card-body">
-                <canvas id="distributionChart" height="300"></canvas>
+        </div>
+        <div class="lg:col-span-1 rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+            <h5 class="text-xs font-bold uppercase tracking-wider mb-4" style="color: #8b7e74;">Persentase Distribusi</h5>
+            <div class="h-[300px]">
+                <canvas id="percentageChart"></canvas>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Persentase Distribusi</h5>
-            </div>
-            <div class="card-body">
-                <canvas id="percentageChart" height="300"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Detailed Report Table -->
-<div class="card">
-    <div class="card-header">
-        <h5 class="mb-0">Laporan Detail per Kategori Asnaf</h5>
-    </div>
-    <div class="card-body p-0">
+    {{-- Detailed Report Table --}}
+    <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         @if($distributions->count() > 0)
-        <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="bg-light">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-[#f0ece6]">
+                <thead style="background: #faf8f5;">
                     <tr>
-                        <th>Kategori Asnaf</th>
-                        <th>Deskripsi</th>
-                        <th class="text-center">Jumlah Distribusi</th>
-                        <th class="text-center">Jumlah Mustahik</th>
-                        <th class="text-end">Total Nilai</th>
-                        <th class="text-center">Rata-rata per Distribusi</th>
-                        <th class="text-center">Persentase</th>
+                        <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Kategori Asnaf</th>
+                        <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Deskripsi</th>
+                        <th class="px-5 py-3.5 text-center text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Jumlah Distribusi</th>
+                        <th class="px-5 py-3.5 text-center text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Jumlah Mustahik</th>
+                        <th class="px-5 py-3.5 text-right text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Total Nilai</th>
+                        <th class="px-5 py-3.5 text-center text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Rata-rata per Distribusi</th>
+                        <th class="px-5 py-3.5 text-center text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Persentase</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="bg-white divide-y divide-[#f0ece6]">
                     @foreach($categories as $categoryKey => $categoryDesc)
                     @php
                         $categoryData = $distributions->get($categoryKey, ['count' => 0, 'total_amount' => 0, 'mustahik' => collect()]);
@@ -156,126 +111,98 @@
                         $percentage = $totalAllCategories > 0 ? ($categoryData['total_amount'] / $totalAllCategories) * 100 : 0;
                         $averagePerDistribution = $categoryData['count'] > 0 ? $categoryData['total_amount'] / $categoryData['count'] : 0;
                     @endphp
-                    <tr class="{{ $categoryData['count'] > 0 ? '' : 'text-muted' }}">
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="bg-{{ $categoryData['count'] > 0 ? 'primary' : 'light' }} bg-opacity-10 rounded-circle p-2 me-2">
-                                    <i class="bi bi-people{{ $categoryData['count'] > 0 ? '-fill' : '' }} text-{{ $categoryData['count'] > 0 ? 'primary' : 'muted' }}"></i>
+                    <tr class="hover:bg-[#faf8f5]/60 transition-colors duration-150">
+                        <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="w-9 h-9 rounded-xl flex items-center justify-center mr-3 border border-[#f0ece6] flex-shrink-0" style="background: #faf8f5;">
+                                    <i class="bi bi-people text-sm" style="color: #c2410c;"></i>
                                 </div>
                                 <div>
-                                    <div class="fw-semibold">{{ ucfirst(str_replace('_', ' ', $categoryKey)) }}</div>
+                                    <div class="text-xs font-bold" style="color: #1c0f0a;">{{ ucfirst(str_replace('_', ' ', $categoryKey)) }}</div>
                                     @if($categoryData['count'] > 0)
-                                    <span class="badge bg-success-subtle text-success-emphasis">Aktif</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">Aktif</span>
                                     @else
-                                    <span class="badge bg-secondary-subtle text-secondary-emphasis">Belum Ada Distribusi</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-medium" style="background: #f0ece6; color: #8b7e74;">Belum Ada Distribusi</span>
                                     @endif
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <small class="text-muted">{{ Str::after($categoryDesc, ' - ') }}</small>
+                        <td class="px-5 py-4 text-xs" style="color: #8b7e74;">
+                            {{ Str::after($categoryDesc, ' - ') }}
                         </td>
-                        <td class="text-center">
+                        <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-bold" style="color: #1c0f0a;">
                             @if($categoryData['count'] > 0)
-                            <span class="badge bg-primary-subtle text-primary-emphasis">{{ number_format($categoryData['count']) }}</span>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">{{ number_format($categoryData['count']) }}</span>
                             @else
-                            <span class="text-muted">-</span>
+                            <span style="color: #8b7e74;">-</span>
                             @endif
                         </td>
-                        <td class="text-center">
+                        <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-bold" style="color: #1c0f0a;">
                             @if($categoryData['mustahik']->count() > 0)
-                            <span class="badge bg-info-subtle text-info-emphasis">{{ $categoryData['mustahik']->count() }}</span>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">{{ $categoryData['mustahik']->count() }}</span>
                             @else
-                            <span class="text-muted">-</span>
+                            <span style="color: #8b7e74;">-</span>
                             @endif
                         </td>
-                        <td class="text-end">
+                        <td class="px-5 py-4 whitespace-nowrap text-right text-xs font-bold text-[#c2410c]">
                             @if($categoryData['total_amount'] > 0)
-                            <div class="fw-bold">Rp {{ number_format($categoryData['total_amount'], 0, ',', '.') }}</div>
+                            Rp {{ number_format($categoryData['total_amount'], 0, ',', '.') }}
                             @else
-                            <span class="text-muted">-</span>
+                            <span style="color: #8b7e74;">-</span>
                             @endif
                         </td>
-                        <td class="text-center">
+                        <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-medium" style="color: #1c0f0a;">
                             @if($averagePerDistribution > 0)
-                            <small class="text-success">Rp {{ number_format($averagePerDistribution, 0, ',', '.') }}</small>
+                            Rp {{ number_format($averagePerDistribution, 0, ',', '.') }}
                             @else
-                            <span class="text-muted">-</span>
+                            <span style="color: #8b7e74;">-</span>
                             @endif
                         </td>
-                        <td class="text-center">
+                        <td class="px-5 py-4 whitespace-nowrap text-center">
                             @if($percentage > 0)
-                            <div class="d-flex align-items-center justify-content-center">
-                                <div class="progress me-2" style="width: 60px; height: 8px;">
-                                    <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%"></div>
+                            <div class="flex items-center justify-center gap-2">
+                                <div class="w-16 bg-[#f0ece6] rounded-full h-2 overflow-hidden">
+                                    <div class="h-2 rounded-full transition-all duration-300" style="background: #c2410c; width: {{ $percentage }}%"></div>
                                 </div>
-                                <small class="fw-semibold">{{ number_format($percentage, 1) }}%</small>
+                                <span class="text-xs font-bold" style="color: #1c0f0a;">{{ number_format($percentage, 1) }}%</span>
                             </div>
                             @else
-                            <span class="text-muted">0%</span>
+                            <span class="text-xs" style="color: #8b7e74;">0%</span>
                             @endif
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
-                <tfoot class="bg-light">
-                    <tr class="fw-bold">
-                        <td colspan="2">TOTAL</td>
-                        <td class="text-center">{{ number_format($distributions->sum('count')) }}</td>
-                        <td class="text-center">{{ $distributions->sum(function($group) { return $group['mustahik']->count(); }) }}</td>
-                        <td class="text-end">Rp {{ number_format($distributions->sum('total_amount'), 0, ',', '.') }}</td>
-                        <td class="text-center">-</td>
-                        <td class="text-center">100%</td>
+                <tfoot style="background: #faf8f5;">
+                    <tr class="font-bold text-xs" style="color: #1c0f0a;">
+                        <td colspan="2" class="px-5 py-3.5">TOTAL</td>
+                        <td class="px-5 py-3.5 text-center">{{ number_format($distributions->sum('count')) }}</td>
+                        <td class="px-5 py-3.5 text-center">{{ $distributions->sum(function($group) { return $group['mustahik']->count(); }) }}</td>
+                        <td class="px-5 py-3.5 text-right text-[#c2410c]">Rp {{ number_format($distributions->sum('total_amount'), 0, ',', '.') }}</td>
+                        <td class="px-5 py-3.5 text-center">-</td>
+                        <td class="px-5 py-3.5 text-center">100%</td>
                     </tr>
                 </tfoot>
             </table>
         </div>
         @else
-        <div class="text-center py-5">
-            <i class="bi bi-inbox display-4 text-muted mb-3 d-block"></i>
-            <h5 class="text-muted">Tidak Ada Data Distribusi</h5>
-            <p class="text-muted">Belum ada distribusi zakat yang tercatat untuk tahun {{ $year }}</p>
-            <a href="{{ route('distributions.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Tambah Distribusi Pertama
+        <div class="text-center py-12 px-6">
+            <i class="bi bi-inbox text-4xl mb-2 block" style="color: #d1cbc4;"></i>
+            <p class="text-sm font-semibold mb-0" style="color: #1c0f0a;">Tidak Ada Data Distribusi</p>
+            <p class="text-xs mt-1 mb-4" style="color: #8b7e74;">Belum ada distribusi zakat yang tercatat untuk tahun {{ $year }}</p>
+            <a href="{{ route('distributions.create') }}" class="inline-flex items-center px-4 py-2 text-white font-medium rounded-xl transition-colors text-xs shadow-xs" style="background: #c2410c;">
+                <i class="bi bi-plus-circle-fill mr-1.5"></i> Tambah Distribusi Pertama
             </a>
         </div>
         @endif
     </div>
 </div>
 
-<!-- Print-specific styles -->
 <style media="print">
-    .btn, .card-header .btn, .no-print {
-        display: none !important;
-    }
-    
-    .card {
-        border: 1px solid #dee2e6 !important;
-        box-shadow: none !important;
-        page-break-inside: avoid;
-    }
-    
-    .card-body {
-        padding: 1rem !important;
-    }
-    
-    @page {
-        margin: 1cm;
-    }
-    
-    body {
-        font-size: 12px;
-    }
-    
-    h2 {
-        font-size: 18px;
-    }
-    
-    .table th,
-    .table td {
-        padding: 0.5rem;
-        font-size: 11px;
-    }
+    .no-print { display: none !important; }
+    @page { margin: 1cm; }
+    body { font-size: 12px; }
+    h2 { font-size: 18px; }
 </style>
 @endsection
 
@@ -283,15 +210,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Prepare data for charts
     const categories = @json($categories);
     const distributions = @json($distributions);
     
     const labels = [];
     const values = [];
     const colors = [
-        '#0d6efd', '#6f42c1', '#d63384', '#dc3545',
-        '#fd7e14', '#ffc107', '#c2410c', '#20c997'
+        '#c2410c', '#ea580c', '#f97316', '#fb923c',
+        '#fdba74', '#fed7aa', '#8b7e74', '#1c0f0a'
     ];
     
     Object.keys(categories).forEach((key, index) => {
@@ -302,7 +228,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Distribution Bar Chart
     const distributionCtx = document.getElementById('distributionChart').getContext('2d');
     new Chart(distributionCtx, {
         type: 'bar',
@@ -312,17 +237,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 label: 'Jumlah Distribusi (Rp)',
                 data: values,
                 backgroundColor: colors.slice(0, labels.length),
-                borderColor: colors.slice(0, labels.length),
-                borderWidth: 1
+                borderRadius: 8
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    display: false
-                },
+                legend: { display: false },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
@@ -344,7 +266,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Percentage Pie Chart
     const percentageCtx = document.getElementById('percentageChart').getContext('2d');
     new Chart(percentageCtx, {
         type: 'doughnut',
@@ -363,13 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: {
-                        boxWidth: 12,
-                        padding: 10,
-                        font: {
-                            size: 11
-                        }
-                    }
+                    labels: { boxWidth: 12, padding: 10, font: { size: 11 } }
                 },
                 tooltip: {
                     callbacks: {

@@ -12,11 +12,7 @@
         {{-- Success Card --}}
         <div class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-8 border-t-4 border-orange-500">
             {{-- Confetti Background --}}
-            <div class="relative bg-gradient-to-br from-orange-500 to-orange-600 p-8 text-center">
-                <div class="absolute inset-0 opacity-10">
-                    <div class="absolute top-0 left-0 w-32 h-32 bg-white rounded-full blur-3xl"></div>
-                    <div class="absolute bottom-0 right-0 w-32 h-32 bg-white rounded-full blur-3xl"></div>
-                </div>
+            <div class="relative bg-orange-500 p-8 text-center">
                 
                 <div class="relative z-10">
                     {{-- Success Icon --}}
@@ -39,7 +35,7 @@
                     <img src="{{ $program->image_url }}" 
                          alt="{{ $program->name }}"
                          class="w-24 h-24 object-cover rounded-xl shadow-md"
-                         onerror="this.src='{{ asset('img/masjid.webp') }}'">
+                         onerror="this.src='{{ asset('img/masjidbanten.png') }}'">
                     <div class="flex-1">
                         <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ $program->name }}</h2>
                         <p class="text-gray-600 text-sm">{{ Str::limit($program->description, 150) }}</p>
@@ -82,13 +78,13 @@
                         <span class="text-sm font-bold text-orange-600">100%</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-                        <div class="bg-gradient-to-r from-orange-500 to-orange-500 h-4 rounded-full transition-all duration-1000 ease-out animate-pulse" 
+                        <div class="bg-orange-500 h-4 rounded-full transition-all duration-1000 ease-out" 
                              style="width: 100%"></div>
                     </div>
                 </div>
 
                 {{-- Thank You Message --}}
-                <div class="bg-gradient-to-r from-orange-50 to-orange-50 rounded-xl p-6 border border-orange-100">
+                <div class="bg-orange-50 rounded-xl p-6 border border-orange-100">
                     <h3 class="font-bold text-gray-800 mb-2 flex items-center">
                         <i class="fas fa-heart text-red-500 mr-2"></i>
                         Terima Kasih Para Donatur
@@ -129,7 +125,7 @@
                     <img src="{{ $recProgram->image_url }}" 
                          alt="{{ $recProgram->name }}"
                          class="w-full h-32 object-cover"
-                         onerror="this.src='{{ asset('img/masjid.webp') }}'">
+                         onerror="this.src='{{ asset('img/masjidbanten.png') }}'">
                     <div class="p-4">
                         <h4 class="font-bold text-gray-800 mb-2 text-sm group-hover:text-orange-600 transition-colors">
                             {{ Str::limit($recProgram->name, 40) }}

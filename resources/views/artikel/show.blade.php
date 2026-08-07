@@ -13,8 +13,8 @@
         
         <!-- Breadcrumb -->
         <div class="mb-6">
-            <a href="{{ route('artikel.all') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-orange-600 transition-colors">
-                <i class="bi bi-arrow-left mr-2"></i>
+            <a href="{{ route('artikel.index') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-orange-600 transition-colors">
+                <i class="bi bi-arrow-left-circle mr-2"></i>
                 Kembali ke Artikel
             </a>
         </div>
@@ -152,7 +152,7 @@
                             @endforelse
                         </div>
                         
-                        <a href="{{ route('artikel.all') }}" class="block mt-6 text-center text-sm font-semibold text-orange-600 hover:text-orange-700 transition-colors">
+                        <a href="{{ route('artikel.index') }}" class="block mt-6 text-center text-sm font-semibold text-orange-600 hover:text-orange-700 transition-colors">
                             Lihat Semua Artikel <i class="bi bi-arrow-right ml-1"></i>
                         </a>
                     </div>

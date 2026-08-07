@@ -1,17 +1,23 @@
 @extends('layouts.app')
 
+@section('page-title', 'Edit Berita')
+
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <div class="flex items-center mb-6">
-        <a href="{{ route('admin.news.index') }}" class="text-gray-600 hover:text-gray-800 mr-4">
-            <i class="fas fa-arrow-left text-xl"></i>
+<div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
+    <!-- Header -->
+    <div class="mb-6 flex items-center justify-between">
+        <div>
+            <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Edit Berita</h2>
+            <p class="text-sm" style="color: #8b7e74;">Perbarui detail dan informasi berita publik</p>
+        </div>
+        <a href="{{ route('admin.news.index') }}"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium transition-colors duration-200"
+            style="background: #f0ece6; color: #1c0f0a;">
+            <i class="bi bi-arrow-left"></i> Kembali
         </a>
-        <h1 class="text-3xl font-bold text-gray-800">Edit Berita</h1>
     </div>
 
-    @include('components.alerts')
-
-    <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="rounded-2xl p-6" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         <form action="{{ route('admin.news.update', $news) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')

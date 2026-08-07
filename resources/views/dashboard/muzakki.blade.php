@@ -20,7 +20,7 @@
         left: 50%;
         transform: translateX(-50%);
         width: calc(100% - 2rem);
-        max-width: 680px;
+        max-width: 896px; /* max-w-4xl width */
         z-index: 1030;
         border-radius: 16px 16px 0 0;
         box-shadow: 0 -4px 20px rgba(28,15,10,0.06);
@@ -34,8 +34,7 @@
     $firstName = explode(' ', $muzakki->name)[0];
 @endphp
 
-<div class="min-h-screen" style="background: #faf8f5;">
-    <div class="max-w-2xl mx-auto px-4 py-5">
+<div class="py-6 px-4 max-w-4xl mx-auto">
 
         {{-- Profile Section --}}
         <div class="rounded-2xl p-5 mb-4 appear" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
@@ -162,6 +161,5 @@
             </div>
         </div>
 
-    </div>
 </div>
 @endsection

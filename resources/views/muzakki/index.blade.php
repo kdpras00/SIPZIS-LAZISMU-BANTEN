@@ -3,54 +3,57 @@
 @section('page-title', 'Manajemen Muzakki')
 
 @section('content')
-    <div class="px-6 py-5" style="max-width: 1280px;">
+    <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Data Muzakki</h2>
             <p class="text-sm" style="color: #8b7e74;">Kelola data muzakki yang terdaftar dalam sistem</p>
         </div>
+        <a href="{{ route('muzakki.create') }}"
+            class="inline-flex items-center px-4 py-2 text-white font-medium rounded-xl transition-colors duration-200 text-xs shadow-xs" style="background: #c2410c;">
+            <i class="bi bi-plus-circle-fill mr-1.5"></i> Tambah Muzakki
+        </a>
     </div>
 
     <!-- Filter Section -->
     <div class="rounded-2xl mb-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
-        <div class="p-4">
-            <div class="flex flex-wrap gap-3">
+        <div class="px-5 py-3.5 flex items-center justify-between" style="border-bottom: 1px solid #f0ece6;">
+            <div class="flex items-center gap-2">
+                <i class="bi bi-funnel-fill text-xs" style="color: #c2410c;"></i>
+                <span class="text-xs font-bold uppercase tracking-wider" style="color: #1c0f0a;">Filter Data Muzakki</span>
+            </div>
+        </div>
+        <div class="p-5 sm:p-6">
+            <div class="flex flex-col sm:flex-row flex-wrap gap-3">
                 <div class="flex-1 min-w-[200px]">
                     <input type="text" id="search-input"
-                        class="w-full px-3 py-2 rounded-lg text-sm" style="border: 1px solid #e8e0d6; background: #fff; color: #1c0f0a;"
+                        class="w-full h-11 px-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none"
                         placeholder="Cari nama, email, NIK..." value="{{ request('search') }}">
                 </div>
-                <div class="w-[180px]">
-                    <select id="occupation-filter"
-                        class="w-full px-3 py-2 rounded-lg text-sm" style="border: 1px solid #e8e0d6; background: #fff; color: #1c0f0a;">
-                        <option value="">Semua Pekerjaan</option>
-                        @foreach ($occupations as $occupation)
-                            <option value="{{ $occupation }}" {{ request('occupation') == $occupation ? 'selected' : '' }}>
-                                {{ ucwords(str_replace('_', ' ', $occupation)) }}
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="w-full sm:w-[180px]">
+                    <x-custom-select 
+                        id="occupation-filter" 
+                        name="occupation" 
+                        placeholder="Semua Pekerjaan" 
+                        :selected="request('occupation', '')" 
+                        :options="collect($occupations)->mapWithKeys(fn($item) => [$item => ucwords(str_replace('_', ' ', $item))])->toArray()" />
                 </div>
-                <div class="w-[150px]">
+                <div class="w-full sm:w-[150px]">
                     <input type="text" id="city-filter"
-                        class="w-full px-3 py-2 rounded-lg text-sm" style="border: 1px solid #e8e0d6; background: #fff; color: #1c0f0a;"
+                        class="w-full h-11 px-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none"
                         placeholder="Kota" value="{{ request('city') }}">
                 </div>
-                <div class="w-[180px]">
-                    <select id="status-filter"
-                        class="w-full px-3 py-2 rounded-lg text-sm" style="border: 1px solid #e8e0d6; background: #fff; color: #1c0f0a;">
-                        <option value="">Semua Status</option>
-                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Aktif</option>
-                        <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
-                    </select>
+                <div class="w-full sm:w-[180px]">
+                    <x-custom-select 
+                        id="status-filter" 
+                        name="status" 
+                        placeholder="Semua Status" 
+                        :selected="request('status', '')" 
+                        :options="['active' => 'Aktif', 'inactive' => 'Tidak Aktif']" />
                 </div>
                 <div class="flex items-center gap-2">
-                    <button type="button" id="reset-filters"
-                        class="inline-flex items-center px-4 py-2 font-medium rounded-lg transition-colors duration-200 text-sm" style="border: 1px solid #e8e0d6; color: #8b7e74; background: #fff;">
-                        <i class="bi bi-arrow-clockwise mr-2"></i> Reset
-                    </button>
-                    <div id="search-loading" class="hidden">
-                        <div class="inline-block animate-spin rounded-full h-5 w-5 border-b-2" style="border-color: #c2410c;"></div>
+                    <div id="search-loading" class="w-6 h-6 flex items-center justify-center opacity-0 transition-opacity duration-150">
+                        <div class="animate-spin rounded-full h-4 w-4 border-2 border-t-transparent" style="border-color: #c2410c; border-t-color: transparent;"></div>
                     </div>
                 </div>
             </div>
@@ -60,40 +63,25 @@
     <!-- Statistics Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fff7ed;">
-                <i class="fas fa-users" style="color: #c2410c;"></i>
-            </div>
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total muzakki</p>
             <h4 class="text-2xl font-bold mb-0" id="total-count" style="color: #1c0f0a;">{{ $muzakki->total() }}</h4>
-            <small class="text-xs" style="color: #8b7e74;">Total muzakki</small>
         </div>
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #f0fdf4;">
-                <i class="fas fa-user-check" style="color: #15803d;"></i>
-            </div>
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Aktif & terverifikasi</p>
             <h4 class="text-2xl font-bold mb-0" id="active-count" style="color: #1c0f0a;">{{ $muzakki->where('is_active', true)->count() }}</h4>
-            <small class="text-xs" style="color: #8b7e74;">Aktif & terverifikasi</small>
         </div>
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fef3c7;">
-                <i class="fas fa-user-clock" style="color: #b45309;"></i>
-            </div>
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Menunggu verifikasi</p>
             <h4 class="text-2xl font-bold mb-0" id="inactive-count" style="color: #1c0f0a;">{{ $muzakki->where('is_active', false)->count() }}</h4>
-            <small class="text-xs" style="color: #8b7e74;">Menunggu verifikasi</small>
         </div>
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #eff6ff;">
-                <i class="fas fa-user-plus" style="color: #0369a1;"></i>
-            </div>
+            <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Baru bulan ini</p>
             <h4 class="text-2xl font-bold mb-0" id="thismonth-count" style="color: #1c0f0a;">{{ $muzakki->where('created_at', '>=', now()->startOfMonth())->count() }}</h4>
-            <small class="text-xs" style="color: #8b7e74;">Baru bulan ini</small>
         </div>
     </div>
 
     <!-- Muzakki Table -->
     <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
-        <div class="px-5 py-4" style="border-bottom: 1px solid #f0ece6;">
-            <h5 class="text-base font-bold mb-0" style="color: #1c0f0a;">Daftar Muzakki</h5>
-        </div>
         <div class="p-0" id="muzakki-table-container">
             @include('muzakki.partials.table')
         </div>
@@ -124,7 +112,7 @@
                 };
 
                 // Show loading indicator
-                document.getElementById('search-loading').classList.remove('hidden');
+                document.getElementById('search-loading').classList.remove('opacity-0');
 
                 // Create query string
                 const params = new URLSearchParams(searchData);
@@ -153,7 +141,7 @@
                     })
                     .finally(() => {
                         // Hide loading indicator
-                        document.getElementById('search-loading').classList.add('hidden');
+                        document.getElementById('search-loading').classList.add('opacity-0');
                     });
             }
 
@@ -164,7 +152,7 @@
                 if (muzakki.length > 0) {
                     tableHtml = `
                 <div>
-                    <table class="w-full divide-y divide-gray-200">
+                    <table id="table-muzakki" class="w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 28%;">Nama</th>
@@ -221,10 +209,10 @@
                         <td class="px-2 py-3">
                             <div class="flex items-center gap-1">
                                 <a href="/muzakki/${item.id}" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Lihat Detail">
-                                    <i class="bi bi-eye"></i>
+                                    <i class="bi bi-eye-fill"></i>
                                 </a>
                                 <a href="/muzakki/${item.id}/edit" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
-                                    <i class="bi bi-pencil"></i>
+                                    <i class="bi bi-pencil-fill"></i>
                                 </a>
                                 <form action="/muzakki/${item.id}/toggle-status" method="POST" class="inline">
                                     <input type="hidden" name="_token" value="${csrfToken}">
@@ -238,7 +226,7 @@
                                     <input type="hidden" name="_token" value="${csrfToken}">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash-fill"></i>
                                     </button>
                                 </form>` : ''}
                             </div>
@@ -307,6 +295,11 @@
                 }
 
                 document.getElementById('muzakki-table-container').innerHTML = tableHtml;
+
+                // Re-init DataTables Responsive after AJAX DOM rebuild
+                if (window.SipzisTable) {
+                    window.SipzisTable.initTable('#table-muzakki');
+                }
             }
 
             // Update statistics

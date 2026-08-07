@@ -3,43 +3,37 @@
 @section('page-title', 'Manajemen Distribusi ZIS')
 
 @section('content')
-<div class="px-6 py-5" style="max-width: 1280px;">
+<div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
 <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
     <div>
         <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Data Distribusi ZIS</h2>
         <p class="text-sm" style="color: #8b7e74;">Kelola penyaluran zakat kepada mustahik</p>
     </div>
-    <a href="{{ route('distributions.create') }}" class="inline-flex items-center px-4 py-2 text-white font-medium rounded-lg transition-colors text-sm" style="background: #c2410c;">
-        <i class="bi bi-plus-circle mr-2"></i> Tambah Distribusi
+    <a href="{{ route('distributions.create') }}" class="inline-flex items-center px-4 py-2 text-white font-medium rounded-xl transition-colors duration-200 text-xs shadow-xs" style="background: #c2410c;">
+        <i class="bi bi-plus-circle-fill mr-1.5"></i> Tambah Distribusi
     </a>
 </div>
 
 <div class="rounded-2xl mb-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
-    <div class="px-5 py-3 flex items-center justify-between" style="border-bottom: 1px solid #f0ece6;">
+    <div class="px-5 py-3.5 flex items-center justify-between" style="border-bottom: 1px solid #f0ece6;">
         <div class="flex items-center gap-2">
-            <i class="bi bi-funnel text-sm" style="color: #8b7e74;"></i>
-            <span class="text-sm font-semibold" style="color: #1c0f0a;">Filter</span>
+            <i class="bi bi-funnel-fill text-xs" style="color: #c2410c;"></i>
+            <span class="text-xs font-bold uppercase tracking-wider" style="color: #1c0f0a;">Filter Data Distribusi</span>
         </div>
-        <button type="button" id="reset-filters" class="text-xs font-medium px-3 py-1.5 rounded-lg" style="color: #c2410c; border: 1px solid #f0ece6; background: #fff;">Reset</button>
     </div>
     
-    <div class="p-6">
+    <div class="p-5 sm:p-6">
         <!-- Search Input -->
         <div class="mb-5">
-            <label for="search-input" class="block text-sm font-medium text-gray-700 mb-2">
-                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-                Pencarian Cepat
+            <label for="search-input" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
+                <i class="bi bi-search mr-1" style="color: #8b7e74;"></i> Pencarian Cepat
             </label>
             <div class="relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-4">
-                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
+                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-[#8b7e74]">
+                    <i class="bi bi-search text-xs"></i>
                 </span>
                 <input type="text" id="search-input"
-                    class="w-full pl-12 pr-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-gray-50 hover:bg-white"
+                    class="w-full h-11 pl-10 pr-4 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none"
                     placeholder="Ketik kode distribusi, nama program, atau nama mustahik..." value="{{ request('search') }}">
             </div>
         </div>
@@ -48,64 +42,72 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div>
                 <label for="category-filter" class="block text-sm font-medium text-gray-700 mb-2">
-                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                    </svg>
+                    <i class="bi bi-tag-fill mr-1 text-[#c2410c]"></i>
                     Kategori Mustahik
                 </label>
-                <select id="category-filter"
-                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400">
-                    <option value="">Semua Kategori</option>
-                    @foreach($categories as $category)
-                    <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
-                        {{ ucfirst(str_replace('_', ' ', $category)) }}
-                    </option>
-                    @endforeach
-                </select>
+                @php
+                    $catOptions = ['' => 'Semua Kategori'];
+                    foreach($categories as $category) {
+                        $catOptions[$category] = ucfirst(str_replace('_', ' ', $category));
+                    }
+                @endphp
+                <x-custom-select 
+                    id="category-filter"
+                    name="category"
+                    :options="$catOptions"
+                    :selected="request('category', '')"
+                    placeholder="Semua Kategori"
+                />
             </div>
             
             <div>
                 <label for="distribution-type-filter" class="block text-sm font-medium text-gray-700 mb-2">
-                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                    <i class="bi bi-[#c2410c] bi-box-seam-fill mr-1 text-[#c2410c]"></i>
                     Jenis Distribusi
                 </label>
-                <select id="distribution-type-filter"
-                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400">
-                    <option value="">Semua Jenis</option>
-                    <option value="cash" {{ request('distribution_type') == 'cash' ? 'selected' : '' }}>💵 Tunai</option>
-                    <option value="goods" {{ request('distribution_type') == 'goods' ? 'selected' : '' }}>📦 Barang</option>
-                    <option value="voucher" {{ request('distribution_type') == 'voucher' ? 'selected' : '' }}>🎫 Voucher</option>
-                    <option value="service" {{ request('distribution_type') == 'service' ? 'selected' : '' }}>🔧 Layanan</option>
-                </select>
+                <x-custom-select 
+                    id="distribution-type-filter"
+                    name="distribution_type"
+                    :options="[
+                        '' => 'Semua Jenis',
+                        'cash' => '💵 Tunai',
+                        'goods' => '📦 Barang',
+                        'voucher' => '🎫 Voucher',
+                        'service' => '🔧 Layanan'
+                    ]"
+                    :selected="request('distribution_type', '')"
+                    placeholder="Semua Jenis"
+                />
             </div>
             
             <div>
                 <label for="program-filter" class="block text-sm font-medium text-gray-700 mb-2">
-                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 inline mr-1 text-[#c2410c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                     </svg>
                     Program
                 </label>
                 <input type="text" id="program-filter"
-                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400"
+                    class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-800 focus:border-orange-600 focus:ring-2 focus:ring-orange-600/10 transition-all outline-none"
                     placeholder="Nama program..." value="{{ request('program') }}">
             </div>
             
             <div>
                 <label for="received-status-filter" class="block text-sm font-medium text-gray-700 mb-2">
-                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+                    <i class="bi bi-check-circle-fill mr-1 text-[#c2410c]"></i>
                     Status Penerimaan
                 </label>
-                <select id="received-status-filter"
-                    class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400">
-                    <option value="">Semua Status</option>
-                    <option value="received" {{ request('received_status') == 'received' ? 'selected' : '' }}>✅ Sudah Diterima</option>
-                    <option value="pending" {{ request('received_status') == 'pending' ? 'selected' : '' }}>⏳ Belum Diterima</option>
-                </select>
+                <x-custom-select 
+                    id="received-status-filter"
+                    name="received_status"
+                    :options="[
+                        '' => 'Semua Status',
+                        'received' => '✅ Sudah Diterima',
+                        'pending' => '⏳ Belum Diterima'
+                    ]"
+                    :selected="request('received_status', '')"
+                    placeholder="Semua Status"
+                />
             </div>
             
             <div>
@@ -116,12 +118,20 @@
                     Rentang Tanggal
                 </label>
                 <div class="grid grid-cols-2 gap-3">
-                    <input type="date" id="date-from"
-                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400"
-                        value="{{ request('date_from') }}" placeholder="Dari tanggal">
-                    <input type="date" id="date-to"
-                        class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white transition-all duration-200 hover:border-gray-400"
-                        value="{{ request('date_to') }}" placeholder="Sampai tanggal">
+                    <x-custom-date-picker
+                        id="date-from"
+                        name="date_from"
+                        :value="request('date_from')"
+                        placeholder="Dari tanggal"
+                        onChange="performSearch(1)"
+                    />
+                    <x-custom-date-picker
+                        id="date-to"
+                        name="date_to"
+                        :value="request('date_to')"
+                        placeholder="Sampai tanggal"
+                        onChange="performSearch(1)"
+                    />
                 </div>
             </div>
         </div>
@@ -139,38 +149,28 @@
 <!-- Stats -->
 <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
     <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fff7ed;"><i class="bi bi-cash-stack" style="color: #c2410c;"></i></div>
+        <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total distribusi</p>
         <h5 class="text-lg font-bold mb-0" id="total-amount" style="color: #1c0f0a;">Rp {{ number_format($stats['total_amount'], 0, ',', '.') }}</h5>
-        <small class="text-xs" style="color: #8b7e74;">Total distribusi</small>
     </div>
     <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #f0fdf4;"><i class="bi bi-people" style="color: #15803d;"></i></div>
+        <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total penerima</p>
         <h5 class="text-lg font-bold mb-0" id="total-count" style="color: #1c0f0a;">{{ number_format($stats['total_count']) }}</h5>
-        <small class="text-xs" style="color: #8b7e74;">Total penerima</small>
     </div>
     <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #eff6ff;"><i class="bi bi-calendar-month" style="color: #0369a1;"></i></div>
+        <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Bulan ini</p>
         <h5 class="text-lg font-bold mb-0" id="thismonth-amount" style="color: #1c0f0a;">Rp {{ number_format($stats['this_month'], 0, ',', '.') }}</h5>
-        <small class="text-xs" style="color: #8b7e74;">Bulan ini</small>
     </div>
     <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: #fef3c7;"><i class="bi bi-clock" style="color: #b45309;"></i></div>
+        <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Belum diterima</p>
         <h5 class="text-lg font-bold mb-0" id="pending-count" style="color: #1c0f0a;">{{ $stats['pending_receipt'] }}</h5>
-        <small class="text-xs" style="color: #8b7e74;">Belum diterima</small>
     </div>
     <div class="rounded-2xl p-5 col-span-2 lg:col-span-1" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style="background: {{ $stats['available_balance'] > 0 ? '#fff7ed' : '#fef2f2' }};">
-            <i class="bi bi-wallet2" style="color: {{ $stats['available_balance'] > 0 ? '#c2410c' : '#dc2626' }};"></i>
-        </div>
+        <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Saldo tersedia</p>
         <h5 class="text-lg font-bold mb-0" id="available-balance" style="color: #1c0f0a;">Rp {{ number_format($stats['available_balance'], 0, ',', '.') }}</h5>
-        <small class="text-xs" style="color: #8b7e74;">Saldo tersedia</small>
     </div>
 </div>
 
 <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
-    <div class="px-5 py-4" style="border-bottom: 1px solid #f0ece6;">
-        <h5 class="text-base font-bold mb-0" style="color: #1c0f0a;">Daftar Distribusi</h5>
-    </div>
     <div class="p-0" id="distributions-table-container">
         @include('distributions.partials.table')
     </div>

@@ -16,6 +16,7 @@ class Muzakki extends Model
         'email',
         'phone',
         'phone_verified',
+        'nik',
         'gender',
         'address',
         'city',
@@ -23,12 +24,13 @@ class Muzakki extends Model
         'district',
         'village',
         'postal_code',
-        'country', // Add country
-        'campaign_url', // Add campaign_url
-        'profile_photo', // Add profile_photo
-        'ktp_photo', // Add ktp_photo
-        'bio', // Add bio
+        'country',
+        'campaign_url',
+        'profile_photo',
+        'ktp_photo',
+        'bio',
         'occupation',
+        'monthly_income',
         'date_of_birth',
         'is_active',
         'user_id'
@@ -40,17 +42,16 @@ class Muzakki extends Model
         'phone_verified' => 'boolean',
     ];
 
-    // Add a method to find or create a muzakki record
+    /**
+     * Find or create a muzakki record by email or attributes.
+     */
     public static function findOrCreate(array $attributes)
     {
-        // First try to find by email
         $muzakki = self::where('email', $attributes['email'])->first();
 
         if ($muzakki) {
-            // Update existing record with new data (but preserve existing data if not provided)
             $updateData = [];
             foreach ($attributes as $key => $value) {
-                // Only update if value is provided or if the field is currently null
                 if ($value !== null || $muzakki->$key === null) {
                     $updateData[$key] = $value;
                 }
@@ -59,7 +60,6 @@ class Muzakki extends Model
             return $muzakki;
         }
 
-        // Create new record if not found
         return self::create($attributes);
     }
 
@@ -89,7 +89,7 @@ class Muzakki extends Model
         return $this->hasMany(RecurringDonation::class);
     }
 
-    // Methods
+    // Attributes & Accessors
     public function getTotalZakatPaidAttribute()
     {
         return $this->zakatPayments()->where('status', 'completed')->sum('paid_amount');
@@ -114,25 +114,21 @@ class Muzakki extends Model
         return $this->date_of_birth ? $this->date_of_birth->age : null;
     }
 
-    // Get count of pending zakat payments
     public function getPendingPaymentsCountAttribute()
     {
         return $this->zakatPayments()->pending()->count();
     }
 
-    // Get count of all zakat payments
     public function getTotalPaymentsCountAttribute()
     {
         return $this->zakatPayments()->count();
     }
 
-    // Get count of unread notifications
     public function getUnreadNotificationsCountAttribute()
     {
         return $this->notifications()->unread()->count();
     }
 
-    // Get latest notifications
     public function getLatestNotifications($limit = 10)
     {
         return $this->notifications()->latest()->limit($limit)->get();
@@ -149,7 +145,6 @@ class Muzakki extends Model
         return $query->where('occupation', $occupation);
     }
 
-    // Add method to calculate profile completeness
     public function getProfileCompletenessAttribute()
     {
         $fields = [
@@ -163,11 +158,11 @@ class Muzakki extends Model
             'district' => $this->district,
             'village' => $this->village,
             'postal_code' => $this->postal_code,
-            'country' => $this->country, // Add country
-            'campaign_url' => $this->campaign_url, // Add campaign_url
-            'profile_photo' => $this->profile_photo, // Add profile_photo
-            'ktp_photo' => $this->ktp_photo, // Add ktp_photo
-            'bio' => $this->bio, // Add bio
+            'country' => $this->country,
+            'campaign_url' => $this->campaign_url,
+            'profile_photo' => $this->profile_photo,
+            'ktp_photo' => $this->ktp_photo,
+            'bio' => $this->bio,
             'occupation' => $this->occupation,
             'date_of_birth' => $this->date_of_birth,
         ];

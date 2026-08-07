@@ -3,15 +3,8 @@
     @if(isset($activeTab))
     <div id="laravel-active-tab" data-tab="{{ $activeTab }}" style="display: none;"></div>
     @endif
-    <!-- Mosque Background Image Overlay -->
-    <div class="absolute inset-0 opacity-90"
-        style="background-image: url('{{ asset('img/masjid.webp') }}'); background-size: cover; background-position: center; background-repeat: no-repeat; will-change: transform;">
-    </div>
-    <!-- Green Gradient Overlay for blending -->
-    <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/80 to-white/60"></div>
-
-    <!-- Additional Dark Overlay for text readability -->
-    <div class="absolute inset-0 bg-gradient-to-t from-gray-50/40 via-transparent to-transparent"></div>
+    <!-- Clean background tint -->
+    <div class="absolute inset-0 bg-gray-50"></div>
 
     <div class="relative z-10 py-20">
         <div class="container mx-auto px-4 py-16">
@@ -26,28 +19,28 @@
             </div>
 
             <!-- Tab Navigation -->
-            <div class="flex flex-wrap justify-center mb-12">
-                <div class="inline-flex p-1 bg-gray-100/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200/50">
-                    <button class="tab-button active px-6 py-3 rounded-xl text-lg font-bold" data-tab="zakat">
-                        <span class="text-amber-600">Zakat</span>
+            <div class="flex justify-center mb-12 border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <button class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base" data-tab="zakat">
+                        Zakat
                     </button>
-                    <button class="tab-button px-6 py-3 rounded-xl text-lg font-bold" data-tab="infaq">
-                        <span class="text-orange-600">Infaq</span>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base" data-tab="infaq">
+                        Infaq
                     </button>
-                    <button class="tab-button px-6 py-3 rounded-xl text-lg font-bold" data-tab="shadaqah">
-                        <span class="text-blue-600">Shadaqah</span>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base" data-tab="shadaqah">
+                        Shadaqah
                     </button>
-                    <button class="tab-button px-6 py-3 rounded-xl text-lg font-bold" data-tab="pilar">
-                        <span class="text-purple-600">Program Pilar</span>
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-base" data-tab="pilar">
+                        Program Pilar
                     </button>
-                </div>
+                </nav>
             </div>
 
             <!-- Tab Content -->
             <div class="tab-content">
                 <!-- Zakat Tab -->
                 <div class="tab-panel active" id="zakat">
-                    <div class="relative bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-12 border border-white/20">
+                    <div class="relative py-4">
                         <div class="relative z-10">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 @foreach($zakatPrograms as $program)
@@ -57,41 +50,33 @@
                                 $routeName = 'program.show';
                                 $routeParams = $program->slug;
                                 @endphp
-                                <a href="{{ route($routeName, $routeParams) }}" class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden block">
+                                <a href="{{ route($routeName, $routeParams) }}" class="bg-white rounded-2xl overflow-hidden block transition-shadow duration-200 hover:shadow-md" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06);">
                                     <div class="relative h-48 overflow-hidden">
                                         @php
-                                        // Use our new image_url accessor to handle both CDN and local images
-                                        $imageUrl = $program->image_url ?? 'https://via.placeholder.com/400x300/cccccc/ffffff?text=' . urlencode($program->name);
+                                        $imageUrl = $program->image_url ?? asset('img/masjidbanten.png');
                                         @endphp
                                         <div class="absolute inset-0 bg-cover bg-center" data-bg-url="{{ $imageUrl }}"></div>
-                                        <div class="absolute top-4 left-4">
-                                            <span class="inline-block bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full">Program Zakat</span>
+                                        <div class="absolute top-3 left-3">
+                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #c2410c;">Zakat</span>
                                         </div>
                                         @if($program->isCompleted())
-                                        <div class="absolute top-4 right-4">
-                                            <span class="inline-block bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                                                <i class="fas fa-check-circle mr-1"></i>Target Tercapai
-                                            </span>
+                                        <div class="absolute top-3 right-3">
+                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #15803d;">Target Tercapai</span>
                                         </div>
                                         @endif
                                     </div>
-
-                                    <div class="p-6">
-                                        <h3 class="text-xl font-black text-amber-800 mb-2">{{ $program->name }}</h3>
-                                        <p class="text-gray-600 text-sm mb-4">{{ $program->description }}</p>
-
-                                        <div class="space-y-2">
-                                            <div class="flex justify-between text-sm">
-                                                <span class="text-gray-500">Donasi Terkumpul</span>
-                                                <span class="text-amber-600 font-bold">{{ $program->formatted_total_collected }}</span>
+                                    <div class="p-5">
+                                        <h3 class="text-base font-semibold mb-1.5 line-clamp-2" style="color: #1c0f0a;">{{ $program->name }}</h3>
+                                        <p class="text-sm mb-4 line-clamp-2" style="color: #8b7e74;">{{ $program->description }}</p>
+                                        <div class="space-y-1.5">
+                                            <div class="flex justify-between text-xs">
+                                                <span style="color: #8b7e74;">Terkumpul</span>
+                                                <span class="font-semibold" style="color: #c2410c;">{{ $program->formatted_total_collected }}</span>
                                             </div>
-                                            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                                                <div class="bg-amber-500 h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}"></div>
+                                            <div class="w-full rounded-full h-1.5" style="background: #f0ece6;">
+                                                <div class="h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}" style="background: #c2410c;"></div>
                                             </div>
-                                            <div class="flex justify-between items-center">
-                                                {{-- <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span> --}}
-                                                <span class="text-gray-700 font-semibold text-sm">{{ number_format($program->progress_percentage, 1) }}%</span>
-                                            </div>
+                                            <span class="text-xs font-medium" style="color: #8b7e74;">{{ number_format($program->progress_percentage, 1) }}%</span>
                                         </div>
                                     </div>
                                 </a>
@@ -103,7 +88,7 @@
 
                 <!-- Infaq Tab -->
                 <div class="tab-panel" id="infaq">
-                    <div class="relative bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-12 border border-white/20">
+                    <div class="relative py-4">
                         <div class="relative z-10">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 @foreach($infaqPrograms as $program)
@@ -113,41 +98,33 @@
                                 $routeName = 'program.show';
                                 $routeParams = $program->slug;
                                 @endphp
-                                <a href="{{ route($routeName, $routeParams) }}" class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden block">
+                                <a href="{{ route($routeName, $routeParams) }}" class="bg-white rounded-2xl overflow-hidden block transition-shadow duration-200 hover:shadow-md" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06);">
                                     <div class="relative h-48 overflow-hidden">
                                         @php
-                                        // Use our new image_url accessor to handle both CDN and local images
-                                        $imageUrl = $program->image_url ?? 'https://via.placeholder.com/400x300/cccccc/ffffff?text=' . urlencode($program->name);
+                                        $imageUrl = $program->image_url ?? asset('img/masjidbanten.png');
                                         @endphp
                                         <div class="absolute inset-0 bg-cover bg-center" data-bg-url="{{ $imageUrl }}"></div>
-                                        <div class="absolute top-4 left-4">
-                                            <span class="inline-block bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">Infaq</span>
+                                        <div class="absolute top-3 left-3">
+                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #c2410c;">Infaq</span>
                                         </div>
                                         @if($program->isCompleted())
-                                        <div class="absolute top-4 right-4">
-                                            <span class="inline-block bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                                                <i class="fas fa-check-circle mr-1"></i>Target Tercapai
-                                            </span>
+                                        <div class="absolute top-3 right-3">
+                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #15803d;">Target Tercapai</span>
                                         </div>
                                         @endif
                                     </div>
-
-                                    <div class="p-6">
-                                        <h3 class="text-xl font-black text-orange-800 mb-2">{{ $program->name }}</h3>
-                                        <p class="text-gray-600 text-sm mb-4">{{ $program->description }}</p>
-
-                                        <div class="space-y-2">
-                                            <div class="flex justify-between text-sm">
-                                                <span class="text-gray-500">Donasi Terkumpul</span>
-                                                <span class="text-orange-600 font-bold">{{ $program->formatted_total_collected }}</span>
+                                    <div class="p-5">
+                                        <h3 class="text-base font-semibold mb-1.5 line-clamp-2" style="color: #1c0f0a;">{{ $program->name }}</h3>
+                                        <p class="text-sm mb-4 line-clamp-2" style="color: #8b7e74;">{{ $program->description }}</p>
+                                        <div class="space-y-1.5">
+                                            <div class="flex justify-between text-xs">
+                                                <span style="color: #8b7e74;">Terkumpul</span>
+                                                <span class="font-semibold" style="color: #c2410c;">{{ $program->formatted_total_collected }}</span>
                                             </div>
-                                            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                                                <div class="bg-orange-500 h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}"></div>
+                                            <div class="w-full rounded-full h-1.5" style="background: #f0ece6;">
+                                                <div class="h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}" style="background: #c2410c;"></div>
                                             </div>
-                                            <div class="flex justify-between items-center">
-                                                {{-- <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span> --}}
-                                                <span class="text-gray-700 font-semibold text-sm">{{ number_format($program->progress_percentage, 1) }}%</span>
-                                            </div>
+                                            <span class="text-xs font-medium" style="color: #8b7e74;">{{ number_format($program->progress_percentage, 1) }}%</span>
                                         </div>
                                     </div>
                                 </a>
@@ -159,7 +136,7 @@
 
                 <!-- Shadaqah Tab -->
                 <div class="tab-panel" id="shadaqah">
-                    <div class="relative bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-12 border border-white/20">
+                    <div class="relative py-4">
                         <div class="relative z-10">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 @foreach($shadaqahPrograms as $program)
@@ -169,41 +146,33 @@
                                 $routeName = 'program.show';
                                 $routeParams = $program->slug;
                                 @endphp
-                                <a href="{{ route($routeName, $routeParams) }}" class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden block">
+                                <a href="{{ route($routeName, $routeParams) }}" class="bg-white rounded-2xl overflow-hidden block transition-shadow duration-200 hover:shadow-md" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06);">
                                     <div class="relative h-48 overflow-hidden">
                                         @php
-                                        // Use our new image_url accessor to handle both CDN and local images
-                                        $imageUrl = $program->image_url ?? 'https://via.placeholder.com/400x300/cccccc/ffffff?text=' . urlencode($program->name);
+                                        $imageUrl = $program->image_url ?? asset('img/masjidbanten.png');
                                         @endphp
                                         <div class="absolute inset-0 bg-cover bg-center" data-bg-url="{{ $imageUrl }}"></div>
-                                        <div class="absolute top-4 left-4">
-                                            <span class="inline-block bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">Shadaqah</span>
+                                        <div class="absolute top-3 left-3">
+                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #c2410c;">Shadaqah</span>
                                         </div>
                                         @if($program->isCompleted())
-                                        <div class="absolute top-4 right-4">
-                                            <span class="inline-block bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                                                <i class="fas fa-check-circle mr-1"></i>Target Tercapai
-                                            </span>
+                                        <div class="absolute top-3 right-3">
+                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #15803d;">Target Tercapai</span>
                                         </div>
                                         @endif
                                     </div>
-
-                                    <div class="p-6">
-                                        <h3 class="text-xl font-black text-blue-800 mb-2">{{ $program->name }}</h3>
-                                        <p class="text-gray-600 text-sm mb-4">{{ $program->description }}</p>
-
-                                        <div class="space-y-2">
-                                            <div class="flex justify-between text-sm">
-                                                <span class="text-gray-500">Donasi Terkumpul</span>
-                                                <span class="text-blue-600 font-bold">{{ $program->formatted_total_collected }}</span>
+                                    <div class="p-5">
+                                        <h3 class="text-base font-semibold mb-1.5 line-clamp-2" style="color: #1c0f0a;">{{ $program->name }}</h3>
+                                        <p class="text-sm mb-4 line-clamp-2" style="color: #8b7e74;">{{ $program->description }}</p>
+                                        <div class="space-y-1.5">
+                                            <div class="flex justify-between text-xs">
+                                                <span style="color: #8b7e74;">Terkumpul</span>
+                                                <span class="font-semibold" style="color: #c2410c;">{{ $program->formatted_total_collected }}</span>
                                             </div>
-                                            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                                                <div class="bg-blue-500 h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}"></div>
+                                            <div class="w-full rounded-full h-1.5" style="background: #f0ece6;">
+                                                <div class="h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}" style="background: #c2410c;"></div>
                                             </div>
-                                            <div class="flex justify-between items-center">
-                                                {{-- <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span> --}}
-                                                <span class="text-gray-700 font-semibold text-sm">{{ number_format($program->progress_percentage, 1) }}%</span>
-                                            </div>
+                                            <span class="text-xs font-medium" style="color: #8b7e74;">{{ number_format($program->progress_percentage, 1) }}%</span>
                                         </div>
                                     </div>
                                 </a>
@@ -215,7 +184,7 @@
 
                 <!-- Program Pilar Tab -->
                 <div class="tab-panel" id="pilar">
-                    <div class="relative bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-12 border border-white/20">
+                    <div class="relative py-4">
                         <div class="relative z-10">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 @foreach($pilarPrograms as $program)
@@ -225,41 +194,33 @@
                                 $routeName = 'program.show';
                                 $routeParams = $program->slug;
                                 @endphp
-                                <a href="{{ route($routeName, $routeParams) }}" class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden block">
+                                <a href="{{ route($routeName, $routeParams) }}" class="bg-white rounded-2xl overflow-hidden block transition-shadow duration-200 hover:shadow-md" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06);">
                                     <div class="relative h-48 overflow-hidden">
                                         @php
-                                        // Use our new image_url accessor to handle both CDN and local images
-                                        $imageUrl = $program->image_url ?? 'https://via.placeholder.com/400x300/cccccc/ffffff?text=' . urlencode($program->name);
+                                        $imageUrl = $program->image_url ?? asset('img/masjidbanten.png');
                                         @endphp
                                         <div class="absolute inset-0 bg-cover bg-center" data-bg-url="{{ $imageUrl }}"></div>
-                                        <div class="absolute top-4 left-4">
-                                            <span class="inline-block bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">Program Pilar</span>
+                                        <div class="absolute top-3 left-3">
+                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #c2410c;">Program Pilar</span>
                                         </div>
                                         @if($program->isCompleted())
-                                        <div class="absolute top-4 right-4">
-                                            <span class="inline-block bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                                                <i class="fas fa-check-circle mr-1"></i>Target Tercapai
-                                            </span>
+                                        <div class="absolute top-3 right-3">
+                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #15803d;">Target Tercapai</span>
                                         </div>
                                         @endif
                                     </div>
-
-                                    <div class="p-6">
-                                        <h3 class="text-xl font-black text-purple-800 mb-2">{{ $program->name }}</h3>
-                                        <p class="text-gray-600 text-sm mb-4">{{ $program->description }}</p>
-
-                                        <div class="space-y-2">
-                                            <div class="flex justify-between text-sm">
-                                                <span class="text-gray-500">Donasi Terkumpul</span>
-                                                <span class="text-purple-600 font-bold">{{ $program->formatted_total_collected }}</span>
+                                    <div class="p-5">
+                                        <h3 class="text-base font-semibold mb-1.5 line-clamp-2" style="color: #1c0f0a;">{{ $program->name }}</h3>
+                                        <p class="text-sm mb-4 line-clamp-2" style="color: #8b7e74;">{{ $program->description }}</p>
+                                        <div class="space-y-1.5">
+                                            <div class="flex justify-between text-xs">
+                                                <span style="color: #8b7e74;">Terkumpul</span>
+                                                <span class="font-semibold" style="color: #c2410c;">{{ $program->formatted_total_collected }}</span>
                                             </div>
-                                            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                                                <div class="bg-purple-500 h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}"></div>
+                                            <div class="w-full rounded-full h-1.5" style="background: #f0ece6;">
+                                                <div class="h-full rounded-full progress-bar" data-width="{{ $program->progress_percentage }}" style="background: #c2410c;"></div>
                                             </div>
-                                            <div class="flex justify-between items-center">
-                                                {{-- <span class="text-gray-500 text-xs">Target: {{ $program->formatted_total_target }}</span> --}}
-                                                <span class="text-gray-700 font-semibold text-sm">{{ number_format($program->progress_percentage, 1) }}%</span>
-                                            </div>
+                                            <span class="text-xs font-medium" style="color: #8b7e74;">{{ number_format($program->progress_percentage, 1) }}%</span>
                                         </div>
                                     </div>
                                 </a>
@@ -276,16 +237,19 @@
         /* Tab styles */
         .tab-button {
             cursor: pointer;
-            transition: all 0.3s ease;
+            border-color: transparent;
+            color: #6b7280; /* text-gray-500 */
+            transition: all 0.2s ease;
+        }
+
+        .tab-button:hover {
+            border-color: #d1d5db; /* border-gray-300 */
+            color: #374151; /* text-gray-700 */
         }
 
         .tab-button.active {
-            background: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .tab-button:not(.active):hover {
-            background: rgba(255, 255, 255, 0.5);
+            border-color: #ea580c !important; /* border-orange-600 */
+            color: #ea580c !important; /* text-orange-600 */
         }
 
         .tab-panel {

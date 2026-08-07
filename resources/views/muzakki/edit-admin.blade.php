@@ -8,30 +8,20 @@
         $isOwnProfile = !request()->route()->hasParameter('muzakki');
     @endphp
 
-    <div class="mb-6">
-        @if(!$isOwnProfile)
-        <a href="{{ route('muzakki.index') }}"
-            class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 mb-4 transition-colors">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Kembali ke Daftar Muzakki
-        </a>
-        @endif
-        
-        <div class="flex items-center justify-between">
-            <div>
-                <div class="flex items-center gap-3 mb-1">
-                    <h2 class="text-2xl font-bold text-gray-900">{{ $isOwnProfile ? 'Edit Profil Admin' : 'Edit Muzakki' }}</h2>
-                </div>
-                <p class="text-gray-600">{{ $isOwnProfile ? 'Kelola informasi akun administrator Anda' : 'Edit data muzakki: ' }} <span class="font-semibold">{{ $isOwnProfile ? '' : $muzakki->name }}</span></p>
-            </div>
+<div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
+        <div>
+            <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">{{ $isOwnProfile ? 'Edit Profil Admin' : 'Edit Muzakki' }}</h2>
+            <p class="text-sm" style="color: #8b7e74;">{{ $muzakki->name }}</p>
+        </div>
+        <div>
             @if(!$isOwnProfile)
-            <div>
-                <span class="px-3 py-1 text-xs font-bold text-blue-700 bg-blue-100 rounded-full border border-blue-200">
-                    ADMIN MODE
-                </span>
-            </div>
+            <a href="{{ route('muzakki.index') }}"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium transition-colors duration-200"
+                style="background: #f0ece6; color: #1c0f0a;">
+                <i class="bi bi-arrow-left"></i> Kembali
+            </a>
             @endif
         </div>
     </div>
@@ -100,18 +90,16 @@
 
                 <!-- Jenis Kelamin -->
                 <div>
-                    <label for="gender" class="block mb-2 text-sm font-medium text-gray-900">
-                        Jenis Kelamin <span class="text-red-500">*</span>
+                    <label for="gender" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">
+                        Jenis Kelamin <span class="text-rose-500">*</span>
                     </label>
-                    <select id="gender" name="gender"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-12 px-3 @error('gender') border-red-500 @enderror"
-                        required>
-                        <option value="">Pilih Jenis Kelamin</option>
-                        <option value="male" {{ old('gender', $muzakki->gender) == 'male' ? 'selected' : '' }}>
-                            Laki-laki</option>
-                        <option value="female" {{ old('gender', $muzakki->gender) == 'female' ? 'selected' : '' }}>
-                            Perempuan</option>
-                    </select>
+                    <x-custom-select 
+                        id="gender" 
+                        name="gender" 
+                        placeholder="-- Pilih Jenis Kelamin --" 
+                        required="true"
+                        :selected="old('gender', $muzakki->gender)" 
+                        :options="['male' => 'Laki-laki', 'female' => 'Perempuan']" />
                     @error('gender')
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                     @enderror
@@ -119,49 +107,45 @@
 
                 <!-- Profesi -->
                 <div>
-                    <label for="occupation" class="block mb-2 text-sm font-medium text-gray-900">
+                    <label for="occupation" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">
                         Profesi
                     </label>
-                    <select id="occupation" name="occupation"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-12 px-3">
-                        <option value="">Pilih Profesi</option>
-                        @php
-                            $occupations = [
-                                'employee' => 'Karyawan',
-                                'entrepreneur' => 'Wiraswasta',
-                                'civil_servant' => 'PNS',
-                                'teacher' => 'Guru',
-                                'doctor' => 'Dokter',
-                                'nurse' => 'Perawat',
-                                'soldier' => 'Tentara',
-                                'police' => 'Polisi',
-                                'farmer' => 'Petani',
-                                'fisherman' => 'Nelayan',
-                                'trader' => 'Pedagang',
-                                'driver' => 'Sopir',
-                                'online_driver' => 'Ojek Online',
-                                'programmer' => 'Programmer',
-                                'designer' => 'Desainer',
-                                'accountant' => 'Akuntan',
-                                'student' => 'Mahasiswa',
-                                'pupil' => 'Pelajar',
-                                'housewife' => 'Ibu Rumah Tangga',
-                                'retired' => 'Pensiunan',
-                                'artist' => 'Seniman',
-                                'musician' => 'Musisi',
-                                'athlete' => 'Atlet',
-                                'lawyer' => 'Pengacara',
-                                'architect' => 'Arsitek',
-                                'other' => 'Lainnya',
-                            ];
-                        @endphp
-                        @foreach ($occupations as $key => $label)
-                            <option value="{{ $key }}"
-                                {{ old('occupation', $muzakki->occupation) == $key ? 'selected' : '' }}>
-                                {{ $label }}
-                            </option>
-                        @endforeach
-                    </select>
+                    @php
+                        $occupations = [
+                            'employee' => 'Karyawan',
+                            'entrepreneur' => 'Wiraswasta',
+                            'civil_servant' => 'PNS',
+                            'teacher' => 'Guru',
+                            'doctor' => 'Dokter',
+                            'nurse' => 'Perawat',
+                            'soldier' => 'Tentara',
+                            'police' => 'Polisi',
+                            'farmer' => 'Petani',
+                            'fisherman' => 'Nelayan',
+                            'trader' => 'Pedagang',
+                            'driver' => 'Sopir',
+                            'online_driver' => 'Ojek Online',
+                            'programmer' => 'Programmer',
+                            'designer' => 'Desainer',
+                            'accountant' => 'Akuntan',
+                            'student' => 'Mahasiswa',
+                            'pupil' => 'Pelajar',
+                            'housewife' => 'Ibu Rumah Tangga',
+                            'retired' => 'Pensiunan',
+                            'artist' => 'Seniman',
+                            'musician' => 'Musisi',
+                            'athlete' => 'Atlet',
+                            'lawyer' => 'Pengacara',
+                            'architect' => 'Arsitek',
+                            'other' => 'Lainnya',
+                        ];
+                    @endphp
+                    <x-custom-select 
+                        id="occupation" 
+                        name="occupation" 
+                        placeholder="-- Pilih Profesi --" 
+                        :selected="old('occupation', $muzakki->occupation)" 
+                        :options="$occupations" />
                 </div>
 
                 <!-- Tanggal Lahir -->

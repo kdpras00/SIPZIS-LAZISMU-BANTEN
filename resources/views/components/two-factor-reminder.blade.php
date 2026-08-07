@@ -37,18 +37,18 @@
 @endphp
 
 @if ($showReminder)
-    <div id="security-reminder" class="fixed top-24 right-4 z-50 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden animate-fade-in-up transform transition-all duration-300 hover:scale-[1.02]" style="display: none; animation: fadeInUp 0.5s ease-out;">
+    <div id="security-reminder" class="fixed top-24 right-4 z-50 w-72 bg-white rounded-2xl overflow-hidden" style="display: none; box-shadow: 0 4px 24px rgba(28,15,10,0.12); border: 1px solid #f0ece6;">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2 text-white">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        <div class="px-4 py-3 flex justify-between items-center" style="background: #fff7ed; border-bottom: 1px solid #f0ece6;">
+            <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 flex-shrink-0" style="color: #c2410c;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <span class="font-semibold text-sm">Perhatian</span>
+                <span class="text-sm font-semibold" style="color: #c2410c;">Perhatian</span>
             </div>
-            <button id="close-reminder" class="text-white/80 hover:text-white transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            <button id="close-reminder" class="transition-opacity hover:opacity-60" style="color: #8b7e74;" aria-label="Tutup">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </button>
         </div>

@@ -22,3 +22,11 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# AI & Local Development Tooling
+CLAUDE.md
+cacert.pem
+.kiro/
+.rtk/
+.agents/
+

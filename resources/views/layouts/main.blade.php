@@ -5,16 +5,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="title"
-        content="{{ isset($title) && $title ? $title . ' - SIPZIS' : 'SIPZIS - Sistem Informasi Pengelolaan Zakat' }}">
+    <meta name="title" content="{{ isset($title) && $title ? $title . ' - SIPZIS Lazismu' : 'SIPZIS Lazismu - Sistem Informasi Pengelolaan Zakat' }}">
+    <meta name="description" content="Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.">
     <meta name="application-name" content="SIPZIS">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ isset($title) && $title ? $title . ' - SIPZIS Lazismu' : 'SIPZIS Lazismu - Sistem Informasi Pengelolaan Zakat' }}">
+    <meta property="og:description" content="Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.">
+    <meta property="og:image" content="{{ asset('img/logo.png') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="{{ isset($title) && $title ? $title . ' - SIPZIS Lazismu' : 'SIPZIS Lazismu - Sistem Informasi Pengelolaan Zakat' }}">
+    <meta property="twitter:description" content="Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.">
+    <meta property="twitter:image" content="{{ asset('img/logo.png') }}">
 
     <link rel="icon" type="image/x-icon" href="{{ asset('img/lazismu-icon.ico') }}">
 
     <title>{{ isset($title) && $title ? $title . ' - SIPZIS' : 'SIPZIS' }}</title>
     <!-- Preload critical resources -->
     @if(Route::currentRouteName() === 'home')
-    <link rel="preload" href="{{ asset('img/masjid.webp') }}" as="image" fetchpriority="high">
+    <link rel="preload" href="{{ asset('img/masjidbanten.png') }}" as="image" fetchpriority="high">
     @endif
     <!-- Fonts - Optimized -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,7 +87,7 @@
     @stack('scripts')
 
     @if (!request()->routeIs('admin.login'))
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 
         <script>
         document.addEventListener('DOMContentLoaded', function() {

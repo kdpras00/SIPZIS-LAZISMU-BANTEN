@@ -5,23 +5,29 @@
 @section('content')
 <div class="py-4 px-4 max-w-4xl mx-auto">
     <!-- Header -->
-    <div class="flex items-center mb-6">
-        <a href="{{ route('dashboard') }}" class="text-gray-700 mr-3 hover:text-gray-900">
-            <i class="bi bi-arrow-left text-xl"></i>
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center">
+            <a href="{{ route('dashboard') }}" class="mr-3 transition-colors hover:opacity-75" style="color: #1c0f0a;">
+                <i class="bi bi-arrow-left-circle text-xl"></i>
+            </a>
+            <div>
+                <h2 class="text-xl font-bold mb-0.5" style="color: #1c0f0a;">Donasi Rutin</h2>
+                <p class="text-xs" style="color: #8b7e74;">Pengaturan pembayaran infaq & sedekah otomatis Anda</p>
+            </div>
+        </div>
+        <a href="{{ route('dashboard.recurring.create') }}" class="inline-flex items-center px-4 py-2 text-white font-medium rounded-xl transition-colors duration-200 text-xs shadow-xs" style="background: #c2410c;">
+            <i class="bi bi-plus-circle-fill mr-1.5"></i> Buat Donasi Rutin
         </a>
-        <h5 class="text-xl font-semibold text-gray-900 mb-0">Donasi rutin saya</h5>
     </div>
 
     @if($recurringDonations->isEmpty())
-        <div class="bg-white rounded-xl shadow-md mb-6">
-            <div class="p-12 text-center">
-                <i class="bi bi-calendar-check text-6xl text-gray-400 mb-4 block"></i>
-                <h4 class="text-xl font-semibold text-gray-900 mb-2">Belum ada donasi rutin</h4>
-                <p class="text-gray-600 mb-6">Buat donasi otomatis agar ibadah berbagi tetap konsisten.</p>
-                <a href="{{ route('dashboard.recurring.create') }}" class="inline-flex items-center px-6 py-3 bg-orange-600 text-white rounded-full hover:bg-orange-700 transition-colors font-medium">
-                    <i class="bi bi-plus-circle mr-2"></i>Buat Donasi Rutin
-                </a>
-            </div>
+        <div class="rounded-2xl mb-6 p-12 text-center" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+            <i class="bi bi-calendar-check text-5xl mb-3 block" style="color: #8b7e74;"></i>
+            <h4 class="text-base font-bold mb-1" style="color: #1c0f0a;">Belum ada donasi rutin</h4>
+            <p class="text-xs mb-5" style="color: #8b7e74;">Buat donasi otomatis agar ibadah berbagi Anda tetap rutin dan istiqomah.</p>
+            <a href="{{ route('dashboard.recurring.create') }}" class="inline-flex items-center px-4 py-2 text-white font-medium rounded-xl transition-colors duration-200 text-xs shadow-xs" style="background: #c2410c;">
+                <i class="bi bi-plus-circle-fill mr-1.5"></i> Buat Donasi Rutin
+            </a>
         </div>
     @else
         <div class="space-y-4 mb-6">
@@ -56,38 +62,46 @@
         </div>
         <div class="text-right mb-6">
             <a href="{{ route('dashboard.recurring.create') }}" class="inline-flex items-center px-5 py-2.5 bg-orange-600 text-white rounded-full hover:bg-orange-700 text-sm font-medium">
-                <i class="bi bi-plus-circle mr-2"></i>Tambah lagi
+                <i class="bi bi-plus-circle-fill mr-2"></i>Tambah lagi
             </a>
         </div>
     @endif
 
     <!-- Bottom Navigation -->
-    <div class="bg-white rounded-t-xl shadow-lg fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-4xl z-50 border-t border-gray-200">
-        <div class="flex justify-around items-center text-center py-4">
-            <a href="{{ route('home') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-                <i class="bi bi-house text-xl block mb-1"></i>
-                <small class="text-xs">Home</small>
+    <nav class="fixed-bottom-nav bg-white border-t border-[#f0ece6]" aria-label="Navigasi Utama">
+                <div class="flex justify-between items-center w-full px-2 py-2 overflow-x-auto gap-1 no-scrollbar">
+            <a href="{{ route('home') }}" class="flex flex-shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] font-medium no-underline transition-all">
+                <i class="bi bi-house-fill text-lg leading-none"></i>
+                <span class="text-[11px]">Home</span>
             </a>
-        <a href="{{ route('donation') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-        <i class="bi bi-heart text-xl block mb-1"></i>
-        <small class="text-xs">Donasi</small>
-    </a>
-    <a href="{{ route('fundraising') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-        <i class="bi bi-box-seam text-xl block mb-1"></i>
-        <small class="text-xs">Galang Dana</small>
-    </a>
-    <a href="{{ route('amalanku') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-                <i class="bi bi-person text-xl block mb-1"></i>
-                <small class="text-xs">Amalanku</small>
+            <a href="{{ route('donation') }}" class="flex flex-shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] font-medium no-underline transition-all">
+                <i class="bi bi-heart-fill text-lg leading-none"></i>
+                <span class="text-[11px]">Donasi</span>
+            </a>
+            <a href="{{ route('fundraising') }}" class="flex flex-shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] font-medium no-underline transition-all">
+                <i class="bi bi-archive-fill text-lg leading-none"></i>
+                <span class="text-[11px]">Galang Dana</span>
+            </a>
+            <a href="{{ route('amalanku') }}" class="flex flex-shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] font-medium no-underline transition-all">
+                <i class="bi bi-person-fill text-lg leading-none"></i>
+                <span class="text-[11px]">Amalanku</span>
             </a>
         </div>
-    </div>
-</div>
+    </nav>
 
 <style>
-    body {
-        padding-bottom: 80px !important;
+    .fixed-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 2rem);
+        max-width: 896px;
+        z-index: 1030;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -4px 20px rgba(28,15,10,0.06);
     }
+    body { padding-bottom: 80px !important; }
 </style>
 
 @endsection

@@ -7,7 +7,7 @@
     <!-- Header -->
     <div class="flex items-center mb-6">
         <a href="{{ route('dashboard') }}" class="text-gray-700 mr-3 hover:text-gray-900">
-            <i class="bi bi-arrow-left text-xl"></i>
+            <i class="bi bi-arrow-left-circle text-xl"></i>
         </a>
         <h5 class="text-xl font-semibold text-gray-900 mb-0">Manajemen akun</h5>
     </div>
@@ -54,30 +54,38 @@
 </div>
 
 <!-- Bottom Navigation -->
-<div class="bg-white rounded-t-xl shadow-lg fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-4xl z-50 border-t border-gray-200">
-    <div class="flex justify-around items-center text-center py-4">
-        <a href="{{ route('home') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-            <i class="bi bi-house text-xl block mb-1"></i>
-            <small class="text-xs">Home</small>
-        </a>
-        <a href="{{ route('donation') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-        <i class="bi bi-heart text-xl block mb-1"></i>
-        <small class="text-xs">Donasi</small>
-    </a>
-    <a href="{{ route('fundraising') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-        <i class="bi bi-box-seam text-xl block mb-1"></i>
-        <small class="text-xs">Galang Dana</small>
-    </a>
-    <a href="{{ route('amalanku') }}" class="text-gray-700 hover:text-gray-900 no-underline">
-            <i class="bi bi-person text-xl block mb-1"></i>
-            <small class="text-xs">Amalanku</small>
-        </a>
-    </div>
-</div>
+<nav class="fixed-bottom-nav bg-white border-t border-[#f0ece6]" aria-label="Navigasi Utama">
+            <div class="flex justify-between items-center w-full px-2 py-2 overflow-x-auto gap-1 no-scrollbar">
+            <a href="{{ route('home') }}" class="flex flex-shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] font-medium no-underline transition-all">
+                <i class="bi bi-house-fill text-lg leading-none"></i>
+                <span class="text-[11px]">Home</span>
+            </a>
+            <a href="{{ route('donation') }}" class="flex flex-shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] font-medium no-underline transition-all">
+                <i class="bi bi-heart-fill text-lg leading-none"></i>
+                <span class="text-[11px]">Donasi</span>
+            </a>
+            <a href="{{ route('fundraising') }}" class="flex flex-shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] font-medium no-underline transition-all">
+                <i class="bi bi-archive-fill text-lg leading-none"></i>
+                <span class="text-[11px]">Galang Dana</span>
+            </a>
+            <a href="{{ route('amalanku') }}" class="flex flex-shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] font-medium no-underline transition-all">
+                <i class="bi bi-person-fill text-lg leading-none"></i>
+                <span class="text-[11px]">Amalanku</span>
+            </a>
+        </nav>
 
 <style>
-    body {
-        padding-bottom: 80px !important;
+    .fixed-bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 2rem);
+        max-width: 896px;
+        z-index: 1030;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -4px 20px rgba(28,15,10,0.06);
     }
+    body { padding-bottom: 80px !important; }
 </style>
 @endsection

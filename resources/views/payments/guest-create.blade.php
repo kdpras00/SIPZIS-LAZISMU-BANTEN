@@ -4,7 +4,7 @@
 
 {{-- Add CSS untuk intl-tel-input --}}
 @push('styles')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/css/intlTelInput.css">
+    <link rel="stylesheet" href="{{ asset('vendor/intl-tel-input/css/intlTelInput.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         /* Optimized styles for intl-tel-input */
@@ -94,7 +94,7 @@
                                 $imageUrl = $program->image_url;
                             } else {
                                 $categoryProgram = \App\Models\Program::byCategory($programCategory)->first();
-                                $imageUrl = $categoryProgram ? $categoryProgram->image_url : asset('img/masjid.webp');
+                                $imageUrl = $categoryProgram ? $categoryProgram->image_url : asset('img/masjidbanten.png');
                             }
                         @endphp
                         
@@ -397,14 +397,14 @@
 
 {{-- Add JS untuk intl-tel-input --}}
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/js/intlTelInput.min.js" defer></script>
+    <script src="{{ asset('vendor/intl-tel-input/js/intlTelInput.min.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         let iti, itiOptional;
         const itiConfig = {
             initialCountry: "id",
             preferredCountries: ["id", "my", "sg"],
-            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.12/build/js/utils.js",
+            utilsScript: "{{ asset('vendor/intl-tel-input/js/utils.js') }}",
             separateDialCode: true,
             autoPlaceholder: "aggressive",
             formatOnDisplay: true,

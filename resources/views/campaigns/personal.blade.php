@@ -1,226 +1,192 @@
 @extends('layouts.app')
 
-@section('page-title', 'Campaign - ' . $muzakki->name)
+@section('page-title', 'Profil Campaigner - ' . $muzakki->name)
 
 @section('content')
-<div class="container-fluid py-4">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-10">
+<div class="py-6 px-4 max-w-6xl mx-auto space-y-6">
 
-            <!-- Profile Header -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <img src="{{ $muzakki->profile_photo ? asset('storage/' . $muzakki->profile_photo) : asset('images/profile-default.jpg') }}"
-                                alt="{{ $muzakki->name }}"
-                                class="rounded-circle"
-                                style="width: 80px; height: 80px; object-fit: cover;">
-                        </div>
-                        <div class="col">
-                            <h4 class="mb-1 fw-bold">{{ $muzakki->name }}</h4>
-                            <p class="text-muted mb-2">
-                                <i class="bi bi-envelope me-1"></i>{{ $muzakki->email }}
-                            </p>
-                            @if($muzakki->bio)
-                            <p class="mb-0">{{ Str::limit(strip_tags($muzakki->bio), 150) }}</p>
-                            @endif
-                        </div>
-                        <div class="col-auto">
-                            <div class="text-center">
-                                <h3 class="mb-0 text-primary">{{ $campaigns->total() }}</h3>
-                                <small class="text-muted">Campaign Aktif</small>
-                            </div>
-                        </div>
+    <!-- Profile Header Card -->
+    <div class="bg-white rounded-2xl border border-[#f0ece6] p-6 shadow-sm">
+        <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
+                @if($muzakki->profile_photo)
+                    <img src="{{ asset('storage/' . $muzakki->profile_photo) }}"
+                         alt="{{ $muzakki->name }}"
+                         class="w-20 h-20 rounded-full object-cover border-2 border-[#f0ece6] shadow-sm">
+                @else
+                    <div class="w-20 h-20 rounded-full bg-[#c2410c] text-white font-bold text-2xl flex items-center justify-center shadow-sm">
+                        {{ strtoupper(substr($muzakki->name, 0, 1)) }}
                     </div>
-                </div>
-            </div>
+                @endif
 
-            @if(isset($campaignFeatureAvailable) && !$campaignFeatureAvailable)
-            <div class="alert alert-info border-0 shadow-sm mb-4">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-info-circle-fill fs-4 me-3 text-info"></i>
-                    <div>
-                        <h6 class="mb-1 fw-semibold text-info">Belum ada campaign yang terhubung</h6>
-                        <p class="mb-0 text-muted">Halaman ini akan otomatis menampilkan campaign yang Anda buat setelah fitur kampanye personal diaktifkan pada akun Anda.</p>
+                <div class="space-y-1">
+                    <div class="flex items-center justify-center md:justify-start gap-2">
+                        <h1 class="text-xl font-bold text-[#1c0f0a] m-0">{{ $muzakki->name }}</h1>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            <i class="bi bi-patch-check-fill text-emerald-600"></i> Verified Campaigner
+                        </span>
                     </div>
-                </div>
-            </div>
-            @endif
-
-            <!-- Campaign Stats -->
-            <div class="row mb-4">
-                <div class="col-md-4 mb-3">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <i class="bi bi-heart-fill text-danger fs-1 mb-2"></i>
-                            <h5 class="mb-0">{{ number_format($campaigns->sum(function($c) { return $c->donations_count ?? 0; })) }}</h5>
-                            <small class="text-muted">Total Donatur</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <i class="bi bi-cash-stack text-success fs-1 mb-2"></i>
-                            <h5 class="mb-0">Rp {{ number_format($campaigns->sum('collected_amount'), 0, ',', '.') }}</h5>
-                            <small class="text-muted">Dana Terkumpul</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <i class="bi bi-trophy-fill text-warning fs-1 mb-2"></i>
-                            <h5 class="mb-0">{{ $campaigns->where('status', 'completed')->count() }}</h5>
-                            <small class="text-muted">Campaign Selesai</small>
-                        </div>
-                    </div>
+                    <p class="text-xs text-[#8b7e74] m-0 flex items-center justify-center md:justify-start gap-1">
+                        <i class="bi bi-envelope"></i> {{ $muzakki->email }}
+                    </p>
+                    @if($muzakki->bio)
+                        <p class="text-xs text-[#1c0f0a] m-0 pt-1 max-w-xl leading-relaxed">
+                            {{ Str::limit(strip_tags($muzakki->bio), 150) }}
+                        </p>
+                    @endif
                 </div>
             </div>
 
-            <!-- Share Button -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <h6 class="mb-1">Bagikan halaman campaign saya</h6>
-                            <small class="text-muted">{{ url()->current() }}</small>
-                        </div>
-                        <button class="btn btn-primary" onclick="copyToClipboard('{{ url()->current() }}')">
-                            <i class="bi bi-share me-2"></i>Bagikan
-                        </button>
-                    </div>
-                </div>
+            <!-- Share Profile Action -->
+            <div class="flex items-center gap-3 flex-shrink-0">
+                <button type="button" 
+                        onclick="copyProfileLink('{{ url()->current() }}')"
+                        class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-[#1c0f0a] bg-[#faf8f5] border border-[#e8e0d6] rounded-xl hover:bg-[#f0ece6] transition-all shadow-2xs">
+                    <i class="bi bi-share text-sm text-[#c2410c]"></i> Bagikan Profil
+                </button>
             </div>
-
-            <!-- Campaign List -->
-            <div class="mb-3">
-                <h5 class="fw-bold">Campaign Aktif</h5>
-            </div>
-
-            @if($campaigns->isEmpty())
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center py-5">
-                    <i class="bi bi-inbox fs-1 text-muted mb-3"></i>
-                    <h5 class="text-muted">Belum ada campaign aktif</h5>
-                    <p class="text-muted">Campaign akan muncul di sini setelah dibuat</p>
-                </div>
-            </div>
-            @else
-            <div class="row">
-                @foreach($campaigns as $campaign)
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card border-0 shadow-sm h-100">
-                        @if($campaign->image)
-                        <img src="{{ asset('storage/' . $campaign->image) }}"
-                            class="card-img-top"
-                            alt="{{ $campaign->title }}"
-                            style="height: 200px; object-fit: cover;">
-                        @else
-                        <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                            <i class="bi bi-image fs-1 text-muted"></i>
-                        </div>
-                        @endif
-
-                        <div class="card-body">
-                            <span class="badge bg-primary mb-2">{{ ucfirst($campaign->category) }}</span>
-                            <h6 class="card-title fw-bold">{{ Str::limit($campaign->title, 50) }}</h6>
-                            <p class="card-text text-muted small">
-                                {{ Str::limit(strip_tags($campaign->description), 80) }}
-                            </p>
-
-                            <!-- Progress Bar -->
-                            <div class="progress mb-2" style="height: 8px;">
-                                <div class="progress-bar bg-success"
-                                    role="progressbar"
-                                    style="width: {{ $campaign->progress_percentage }}%">
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between mb-2">
-                                <small class="text-muted">Terkumpul</small>
-                                <small class="fw-bold text-success">
-                                    {{ $campaign->formatted_collected_amount }}
-                                </small>
-                            </div>
-
-                            @if($campaign->target_amount > 0)
-                            <div class="d-flex justify-content-between mb-3">
-                                <small class="text-muted">Target</small>
-                                <small class="text-muted">
-                                    Rp {{ number_format($campaign->target_amount, 0, ',', '.') }}
-                                </small>
-                            </div>
-                            @endif
-
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">
-                                    <i class="bi bi-people me-1"></i>
-                                    {{ $campaign->donations_count ?? 0 }} donatur
-                                </small>
-                                <a href="{{ route('campaigns.show', ['category' => $campaign->category, 'campaign' => $campaign->slug]) }}"
-                                    class="btn btn-sm btn-outline-primary">
-                                    Donasi
-                                </a>
-                            </div>
-                        </div>
-
-                        @if($campaign->end_date)
-                        <div class="card-footer bg-transparent border-top">
-                            <small class="text-muted">
-                                <i class="bi bi-clock me-1"></i>
-                                @if(\Carbon\Carbon::parse($campaign->end_date)->isFuture())
-                                {{ \Carbon\Carbon::parse($campaign->end_date)->diffForHumans() }}
-                                @else
-                                Campaign selesai
-                                @endif
-                            </small>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                @endforeach
-            </div>
-
-            <!-- Pagination -->
-            <div class="d-flex justify-content-center">
-                {{ $campaigns->links() }}
-            </div>
-            @endif
         </div>
+    </div>
+
+    <!-- Campaign Metrics Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl border border-[#f0ece6] p-5 shadow-sm text-center">
+            <div class="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center mx-auto mb-2 text-rose-600">
+                <i class="bi bi-heart-fill text-lg"></i>
+            </div>
+            <p class="text-xl font-bold text-[#1c0f0a] m-0 tabular-nums">
+                {{ number_format($campaigns->sum(function($c) { return $c->donations_count ?? 0; })) }}
+            </p>
+            <span class="text-xs text-[#8b7e74]">Total Donatur</span>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-[#f0ece6] p-5 shadow-sm text-center">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mx-auto mb-2 text-emerald-600">
+                <i class="bi bi-wallet2 text-lg"></i>
+            </div>
+            <p class="text-xl font-bold text-[#1c0f0a] m-0 tabular-nums">
+                Rp {{ number_format($campaigns->sum('collected_amount'), 0, ',', '.') }}
+            </p>
+            <span class="text-xs text-[#8b7e74]">Total Dana Terkumpul</span>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-[#f0ece6] p-5 shadow-sm text-center">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center mx-auto mb-2 text-amber-600">
+                <i class="bi bi-trophy-fill text-lg"></i>
+            </div>
+            <p class="text-xl font-bold text-[#1c0f0a] m-0 tabular-nums">
+                {{ $campaigns->where('status', 'completed')->count() }}
+            </p>
+            <span class="text-xs text-[#8b7e74]">Campaign Selesai</span>
+        </div>
+    </div>
+
+    <!-- Campaigns List Section -->
+    <div class="space-y-4">
+        <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold text-[#1c0f0a] m-0">Daftar Campaign Aktif</h2>
+            <span class="text-xs text-[#8b7e74]">{{ $campaigns->total() }} Campaign</span>
+        </div>
+
+        @if($campaigns->isEmpty())
+        <div class="bg-white rounded-2xl border border-[#f0ece6] p-12 text-center shadow-sm">
+            <div class="w-14 h-14 rounded-2xl bg-[#faf8f5] border border-[#f0ece6] flex items-center justify-center mx-auto mb-3 text-[#8b7e74]">
+                <i class="bi bi-inbox text-2xl"></i>
+            </div>
+            <h3 class="text-sm font-semibold text-[#1c0f0a] m-0 mb-1">Belum Ada Campaign Aktif</h3>
+            <p class="text-xs text-[#8b7e74] m-0">Campaigner ini belum mempublikasikan kampanye galang dana.</p>
+        </div>
+        @else
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            @foreach($campaigns as $campaign)
+            <div class="bg-white rounded-2xl border border-[#f0ece6] overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
+                <!-- Campaign Image -->
+                <div class="relative h-44 bg-[#faf8f5] overflow-hidden">
+                    <img src="{{ $campaign->photo ? (filter_var($campaign->photo, FILTER_VALIDATE_URL) ? $campaign->photo : asset('storage/' . $campaign->photo)) : asset('img/masjidbanten.png') }}"
+                         alt="{{ $campaign->title }}"
+                         class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-white/90 backdrop-blur-sm text-[#1c0f0a] shadow-xs uppercase tracking-wider">
+                        {{ ucfirst($campaign->program_category ?? 'Zakat') }}
+                    </span>
+                </div>
+
+                <!-- Campaign Content -->
+                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                    <div class="space-y-2">
+                        <h3 class="text-sm font-bold text-[#1c0f0a] line-clamp-2 leading-snug m-0">
+                            {{ $campaign->title }}
+                        </h3>
+                        <p class="text-xs text-[#8b7e74] line-clamp-2 m-0 leading-relaxed">
+                            {{ Str::limit(strip_tags($campaign->description), 90) }}
+                        </p>
+                    </div>
+
+                    <div class="space-y-3 pt-2 border-t border-[#f0ece6]">
+                        <!-- Progress Bar -->
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-[#8b7e74]">Terkumpul</span>
+                                <span class="font-bold text-[#c2410c]">Rp {{ number_format($campaign->collected_amount ?? 0, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-[#f0ece6] overflow-hidden">
+                                <div class="h-full rounded-full bg-[#c2410c] transition-all duration-500"
+                                     style="width: {{ min(100, $campaign->progress_percentage ?? 0) }}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-[11px] text-[#8b7e74] flex items-center gap-1">
+                                <i class="bi bi-people"></i> {{ $campaign->donations_count ?? 0 }} Donatur
+                            </span>
+                            <a href="{{ route('campaigns.show', ['category' => $campaign->program_category ?? 'infaq', 'campaign' => $campaign->slug ?? $campaign->id]) }}"
+                               class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-[#c2410c] hover:bg-[#9a3412] transition-colors shadow-2xs">
+                                Donasi Sekarang
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <div class="flex justify-center pt-4">
+            {{ $campaigns->links() }}
+        </div>
+        @endif
     </div>
 </div>
 
-<style>
-    .card {
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
-    }
-</style>
-
+@push('scripts')
 <script>
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(function() {
-            // Show success message
-            const btn = event.target.closest('button');
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i class="bi bi-check2 me-2"></i>Tersalin!';
-            btn.classList.remove('btn-primary');
-            btn.classList.add('btn-success');
+    function copyProfileLink(url) {
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(url).then(() => showToast('Link profil berhasil disalin!'));
+        } else {
+            const textArea = document.createElement('textarea');
+            textArea.value = url;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast('Link profil berhasil disalin!');
+        }
+    }
 
-            setTimeout(function() {
-                btn.innerHTML = originalContent;
-                btn.classList.remove('btn-success');
-                btn.classList.add('btn-primary');
-            }, 2000);
-        }).catch(function(err) {
-            alert('Gagal menyalin link: ' + err);
-        });
+    function showToast(msg) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: msg,
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true
+            });
+        } else {
+            alert(msg);
+        }
     }
 </script>
+@endpush
 @endsection

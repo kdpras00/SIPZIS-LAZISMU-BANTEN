@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Program;
-use App\Models\ProgramType;
-use App\Models\ZakatType;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -31,10 +29,9 @@ class ProgramController extends Controller
      */
     public function adminCreate()
     {
-        $programTypes = ProgramType::active()->get();
         $categories = $this->getAvailableCategories();
 
-        return view('admin.programs.create', compact('programTypes', 'categories'));
+        return view('admin.programs.create', compact('categories'));
     }
 
     /**
@@ -65,9 +62,9 @@ class ProgramController extends Controller
         $targetAmount = $request->input('target_amount');
         if ($targetAmount !== null && $targetAmount !== '') {
             $targetAmount = str_replace(['.', ','], '', $targetAmount);
-            $targetAmount = is_numeric($targetAmount) ? (float)$targetAmount : null;
+            $targetAmount = is_numeric($targetAmount) ? (float)$targetAmount : 0;
         } else {
-            $targetAmount = null;
+            $targetAmount = 0;
         }
 
         $data = $request->only(['name', 'description', 'status']);
@@ -144,10 +141,9 @@ class ProgramController extends Controller
      */
     public function adminEdit(Program $program)
     {
-        $programTypes = ProgramType::active()->get();
         $categories = $this->getAvailableCategories();
 
-        return view('admin.programs.edit', compact('program', 'programTypes', 'categories'));
+        return view('admin.programs.edit', compact('program', 'categories'));
     }
 
     /**
@@ -168,9 +164,9 @@ class ProgramController extends Controller
         $targetAmount = $request->input('target_amount');
         if ($targetAmount !== null && $targetAmount !== '') {
             $targetAmount = str_replace(['.', ','], '', $targetAmount);
-            $targetAmount = is_numeric($targetAmount) ? (float)$targetAmount : null;
+            $targetAmount = is_numeric($targetAmount) ? (float)$targetAmount : 0;
         } else {
-            $targetAmount = null;
+            $targetAmount = 0;
         }
 
         $data = $request->only(['name', 'description', 'status']);
@@ -214,7 +210,7 @@ class ProgramController extends Controller
     {
         $program = Program::where('slug', $slug)->active()->firstOrFail();
 
-        $zakatTypes = ZakatType::active()->get();
+        $zakatTypes = Program::active()->where('category', 'like', 'zakat%')->get();
         $collectedAmount = $program->total_collected;
         $totalTarget = $program->total_target;
         $category = $program->category;

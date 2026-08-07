@@ -1,16 +1,16 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-orange-900">
+<div class="min-h-screen flex items-center justify-center" style="background: #faf8f5;">
     <div class="w-full max-w-md px-6">
-        <div class="bg-white rounded-lg shadow-md p-8">
+        <div class="bg-white rounded-2xl p-8" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06), 0 4px 16px rgba(28,15,10,0.06);">
             <!-- Logo & Title -->
             <div class="text-center mb-8">
-                <div class="mx-auto w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
-                    <i class="bi bi-shield-lock text-3xl text-orange-600"></i>
+                <div class="mx-auto w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style="background: #fff7ed;">
+                    <i class="bi bi-shield-lock text-2xl" style="color: #c2410c;"></i>
                 </div>
-                <h1 class="text-2xl font-bold text-gray-900 mb-2">Verifikasi Autentikasi Dua Faktor</h1>
-                <p class="text-gray-500 text-sm">Masukkan kode 6 digit dari aplikasi Google Authenticator</p>
+                <h1 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Verifikasi Dua Faktor</h1>
+                <p class="text-sm" style="color: #8b7e74;">Masukkan kode 6 digit dari Google Authenticator</p>
             </div>
 
             <!-- Verification Form -->

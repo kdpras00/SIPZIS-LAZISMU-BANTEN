@@ -62,7 +62,7 @@ class Campaign extends Model
     public function getImageUrlAttribute()
     {
         if (empty($this->photo)) {
-            return asset('img/masjid.webp');
+            return asset('img/masjidbanten.png');
         }
 
         if (filter_var($this->photo, FILTER_VALIDATE_URL)) {
@@ -74,6 +74,11 @@ class Campaign extends Model
 
     public function getCollectedAmountAttribute()
     {
+        // Check if sum was eager loaded
+        if (array_key_exists('zakat_payments_sum_paid_amount', $this->attributes)) {
+            return (float) $this->attributes['zakat_payments_sum_paid_amount'];
+        }
+
         // If campaign has program_id, get payments for that program
         if ($this->program_id) {
             return ZakatPayment::where('program_id', $this->program_id)
@@ -250,30 +255,15 @@ class Campaign extends Model
 
         // When a campaign is created
         static::created(function ($campaign) {
-            // Buat notifikasi untuk semua muzakki tentang campaign baru yang published
             if ($campaign->status === 'published') {
-                $muzakkiList = \App\Models\Muzakki::whereNotNull('user_id')->get();
-                foreach ($muzakkiList as $muzakki) {
-                    if ($muzakki->user) {
-                        // Langsung gunakan campaign sebagai notifiable
-                        \App\Models\Notification::createProgramNotification($muzakki->user, $campaign, 'program');
-                    }
-                }
+                \App\Jobs\SendProgramNotifications::dispatch($campaign);
             }
         });
 
         // When a campaign is updated
         static::updated(function ($campaign) {
-            // Check if status has changed to published
             if ($campaign->isDirty('status') && $campaign->status === 'published') {
-                // Buat notifikasi untuk semua muzakki tentang campaign yang dipublish
-                $muzakkiList = \App\Models\Muzakki::whereNotNull('user_id')->get();
-                foreach ($muzakkiList as $muzakki) {
-                    if ($muzakki->user) {
-                        // Langsung gunakan campaign sebagai notifiable
-                        \App\Models\Notification::createProgramNotification($muzakki->user, $campaign, 'program');
-                    }
-                }
+                \App\Jobs\SendProgramNotifications::dispatch($campaign);
             }
         });
     }

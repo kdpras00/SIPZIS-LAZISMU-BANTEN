@@ -86,11 +86,15 @@ class HomeController extends Controller
     {
         if ($redirect = $this->preventAdminAccess()) return $redirect;
 
-        // Fetch all programs grouped by main categories
-        $zakatPrograms = Program::where('category', 'zakat')->active()->get();
-        $infaqPrograms = Program::where('category', 'infaq')->active()->get();
-        $shadaqahPrograms = Program::where('category', 'shadaqah')->active()->get();
-        $pilarPrograms = Program::whereIn('category', ['pendidikan', 'kesehatan', 'ekonomi', 'sosial-dakwah', 'kemanusiaan', 'lingkungan'])->active()->get();
+        // Optimasi: Cache semua program aktif untuk menghindari query berulang
+        $allPrograms = cache()->remember('active_programs', 3600, function () {
+            return Program::active()->get();
+        });
+
+        $zakatPrograms = $allPrograms->where('category', 'zakat');
+        $infaqPrograms = $allPrograms->where('category', 'infaq');
+        $shadaqahPrograms = $allPrograms->where('category', 'shadaqah');
+        $pilarPrograms = $allPrograms->whereIn('category', ['pendidikan', 'kesehatan', 'ekonomi', 'sosial-dakwah', 'kemanusiaan', 'lingkungan']);
 
         return view('pages.program', compact('zakatPrograms', 'infaqPrograms', 'shadaqahPrograms', 'pilarPrograms'));
     }
@@ -99,11 +103,15 @@ class HomeController extends Controller
     {
         if ($redirect = $this->preventAdminAccess()) return $redirect;
 
-        // Fetch all programs grouped by main categories
-        $zakatPrograms = Program::where('category', 'zakat')->active()->get();
-        $infaqPrograms = Program::where('category', 'infaq')->active()->get();
-        $shadaqahPrograms = Program::where('category', 'shadaqah')->active()->get();
-        $pilarPrograms = Program::whereIn('category', ['pendidikan', 'kesehatan', 'ekonomi', 'sosial-dakwah', 'kemanusiaan', 'lingkungan'])->active()->get();
+        // Optimasi: Cache semua program aktif untuk menghindari query berulang
+        $allPrograms = cache()->remember('active_programs', 3600, function () {
+            return Program::active()->get();
+        });
+
+        $zakatPrograms = $allPrograms->where('category', 'zakat');
+        $infaqPrograms = $allPrograms->where('category', 'infaq');
+        $shadaqahPrograms = $allPrograms->where('category', 'shadaqah');
+        $pilarPrograms = $allPrograms->whereIn('category', ['pendidikan', 'kesehatan', 'ekonomi', 'sosial-dakwah', 'kemanusiaan', 'lingkungan']);
 
         return view('pages.program', [
             'activeTab' => $category,
