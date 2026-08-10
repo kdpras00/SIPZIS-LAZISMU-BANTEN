@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::rename('zakat_payments', 'payments');
-        Schema::rename('zakat_distributions', 'distributions');
+        if (Schema::hasTable('zakat_payments') && !Schema::hasTable('payments')) {
+            Schema::rename('zakat_payments', 'payments');
+        }
+        if (Schema::hasTable('zakat_distributions') && !Schema::hasTable('distributions')) {
+            Schema::rename('zakat_distributions', 'distributions');
+        }
     }
 
     /**
@@ -20,7 +24,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::rename('payments', 'zakat_payments');
-        Schema::rename('distributions', 'zakat_distributions');
+        if (Schema::hasTable('payments') && !Schema::hasTable('zakat_payments')) {
+            Schema::rename('payments', 'zakat_payments');
+        }
+        if (Schema::hasTable('distributions') && !Schema::hasTable('zakat_distributions')) {
+            Schema::rename('distributions', 'zakat_distributions');
+        }
     }
 };
