@@ -6,9 +6,9 @@
 <div class="container mx-auto px-4 py-6">
     <div class="flex justify-center">
         <div class="w-full max-w-4xl">
-            <!-- Card Container -->
+            
             <div class="bg-white rounded-lg shadow-md mb-6 overflow-hidden">
-                <!-- Card Header -->
+                
                 <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <h6 class="text-lg font-semibold text-gray-800">Kwitansi Distribusi Zakat</h6>
@@ -21,16 +21,16 @@
                     </div>
                 </div>
 
-                <!-- Card Body -->
+                
                 <div class="p-8">
                     <div class="receipt-content pl-8">
-                        <!-- Header -->
+                        
                         <div class="text-center mb-8">
                             <h4 class="text-2xl font-bold text-gray-900 mb-3">KWITANSI DISTRIBUSI ZAKAT</h4>
                             <hr class="border-gray-300">
                         </div>
 
-                        <!-- Receipt Info -->
+                        
                         <div class="mb-8">
                             <h6 class="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-4">Informasi Kwitansi</h6>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -98,7 +98,7 @@
                             </div>
                         </div>
 
-                        <!-- Mustahik Info -->
+                        
                         <div class="mb-8">
                             <h6 class="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-4">Informasi Mustahik</h6>
                             <table class="w-full">
@@ -131,7 +131,7 @@
                             </table>
                         </div>
 
-                        <!-- Distribution Details -->
+                        
                         <div class="mb-8">
                             <h6 class="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-4">Detail Distribusi</h6>
                             <table class="w-full">
@@ -161,10 +161,10 @@
                             </table>
                         </div>
 
-                        <!-- Status Received -->
+                        
                        
 
-                        <!-- Notes -->
+                        
                         @if($distribution->notes)
                         <div class="mb-8">
                             <h6 class="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-4">Catatan</h6>
@@ -172,7 +172,7 @@
                         </div>
                         @endif
 
-                        <!-- Signature -->
+                        
                         <div class="mt-16 signature-section signature-section-right">
                             <div class="grid grid-cols-2 gap-12">
                                 <div class="text-center signature-box">
@@ -181,7 +181,7 @@
                                         <p class="text-gray-600 text-sm">___________________________</p>
                                     </div>
                                     <p class="text-gray-700 text-sm">{{ $distribution->distributedBy->name ?? 'Admin SIPZIS' }}</p>
-                                    <!-- <p class="text-gray-500 text-xs mt-1">{{ $distribution->distribution_date->format('d F Y') }}</p> -->
+                                    
                                 </div>
                                 <div class="text-center signature-box">
                                     <p class="font-semibold text-gray-800 mb-12 text-base">Penerima</p>

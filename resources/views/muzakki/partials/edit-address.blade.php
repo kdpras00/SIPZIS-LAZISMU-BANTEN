@@ -5,7 +5,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <!-- Negara -->
+        
         <div>
             <label for="country" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Negara <span class="text-rose-500">*</span></label>
             <div class="relative">
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <!-- Kode Pos -->
+        
         <div>
             <label for="postal_code" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Kode Pos <span class="text-rose-500">*</span></label>
             <input type="text" 
@@ -35,7 +35,7 @@
                    inputmode="numeric">
         </div>
 
-        <!-- Provinsi -->
+        
         <div>
             <label for="province" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Provinsi <span class="text-rose-500">*</span></label>
             <div class="relative">
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <!-- Kota / Kabupaten -->
+        
         <div>
             <label for="city" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Kota / Kabupaten <span class="text-rose-500">*</span></label>
             <div class="relative">
@@ -65,7 +65,7 @@
             </div>
         </div>
 
-        <!-- Kecamatan -->
+        
         <div>
             <label for="district" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Kecamatan <span class="text-rose-500">*</span></label>
             <div class="relative">
@@ -80,7 +80,7 @@
             </div>
         </div>
 
-        <!-- Kelurahan / Desa -->
+        
         <div>
             <label for="village" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Kelurahan / Desa <span class="text-rose-500">*</span></label>
             <div class="relative">
@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <!-- Alamat Lengkap (Full Width) -->
+        
         <div class="md:col-span-2">
             <label for="address" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Alamat Lengkap (Jalan, RT/RW, No. Rumah) <span class="text-rose-500">*</span></label>
             <textarea class="w-full px-4 py-3 rounded-xl border border-[#e8e0d6] bg-white text-xs font-medium text-[#1c0f0a] focus:border-[#c2410c] focus:ring-2 focus:ring-[#c2410c]/10 transition-all outline-none leading-relaxed"

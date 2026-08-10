@@ -7,9 +7,9 @@
         <mxCell id="2" value="sequenceDiagram
     actor Admin
     participant Detail as View (Detail)
-    participant Controller as ZakatDistributionController
+    participant Controller as DistributionController
     participant View as View (Receipt PDF/Page)
-    participant Model as ZakatDistribution
+    participant Model as Distribution
 
     Admin-&gt;&gt;Detail: Klik Tombol Cetak Bukti
     Detail-&gt;&gt;Controller: GET /distributions/{id}/receipt (receipt)

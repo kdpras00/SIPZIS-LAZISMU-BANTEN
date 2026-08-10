@@ -8,7 +8,6 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 
-
 class NotificationCreated implements ShouldBroadcast
 {
     use SerializesModels, Dispatchable;

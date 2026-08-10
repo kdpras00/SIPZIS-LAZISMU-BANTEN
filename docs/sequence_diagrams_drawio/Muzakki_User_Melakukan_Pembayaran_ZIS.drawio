@@ -7,9 +7,9 @@
         <mxCell id="2" value="sequenceDiagram
     actor Muzakki
     participant View as View (Donation Form)
-    participant Controller as ZakatPaymentController
+    participant Controller as PaymentController
     participant Midtrans as Midtrans Gateway
-    participant Model as ZakatPayment
+    participant Model as Payment
     participant DB as Database
 
     Muzakki-&gt;&gt;View: Mengisi Form Donasi

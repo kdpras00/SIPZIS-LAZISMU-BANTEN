@@ -132,6 +132,7 @@
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-3">Nama</th>
+                                <th scope="col" class="px-6 py-3">NIK</th>
                                 <th scope="col" class="px-6 py-3">Kategori</th>
                                 <th scope="col" class="px-6 py-3">Telepon</th>
                                 <th scope="col" class="px-6 py-3">Kota</th>
@@ -181,7 +182,7 @@
                         <td class="px-6 py-4">${item.city || '-'}</td>
                         <td class="px-6 py-4">${createdAt}</td>
                         <td class="px-6 py-4">
-                            <div class="flex items-center gap-1">
+                            <div class="flex items-center justify-start xl:justify-center gap-1.5">
                                 <a href="/mustahik/${item.id}" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Lihat Detail">
                                     <i class="bi bi-eye-fill"></i>
                                 </a>
@@ -195,7 +196,7 @@
                                         <i class="bi bi-toggle-${item.is_active ? 'on' : 'off'}"></i>
                                     </button>
                                 </form>
-                                ${item.zakat_distributions_count == 0 ? `
+                                ${item.distributions_count == 0 ? `
                                 <form action="/mustahik/${item.id}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                     <input type="hidden" name="_token" value="${csrfToken}">
                                     <input type="hidden" name="_method" value="DELETE">

@@ -7,9 +7,9 @@
 @endsection
 
 @section('content')
-<!-- Failure Section -->
+
 <div class="relative bg-gradient-to-br from-red-50 via-orange-50 to-amber-50 overflow-hidden min-h-screen">
-    <!-- Background Elements -->
+    
     <div class="absolute inset-0">
         <div class="absolute top-0 left-0 w-40 h-40 bg-red-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
         <div class="absolute top-0 right-0 w-40 h-40 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-2000"></div>
@@ -18,7 +18,7 @@
 
     <div class="relative container mx-auto px-4 py-16">
         <div class="max-w-4xl mx-auto">
-            <!-- Failure Header -->
+            
             <div class="text-center mb-12">
                 <div class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-red-500 to-orange-600 rounded-full mb-6 shadow-lg">
                     <i class="fas fa-times text-white text-4xl"></i>
@@ -31,7 +31,7 @@
                 </p>
             </div>
 
-            <!-- Payment Details Card -->
+            
             <div class="bg-white/70 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/50 p-8 mb-8">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-2xl font-bold text-gray-800">Detail Pembayaran</h2>
@@ -53,7 +53,7 @@
                         </div>
                         <div class="flex justify-between border-b pb-2">
                             <span class="text-gray-600">Jenis Program:</span>
-                            <span class="font-semibold">{{ $payment->programType ? $payment->programType->name : 'Donasi Umum' }}</span>
+                            <span class="font-semibold">{{ $payment->program ? $payment->program->name : 'Donasi Umum' }}</span>
                         </div>
                     </div>
 
@@ -81,28 +81,28 @@
                 @endif
             </div>
 
-            <!-- Action Buttons -->
+            
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <a href="{{ route('guest.payment.summary', $payment->payment_code ?? '#') }}"
-                    class="bg-gradient-to-r from-red-600 to-orange-600 text-white px-8 py-4 rounded-2xl hover:from-red-700 hover:to-orange-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center">
+                    class="bg-gradient-to-r from-red-600 to-orange-600 text-white px-8 py-4 rounded-2xl transition-all duration-300 font-bold flex items-center">
                     <i class="fas fa-redo mr-2"></i>
                     Coba Lagi
                 </a>
 
                 <a href="{{ route('guest.payment.create') }}"
-                    class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-2xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center">
+                    class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-2xl transition-all duration-300 font-bold flex items-center">
                     <i class="fas fa-plus mr-2"></i>
                     Pembayaran Baru
                 </a>
 
                 <a href="{{ route('home') }}"
-                    class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-8 py-4 rounded-2xl hover:from-gray-600 hover:to-gray-700 transition-all duration-300 font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center">
+                    class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-8 py-4 rounded-2xl transition-all duration-300 font-bold flex items-center">
                     <i class="fas fa-home mr-2"></i>
                     Kembali ke Beranda
                 </a>
             </div>
 
-            <!-- Help Section -->
+            
             <div class="mt-12 text-center">
                 <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-8 shadow-lg">
                     <h3 class="text-2xl font-bold text-red-800 mb-4">Butuh Bantuan?</h3>

@@ -11,18 +11,18 @@
                     </div>
                 </div>
 
-                <!-- Success Message -->
+                
                 @if(session('success'))
                     <div class="mb-4 p-4 bg-orange-100 border border-orange-400 text-orange-700 rounded-lg">
                         {{ session('success') }}
                     </div>
                 @endif
 
-                <!-- Login Form -->
+                
                 <form method="POST" action="{{ route('login') }}" class="space-y-4" id="loginForm">
                     @csrf
 
-                    <!-- Email Input -->
+                    
                     <div>
                         <input id="email" type="email"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('email') border-red-500 @enderror"
@@ -33,7 +33,7 @@
                         @enderror
                     </div>
 
-                    <!-- Password Input -->
+                    
                     <div>
                         <div class="relative">
                             <input id="password" type="password"
@@ -50,21 +50,21 @@
                         @enderror
                     </div>
 
-                    <!-- Forgot Password Link -->
+                    
                     <div class="text-right">
                         <a href="{{ route('password.request') }}" class="text-sm text-orange-600 hover:text-orange-700 font-medium">
                             Lupa Password?
                         </a>
                     </div>
 
-                    <!-- Submit Button -->
+                    
                     <button type="submit"
                         class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
                         Masuk
                     </button>
                 </form>
 
-                <!-- Divider -->
+                
                 <div class="relative my-2">
                     <div class="absolute inset-0 flex items-center">
                         <div class="w-full border-t border-gray-200"></div>
@@ -74,9 +74,9 @@
                     </div>
                 </div>
 
-                <!-- Social Login Buttons -->
+                
                 <div class="space-y-3">
-                    <!-- reCAPTCHA v3: token will be generated on submit -->
+                    
                     <button type="button" id="googleLogin"
                         class="w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-6 rounded-lg transition-colors duration-200">
                         <svg class="w-5 h-5" viewBox="0 0 24 24">
@@ -101,17 +101,11 @@
                     <div id="socialLoginAlert"
                         class="hidden mt-3 text-sm border rounded-lg px-4 py-3 bg-gray-50 border-gray-200 text-gray-700"></div>
 
-
-                    {{-- <a href="/auth/facebook" class="w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 px-6 rounded-lg transition-colors duration-200 no-underline">
-                    <svg class="w-5 h-5" fill="#1877F2" viewBox="0 0 24 24">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                    </svg>
-                    Facebook
-                </a> --}}
+                    
 
                 </div>
 
-                <!-- Register Link -->
+                
                 <p class="text-center text-sm text-gray-600 mt-6">
                     Belum punya akun?
                     <a href="{{ route('register') }}" class="text-orange-600 hover:text-orange-700 font-medium">
@@ -122,13 +116,13 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
-    <!-- Google reCAPTCHA v3 -->
+    
     <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
 
-    <!-- Firebase Configuration -->
+    
     <script>
         const firebaseConfig = {
             apiKey: "{{ config('services.firebase.api_key') }}",
@@ -451,6 +445,7 @@
                             email: user.email,
                             name: user.displayName,
                             uid: user.uid,
+                            avatar: user.photoURL,
                             'g-recaptcha-response': recaptchaResponse || ''
                         })
                     })

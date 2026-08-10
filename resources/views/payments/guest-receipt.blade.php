@@ -6,94 +6,91 @@
 <div class="bg-gray-100 min-h-screen py-8">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
-            <!-- Receipt -->
-            <div class="bg-white rounded-lg shadow-lg p-8" style="border: 2px solid #059669; padding: 40px; font-family: Arial, sans-serif;">
-                <!-- Header -->
-                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 2px solid #059669; margin-bottom: 30px;">
-                    <div style="font-size: 28px; font-weight: bold; color: #059669;">SIPZIS</div>
-                    <div style="text-align: right;">
-                        <div style="font-size: 11px; color: #666;">No. Kwitansi</div>
-                        <div style="font-size: 16px; font-weight: bold; color: #059669;">{{ $payment->receipt_number }}</div>
-                    </div>
+            
+            <div class="bg-white p-8 sm:p-12" style="border: 2px solid #333; font-family: 'Times New Roman', Times, serif; color: #000; position: relative; max-width: 800px; margin: 0 auto; background-image: radial-gradient(#e5e7eb 1px, transparent 1px); background-size: 20px 20px;">
+                
+                
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.05; pointer-events: none; z-index: 1;">
+                    
                 </div>
 
-                <div style="text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 30px; color: #333;">
-                    KWITANSI PEMBAYARAN
-                </div>
-
-                <!-- Payment Details -->
-                <div style="padding: 12px 0; border-bottom: 1px solid #eee;">
-                    <div style="display: flex;">
-                        <div style="width: 180px; color: #666; flex-shrink: 0;">Diterima dari</div>
-                        <div style="flex: 1; font-weight: 500; color: #333;">{{ $payment->muzakki->name }}</div>
-                    </div>
-                </div>
-
-                <div style="padding: 12px 0; border-bottom: 1px solid #eee;">
-                    <div style="display: flex;">
-                        <div style="width: 180px; color: #666; flex-shrink: 0;">Untuk pembayaran</div>
-                        <div style="flex: 1; font-weight: 500; color: #333;">
-                            {{ $payment->campaign ? $payment->campaign->title : ($payment->programType ? $payment->programType->name : ($payment->program_category ? ucfirst(str_replace('-', ' ', $payment->program_category)) : 'Donasi Umum')) }}
-                            @if($payment->notes)
-                            <span style="font-size: 12px; color: #666;"> ({{ $payment->notes }})</span>
-                            @endif
+                <div style="position: relative; z-index: 10;">
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px double #333; padding-bottom: 15px; margin-bottom: 25px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <img src="{{ asset('img/logo.png') }}" alt="Logo Lazismu" style="height: 70px; object-fit: contain;">
+                        </div>
+                        <div style="text-align: right; font-family: Arial, sans-serif;">
+                            <div style="font-size: 16px; letter-spacing: 1px;"><strong>KWITANSI PEMBAYARAN</strong></div>
+                            <div style="font-size: 14px; margin-top: 8px; display: flex; justify-content: flex-end; align-items: baseline; gap: 5px;">
+                                <span>No.</span>
+                                <span style="border-bottom: 1px dotted #333; min-width: 180px; text-align: left; padding-left: 5px; color: #c2410c; font-weight: bold; display: inline-block;">{{ $payment->receipt_number ?: $payment->payment_code }}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div style="padding: 12px 0; border-bottom: 1px solid #eee;">
-                    <div style="display: flex;">
-                        <div style="width: 180px; color: #666; flex-shrink: 0;">Metode pembayaran</div>
-                        <div style="flex: 1; font-weight: 500; color: #333;">{{ ucfirst($payment->payment_method) }}</div>
-                    </div>
-                </div>
+                    
+                    <table style="width: 100%; font-size: 16px; line-height: 2;">
+                        <tr>
+                            <td style="width: 25%; vertical-align: top;">Telah terima dari</td>
+                            <td style="width: 2%; vertical-align: top;">:</td>
+                            <td style="width: 73%; vertical-align: top; border-bottom: 1px dotted #666;">
+                                {{ $payment->muzakki->name ?? 'Hamba Allah' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">Uang sejumlah</td>
+                            <td style="vertical-align: top;">:</td>
+                            <td style="vertical-align: top; border-bottom: 1px dotted #666; background-color: #f3f4f6; padding: 0 10px;">
+                                {{ ucwords(\Illuminate\Support\Str::lower(\App\Helpers\Terbilang::convert($payment->paid_amount))) }} Rupiah
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">Untuk pembayaran</td>
+                            <td style="vertical-align: top;">:</td>
+                            <td style="vertical-align: top; border-bottom: 1px dotted #666;">
+                                {{ $payment->campaign ? $payment->campaign->title : ($payment->program ? $payment->program->name : ($payment->program_category ? ucfirst(str_replace('-', ' ', $payment->program_category)) : 'Donasi Umum')) }}
+                                @if($payment->notes)
+                                    <span>({{ $payment->notes }})</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">Metode Pembayaran</td>
+                            <td style="vertical-align: top;">:</td>
+                            <td style="vertical-align: top; border-bottom: 1px dotted #666;">
+                                {{ strtoupper(str_replace('_', ' ', $payment->payment_method)) }}
+                            </td>
+                        </tr>
+                    </table>
 
-                <div style="padding: 12px 0; border-bottom: 1px solid #eee;">
-                    <div style="display: flex;">
-                        <div style="width: 180px; color: #666; flex-shrink: 0;">Tanggal</div>
-                        <div style="flex: 1; font-weight: 500; color: #333;">{{ $payment->payment_date->format('d F Y') }}</div>
-                    </div>
-                </div>
-
-                <!-- Amount Details -->
-                <div style="background: #f8f9fa; border: 2px solid #059669; padding: 20px; margin: 30px 0; text-align: center;">
-                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">JUMLAH PEMBAYARAN</div>
-                    <div style="font-size: 32px; font-weight: bold; color: #059669;">Rp {{ number_format($payment->paid_amount, 0, ',', '.') }}</div>
-                    <div style="margin-top: 8px; font-size: 13px; font-style: italic; color: #666;">
-                        {{ ucwords(\Illuminate\Support\Str::lower(\App\Helpers\Terbilang::convert($payment->paid_amount))) }} Rupiah
-                    </div>
-                </div>
-
-                <!-- Signatures -->
-                <table style="width: 100%; margin-top: 50px; border-collapse: collapse;">
-                    <tr>
-                        <td style="width: 50%; text-align: center; vertical-align: top;">
-                            <div style="font-size: 12px; color: #666; margin-bottom: 60px;">Muzakki</div>
-                            <div style="border-top: 1px solid #333; padding-top: 8px; font-weight: 500; display: inline-block; min-width: 150px;">{{ $payment->muzakki->name }}</div>
-                        </td>
-                        <td style="width: 50%; text-align: center; vertical-align: top;">
-                            <div style="font-size: 12px; color: #666; margin-bottom: 60px;">Penerima</div>
-                            <div style="border-top: 1px solid #333; padding-top: 8px; font-weight: 500; display: inline-block; min-width: 150px;">Amil Zakat</div>
-                        </td>
-                    </tr>
-                </table>
-
-                <!-- Islamic Quote -->
-                <div class="mt-12 text-center">
-                    <div class="bg-gradient-to-r from-orange-50 to-orange-50 rounded-2xl p-6 shadow-md">
-                        <div class="text-orange-700 font-semibold mb-2">
-                            "وَمَن يُؤْتَ الْحِكْمَةَ فَقَدْ أُوتِيَ خَيْرًا كَثِيرًا"
+                    
+                    <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: flex-end;">
+                        
+                        
+                        <div style="background: #fff; border: 2px solid #333; padding: 10px 30px; display: inline-block; box-shadow: 4px 4px 0 #333;">
+                            <span style="font-size: 20px; font-weight: bold; font-family: Arial, sans-serif;">
+                                Rp {{ number_format($payment->paid_amount, 0, ',', '.') }},-
+                            </span>
                         </div>
-                        <p class="text-gray-600 italic">
-                            "Barangsiapa diberi hikmah, sungguh ia telah dianugerahi kebaikan yang banyak."
-                        </p>
-                        <p class="text-sm text-gray-500 mt-2">QS. Al-Baqarah: 269</p>
+
+                        
+                        <div style="text-align: center; width: 250px;">
+                            <div style="margin-bottom: 70px;">
+                                Banten, {{ $payment->payment_date ? $payment->payment_date->format('d F Y') : date('d F Y') }}<br>
+                                Penerima,
+                            </div>
+                            <div style="border-bottom: 1px solid #333; font-weight: bold; padding-bottom: 5px;">
+                                Amil Zakat Lazismu
+                            </div>
+                            <div style="font-size: 12px; margin-top: 5px;">Stempel & Tanda Tangan</div>
+                        </div>
+
                     </div>
                 </div>
-
             </div>
 
-            <!-- Action Buttons -->
+            
 
             <div class="mt-8 mb-6 text-center no-print">
                 <a href="{{ route('guest.payment.success', $payment->payment_code) }}" class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors inline-flex items-center mr-4">
@@ -132,11 +129,6 @@
 
         .shadow-lg {
             box-shadow: none !important;
-        }
-
-        .bg-white {
-            border: 1px solid #059669 !important;
-            padding: 20px !important;
         }
 
         .amount-section {

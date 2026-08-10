@@ -4,7 +4,7 @@
 
 @section('content')
 <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
-    <!-- Header Navigation & Action -->
+    
     <header class="flex items-center justify-between mb-6 pb-4 border-b border-[#f0ece6]">
         <div class="flex items-center gap-3">
             @php
@@ -22,7 +22,7 @@
         </div>
     </header>
 
-    <!-- Main Edit Form -->
+    
     <form action="{{ request()->route()->hasParameter('muzakki') ? route('muzakki.update', $muzakki) : route('profiles.update') }}"
           method="POST" 
           id="muzakkiEditForm" 
@@ -30,16 +30,16 @@
         @csrf
         @method('PUT')
 
-        <!-- Documents Section -->
+        
         @include('muzakki.partials.edit-documents')
 
-        <!-- Personal Info Section -->
+        
         @include('muzakki.partials.edit-personal')
 
-        <!-- Address Section -->
+        
         @include('muzakki.partials.edit-address')
 
-        <!-- Bottom Action Bar -->
+        
         <footer class="flex items-center justify-end gap-3 pt-2 pb-6 border-t border-[#f0ece6] mt-6">
             <a href="{{ $backUrl }}" 
                class="px-5 py-2.5 rounded-xl border border-[#e8e0d6] bg-white text-xs font-semibold text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] transition-all no-underline">

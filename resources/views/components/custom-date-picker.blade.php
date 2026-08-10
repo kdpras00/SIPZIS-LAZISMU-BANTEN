@@ -122,10 +122,10 @@
 @click.outside="open = false" 
 class="relative w-full {{ $class }}">
 
-    <!-- Hidden native input for form compatibility -->
+    
     <input type="hidden" name="{{ $name }}" id="{{ $id }}" x-ref="hiddenInput" :value="dateValue">
 
-    <!-- Trigger Button -->
+    
     <button type="button" 
         @click="open = !open"
         :class="open ? 'border-[#c2410c] ring-2 ring-[#c2410c]/10' : 'border-[#e8e0d6] hover:border-gray-300'"
@@ -136,7 +136,7 @@ class="relative w-full {{ $class }}">
         </div>
     </button>
 
-    <!-- Custom Warm DatePicker Dropdown -->
+    
     <div x-show="open" 
         x-cloak
         x-transition:enter="transition ease-out duration-100"
@@ -145,7 +145,7 @@ class="relative w-full {{ $class }}">
         style="display: none;"
         class="absolute z-[100] right-0 top-full mt-1.5 w-72 bg-white rounded-2xl border border-[#e8e0d6] shadow-2xl p-4 text-[#1c0f0a]">
         
-        <!-- Calendar Header -->
+        
         <div class="flex items-center justify-between mb-3 pb-2 border-b border-[#f0ece6]">
             <button type="button" @click="prevMonth()" class="p-1.5 rounded-lg hover:bg-orange-50 text-[#8b7e74] hover:text-[#c2410c] transition-colors">
                 <i class="bi bi-chevron-left text-xs"></i>
@@ -156,21 +156,21 @@ class="relative w-full {{ $class }}">
             </button>
         </div>
 
-        <!-- Days of Week Header -->
+        
         <div class="grid grid-cols-7 gap-1 text-center mb-1">
             <template x-for="day in dayNames" :key="day">
                 <span class="text-[10px] font-bold uppercase tracking-wider text-[#8b7e74]" x-text="day"></span>
             </template>
         </div>
 
-        <!-- Calendar Days Grid -->
+        
         <div class="grid grid-cols-7 gap-1 text-center">
-            <!-- Blank days before start of month -->
+            
             <template x-for="(blank, index) in blankDays" :key="index">
                 <div class="h-8"></div>
             </template>
 
-            <!-- Month Days -->
+            
             <template x-for="day in daysInMonth" :key="day">
                 <button type="button" 
                     @click="selectDate(day)"
@@ -185,7 +185,7 @@ class="relative w-full {{ $class }}">
             </template>
         </div>
 
-        <!-- Footer Actions -->
+        
         <div class="flex items-center justify-between mt-3 pt-2.5 border-t border-[#f0ece6] text-xs">
             <button type="button" @click="clearDate()" class="font-semibold text-[#8b7e74] hover:text-red-600 transition-colors">
                 Bersihkan

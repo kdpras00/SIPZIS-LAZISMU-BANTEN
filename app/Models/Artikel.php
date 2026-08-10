@@ -26,27 +26,19 @@ class Artikel extends Model
         'updated_at' => 'datetime',
     ];
 
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
+    
     public function getRouteKeyName()
     {
         return 'id';
     }
 
-    /**
-     * Get the author of the article
-     */
+    
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    /**
-     * Generate slug from title
-     */
+    
     public static function generateSlug($title)
     {
         $slug = Str::slug($title);
@@ -55,25 +47,19 @@ class Artikel extends Model
         return $count ? "{$slug}-{$count}" : $slug;
     }
 
-    /**
-     * Scope for published articles
-     */
+    
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
     }
 
-    /**
-     * Get formatted publication date
-     */
+    
     public function getFormattedDateAttribute()
     {
         return $this->created_at->format('d M Y');
     }
 
-    /**
-     * Get excerpt or generate from content
-     */
+    
     public function getExcerptAttribute($value)
     {
         if ($value) {

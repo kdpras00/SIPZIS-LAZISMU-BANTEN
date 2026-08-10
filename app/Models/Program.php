@@ -23,22 +23,22 @@ class Program extends Model
         'target_amount' => 'decimal:2',
     ];
 
-    // ========================
-    // 🔗 Relationships
-    // ========================
+    
+    
+    
     public function campaigns()
     {
         return $this->hasMany(Campaign::class);
     }
 
-    public function zakatPayments()
+    public function payments()
     {
-        return $this->hasMany(ZakatPayment::class);
+        return $this->hasMany(Payment::class);
     }
 
-    public function zakatDistributions()
+    public function distributions()
     {
-        return $this->hasMany(ZakatDistribution::class);
+        return $this->hasMany(Distribution::class);
     }
 
     public function notifications()
@@ -46,71 +46,68 @@ class Program extends Model
         return $this->morphMany(Notification::class, 'notifiable');
     }
 
-    // ========================
-    // 🧮 Accessors (Computed Fields)
-    // ========================
+    
+    
+    
 
-    /**
-     * Get the full URL for the program photo.
-     * Supports both CDN URLs and local storage paths.
-     */
+    
     public function getImageUrlAttribute()
     {
-        // Get image_url or photo from attributes directly to avoid infinite loop
+        
         $imageUrl = isset($this->attributes['image_url']) ? $this->attributes['image_url'] : null;
         $photo = isset($this->attributes['photo']) ? $this->attributes['photo'] : null;
         
-        // Use image_url if available (for CDN/external URLs), otherwise fallback to photo
+        
         $imagePath = $imageUrl ?: $photo;
 
-        // If image path is empty, return a default image
+        
         if (empty($imagePath)) {
-            return asset('img/masjidbanten.png');
+            return null;
         }
 
-        // Check if image path is a full URL (CDN)
+        
         if (filter_var($imagePath, FILTER_VALIDATE_URL)) {
             return $imagePath;
         }
 
-        // For local storage paths, use Storage::url() for proper URL generation
-        // Storage::url() automatically handles the 'storage/' prefix
+        
+        
         return Storage::url($imagePath);
     }
 
-    // Total dana terkumpul dari payments yang langsung terikat ke program ini
+    
     public function getTotalCollectedAttribute()
     {
-        // Check if sum was eager loaded
-        if (array_key_exists('zakat_payments_sum_paid_amount', $this->attributes)) {
-            return (float) $this->attributes['zakat_payments_sum_paid_amount'];
+        
+        if (array_key_exists('payments_sum_paid_amount', $this->attributes)) {
+            return (float) $this->attributes['payments_sum_paid_amount'];
         }
 
-        // Get payments directly linked to this program via program_id with status completed
-        return ZakatPayment::where('program_id', $this->id)
+        
+        return Payment::where('program_id', $this->id)
             ->where('status', 'completed')
             ->sum('paid_amount');
     }
 
-    // Total dana yang telah didistribusikan
+    
     public function getTotalDistributedAttribute()
     {
-        return $this->zakatDistributions()->sum('amount');
+        return $this->distributions()->sum('amount');
     }
 
-    // Total dana bersih (terkumpul - didistribusikan)
+    
     public function getNetTotalCollectedAttribute()
     {
         return max(0, $this->total_collected - $this->total_distributed);
     }
 
-    // Format total terkumpul dalam bentuk rupiah
+    
     public function getFormattedTotalCollectedAttribute()
     {
         return 'Rp ' . number_format($this->net_total_collected ?? 0, 0, ',', '.');
     }
 
-    // Total target (ambil dari program langsung atau dari campaign)
+    
     public function getTotalTargetAttribute()
     {
         if ($this->target_amount > 0) {
@@ -122,27 +119,27 @@ class Program extends Model
             ->sum('target_amount');
     }
 
-    // Format total target dalam bentuk rupiah
+    
     public function getFormattedTotalTargetAttribute()
     {
         return 'Rp ' . number_format($this->total_target ?? 0, 0, ',', '.');
     }
 
-    // Persentase progress (0–100%)
+    
     public function getProgressPercentageAttribute()
     {
         if ($this->total_target <= 0) {
             return 0;
         }
 
-        // Use net collected amount for progress calculation
+        
         return min(100, ($this->net_total_collected / $this->total_target) * 100);
     }
 
-    // Ensure slug is always available
+    
     public function getSlugAttribute($value)
     {
-        // If slug is not set, generate it from the name
+        
         if (!$value) {
             return Str::slug($this->name);
         }
@@ -150,13 +147,11 @@ class Program extends Model
         return $value;
     }
 
-    // ========================
-    // 🎯 Completion Methods
-    // ========================
     
-    /**
-     * Check if program target has been reached
-     */
+    
+    
+    
+    
     public function isTargetReached(): bool
     {
         if ($this->total_target <= 0) {
@@ -166,17 +161,13 @@ class Program extends Model
         return $this->net_total_collected >= $this->total_target;
     }
 
-    /**
-     * Check if program is completed
-     */
+    
     public function isCompleted(): bool
     {
         return $this->status === 'completed';
     }
 
-    /**
-     * Auto-complete program if target reached
-     */
+    
     public function checkAndCompleteIfTargetReached(): bool
     {
         if ($this->status !== 'active') {
@@ -190,9 +181,9 @@ class Program extends Model
         return false;
     }
 
-    // ========================
-    // 🔍 Scopes
-    // ========================
+    
+    
+    
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
@@ -213,13 +204,13 @@ class Program extends Model
         parent::boot();
 
         static::creating(function ($program) {
-            // Generate slug if not provided
+            
             if (empty($program->slug)) {
                 $baseSlug = Str::slug($program->name);
                 $slug = $baseSlug;
                 $counter = 1;
 
-                // Ensure slug is unique
+                
                 while (static::where('slug', $slug)->exists()) {
                     $slug = $baseSlug . '-' . $counter;
                     $counter++;
@@ -229,14 +220,14 @@ class Program extends Model
             }
         });
 
-        // When a program is created
+        
         static::created(function ($program) {
             if ($program->status === 'active') {
                 \App\Jobs\SendProgramNotifications::dispatch($program);
             }
         });
 
-        // When a program is updated
+        
         static::updated(function ($program) {
             if ($program->isDirty('status') && $program->status === 'active') {
                 \App\Jobs\SendProgramNotifications::dispatch($program);

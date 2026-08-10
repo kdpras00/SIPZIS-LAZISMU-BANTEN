@@ -8,14 +8,14 @@
     <meta name="description" content="{{ $meta_description ?? 'Sistem Informasi Pengelolaan Zakat, Infaq, dan Sadaqah (SIPZIS) Lazismu Banten. Portal resmi untuk mengelola dan menyalurkan ZIS.' }}">
     <meta name="theme-color" content="#c2410c">
     
-    <!-- Open Graph / Facebook -->
+    
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="{{ isset($title) ? $title . ' - SIPZIS Lazismu' : 'SIPZIS - Lazismu Banten' }}">
     <meta property="og:description" content="{{ $meta_description ?? 'Sistem Informasi Pengelolaan Zakat, Infaq, dan Sadaqah (SIPZIS) Lazismu Banten.' }}">
     <meta property="og:image" content="{{ asset('img/logo.png') }}">
 
-    <!-- Twitter -->
+    
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
     <meta property="twitter:title" content="{{ isset($title) ? $title . ' - SIPZIS Lazismu' : 'SIPZIS - Lazismu Banten' }}">
@@ -25,7 +25,7 @@
     <link rel="icon" type="image/png" href="{{ asset('img/lazismu-icon.ico') }}">
     <title>{{ isset($title) ? $title . ' - SIPZIS Lazismu Banten' : 'SIPZIS - Lazismu Banten' }}</title>
 
-    <!-- Fonts -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -40,8 +40,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
 
     @stack('styles')
 
@@ -438,6 +436,50 @@
             #sidebar, header { display: none !important; }
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        /* Select2 Tailwind Customization */
+        .select2-container .select2-selection--single {
+            height: 44px !important;
+            border-color: #e8e0d6 !important;
+            border-radius: 0.75rem !important; /* rounded-xl */
+            display: flex !important;
+            align-items: center !important;
+            padding-left: 0.5rem;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 42px !important;
+            right: 10px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #1c0f0a !important;
+            font-size: 0.75rem !important; /* text-xs */
+            font-weight: 500 !important;
+            line-height: 44px !important;
+        }
+        .select2-container--open .select2-dropdown--below {
+            border-color: #e8e0d6 !important;
+            border-radius: 0 0 0.75rem 0.75rem !important;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
+        }
+        .select2-results__option {
+            font-size: 0.75rem !important;
+            padding: 10px 16px !important;
+        }
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #c2410c !important; /* orange-700 */
+        }
+        .select2-search--dropdown .select2-search__field {
+            border-radius: 0.5rem !important;
+            border-color: #e8e0d6 !important;
+            padding: 8px !important;
+            font-size: 0.75rem !important;
+            outline: none !important;
+        }
+        .select2-search--dropdown .select2-search__field:focus {
+            border-color: #c2410c !important;
+        }
+    </style>
 </head>
 
 <body style="background-color: #faf8f5;">
@@ -452,14 +494,16 @@
                     <main class="flex-1 min-w-0 w-full">
                         @include('components.navbar')
                         <div>
-                            @yield('content')
+                            
+                    @yield('content')
                         </div>
                     </main>
                 @else
                     <main class="w-full muzakki-layout">
                         <div>
                             @include('components.alerts')
-                            @yield('content')
+                            
+                    @yield('content')
                         </div>
                     </main>
                 @endif
@@ -468,14 +512,15 @@
                     @include('components.navbar')
                     <div>
                         @include('components.alerts')
-                        @yield('content')
+                        
+                    @yield('content')
                     </div>
                 </main>
             @endauth
         </div>
     </div>
 
-    @include('components.two-factor-reminder')
+    
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
@@ -602,6 +647,20 @@
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Apply Select2 to all select elements by default, except those with 'no-select2' class
+            $('select:not(.no-select2)').select2({
+                width: '100%',
+                language: {
+                    noResults: function() {
+                        return "Data tidak ditemukan";
+                    }
+                }
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 

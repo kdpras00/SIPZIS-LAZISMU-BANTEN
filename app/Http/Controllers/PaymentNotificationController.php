@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ZakatPayment;
+use App\Models\Payment;
 use App\Models\Notification;
 use App\Services\MidtransService;
 use Illuminate\Http\Request;
@@ -18,9 +18,7 @@ class PaymentNotificationController extends Controller
         $this->midtransService = $midtransService;
     }
 
-    /**
-     * Handle incoming Midtrans webhook notification.
-     */
+    
     public function handleNotification(Request $request)
     {
         Log::info('Midtrans Webhook Received', $request->all());
@@ -37,19 +35,16 @@ class PaymentNotificationController extends Controller
         }
     }
 
-    /**
-     * Handle generic Midtrans callback.
-     */
+    
     public function midtransCallback(Request $request)
     {
         return $this->handleNotification($request);
     }
 
-    /**
-     * View all user/admin notifications.
-     */
+    
     public function notifications(Request $request)
     {
+        $filter = $request->get('filter', 'all');
         $query = Notification::query();
 
         if (Auth::check() && Auth::user()->role === 'muzakki') {
@@ -59,14 +54,23 @@ class PaymentNotificationController extends Controller
             }
         }
 
+        
+        $typesQuery = clone $query;
+        $notificationTypes = $typesQuery->select('type', \DB::raw('count(*) as count'))
+            ->groupBy('type')
+            ->get()
+            ->keyBy('type');
+
+        if ($filter !== 'all') {
+            $query->where('type', $filter);
+        }
+
         $notifications = $query->latest()->paginate(15);
-        return view('muzakki.notifications', compact('notifications'));
+        return view('muzakki.notifications', compact('notifications', 'filter', 'notificationTypes'));
     }
 
-    /**
-     * Mark notifications as read via AJAX.
-     */
-    public function markNotificationsAsRead()
+    
+    public function markNotificationsAsRead(Request $request)
     {
         if (Auth::check() && Auth::user()->role === 'muzakki') {
             $muzakki = Auth::user()->muzakki;
@@ -77,12 +81,14 @@ class PaymentNotificationController extends Controller
             }
         }
 
-        return response()->json(['success' => true]);
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->back();
     }
 
-    /**
-     * Ajax endpoint for real-time notification polling.
-     */
+    
     public function ajaxNotifications(Request $request)
     {
         $unreadCount = 0;
@@ -96,9 +102,12 @@ class PaymentNotificationController extends Controller
             }
         }
 
+        $html = view('muzakki.partials.notifications-popup', compact('notifications'))->render();
+
         return response()->json([
+            'success' => true,
             'unread_count' => $unreadCount,
-            'notifications' => $notifications
+            'html' => $html
         ]);
     }
 }

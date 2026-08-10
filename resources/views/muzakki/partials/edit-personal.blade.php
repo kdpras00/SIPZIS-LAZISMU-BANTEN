@@ -5,7 +5,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <!-- Nama Lengkap (Full Width) -->
+        
         <div class="md:col-span-2">
             <label for="name" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Nama Lengkap <span class="text-rose-500">*</span></label>
             <input type="text" 
@@ -20,7 +20,7 @@
             @enderror
         </div>
 
-        <!-- Alamat Email -->
+        
         <div>
             <label for="email" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Alamat Email <span class="text-rose-500">*</span></label>
             <input type="email" 
@@ -32,7 +32,7 @@
                    aria-readonly="true">
         </div>
 
-        <!-- Nomor WhatsApp / Telepon -->
+        
         <div>
             <label for="phone" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Nomor WhatsApp / Telepon <span class="text-rose-500">*</span></label>
             
@@ -82,7 +82,7 @@
             @enderror
         </div>
 
-        <!-- Tautan Halaman Campaigner (Full Width) -->
+        
         <div class="md:col-span-2">
             <label for="campaign_url" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Tautan Halaman Campaigner</label>
             <div class="relative">
@@ -99,7 +99,7 @@
             </div>
         </div>
 
-        <!-- Jenis Kelamin -->
+        
         <div>
             <label for="gender" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Jenis Kelamin <span class="text-rose-500">*</span></label>
             <div class="relative">
@@ -118,7 +118,7 @@
             </div>
         </div>
 
-        <!-- Tanggal Lahir -->
+        
         <div>
             <label class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Tanggal Lahir <span class="text-rose-500">*</span></label>
             <div class="grid grid-cols-3 gap-2">
@@ -161,7 +161,7 @@
             </div>
         </div>
 
-        <!-- Profesi (Full Width) -->
+        
         <div class="md:col-span-2">
             <label for="occupation" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Profesi / Pekerjaan <span class="text-rose-500">*</span></label>
             <div class="relative">
@@ -185,7 +185,7 @@
             </div>
         </div>
 
-        <!-- Biodata / Catatan Singkat (Full Width) -->
+        
         <div class="md:col-span-2">
             <label for="bio" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">Biodata / Profil Singkat</label>
             <textarea name="bio" 

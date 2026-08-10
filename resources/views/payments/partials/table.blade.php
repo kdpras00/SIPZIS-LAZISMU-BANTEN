@@ -1,6 +1,6 @@
 @if ($payments->count() > 0)
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-[#f0ece6]">
+        <table id="table-payments" class="min-w-full divide-y divide-[#f0ece6]">
             <thead style="background: #faf8f5;">
                 <tr>
                     <th scope="col" class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Kode Pembayaran</th>
@@ -61,7 +61,7 @@
                         </td>
 
                         <td class="px-5 py-4 whitespace-nowrap text-center">
-                            <div class="flex items-center justify-center gap-1.5">
+                            <div class="flex items-center justify-start xl:justify-center gap-1.5">
                                 <a href="{{ route('payments.show', $payment->payment_code) }}"
                                    class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium transition-colors" style="background: #f0ece6; color: #1c0f0a;"
                                    title="Lihat Detail">

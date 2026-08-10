@@ -7,12 +7,12 @@
         <p class="text-sm" style="color: #8b7e74;">Ringkasan data distribusi zakat yang disalurkan</p>
     </div>
 
-    {{-- Filter Section (Realtime Single Action Bar) --}}
+    
     <div class="rounded-2xl mb-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         <div class="p-5 sm:p-6">
             <form method="GET" action="{{ route('reports.outgoing') }}" id="filterForm" class="flex flex-wrap items-center gap-3">
                 
-                {{-- Search Input (Flex 1) --}}
+                
                 <div class="flex-1 min-w-[220px]">
                     <div class="relative">
                         <i class="bi bi-search absolute left-3.5 top-1/2 -translate-y-1/2 text-xs" style="color: #8b7e74;"></i>
@@ -23,7 +23,7 @@
                     </div>
                 </div>
 
-                {{-- Distribution Type Filter (Realtime) --}}
+                
                 <div class="w-full sm:w-[170px]">
                     <x-custom-select 
                         id="distribution_type" 
@@ -34,7 +34,7 @@
                         onChange="this.$refs.hiddenInput.form.submit()" />
                 </div>
 
-                {{-- Date From (Realtime) --}}
+                
                 <div class="w-full sm:w-[145px]">
                     <x-custom-date-picker
                         id="date_from"
@@ -47,7 +47,7 @@
 
                 <span class="text-xs text-[#8b7e74] font-medium hidden sm:inline">s/d</span>
 
-                {{-- Date To (Realtime) --}}
+                
                 <div class="w-full sm:w-[145px]">
                     <x-custom-date-picker
                         id="date_to"
@@ -58,7 +58,7 @@
                     />
                 </div>
 
-                {{-- Action Buttons (Export) --}}
+                
                 <div class="flex items-center gap-2">
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" @click.outside="open = false" type="button" class="inline-flex items-center justify-center h-11 px-4 font-medium rounded-xl text-xs transition-colors duration-200" style="border: 1px solid #e8e0d6; color: #1c0f0a; background: #fff;">
@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    {{-- Stats --}}
+    
     <div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
             <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total penerima</p>
@@ -102,10 +102,10 @@
         </div>
     </div>
 
-    {{-- Data Table --}}
+    
     <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-[#f0ece6]">
+            <table id="table-reports-outgoing" class="min-w-full divide-y divide-[#f0ece6]">
                 <thead style="background: #faf8f5;">
                     <tr>
                         <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Kode Distribusi</th>

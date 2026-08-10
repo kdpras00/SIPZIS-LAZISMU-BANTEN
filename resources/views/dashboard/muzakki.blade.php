@@ -3,6 +3,7 @@
 @section('page-title', 'Dashboard Muzakki')
 
 @section('content')
+
 <style>
     body { background: #faf8f5 !important; }
     @keyframes slideUp {
@@ -36,17 +37,20 @@
 
 <div class="py-6 px-4 max-w-4xl mx-auto">
 
-        {{-- Profile Section --}}
+        
         <div class="rounded-2xl p-5 mb-4 appear" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
 
-            {{-- Greeting --}}
+            
             <p class="text-xs mb-3" style="color: #8b7e74;">{{ $greeting }}, {{ $firstName }}</p>
 
-            {{-- Profile Info --}}
+            
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-3">
                     @if($muzakki->profile_photo)
                         <img src="{{ asset('storage/' . $muzakki->profile_photo) }}" alt="Foto"
+                            class="w-12 h-12 rounded-full object-cover flex-shrink-0" style="border: 2px solid #f0ece6;">
+                    @elseif(Auth::check() && Auth::user()->avatar)
+                        <img src="{{ Auth::user()->avatar }}" alt="Foto"
                             class="w-12 h-12 rounded-full object-cover flex-shrink-0" style="border: 2px solid #f0ece6;">
                     @else
                         <div class="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0" style="background: #c2410c;">
@@ -63,7 +67,7 @@
                 </a>
             </div>
 
-            {{-- Profile Progress --}}
+            
             <div class="mb-4">
                 <div class="flex items-center justify-between mb-1.5">
                     <span class="text-xs" style="color: #8b7e74;">Kelengkapan profil</span>
@@ -74,7 +78,7 @@
                 </div>
             </div>
 
-            {{-- Donation Summary --}}
+            
             <div class="rounded-xl p-4" style="background: linear-gradient(135deg, #c2410c, #ea580c); color: white;">
                 <p class="text-xs mb-1 opacity-80">Total kontribusi Anda</p>
                 <p class="text-xl font-bold mb-1" style="letter-spacing: -0.02em;">Rp {{ number_format($stats['total_zakat_paid'] ?? 0, 0, ',', '.') }}</p>
@@ -82,7 +86,7 @@
             </div>
         </div>
 
-        {{-- Quick Stats --}}
+        
         <div class="grid grid-cols-2 gap-3 mb-4 appear appear-d1">
             <div class="rounded-2xl p-4" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <p class="text-xs mb-1" style="color: #8b7e74;">Tahun {{ date('Y') }}</p>
@@ -96,7 +100,7 @@
             </div>
         </div>
 
-        {{-- Activities --}}
+        
         <div class="rounded-2xl overflow-hidden mb-4 appear appear-d2" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
             <div class="px-5 py-4" style="border-bottom: 1px solid #f0ece6;">
                 <h3 class="text-sm font-bold mb-0" style="color: #1c0f0a;">Aktivitas</h3>
@@ -119,7 +123,7 @@
             </a>
         </div>
 
-        {{-- Recent Payments --}}
+        
         @if($recentPayments->count() > 0)
         <div class="rounded-2xl overflow-hidden mb-4 appear appear-d3" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
             <div class="px-5 py-4" style="border-bottom: 1px solid #f0ece6;">
@@ -132,7 +136,7 @@
                     <i class="bi bi-check2 text-sm" style="color: #15803d;"></i>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium mb-0 truncate" style="color: #1c0f0a;">{{ $payment->programType?->name ?? 'Donasi Umum' }}</p>
+                    <p class="text-sm font-medium mb-0 truncate" style="color: #1c0f0a;">{{ $payment->program?->name ?? 'Donasi Umum' }}</p>
                     <p class="text-xs mb-0" style="color: #b8ada3;">{{ $payment->payment_date->diffForHumans() }}</p>
                 </div>
                 <p class="text-sm font-bold mb-0 tabular-nums flex-shrink-0" style="color: #1c0f0a;">
@@ -143,7 +147,7 @@
         </div>
         @endif
 
-        {{-- Bottom Nav --}}
+        
         <div class="fixed-bottom-nav" style="background: #fff; border-top: 1px solid #f0ece6;">
             <div class="flex justify-around items-center py-3 px-4">
                 <a href="{{ route('home') }}" class="flex flex-col items-center gap-1 no-underline" style="color: #8b7e74;">

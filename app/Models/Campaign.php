@@ -28,7 +28,7 @@ class Campaign extends Model
         'is_published' => 'boolean',
     ];
 
-    // Relationships
+    
     public function program()
     {
         return $this->belongsTo(Program::class);
@@ -39,30 +39,30 @@ class Campaign extends Model
         return $this->morphMany(Notification::class, 'notifiable');
     }
 
-    public function zakatPayments()
+    public function payments()
     {
-        // If campaign has program_id, use it; otherwise fallback to program_category
+        
         if ($this->program_id) {
-            return $this->hasMany(ZakatPayment::class, 'program_id', 'program_id')
+            return $this->hasMany(Payment::class, 'program_id', 'program_id')
                 ->where('status', 'completed');
         }
         
-        // Fallback to program_category for backward compatibility
-        return $this->hasMany(ZakatPayment::class, 'program_category', 'program_category')
+        
+        return $this->hasMany(Payment::class, 'program_category', 'program_category')
             ->whereNotNull('program_category')
             ->where('status', 'completed');
     }
 
-    public function zakatDistributions()
+    public function distributions()
     {
-        return $this->hasMany(ZakatDistribution::class, 'program_name', 'program_category');
+        return $this->hasMany(Distribution::class, 'program_name', 'program_category');
     }
 
-    // Accessors
+    
     public function getImageUrlAttribute()
     {
         if (empty($this->photo)) {
-            return asset('img/masjidbanten.png');
+            return null;
         }
 
         if (filter_var($this->photo, FILTER_VALIDATE_URL)) {
@@ -74,23 +74,23 @@ class Campaign extends Model
 
     public function getCollectedAmountAttribute()
     {
-        // Check if sum was eager loaded
-        if (array_key_exists('zakat_payments_sum_paid_amount', $this->attributes)) {
-            return (float) $this->attributes['zakat_payments_sum_paid_amount'];
+        
+        if (array_key_exists('payments_sum_paid_amount', $this->attributes)) {
+            return (float) $this->attributes['payments_sum_paid_amount'];
         }
 
-        // If campaign has program_id, get payments for that program
+        
         if ($this->program_id) {
-            return ZakatPayment::where('program_id', $this->program_id)
+            return Payment::where('program_id', $this->program_id)
                 ->where('status', 'completed')
-                // Only count payments created AFTER the campaign was created
+                
                 ->where('created_at', '>=', $this->created_at)
                 ->sum('paid_amount');
         }
         
-        // Fallback to old method using program_category
-        // Only count payments created AFTER the campaign was created
-        return ZakatPayment::where('program_category', $this->program_category)
+        
+        
+        return Payment::where('program_category', $this->program_category)
             ->whereNotNull('program_category')
             ->where('status', 'completed')
             ->where('created_at', '>=', $this->created_at)
@@ -99,7 +99,7 @@ class Campaign extends Model
 
     public function getDistributedAmountAttribute()
     {
-        return $this->zakatDistributions()->sum('amount');
+        return $this->distributions()->sum('amount');
     }
 
     public function getNetCollectedAmountAttribute()
@@ -128,41 +128,33 @@ class Campaign extends Model
 
     public function getDonorsCountAttribute()
     {
-        return $this->zakatPayments()->count();
+        return $this->payments()->count();
     }
 
-    /**
-     * Calculate remaining days until campaign ends
-     * 
-     * Returns:
-     * - Positive number: days remaining
-     * - 0: campaign ends today
-     * - -1: campaign has already ended
-     * - null: no end date set
-     */
+    
     public function getRemainingDaysAttribute()
     {
-        // Jika tidak ada end_date, return null
+        
         if (!$this->end_date) {
             return null;
         }
 
-        $endDate = Carbon::parse($this->end_date)->endOfDay(); // Gunakan end of day untuk akurasi
+        $endDate = Carbon::parse($this->end_date)->endOfDay(); 
         $now = Carbon::now();
 
-        // Jika sudah melewati end_date, return -1
+        
         if ($now->isAfter($endDate)) {
             return -1;
         }
 
-        // Hitung selisih hari dari hari ini ke end_date
-        // PENTING: Urutan parameter benar! (from, to)
+        
+        
         $remainingDays = $now->diffInDays($endDate, absolute: false);
 
         return (int) $remainingDays;
     }
 
-    // Scopes
+    
     public function scopePublished($query)
     {
         return $query->where('status', 'published');
@@ -196,9 +188,7 @@ class Campaign extends Model
         return Carbon::parse($this->end_date)->isPast();
     }
 
-    /**
-     * Check if campaign target has been reached
-     */
+    
     public function isTargetReached(): bool
     {
         if ($this->target_amount <= 0) {
@@ -208,9 +198,7 @@ class Campaign extends Model
         return $this->collected_amount >= $this->target_amount;
     }
 
-    /**
-     * Mark campaign as completed
-     */
+    
     public function markAsCompleted(): bool
     {
         if ($this->isExpired() && $this->status === 'published') {
@@ -220,17 +208,14 @@ class Campaign extends Model
         return false;
     }
 
-    /**
-     * Check if campaign should be automatically completed and do so if needed
-     * This includes both expired campaigns AND campaigns that reached their target
-     */
+    
     public function checkAndCompleteIfExpired(): bool
     {
         if ($this->status !== 'published') {
             return false;
         }
 
-        // Check if expired OR target reached
+        
         if ($this->isExpired() || $this->isTargetReached()) {
             return $this->update(['status' => 'completed']);
         }
@@ -238,29 +223,25 @@ class Campaign extends Model
         return false;
     }
 
-    /**
-     * Scope untuk mendapatkan campaign yang sudah expired
-     */
+    
     public function scopeExpired($query)
     {
         return $query->where('end_date', '<', now()->startOfDay());
     }
 
-    /**
-     * Boot method untuk event handling
-     */
+    
     protected static function boot()
     {
         parent::boot();
 
-        // When a campaign is created
+        
         static::created(function ($campaign) {
             if ($campaign->status === 'published') {
                 \App\Jobs\SendProgramNotifications::dispatch($campaign);
             }
         });
 
-        // When a campaign is updated
+        
         static::updated(function ($campaign) {
             if ($campaign->isDirty('status') && $campaign->status === 'published') {
                 \App\Jobs\SendProgramNotifications::dispatch($campaign);

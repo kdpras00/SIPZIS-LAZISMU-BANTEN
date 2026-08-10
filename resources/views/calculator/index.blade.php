@@ -10,15 +10,15 @@
     <div class="bg-gray-50 min-h-screen py-12">
         <div class="container mx-auto px-4">
             <div class="max-w-6xl mx-auto">
-                <!-- Header Section -->
+                
                 <div class="text-center mb-16 mt-8">
                     <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Kalkulator Zakat</h1>
                     <p class="text-gray-600 text-lg">Hitung kewajiban zakat Anda dengan mudah dan akurat</p>
                 </div>
 
-                <!-- Main Calculator Card -->
+                
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <!-- Tab Navigation -->
+                    
                     <div class="border-b border-gray-200">
                         <div class="flex">
                             <button type="button" onclick="switchTab('penghasilan')" id="tab-penghasilan"
@@ -32,11 +32,11 @@
                         </div>
                     </div>
 
-                    <!-- Calculator Content -->
+                    
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-0">
-                        <!-- Left Side - Form (2 columns) -->
+                        
                         <div class="lg:col-span-2 p-8 border-r border-gray-200">
-                            <!-- Penghasilan Content -->
+                            
                             <div id="content-penghasilan" class="calculator-content">
                                 <div class="mb-6">
                                     <div class="flex gap-3 mb-6">
@@ -99,7 +99,7 @@
                                 </form>
                             </div>
 
-                            <!-- Harta Content -->
+                            
                             <div id="content-harta" class="calculator-content hidden">
                                 <div class="mb-6">
                                     <div class="flex gap-3 mb-6">
@@ -188,9 +188,9 @@
                             </div>
                         </div>
 
-                        <!-- Right Side - Result Panel (1 column) -->
+                        
                         <div class="lg:col-span-1 bg-gradient-to-b from-orange-50 to-white p-8">
-                            <!-- Penghasilan Result -->
+                            
                             <div id="result-penghasilan" class="result-content">
                                 <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-orange-200">Hasil
                                     Perhitungan</h3>
@@ -227,7 +227,7 @@
                                 </div>
                             </div>
 
-                            <!-- Harta Result -->
+                            
                             <div id="result-harta" class="result-content hidden">
                                 <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b border-orange-200">Hasil
                                     Perhitungan</h3>
@@ -267,7 +267,7 @@
                     </div>
                 </div>
 
-                <!-- Information Section -->
+                
                 <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Informasi Penting</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

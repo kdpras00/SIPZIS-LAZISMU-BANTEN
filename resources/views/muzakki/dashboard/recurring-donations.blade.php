@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="py-4 px-4 max-w-4xl mx-auto">
-    <!-- Header -->
+    
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center">
             <a href="{{ route('dashboard') }}" class="mr-3 transition-colors hover:opacity-75" style="color: #1c0f0a;">
@@ -67,7 +67,7 @@
         </div>
     @endif
 
-    <!-- Bottom Navigation -->
+    
     <nav class="fixed-bottom-nav bg-white border-t border-[#f0ece6]" aria-label="Navigasi Utama">
                 <div class="flex justify-between items-center w-full px-2 py-2 overflow-x-auto gap-1 no-scrollbar">
             <a href="{{ route('home') }}" class="flex flex-shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] font-medium no-underline transition-all">

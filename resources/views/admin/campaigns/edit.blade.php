@@ -5,7 +5,7 @@
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
 
-    {{-- Header Section --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Edit Campaign</h2>
@@ -24,11 +24,11 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            {{-- Left: Form Inputs --}}
+            
             <div class="lg:col-span-2 space-y-5">
                 <div class="rounded-2xl p-5 sm:p-6 bg-white border border-[#f0ece6]" style="box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
 
-                    {{-- Judul Campaign --}}
+                    
                     <div class="mb-5">
                         <label for="title" class="block text-sm font-semibold mb-1.5" style="color: #1c0f0a;">
                             Judul Campaign <span class="text-red-500">*</span>
@@ -41,7 +41,7 @@
                         @enderror
                     </div>
 
-                    {{-- Deskripsi --}}
+                    
                     <div class="mb-5">
                         <label for="description" class="block text-sm font-semibold mb-1.5" style="color: #1c0f0a;">
                             Deskripsi Campaign <span class="text-red-500">*</span>
@@ -54,7 +54,7 @@
                         @enderror
                     </div>
 
-                    {{-- Kategori & Status Grid --}}
+                    
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
                         <div>
                             <label for="program_category" class="block text-sm font-semibold mb-1.5" style="color: #1c0f0a;">
@@ -87,7 +87,7 @@
                         </div>
                     </div>
 
-                    {{-- Target Dana & Tanggal Berakhir --}}
+                    
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="target_amount" class="block text-sm font-semibold mb-1.5" style="color: #1c0f0a;">
@@ -122,7 +122,7 @@
 
                 </div>
 
-                {{-- Action Submit --}}
+                
                 <div class="flex justify-end gap-3">
                     <a href="{{ route('admin.campaigns.index') }}"
                         class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors duration-200"
@@ -137,7 +137,7 @@
                 </div>
             </div>
 
-            {{-- Right: Photo Upload Box --}}
+            
             <div>
                 <div class="rounded-2xl p-5 sm:p-6 bg-white border border-[#f0ece6]" style="box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                     <p class="text-sm font-semibold mb-3" style="color: #1c0f0a;">Foto Banner Campaign</p>

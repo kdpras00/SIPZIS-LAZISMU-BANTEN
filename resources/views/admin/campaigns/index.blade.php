@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    {{-- Header --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Kelola Campaign</h2>
@@ -16,7 +16,7 @@
         </a>
     </div>
 
-    {{-- Campaigns Table Card --}}
+    
     <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         <div class="overflow-x-auto">
             <table id="table-campaigns" class="min-w-full divide-y divide-[#f0ece6]">
@@ -78,7 +78,7 @@
                             Rp {{ number_format($campaign->display_collected_amount ?? $campaign->collected_amount, 0, ',', '.') }}
                         </td>
                         <td class="px-5 py-4 whitespace-nowrap">
-                            <div class="flex items-center justify-center gap-2">
+                            <div class="flex items-center justify-start xl:justify-center gap-1.5">
                                 <span class="text-xs font-bold w-10 text-right" style="color: #1c0f0a;">
                                     {{ number_format($campaign->progress_percentage, 1) }}%
                                 </span>

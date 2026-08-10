@@ -13,7 +13,7 @@
 
         <div class="relative">
             <div class="mx-auto w-32 h-32 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center mb-6">
-                <!-- Lock / Shield Icon -->
+                
                 <svg viewBox="0 0 24 24" fill="none" class="w-16 h-16 text-amber-500" stroke="currentColor" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0V10.5m-1.5 0h12a2.25 2.25 0 012.25 2.25v6a2.25 2.25 0 01-2.25 2.25h-12a2.25 2.25 0 01-2.25-2.25v-6A2.25 2.25 0 016.75 10.5z" />
                 </svg>

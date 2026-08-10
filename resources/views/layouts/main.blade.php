@@ -9,13 +9,13 @@
     <meta name="description" content="Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.">
     <meta name="application-name" content="SIPZIS">
     
-    <!-- Open Graph / Facebook -->
+    
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ isset($title) && $title ? $title . ' - SIPZIS Lazismu' : 'SIPZIS Lazismu - Sistem Informasi Pengelolaan Zakat' }}">
     <meta property="og:description" content="Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.">
     <meta property="og:image" content="{{ asset('img/logo.png') }}">
 
-    <!-- Twitter -->
+    
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:title" content="{{ isset($title) && $title ? $title . ' - SIPZIS Lazismu' : 'SIPZIS Lazismu - Sistem Informasi Pengelolaan Zakat' }}">
     <meta property="twitter:description" content="Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.">
@@ -24,27 +24,27 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('img/lazismu-icon.ico') }}">
 
     <title>{{ isset($title) && $title ? $title . ' - SIPZIS' : 'SIPZIS' }}</title>
-    <!-- Preload critical resources -->
+    
     @if(Route::currentRouteName() === 'home')
     <link rel="preload" href="{{ asset('img/masjidbanten.png') }}" as="image" fetchpriority="high">
     @endif
-    <!-- Fonts - Optimized -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- FontAwesome Icons -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Bootstrap Icons -->
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Tailwind via Vite -->
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Additional Styles from Pages -->
+    
     @stack('styles')
 
     <style>
@@ -59,15 +59,16 @@
 </head>
 
 <body class="bg-gray-50" style="overflow-x:hidden">
-    {{-- Navbar --}}
+    
     @yield('navbar')
 
-    {{-- Konten Utama --}}
+    
     <main>
+        
         @yield('content')
     </main>
 
-    {{-- Footer hanya untuk halaman tertentu --}}
+    
     @php
         $routeName = Route::currentRouteName();
         $showFooterRoutes = ['home', 'tentang', 'berita'];
@@ -78,12 +79,12 @@
         @include('partials.footer')
     @endif
 
-    {{-- Script Tambahan --}}
+    
     @yield('scripts')
     
-    @include('components.two-factor-reminder')
     
-    {{-- Additional Scripts from Pages --}}
+    
+    
     @stack('scripts')
 
     @if (!request()->routeIs('admin.login'))

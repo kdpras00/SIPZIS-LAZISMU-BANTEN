@@ -10,7 +10,7 @@
 <div class="min-h-screen bg-orange-700">
 
     <div class="relative container mx-auto px-4 py-8">
-        <!-- Back Button -->
+        
         <div class="mb-4 mt-12">
             <a href="{{ route('program') }}"
                 class="d-inline-flex align-items-center fw-semibold px-3 py-2 rounded"
@@ -24,25 +24,31 @@
             </a>
         </div>
 
-
-
-        <!-- Main Content -->
+        
         <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Left: Image & Donation Box -->
+                
                 <div class="lg:col-span-1">
-                    <!-- Program Image -->
+                    
+                    @if($program->image_url)
                     <div class="rounded-xl overflow-hidden shadow-md mb-6">
                         <img src="{{ $program->image_url }}"
                             alt="{{ $program->name }}"
                             class="w-full h-64 object-cover"
-                            onerror="this.onerror=null; this.src='{{ asset('img/masjidbanten.png') }}';">
+                            onerror="this.onerror=null; this.src='';">
                     </div>
+                    @else
+                    <div class="rounded-xl overflow-hidden shadow-md mb-6 h-64 bg-gray-200 flex items-center justify-center shrink-0">
+                        <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    @endif
 
-                    <!-- Donation Card -->
+                    
                     <div class="bg-white border-2 border-orange-100 rounded-xl p-6 shadow-sm">
                         @if($program->isCompleted())
-                            {{-- Completed Badge --}}
+                            
                             <div class="bg-orange-100 border border-orange-300 rounded-xl p-4 mb-4">
                                 <div class="flex items-center">
                                     <i class="fas fa-check-circle text-orange-600 text-2xl mr-3"></i>
@@ -65,12 +71,10 @@
                             <p class="text-3xl font-bold text-orange-700 mb-1">
                                 {{ $program->formatted_total_collected }}
                             </p>
-                            {{-- <p class="text-sm text-gray-500">
-                                dari target {{ $program->formatted_total_target }}
-                            </p> --}}
+                            
                         </div>
 
-                        <!-- Progress Bar -->
+                        
                         <div class="mb-6">
                             <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                                 <div class="bg-orange-500 h-3 rounded-full transition-all duration-500"
@@ -78,7 +82,7 @@
                             </div>
                         </div>
 
-                        <!-- Description -->
+                        
                         @if($program->description)
                         <div class="prose prose-sm max-w-none">
                             {!! nl2br(e($program->description)) !!}
@@ -89,7 +93,7 @@
                     </div>
                 </div>
 
-                <!-- Right: Program Details -->
+                
                 <div class="lg:col-span-2">
                     <h2 class="text-2xl font-bold text-gray-800 mb-4">Tentang Program</h2>
                     <div class="text-gray-600 mb-6 leading-relaxed">
@@ -102,18 +106,17 @@
                         @endif
                     </div>
 
-
-                    <!-- CTA Button -->
+                    
                     <div class="mt-6 text-center">
                         @if($program->isCompleted())
-                            {{-- Disabled button for completed program --}}
+                            
                             <a href="{{ route('program.completed', $program->id) }}"
                                 class="inline-flex items-center justify-center w-full bg-gray-400 text-white px-6 py-3 rounded-lg cursor-pointer transition-all font-semibold shadow-md hover:bg-gray-500">
                                 <i class="fas fa-check-circle mr-2"></i>
                                 Lihat Program Lain
                             </a>
                         @else
-                            {{-- Active donation button --}}
+                            
                             <a href="{{ route('guest.payment.create', ['program_id' => $program->id]) }}"
                                 class="inline-flex items-center justify-center w-full bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-all font-semibold shadow-sm">
                                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
@@ -128,9 +131,9 @@
             </div>
         </div>
 
-        <!-- Doa-doa Orang Baik -->
+        
         @php
-            $prayers = \App\Models\ZakatPayment::where('status', 'completed')
+            $prayers = \App\Models\Payment::where('status', 'completed')
                 ->whereNotNull('notes')
                 ->where('notes', '!=', '')
                 ->where(function($query) use ($program) {
@@ -165,13 +168,13 @@
         </div>
         @endif
 
-        <!-- Recent Donations -->
+        
         <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Donatur Terbaru</h2>
 
             @php
             // Get payments by program_id (preferred) or fallback to program_category
-            $recentDonations = \App\Models\ZakatPayment::where('status', 'completed')
+            $recentDonations = \App\Models\Payment::where('status', 'completed')
                 ->where(function($query) use ($program) {
                     $query->where('program_id', $program->id)
                           ->orWhere(function($q) use ($program) {
@@ -192,9 +195,7 @@
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div class="flex items-center">
                             <div class="bg-orange-600 text-white p-3 rounded-full mr-4">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
+                                <i class="fas fa-user-circle"></i>
                             </div>
                             <div>
                                 <h3 class="font-bold text-gray-800">{{ $donation->muzakki->name ?? 'Hamba Allah' }}</h3>

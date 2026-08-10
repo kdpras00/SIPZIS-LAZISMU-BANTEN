@@ -9,7 +9,7 @@
 @section('content')
 <div class="min-h-screen relative bg-gray-50 pb-20 pt-28 overflow-hidden">
     
-    <!-- Background Image & Overlay -->
+    
     <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-cover bg-center opacity-10"
              style="background-image: url('{{ asset('img/masjidbanten.png') }}');">
@@ -18,7 +18,7 @@
     </div>
 
     <div class="container relative z-10 mx-auto px-4 max-w-7xl">
-        <!-- Header Section -->
+        
         <div class="text-center mb-16 pt-10 animate-fadeInUp">
             
             <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
@@ -29,16 +29,10 @@
             </p>
         </div>
 
-        <!-- Filter/Navigation (Optional - Implementation for future) -->
-        {{-- 
-        <div class="flex flex-wrap justify-center gap-4 mb-12 animate-fadeInUp delay-100">
-            <a href="#" class="px-6 py-2.5 rounded-full bg-orange-600 text-white font-semibold shadow-lg shadow-green-200 hover:shadow-xl hover:-translate-y-0.5 transition-all">Semua</a>
-            <a href="#" class="px-6 py-2.5 rounded-full bg-white text-gray-600 font-medium border border-gray-200 hover:border-orange-300 hover:text-orange-600 transition-all">Pendidikan</a>
-            <a href="#" class="px-6 py-2.5 rounded-full bg-white text-gray-600 font-medium border border-gray-200 hover:border-orange-300 hover:text-orange-600 transition-all">Kesehatan</a>
-        </div>
-        --}}
+        
+        
 
-        <!-- Campaigns Grid -->
+        
         @if($campaigns->isEmpty())
             <div class="bg-white rounded-3xl p-12 text-center shadow-sm border border-gray-100 animate-fadeInUp">
                 <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -52,8 +46,8 @@
                 @foreach($campaigns as $campaign)
                     <div class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full animate-fadeInUp" style="animation-delay: {{ $loop->iteration * 100 }}ms">
                         
-                        <!-- Image Container -->
-                        <div class="relative h-56 overflow-hidden">
+                        
+                        <div class="relative h-56 overflow-hidden bg-gray-200 flex items-center justify-center">
                             @php
                                 $categoryNames = [
                                     'pendidikan' => 'Pendidikan',
@@ -70,7 +64,7 @@
                                 $categoryTitle = $categoryNames[$campaign->program_category] ?? ucfirst($campaign->program_category);
                                 
                                 // Image Logic
-                                $imageUrl = asset('img/masjidbanten.png'); // Default
+                                $imageUrl = null;
                                 if ($campaign->photo) {
                                     if (filter_var($campaign->photo, FILTER_VALIDATE_URL)) {
                                         $imageUrl = $campaign->photo;
@@ -80,14 +74,20 @@
                                 }
                             @endphp
                             
+                            @if($imageUrl)
                             <img src="{{ $imageUrl }}" 
                                  alt="{{ $campaign->title }}" 
-                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                                 class="w-full h-full object-cover transition-transform duration-700">
+                            @else
+                            <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            @endif
                             
-                            <!-- Overlay Gradient -->
+                            
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
                             
-                            <!-- Category Badge -->
+                            
                             <div class="absolute top-4 left-4">
                                 <span class="bg-white/95 backdrop-blur-sm text-orange-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm border border-orange-100">
                                     {{ $categoryTitle }}
@@ -95,7 +95,7 @@
                             </div>
                         </div>
 
-                        <!-- Content -->
+                        
                         <div class="p-6 flex flex-col flex-1">
                             <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 leading-snug group-hover:text-orange-600 transition-colors">
                                 <a href="{{ route('campaigns.show', [$campaign->program_category, $campaign]) }}">
@@ -107,7 +107,7 @@
                                 {{ Str::limit(strip_tags($campaign->description), 100) }}
                             </p>
 
-                            <!-- Progress Section -->
+                            
                             <div class="mt-auto">
                                 <div class="flex justify-between items-end mb-2">
                                     <div class="flex flex-col">
@@ -126,7 +126,7 @@
                                 </div>
 
                                 <a href="{{ route('campaigns.show', [$campaign->program_category, $campaign]) }}" 
-                                   class="block w-full py-3 px-4 bg-white border border-orange-600 text-orange-600 font-bold rounded-xl text-center hover:bg-orange-600 hover:text-white transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-0.5">
+                                   class="block w-full py-3 px-4 bg-white border border-orange-600 text-orange-600 font-bold rounded-xl text-center transition-all duration-300">
                                     Donasi Sekarang
                                 </a>
                             </div>
@@ -135,7 +135,7 @@
                 @endforeach
             </div>
             
-            <!-- Pagination (if applicable) -->
+            
             @if($campaigns instanceof \Illuminate\Pagination\LengthAwarePaginator)
                 <div class="mt-8 flex justify-center">
                     {{ $campaigns->links() }}

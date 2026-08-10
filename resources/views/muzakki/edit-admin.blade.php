@@ -9,7 +9,7 @@
     @endphp
 
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    <!-- Header -->
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">{{ $isOwnProfile ? 'Edit Profil Admin' : 'Edit Muzakki' }}</h2>
@@ -31,11 +31,11 @@
         @csrf
         @method('PUT')
 
-        <!-- Informasi Dasar Card -->
+        
         <div class="mb-6 p-6 bg-white border-l-4 border-blue-500 rounded-lg shadow-sm">
             <h3 class="mb-6 text-lg font-semibold text-gray-900">Informasi Dasar</h3>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <!-- Nama -->
+                
                 <div>
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900">
                         Nama <span class="text-red-500">*</span>
@@ -48,7 +48,7 @@
                     @enderror
                 </div>
 
-                <!-- Email -->
+                
                 <div>
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900">
                         Email <span class="text-red-500">*</span>
@@ -62,7 +62,7 @@
                 </div>
 
                 @if(!$isOwnProfile)
-                <!-- Telepon -->
+                
                 <div>
                     <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">
                         No. Telepon <span class="text-red-500">*</span>
@@ -75,7 +75,7 @@
                     @enderror
                 </div>
 
-                <!-- NIK -->
+                
                 <div>
                     <label for="nik" class="block mb-2 text-sm font-medium text-gray-900">
                         NIK
@@ -88,7 +88,7 @@
                     @enderror
                 </div>
 
-                <!-- Jenis Kelamin -->
+                
                 <div>
                     <label for="gender" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">
                         Jenis Kelamin <span class="text-rose-500">*</span>
@@ -105,7 +105,7 @@
                     @enderror
                 </div>
 
-                <!-- Profesi -->
+                
                 <div>
                     <label for="occupation" class="block text-xs font-semibold text-[#8b7e74] mb-1.5 uppercase tracking-wider">
                         Profesi
@@ -148,7 +148,7 @@
                         :options="$occupations" />
                 </div>
 
-                <!-- Tanggal Lahir -->
+                
                 <div>
                     <label for="date_of_birth" class="block mb-2 text-sm font-medium text-gray-900">
                         Tanggal Lahir
@@ -158,7 +158,7 @@
                         value="{{ old('date_of_birth', $muzakki->date_of_birth ? $muzakki->date_of_birth->format('Y-m-d') : '') }}">
                 </div>
 
-                <!-- Status Akun -->
+                
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900">
                         Status Akun
@@ -175,11 +175,11 @@
         </div>
 
         @if(!$isOwnProfile)
-        <!-- Alamat Card -->
+        
         <div class="mb-6 p-6 bg-white border-l-4 border-blue-500 rounded-lg shadow-sm">
             <h3 class="mb-6 text-lg font-semibold text-gray-900">Alamat</h3>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <!-- Negara -->
+                
                 <div>
                     <label for="country" class="block mb-2 text-sm font-medium text-gray-900">
                         Negara
@@ -189,7 +189,7 @@
                         value="{{ old('country', $muzakki->country ?? 'Indonesia') }}">
                 </div>
 
-                <!-- Provinsi -->
+                
                 <div>
                     <label for="province" class="block mb-2 text-sm font-medium text-gray-900">
                         Provinsi
@@ -199,7 +199,7 @@
                         value="{{ old('province', $muzakki->province) }}">
                 </div>
 
-                <!-- Kota/Kabupaten -->
+                
                 <div>
                     <label for="city" class="block mb-2 text-sm font-medium text-gray-900">
                         Kota/Kabupaten
@@ -209,7 +209,7 @@
                         value="{{ old('city', $muzakki->city) }}">
                 </div>
 
-                <!-- Kecamatan -->
+                
                 <div>
                     <label for="district" class="block mb-2 text-sm font-medium text-gray-900">
                         Kecamatan
@@ -219,7 +219,7 @@
                         value="{{ old('district', $muzakki->district) }}">
                 </div>
 
-                <!-- Kelurahan -->
+                
                 <div>
                     <label for="village" class="block mb-2 text-sm font-medium text-gray-900">
                         Kelurahan
@@ -229,7 +229,7 @@
                         value="{{ old('village', $muzakki->village) }}">
                 </div>
 
-                <!-- Kode Pos -->
+                
                 <div>
                     <label for="postal_code" class="block mb-2 text-sm font-medium text-gray-900">
                         Kode Pos
@@ -239,7 +239,7 @@
                         value="{{ old('postal_code', $muzakki->postal_code) }}" maxlength="10">
                 </div>
 
-                <!-- Alamat Lengkap -->
+                
                 <div class="md:col-span-2">
                     <label for="address" class="block mb-2 text-sm font-medium text-gray-900">
                         Alamat Lengkap
@@ -250,11 +250,11 @@
             </div>
         </div>
 
-        <!-- Informasi Tambahan Card -->
+        
         <div class="mb-6 p-6 bg-white border-l-4 border-blue-500 rounded-lg shadow-sm">
             <h3 class="mb-6 text-lg font-semibold text-gray-900">Informasi Tambahan</h3>
             <div class="space-y-6">
-                <!-- Biodata -->
+                
                 <div>
                     <label for="bio" class="block mb-2 text-sm font-medium text-gray-900">
                         Biodata
@@ -263,7 +263,7 @@
                         class="block h-12 px-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500">{{ old('bio', $muzakki->bio) }}</textarea>
                 </div>
 
-                <!-- URL Campaign -->
+                
                 <div>
                     <label for="campaign_url" class="block mb-2 text-sm font-medium text-gray-900">
                         URL Campaign
@@ -277,7 +277,7 @@
         </div>
         @endif
 
-        <!-- Keamanan Card (Password Reset) -->
+        
         <div class="mb-6 p-6 bg-white border-l-4 border-red-500 rounded-lg shadow-sm">
             <h3 class="mb-6 text-lg font-semibold text-gray-900">Keamanan (Reset Password)</h3>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -303,7 +303,7 @@
             </div>
         </div>
 
-        <!-- Action Buttons -->
+        
         <div class="flex flex-wrap items-center justify-end gap-4">
             <a href="{{ route('muzakki.index') }}"
                 class="px-5 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 transition-colors">

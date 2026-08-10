@@ -5,7 +5,7 @@
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
 
-    {{-- Header Section --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Tambah Program Baru</h2>
@@ -23,11 +23,11 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            {{-- Left: Form Fields --}}
+            
             <div class="lg:col-span-2 space-y-5">
                 <div class="rounded-2xl p-5 sm:p-6 bg-white border border-[#f0ece6]" style="box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
 
-                    {{-- Nama Program --}}
+                    
                     <div class="mb-5">
                         <label for="name" class="block text-sm font-semibold mb-1.5" style="color: #1c0f0a;">
                             Nama Program <span class="text-red-500">*</span>
@@ -42,7 +42,7 @@
                         @enderror
                     </div>
 
-                    {{-- Deskripsi --}}
+                    
                     <div class="mb-5">
                         <label for="description" class="block text-sm font-semibold mb-1.5" style="color: #1c0f0a;">Deskripsi</label>
                         <textarea id="description" name="description" rows="4"
@@ -53,7 +53,7 @@
                         @enderror
                     </div>
 
-                    {{-- Kategori & Status Grid --}}
+                    
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
                         <div>
                             <label for="category" class="block text-sm font-semibold mb-1.5" style="color: #1c0f0a;">
@@ -86,7 +86,7 @@
                         </div>
                     </div>
 
-                    {{-- Target Dana --}}
+                    
                     <div class="mb-5">
                         <label for="target_amount" class="block text-sm font-semibold mb-1.5" style="color: #1c0f0a;">Target Dana (Rp)</label>
                         <input type="text" id="target_amount" name="target_amount_display"
@@ -101,7 +101,7 @@
 
                 </div>
 
-                {{-- Action Submit --}}
+                
                 <div class="flex justify-end gap-3">
                     <a href="{{ route('admin.programs.index') }}"
                         class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors duration-200"
@@ -116,7 +116,7 @@
                 </div>
             </div>
 
-            {{-- Right: Photo Upload --}}
+            
             <div>
                 <div class="rounded-2xl p-5 sm:p-6 bg-white border border-[#f0ece6]" style="box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                     <p class="text-sm font-semibold mb-3" style="color: #1c0f0a;">Foto Program</p>

@@ -9,14 +9,10 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    
     protected $fillable = [
         'name',
         'email',
@@ -27,23 +23,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'two_factor_secret',
         'two_factor_enabled',
         'two_factor_confirmed_at',
+        'avatar',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+    
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    
     protected function casts(): array
     {
         return [
@@ -55,7 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    // Relationships
+    
     public function muzakki()
     {
         return $this->hasOne(Muzakki::class);
@@ -63,12 +52,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function receivedPayments()
     {
-        return $this->hasMany(ZakatPayment::class, 'received_by');
+        return $this->hasMany(Payment::class, 'received_by');
     }
 
     public function distributions()
     {
-        return $this->hasMany(ZakatDistribution::class, 'distributed_by');
+        return $this->hasMany(Distribution::class, 'distributed_by');
     }
 
     public function notifications()
@@ -76,12 +65,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Notification::class);
     }
 
-    // Methods
+    
     public function isAdmin()
     {
         return $this->role === 'admin';
     }
-
 
     public function isMuzakki()
     {
@@ -93,27 +81,25 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role === $role;
     }
 
-    /**
-     * Check if user has 2FA enabled
-     */
+    
     public function hasTwoFactorEnabled()
     {
         return $this->two_factor_enabled && $this->two_factor_secret;
     }
 
-    // Get count of unread notifications
+    
     public function getUnreadNotificationsCountAttribute()
     {
         return $this->notifications()->unread()->count();
     }
 
-    // Get latest notifications
+    
     public function getLatestNotifications($limit = 10)
     {
         return $this->notifications()->latest()->limit($limit)->get();
     }
 
-    // Scopes
+    
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
@@ -124,17 +110,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return $query->where('role', $role);
     }
 
-    // Event handling for notifications
+    
     public static function boot()
     {
         parent::boot();
 
-        // When a user is updated
+        
         static::updated(function ($user) {
-            // Check if password has changed
+            
             if ($user->isDirty('password')) {
-                // Create a notification about password change
-                // Refresh relationship untuk memastikan muzakki ter-link
+                
+                
                 $user->refresh();
                 $muzakki = $user->muzakki;
                 Notification::createAccountNotification($user, 'password', $muzakki);

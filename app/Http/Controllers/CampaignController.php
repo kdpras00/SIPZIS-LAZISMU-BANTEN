@@ -5,25 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Campaign;
 use App\Models\Program;
-use App\Models\ZakatPayment;
+use App\Models\Payment;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
+use App\Services\MediaService;
+
 class CampaignController extends Controller
 {
-    /**
-     * Display a listing of all campaigns without category filtering.
-     */
+    protected $mediaService;
+
+    public function __construct(MediaService $mediaService)
+    {
+        $this->mediaService = $mediaService;
+    }
+    
     public function all()
     {
         $campaigns = Campaign::active()
-            ->withSum('zakatPayments', 'paid_amount')
+            ->withSum('payments', 'paid_amount')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Use pre-aggregated sum from withSum to avoid N+1
+        
         $totalCollected = 0;
         $totalTarget = 0;
 
@@ -37,14 +43,12 @@ class CampaignController extends Controller
         return view('campaigns.all', compact('campaigns', 'totalCollected', 'totalTarget'));
     }
 
-    /**
-     * Display a listing of campaigns by program category.
-     */
+    
     public function index($category)
     {
         $campaigns = Campaign::active()
             ->byCategory($category)
-            ->withSum('zakatPayments', 'paid_amount')
+            ->withSum('payments', 'paid_amount')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -52,7 +56,7 @@ class CampaignController extends Controller
             $campaign->display_collected_amount = $campaign->collected_amount;
         }
 
-        // Get program for this category
+        
         $program = Program::byCategory($category)->first();
         $totalCollected = 0;
         $totalTarget = 0;
@@ -70,48 +74,44 @@ class CampaignController extends Controller
         return view('campaigns.index', compact('campaigns', 'category', 'categoryDetails', 'totalCollected', 'totalTarget'));
     }
 
-    /**
-     * Display the specified campaign.
-     */
+    
     public function show($category, Campaign $campaign)
     {
-        // Auto-complete if expired or target reached
+        
         $campaign->checkAndCompleteIfExpired();
         
-        // Refresh campaign to get updated status
+        
         $campaign->refresh();
         
-        // If campaign is completed, show 404
+        
         if ($campaign->status === 'completed') {
             abort(404, 'Campaign sudah selesai.');
         }
 
-        // Load related payments for this campaign and update collected amount
-        $campaign->load('zakatPayments.muzakki');
+        
+        $campaign->load('payments.muzakki');
         $campaign->display_collected_amount = $campaign->collected_amount;
 
-        // Get program for this category
+        
         $program = Program::byCategory($category)->first();
         $totalCollected = 0;
 
         if ($program) {
             $totalCollected = $program->total_collected;
         } else {
-            // Fallback to database aggregate to avoid N+1 query explosion
+            
             $totalCollected = Campaign::published()
                 ->byCategory($category)
-                ->withSum('zakatPayments', 'paid_amount')
+                ->withSum('payments', 'paid_amount')
                 ->get()
-                ->sum('zakat_payments_sum_paid_amount');
+                ->sum('payments_sum_paid_amount');
         }
 
         $categoryDetails = $this->getCategoryDetails($category);
 
         return view('campaigns.show', compact('campaign', 'category', 'categoryDetails', 'totalCollected'));
     }
-    /**
-     * Store a newly created campaign in storage.
-     */
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -124,7 +124,7 @@ class CampaignController extends Controller
             'end_date' => 'nullable|date|after:today'
         ]);
 
-        // Get target_amount and ensure it's numeric (remove any formatting)
+        
         $targetAmount = $request->input('target_amount');
         if ($targetAmount && $targetAmount !== '') {
             $targetAmount = str_replace(['.', ','], '', $targetAmount);
@@ -142,12 +142,12 @@ class CampaignController extends Controller
         ]);
         $data['target_amount'] = $targetAmount;
 
-        // Set collected_amount to 0 for new campaigns
+        
         $data['collected_amount'] = 0;
         $data['created_by'] = Auth::id();
         $data['is_published'] = ($data['status'] ?? 'draft') === 'published';
 
-        // Associate with program if exists
+        
         $program = Program::byCategory($request->program_category)->first();
         if ($program) {
             $data['program_id'] = $program->id;
@@ -162,81 +162,37 @@ class CampaignController extends Controller
         return redirect()->back()->with('success', 'Campaign created successfully.');
     }
 
-    // Admin methods
+    
 
-    /**
- * Display a listing of all campaigns for admin.
- */
+    
 public function adminIndex()
 {
-    // Get ALL campaigns (including completed) for admin
+    
     $campaigns = Campaign::orderBy('created_at', 'desc')->get();
 
-    // Update collected amounts dynamically
+    
     foreach ($campaigns as $campaign) {
-        $campaign->display_collected_amount = $campaign->zakatPayments()->sum('paid_amount');
+        $campaign->display_collected_amount = $campaign->payments()->sum('paid_amount');
     }
 
     return view('admin.campaigns.index', compact('campaigns'));
 }
-    /**
-     * Show the form for creating a new campaign.
-     */
+    
     public function adminCreate()
     {
         return view('admin.campaigns.create');
     }
 
-    /**
-     * Store a newly created campaign in storage from admin panel.
-     */
-    public function adminStore(Request $request)
+    
+    public function adminStore(\App\Http\Requests\StoreCampaignRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'program_category' => 'required|string|in:zakat,infaq,shadaqah,pendidikan,kesehatan,ekonomi,sosial-dakwah,kemanusiaan,lingkungan',
-            'program_id' => 'nullable|exists:programs,id',
-            'target_amount' => 'required|numeric|min:0',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:draft,published,completed,cancelled',
-            'end_date' => 'nullable|date|after:today'
-        ]);
-
-        // Get target_amount and ensure it's numeric (remove any formatting)
-        $targetAmount = $request->input('target_amount');
-        if ($targetAmount && $targetAmount !== '') {
-            $targetAmount = str_replace(['.', ','], '', $targetAmount);
-            $targetAmount = is_numeric($targetAmount) ? (float)$targetAmount : 0;
-        } else {
-            $targetAmount = 0;
-        }
-
-        $data = $request->only([
-            'title',
-            'description',
-            'program_category',
-            'program_id',
-            'status',
-            'end_date'
-        ]);
-        $data['target_amount'] = $targetAmount;
-
-        // Auto-fill program_id based on program_category if not provided
-        if (empty($data['program_id']) && !empty($data['program_category'])) {
-            $program = Program::where('category', $data['program_category'])->first();
-            if ($program) {
-                $data['program_id'] = $program->id;
-            }
-        }
-
-        // Set collected_amount to 0 for new campaigns
-        $data['collected_amount'] = 0;
-        $data['created_by'] = Auth::id();
-        $data['is_published'] = ($data['status'] ?? 'draft') === 'published';
-
+        $data = $request->validated();
+        
+        $data['status'] = $data['status'] ?? 'draft';
+        $data['is_published'] = $data['status'] === 'published';
+        
         if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('campaigns', 'public');
+            $data['photo'] = $this->mediaService->uploadImage($request->file('photo'), 'campaigns');
         }
 
         $campaign = Campaign::create($data);
@@ -244,70 +200,22 @@ public function adminIndex()
         return redirect()->route('admin.campaigns.index')->with('success', 'Campaign created successfully.');
     }
 
-    /**
-     * Show the form for editing the specified campaign.
-     */
+    
     public function adminEdit(Campaign $campaign)
     {
-        // Don't overwrite collected amount - allow manual editing
-        // $campaign->collected_amount = $campaign->zakatPayments()->sum('paid_amount');
+        
+        
 
         return view('admin.campaigns.edit', compact('campaign'));
     }
 
-    /**
-     * Update the specified campaign in storage.
-     */
-    public function adminUpdate(Request $request, Campaign $campaign)
+    
+    public function adminUpdate(\App\Http\Requests\UpdateCampaignRequest $request, Campaign $campaign)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'program_category' => 'required|string|in:zakat,infaq,shadaqah,pendidikan,kesehatan,ekonomi,sosial-dakwah,kemanusiaan,lingkungan',
-            'program_id' => 'nullable|exists:programs,id',
-            'target_amount' => 'required|numeric|min:0',
-            // Remove collected_amount from validation as it should be readonly
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:draft,published,completed,cancelled',
-            'end_date' => 'nullable|date|after:today'
-        ]);
-
-        // Get target_amount and ensure it's numeric (remove any formatting)
-        $targetAmount = $request->input('target_amount');
-        if ($targetAmount && $targetAmount !== '') {
-            $targetAmount = str_replace(['.', ','], '', $targetAmount);
-            $targetAmount = is_numeric($targetAmount) ? (float)$targetAmount : 0;
-        } else {
-            $targetAmount = 0;
-        }
-
-        $data = $request->only([
-            'title',
-            'description',
-            'program_category',
-            'program_id',
-            'status',
-            'end_date'
-        ]);
-        $data['target_amount'] = $targetAmount;
-
-        // Auto-fill program_id based on program_category if not provided
-        if (empty($data['program_id']) && !empty($data['program_category'])) {
-            $program = Program::where('category', $data['program_category'])->first();
-            if ($program) {
-                $data['program_id'] = $program->id;
-            }
-        }
-
-        // Ensure collected_amount remains unchanged (readonly)
-        // $data['collected_amount'] = $campaign->collected_amount;
+        $data = $request->validated();
 
         if ($request->hasFile('photo')) {
-            // Delete old photo if exists
-            if ($campaign->photo) {
-                Storage::disk('public')->delete($campaign->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('campaigns', 'public');
+            $data['photo'] = $this->mediaService->uploadImage($request->file('photo'), 'campaigns', $campaign->photo);
         }
 
         $data['is_published'] = ($data['status'] ?? $campaign->status) === 'published';
@@ -317,24 +225,18 @@ public function adminIndex()
         return redirect()->route('admin.campaigns.index')->with('success', 'Campaign updated successfully.');
     }
 
-    /**
-     * Remove the specified campaign from storage.
-     */
+    
     public function adminDestroy(Campaign $campaign)
     {
-        // Delete photo if exists
-        if ($campaign->photo) {
-            Storage::disk('public')->delete($campaign->photo);
-        }
+        
+        $this->mediaService->deleteImage($campaign->photo);
 
         $campaign->delete();
 
         return redirect()->route('admin.campaigns.index')->with('success', 'Campaign deleted successfully.');
     }
 
-    /**
-     * Get category details for display
-     */
+    
     private function getCategoryDetails($category)
     {
         $categories = [
@@ -398,10 +300,9 @@ public function adminIndex()
         ];
     }
 
-
     public function showPersonalCampaign($email)
     {
-        // Cari muzakki berdasarkan email
+        
         $muzakki = \App\Models\Muzakki::where('email', $email)->first();
 
         if (!$muzakki) {

@@ -1,24 +1,19 @@
 <?php
 
 if (!function_exists('calculateProfileCompletion')) {
-    /**
-     * Calculate profile completion percentage for a Muzakki
-     *
-     * @param \App\Models\Muzakki $muzakki
-     * @return int
-     */
+    
     function calculateProfileCompletion($muzakki)
     {
         if (!$muzakki) {
             return 0;
         }
 
-        // Use the model's accessor if available
+        
         if (method_exists($muzakki, 'getProfileCompletenessAttribute')) {
             return $muzakki->profile_completeness;
         }
 
-        // Fallback calculation if accessor doesn't exist
+        
         $fields = [
             'name' => $muzakki->name,
             'email' => $muzakki->email,

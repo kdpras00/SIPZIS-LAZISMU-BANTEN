@@ -42,9 +42,7 @@ class Muzakki extends Model
         'phone_verified' => 'boolean',
     ];
 
-    /**
-     * Find or create a muzakki record by email or attributes.
-     */
+    
     public static function findOrCreate(array $attributes)
     {
         $muzakki = self::where('email', $attributes['email'])->first();
@@ -63,15 +61,15 @@ class Muzakki extends Model
         return self::create($attributes);
     }
 
-    // Relationships
+    
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function zakatPayments()
+    public function payments()
     {
-        return $this->hasMany(ZakatPayment::class);
+        return $this->hasMany(Payment::class);
     }
 
     public function notifications()
@@ -89,16 +87,16 @@ class Muzakki extends Model
         return $this->hasMany(RecurringDonation::class);
     }
 
-    // Attributes & Accessors
+    
     public function getTotalZakatPaidAttribute()
     {
-        return $this->zakatPayments()->where('status', 'completed')->sum('paid_amount');
+        return $this->payments()->where('status', 'completed')->sum('paid_amount');
     }
 
-    public function getZakatPaymentsByYear($year = null)
+    public function getPaymentsByYear($year = null)
     {
         $year = $year ?: date('Y');
-        return $this->zakatPayments()
+        return $this->payments()
             ->whereYear('payment_date', $year)
             ->where('status', 'completed')
             ->get();
@@ -116,12 +114,12 @@ class Muzakki extends Model
 
     public function getPendingPaymentsCountAttribute()
     {
-        return $this->zakatPayments()->pending()->count();
+        return $this->payments()->pending()->count();
     }
 
     public function getTotalPaymentsCountAttribute()
     {
-        return $this->zakatPayments()->count();
+        return $this->payments()->count();
     }
 
     public function getUnreadNotificationsCountAttribute()
@@ -134,7 +132,7 @@ class Muzakki extends Model
         return $this->notifications()->latest()->limit($limit)->get();
     }
 
-    // Scopes
+    
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

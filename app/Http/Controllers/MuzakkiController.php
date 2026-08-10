@@ -11,16 +11,14 @@ use Illuminate\Validation\Rule;
 
 class MuzakkiController extends Controller
 {
-    // Middleware is applied in routes
+    
 
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(Request $request)
     {
-        $query = Muzakki::with('user')->withCount('zakatPayments');
+        $query = Muzakki::with('user')->withCount('payments');
 
-        // Search functionality
+        
         if ($request->has('search')) {
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
@@ -31,75 +29,43 @@ class MuzakkiController extends Controller
             });
         }
 
-        // Filter by occupation
+        
         if ($request->has('occupation') && $request->occupation != '') {
             $query->where('occupation', $request->occupation);
         }
 
-        // Filter by city
+        
         if ($request->has('city') && $request->city != '') {
             $query->where('city', 'like', "%{$request->city}%");
         }
 
-        // Filter by status
+        
         if ($request->has('status')) {
             $query->where('is_active', $request->status == 'active');
         }
 
         $muzakki = $query->latest()->paginate(15)->withQueryString();
 
-        // Get filter options
+        
         $occupations = Muzakki::select('occupation')->distinct()->whereNotNull('occupation')->pluck('occupation');
         $cities = Muzakki::select('city')->distinct()->whereNotNull('city')->pluck('city');
 
         return view('muzakki.index', compact('muzakki', 'occupations', 'cities'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
         return view('muzakki.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    
+    public function store(\App\Http\Requests\StoreMuzakkiRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'email' => 'nullable|email|unique:muzakki,email',
-            'phone' => ['nullable', 'string', 'regex:/^[0-9]{10,15}$/'],
-            'nik' => ['nullable', 'string', 'regex:/^[0-9]{16}$/', 'unique:muzakki,nik'],
-            'gender' => 'required|in:male,female',
-            'address' => 'nullable|string',
-            'city' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'province' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'district' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'village' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'postal_code' => 'nullable|string|digits:5',
-            'occupation' => ['nullable', 'string', 'max:100', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'date_of_birth' => 'nullable|date',
-            'create_user_account' => 'boolean',
-            'password' => 'required_if:create_user_account,1|nullable|string|min:8',
-        ], [
-            'name.regex' => 'Nama hanya boleh berisi huruf, spasi, titik, dan tanda petik.',
-            'city.regex' => 'Nama kota/kabupaten hanya boleh berisi huruf dan tidak boleh angka.',
-            'province.regex' => 'Nama provinsi hanya boleh berisi huruf dan tidak boleh angka.',
-            'district.regex' => 'Nama kecamatan hanya boleh berisi huruf dan tidak boleh angka.',
-            'village.regex' => 'Nama kelurahan hanya boleh berisi huruf dan tidak boleh angka.',
-            'occupation.regex' => 'Nama pekerjaan hanya boleh berisi huruf dan tidak boleh angka.',
-            'phone.regex' => 'Nomor telepon harus berupa 10 hingga 15 digit angka.',
-            'nik.regex' => 'NIK harus terdiri dari tepat 16 digit angka.',
-            'nik.unique' => 'NIK ini sudah terdaftar dalam sistem.',
-            'postal_code.digits' => 'Kode pos harus terdiri dari 5 digit angka.',
-        ]);
-
+        $validated = $request->validated();
         $user = null;
 
-        // Create user account if requested
+        
         if ($request->create_user_account && $request->email) {
             $request->validate([
                 'email' => 'required|email|unique:users,email',
@@ -116,14 +82,14 @@ class MuzakkiController extends Controller
             ]);
         }
 
-        // Handle location data - use names instead of IDs
+        
         $country = $request->country;
         $province = $request->province_name ?? $request->province;
         $city = $request->city_name ?? $request->city;
         $district = $request->district_name ?? $request->district;
         $village = $request->village_name ?? $request->village;
 
-        // Handle file uploads
+        
         $profilePhotoPath = null;
         $ktpPhotoPath = null;
 
@@ -135,7 +101,7 @@ class MuzakkiController extends Controller
             $ktpPhotoPath = $request->file('ktp_photo')->store('ktp_photos', 'public');
         }
 
-        // Generate campaign URL if email exists
+        
         $campaignUrl = $request->email ? url('/campaigner/' . $request->email) : null;
 
         $muzakki = Muzakki::create([
@@ -149,11 +115,11 @@ class MuzakkiController extends Controller
             'district' => $district,
             'village' => $village,
             'postal_code' => $request->postal_code,
-            'country' => $country, // Add country
-            'campaign_url' => $campaignUrl, // Auto-generate campaign URL
-            'profile_photo' => $profilePhotoPath, // Add profile photo
-            'ktp_photo' => $ktpPhotoPath, // Add KTP photo
-            'bio' => $request->bio, // Add bio
+            'country' => $country, 
+            'campaign_url' => $campaignUrl, 
+            'profile_photo' => $profilePhotoPath, 
+            'ktp_photo' => $ktpPhotoPath, 
+            'bio' => $request->bio, 
             'occupation' => $request->occupation,
             'date_of_birth' => $request->date_of_birth,
             'user_id' => $user?->id,
@@ -163,21 +129,19 @@ class MuzakkiController extends Controller
         return redirect()->route('muzakki.index')->with('success', 'Data muzakki berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Muzakki $muzakki)
     {
-        $muzakki->load(['user', 'zakatPayments.programType']);
+        $muzakki->load(['user', 'payments.program']);
 
         $stats = [
-            'total_zakat' => $muzakki->zakatPayments()->completed()->sum('paid_amount'),
-            'payment_count' => $muzakki->zakatPayments()->completed()->count(),
-            'last_payment' => $muzakki->zakatPayments()->completed()->latest('payment_date')->first(),
+            'total_zakat' => $muzakki->payments()->completed()->sum('paid_amount'),
+            'payment_count' => $muzakki->payments()->completed()->count(),
+            'last_payment' => $muzakki->payments()->completed()->latest('payment_date')->first(),
         ];
 
-        $recentPayments = $muzakki->zakatPayments()
-            ->with('programType')
+        $recentPayments = $muzakki->payments()
+            ->with('program')
             ->completed()
             ->latest('payment_date')
             ->take(10)
@@ -186,17 +150,15 @@ class MuzakkiController extends Controller
         return view('muzakki.show', compact('muzakki', 'stats', 'recentPayments'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(?Muzakki $muzakki = null)
     {
-        // If no muzakki is provided, get current user's muzakki profile (for profile editing)
+        
         if (!$muzakki) {
             $user = Auth::user();
             $muzakki = $user->muzakki;
 
-            // If muzakki profile doesn't exist, create it
+            
             if (!$muzakki) {
                 $muzakki = Muzakki::create([
                     'name' => $user->name,
@@ -209,16 +171,14 @@ class MuzakkiController extends Controller
             }
         }
 
-        // Return the unified profile edit view for both admin & muzakki
+        
         return view('muzakki.edit', compact('muzakki'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ?Muzakki $muzakki = null)
+    
+    public function update(\App\Http\Requests\UpdateMuzakkiRequest $request, ?Muzakki $muzakki = null)
     {
-        // If no muzakki is provided, get current user's muzakki profile
+        
         if (!$muzakki) {
             $muzakki = Auth::user()->muzakki;
             if (!$muzakki) {
@@ -226,7 +186,7 @@ class MuzakkiController extends Controller
             }
         }
 
-        // Check if this is a password-only update
+        
         if ($request->has('current_password') && $request->has('new_password')) {
             $request->validate([
                 'current_password' => 'required|string',
@@ -244,7 +204,7 @@ class MuzakkiController extends Controller
             return back()->with('success', 'Password berhasil diperbarui.');
         }
 
-        // Admin Password Reset (no current_password required)
+        
         if (Auth::user()->role === 'admin' && $request->filled('new_password')) {
             $request->validate([
                 'new_password' => 'required|string|min:8|confirmed',
@@ -256,74 +216,23 @@ class MuzakkiController extends Controller
                 ]);
             }
 
-            // If only updating password, return early
-            if (count($request->all()) <= 4) { // _token, _method, new_password, new_password_confirmation
+            
+            if (count($request->all()) <= 4) { 
                  return redirect()->route('muzakki.index')->with('success', 'Password berhasil diperbarui.');
             }
         }
 
-        // Validation rules
-        $rules = [
-            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('muzakki')->ignore($muzakki->id),
-                Rule::unique('users')->ignore($muzakki->user_id),
-            ],
-            'phone' => [
-                'nullable',
-                'string',
-                'regex:/^[0-9]{10,15}$/',
-            ],
-            'nik' => [
-                'nullable',
-                'string',
-                'regex:/^[0-9]{16}$/',
-                Rule::unique('muzakki')->ignore($muzakki->id),
-            ],
-            'gender' => 'required|in:male,female',
-            'address' => 'nullable|string',
-            'city' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'province' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'district' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'village' => ['nullable', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'postal_code' => 'nullable|string|digits:5',
-            'occupation' => ['nullable', 'string', 'max:100', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'monthly_income' => 'nullable|numeric|min:0',
-            'date_of_birth' => 'nullable|date',
-            'bio' => 'nullable|string',
-            'is_active' => 'boolean',
-            'country' => 'nullable|string|max:255',
-            'campaign_url' => 'nullable|url|max:500',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'ktp_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ];
-
-        $request->validate($rules, [
-            'name.regex' => 'Nama hanya boleh berisi huruf, spasi, titik, dan tanda petik.',
-            'city.regex' => 'Nama kota/kabupaten hanya boleh berisi huruf dan tidak boleh angka.',
-            'province.regex' => 'Nama provinsi hanya boleh berisi huruf dan tidak boleh angka.',
-            'district.regex' => 'Nama kecamatan hanya boleh berisi huruf dan tidak boleh angka.',
-            'village.regex' => 'Nama kelurahan hanya boleh berisi huruf dan tidak boleh angka.',
-            'occupation.regex' => 'Nama pekerjaan hanya boleh berisi huruf dan tidak boleh angka.',
-            'phone.regex' => 'Nomor telepon harus berupa 10 hingga 15 digit angka.',
-            'nik.regex' => 'NIK harus terdiri dari tepat 16 digit angka.',
-            'nik.unique' => 'NIK ini sudah terdaftar dalam sistem.',
-            'postal_code.digits' => 'Kode pos harus terdiri dari 5 digit angka.',
-        ]);
-
-        // Construct date_of_birth from parts if available
+        
         if ($request->filled(['birth_year', 'birth_month', 'birth_day'])) {
             $request->merge([
                 'date_of_birth' => $request->birth_year . '-' . str_pad($request->birth_month, 2, '0', STR_PAD_LEFT) . '-' . str_pad($request->birth_day, 2, '0', STR_PAD_LEFT)
             ]);
         }
 
-        // Prepare update data - START WITH EXISTING DATA
+        
         $updateData = $muzakki->toArray();
 
-        // Update only fields that are present in request
+        
         $updateData['name'] = $request->name;
         $updateData['email'] = $request->email;
         $updateData['phone'] = $request->phone;
@@ -333,57 +242,55 @@ class MuzakkiController extends Controller
         $updateData['bio'] = $request->bio;
         $updateData['is_active'] = $request->is_active ?? $muzakki->is_active;
 
-        // Handle file uploads
+        
         if ($request->hasFile('profile_photo')) {
-            // Delete old profile photo if exists
-            if ($muzakki->profile_photo && \Illuminate\Support\Facades\Storage::disk('public')->exists($muzakki->profile_photo)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($muzakki->profile_photo);
-            }
-            $profilePhotoPath = $request->file('profile_photo')->store('profile_photos', 'public');
-            $updateData['profile_photo'] = $profilePhotoPath;
+            $updateData['profile_photo'] = app(\App\Services\MediaService::class)->uploadImage(
+                $request->file('profile_photo'), 
+                'profile_photos', 
+                $muzakki->profile_photo
+            );
         }
 
         if ($request->hasFile('ktp_photo')) {
-            // Delete old KTP photo if exists
-            if ($muzakki->ktp_photo && \Illuminate\Support\Facades\Storage::disk('public')->exists($muzakki->ktp_photo)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($muzakki->ktp_photo);
-            }
-            $ktpPhotoPath = $request->file('ktp_photo')->store('ktp_photos', 'public');
-            $updateData['ktp_photo'] = $ktpPhotoPath;
+            $updateData['ktp_photo'] = app(\App\Services\MediaService::class)->uploadImage(
+                $request->file('ktp_photo'), 
+                'ktp_photos', 
+                $muzakki->ktp_photo
+            );
         }
 
-        // Handle country - prefer country_name from hidden input
+        
         if ($request->filled('country_name')) {
             $updateData['country'] = $request->country_name;
         } elseif ($request->filled('country')) {
             $updateData['country'] = $request->country;
         }
-        // If still null, set default to Indonesia
+        
         if (empty($updateData['country'])) {
             $updateData['country'] = 'Indonesia';
         }
 
-        // Handle campaign_url
+        
         if ($request->filled('campaign_url')) {
             $updateData['campaign_url'] = $request->campaign_url;
         } else {
-            // Auto-generate campaign URL if email exists
+            
             if (!empty($updateData['email'])) {
                 $updateData['campaign_url'] = url('/campaigner/' . $updateData['email']);
             }
         }
 
-        // Handle date of birth
+        
         if ($request->filled('date_of_birth')) {
             $updateData['date_of_birth'] = $request->date_of_birth;
         }
 
-        // Handle phone verification - THIS IS CRITICAL
+        
         if ($request->has('phone_verified')) {
             $updateData['phone_verified'] = (int)$request->phone_verified;
         }
 
-        // Handle location data - use names from hidden inputs
+        
         if ($request->filled('province_name')) {
             $updateData['province'] = $request->province_name;
         } elseif ($request->filled('province')) {
@@ -412,16 +319,16 @@ class MuzakkiController extends Controller
             $updateData['postal_code'] = $request->postal_code;
         }
 
-        // Remove timestamps from update data
+        
         unset($updateData['created_at'], $updateData['updated_at']);
 
-        // Log the update data for debugging
+        
         \Illuminate\Support\Facades\Log::info('Muzakki Update Data:', $updateData);
 
-        // Update muzakki record
+        
         $muzakki->update($updateData);
 
-        // Handle user account if needed
+        
         if ($muzakki->user) {
             $muzakki->user->update([
                 'name' => $request->name,
@@ -431,7 +338,7 @@ class MuzakkiController extends Controller
             ]);
         }
 
-        // Redirect based on context
+        
         if (request()->route()->hasParameter('muzakki')) {
             return redirect()->route('muzakki.index')->with('success', 'Data muzakki berhasil diperbarui.');
         } else {
@@ -439,17 +346,18 @@ class MuzakkiController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Muzakki $muzakki)
     {
-        // Check if muzakki has payments
-        if ($muzakki->zakatPayments()->count() > 0) {
+        
+        if ($muzakki->payments()->count() > 0) {
             return redirect()->route('muzakki.index')->with('error', 'Muzakki tidak dapat dihapus karena sudah memiliki riwayat pembayaran zakat.');
         }
 
-        // Delete related user account if exists
+        app(\App\Services\MediaService::class)->deleteImage($muzakki->profile_photo);
+        app(\App\Services\MediaService::class)->deleteImage($muzakki->ktp_photo);
+
+        
         if ($muzakki->user) {
             $muzakki->user->delete();
         }
@@ -459,14 +367,12 @@ class MuzakkiController extends Controller
         return redirect()->route('muzakki.index')->with('success', 'Data muzakki berhasil dihapus.');
     }
 
-    /**
-     * Toggle muzakki status
-     */
+    
     public function toggleStatus(Muzakki $muzakki)
     {
         $muzakki->update(['is_active' => !$muzakki->is_active]);
 
-        // Update related user account if exists
+        
         if ($muzakki->user) {
             $muzakki->user->update(['is_active' => $muzakki->is_active]);
         }
@@ -475,14 +381,12 @@ class MuzakkiController extends Controller
         return redirect()->route('muzakki.index')->with('success', "Muzakki berhasil {$status}.");
     }
 
-    /**
-     * AJAX search endpoint for real-time search
-     */
+    
     public function search(Request $request)
     {
-        $query = Muzakki::with('user')->withCount('zakatPayments');
+        $query = Muzakki::with('user')->withCount('payments');
 
-        // Search functionality
+        
         if ($request->has('search') && $request->search != '') {
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
@@ -493,24 +397,24 @@ class MuzakkiController extends Controller
             });
         }
 
-        // Filter by occupation
+        
         if ($request->has('occupation') && $request->occupation != '') {
             $query->where('occupation', $request->occupation);
         }
 
-        // Filter by city
+        
         if ($request->has('city') && $request->city != '') {
             $query->where('city', 'like', "%{$request->city}%");
         }
 
-        // Filter by status
+        
         if ($request->has('status') && $request->status != '') {
             $query->where('is_active', $request->status == 'active');
         }
 
         $muzakki = $query->latest()->paginate(15);
 
-        // Calculate statistics
+        
         $totalCount = Muzakki::count();
         $activeCount = Muzakki::where('is_active', true)->count();
         $inactiveCount = Muzakki::where('is_active', false)->count();

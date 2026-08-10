@@ -7,8 +7,8 @@
         <mxCell id="2" value="sequenceDiagram
     actor Admin
     participant View as View (Create Form)
-    participant Controller as ZakatDistributionController
-    participant Model as ZakatDistribution
+    participant Controller as DistributionController
+    participant Model as Distribution
     participant DB as Database
 
     Admin-&gt;&gt;View: Mengisi Form Distribusi

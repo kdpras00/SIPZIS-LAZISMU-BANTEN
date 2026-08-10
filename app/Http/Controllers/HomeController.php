@@ -35,7 +35,7 @@ class HomeController extends Controller
     {
         if ($redirect = $this->preventAdminAccess()) return $redirect;
 
-        // For public berita page
+        
         $news = News::published()
             ->with('author')
             ->orderBy('created_at', 'desc')
@@ -56,7 +56,7 @@ class HomeController extends Controller
         return view('artikel.index', compact('artikels'));
     }
 
-    // Moved from ArtikelController - Display published articles for public
+    
     public function artikelAll()
     {
         if ($redirect = $this->preventAdminAccess()) return $redirect;
@@ -69,7 +69,7 @@ class HomeController extends Controller
         return view('artikel.index', compact('artikels'));
     }
 
-    // Moved from ArtikelController - Show single article for public
+    
     public function artikelShow($slug)
     {
         if ($redirect = $this->preventAdminAccess()) return $redirect;
@@ -86,7 +86,7 @@ class HomeController extends Controller
     {
         if ($redirect = $this->preventAdminAccess()) return $redirect;
 
-        // Optimasi: Cache semua program aktif untuk menghindari query berulang
+        
         $allPrograms = cache()->remember('active_programs', 3600, function () {
             return Program::active()->get();
         });
@@ -103,7 +103,7 @@ class HomeController extends Controller
     {
         if ($redirect = $this->preventAdminAccess()) return $redirect;
 
-        // Optimasi: Cache semua program aktif untuk menghindari query berulang
+        
         $allPrograms = cache()->remember('active_programs', 3600, function () {
             return Program::active()->get();
         });

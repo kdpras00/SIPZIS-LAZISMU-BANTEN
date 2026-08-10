@@ -122,7 +122,7 @@
                 <td>{{ $payment->payment_code }}</td>
                 <td>{{ $payment->muzakki?->name ?? '-' }}</td>
                 <td>{{ $payment->zakatType?->name ?? '-' }}</td>
-                <td>{{ $payment->programType ? $payment->programType->name : 'Donasi Umum' }}</td>
+                <td>{{ $payment->program ? $payment->program->name : 'Donasi Umum' }}</td>
                 <td>
                     @switch($payment->payment_method)
                     @case('cash')

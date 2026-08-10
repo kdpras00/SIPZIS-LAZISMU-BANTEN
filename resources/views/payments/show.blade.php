@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    <!-- Header -->
+    
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Detail Pembayaran Zakat</h2>
@@ -26,9 +26,9 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Main Content -->
+        
         <div class="lg:col-span-2 space-y-6">
-            <!-- Payment Information Card -->
+            
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-gradient-to-r from-orange-600 to-orange-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
@@ -38,7 +38,7 @@
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                        <!-- Left Column -->
+                        
                         <div class="space-y-6">
                             <div class="border-b border-gray-100 pb-4">
                                 <label class="text-xs font-bold text-gray-500 uppercase tracking-wider">Kode Pembayaran</label>
@@ -72,11 +72,11 @@
                                                 <p class="text-xs text-blue-700 mt-1">Program Lazismu</p>
                                             </div>
                                         </div>
-                                    @elseif($payment->programType)
+                                    @elseif($payment->program)
                                         <div class="flex items-start p-3 bg-blue-50 rounded-lg border border-blue-100">
                                             <i class="bi bi-tag-fill text-blue-600 mt-1 mr-3"></i>
                                             <div>
-                                                <p class="font-semibold text-blue-900">{{ $payment->programType->name }}</p>
+                                                <p class="font-semibold text-blue-900">{{ $payment->program->name }}</p>
                                                 <p class="text-xs text-blue-700 mt-1">Tipe Program</p>
                                             </div>
                                         </div>
@@ -106,7 +106,7 @@
                             </div>
                         </div>
 
-                        <!-- Right Column -->
+                        
                         <div class="space-y-6">
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
@@ -196,7 +196,7 @@
                 </div>
             </div>
 
-            <!-- Amount Details Card -->
+            
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-gradient-to-r from-orange-600 to-orange-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
@@ -260,7 +260,7 @@
                 </div>
             </div>
 
-            <!-- Notes Section -->
+            
             @if($payment->notes)
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-gradient-to-r from-orange-600 to-orange-700 px-6 py-4">
@@ -276,9 +276,9 @@
             @endif
         </div>
 
-        <!-- Sidebar -->
+        
         <div class="space-y-6">
-            <!-- Muzakki Information Card -->
+            
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-gradient-to-r from-orange-600 to-orange-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
@@ -352,7 +352,7 @@
                 </div>
             </div>
 
-            <!-- Payment Timeline Card -->
+            
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="bg-gradient-to-r from-orange-600 to-orange-700 px-6 py-4">
                     <h2 class="text-lg font-semibold text-white flex items-center">
@@ -362,7 +362,7 @@
                 </div>
                 <div class="p-6">
                     <div class="relative">
-                        <!-- Created -->
+                        
                         <div class="flex items-start mb-6">
                             <div class="flex-shrink-0">
                                 <div class="w-3 h-3 rounded-full bg-orange-600 border-2 border-white shadow"></div>
@@ -413,7 +413,7 @@
         </div>
     </div>
 
-    {{-- Payment Actions removed as per user request (handled automatically) --}}
+    
 </div>
 @endsection
 

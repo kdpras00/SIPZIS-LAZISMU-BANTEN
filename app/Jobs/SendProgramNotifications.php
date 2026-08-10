@@ -10,14 +10,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-/**
- * Fan-out program/campaign publish notifications to all registered muzakki.
- *
- * Dispatched from Campaign::boot() and Program::boot() so the N-insert loop
- * runs in a queue worker instead of the web request holding the DB connection.
- *
- * ponytail: ceiling = synchronous N INSERTs; upgrade = batch-insert with Notification::insert([])
- */
 class SendProgramNotifications implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -25,7 +17,7 @@ class SendProgramNotifications implements ShouldQueue
     public int $tries = 3;
 
     public function __construct(
-        public readonly mixed $notifiable, // Campaign or Program model
+        public readonly mixed $notifiable, 
         public readonly string $eventType = 'program',
     ) {}
 

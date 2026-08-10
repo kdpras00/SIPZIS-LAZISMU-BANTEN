@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="py-4 px-4 max-w-4xl mx-auto">
-    <!-- Header -->
+    
     <div class="mb-6">
         <a href="{{ route('dashboard') }}" class="inline-flex items-center text-gray-700 hover:text-gray-900 mb-3">
             <i class="bi bi-arrow-left-circle text-xl"></i>
@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <!-- Payment Status Card -->
+    
     <div class="bg-white rounded-xl shadow-md mb-6 overflow-hidden">
         <div class="bg-gradient-to-r from-orange-600 to-orange-700 px-6 py-4">
             <div class="flex items-center justify-between">
@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <!-- Payment Details Card -->
+    
     <div class="bg-white rounded-xl shadow-md mb-6">
         <div class="p-6">
             <h6 class="font-semibold text-gray-900 mb-4 flex items-center">
@@ -75,7 +75,7 @@
                 @php
                     $campaign = $payment->campaign;
                 @endphp
-                @if($campaign || $payment->program || $payment->programType)
+                @if($campaign || $payment->program || $payment->program)
                 <div class="flex justify-between items-start py-3 border-b border-gray-100">
                     <span class="text-gray-600 text-sm">Program/Campaign</span>
                     <span class="text-gray-900 font-medium text-right">
@@ -83,8 +83,8 @@
                             {{ $campaign->title }}
                         @elseif($payment->program)
                             {{ $payment->program->name }}
-                        @elseif($payment->programType)
-                            {{ $payment->programType->name }}
+                        @elseif($payment->program)
+                            {{ $payment->program->name }}
                         @endif
                     </span>
                 </div>
@@ -129,7 +129,7 @@
         </div>
     </div>
 
-    <!-- Amount Card -->
+    
     <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-md mb-6 overflow-hidden">
         <div class="p-6 text-white">
             <h6 class="text-orange-100 text-sm font-medium mb-2">Jumlah Pembayaran</h6>
@@ -151,7 +151,7 @@
         </div>
     </div>
 
-    <!-- Timeline Card -->
+    
     <div class="bg-white rounded-xl shadow-md mb-6">
         <div class="p-6">
             <h6 class="font-semibold text-gray-900 mb-4 flex items-center">
@@ -198,7 +198,7 @@
         </div>
     </div>
 
-    <!-- Notes Card -->
+    
     @if($payment->notes)
     <div class="bg-white rounded-xl shadow-md mb-6">
         <div class="p-6">
@@ -211,7 +211,7 @@
     </div>
     @endif
 
-    <!-- Back Button -->
+    
     <div class="flex justify-center mt-6">
         <a href="{{ route('dashboard') }}" 
             class="inline-flex items-center px-6 py-3 bg-orange-600 text-white rounded-full hover:bg-orange-700 transition-colors font-medium">

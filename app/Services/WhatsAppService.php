@@ -5,7 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use App\Models\ZakatPayment;
+use App\Models\Payment;
 
 class WhatsAppService
 {
@@ -20,16 +20,10 @@ class WhatsAppService
         $this->enabled = config('services.whatsapp.enabled', false);
     }
 
-    /**
-     * Send WhatsApp message using Fonnte API
-     *
-     * @param string $phone Phone number in format 628xxx
-     * @param string $message Message content
-     * @return array Response from API
-     */
+    
     public function sendMessage($phone, $message)
     {
-        // Check if WhatsApp is enabled
+        
         if (!$this->enabled) {
             Log::info('WhatsApp is disabled in config', ['phone' => $phone]);
             return [
@@ -38,7 +32,7 @@ class WhatsAppService
             ];
         }
 
-        // Validate token
+        
         if (empty($this->token)) {
             Log::error('WhatsApp API token not configured');
             return [
@@ -47,7 +41,7 @@ class WhatsAppService
             ];
         }
 
-        // Format phone number
+        
         $formattedPhone = $this->formatPhoneNumber($phone);
 
         if (!$formattedPhone) {
@@ -59,18 +53,18 @@ class WhatsAppService
         }
 
         try {
-            // Send message using Fonnte API
+            
             $response = Http::withHeaders([
                 'Authorization' => $this->token,
             ])->post($this->apiUrl, [
                 'target' => $formattedPhone,
                 'message' => $message,
-                'countryCode' => '62', // Indonesia
+                'countryCode' => '62', 
             ]);
 
             $result = $response->json();
 
-            // Log the response
+            
             Log::channel('whatsapp')->info('WhatsApp message sent', [
                 'phone' => $formattedPhone,
                 'status' => $response->status(),
@@ -97,32 +91,27 @@ class WhatsAppService
         }
     }
 
-    /**
-     * Format phone number to 62xxx format
-     *
-     * @param string $phone
-     * @return string|null
-     */
+    
     protected function formatPhoneNumber($phone)
     {
         if (empty($phone)) {
             return null;
         }
 
-        // Remove all non-numeric characters
+        
         $phone = preg_replace('/[^0-9]/', '', $phone);
 
-        // Convert 08xxx to 628xxx
+        
         if (substr($phone, 0, 2) === '08') {
             $phone = '62' . substr($phone, 1);
         }
 
-        // Ensure it starts with 62
+        
         if (substr($phone, 0, 2) !== '62') {
             return null;
         }
 
-        // Validate length (Indonesian phone numbers)
+        
         if (strlen($phone) < 10 || strlen($phone) > 15) {
             return null;
         }
@@ -130,10 +119,8 @@ class WhatsAppService
         return $phone;
     }
 
-    /**
-     * Send payment pending notification
-     */
-    public function sendPaymentPending(ZakatPayment $payment, $phone)
+    
+    public function sendPaymentPending(Payment $payment, $phone)
     {
         $programName = $this->getProgramName($payment);
         $amount = number_format($payment->paid_amount, 0, ',', '.');
@@ -155,33 +142,31 @@ class WhatsAppService
         return $this->sendMessage($phone, $message);
     }
 
-    /**
-     * Send payment success notification with PDF receipt
-     */
-    public function sendPaymentSuccess(ZakatPayment $payment, $phone)
+    
+    public function sendPaymentSuccess(Payment $payment, $phone)
     {
         $programName = $this->getProgramName($payment);
         $amount = number_format($payment->paid_amount, 0, ',', '.');
 
-        // Use updated_at for completed payments to get accurate date and time when payment was completed
-        // This ensures we show the actual date and time when the payment status changed to completed
+        
+        
         if ($payment->updated_at && $payment->status === 'completed') {
-            // Use updated_at when status is completed (shows when payment was actually completed)
+            
             $dateTime = $payment->updated_at;
         } elseif ($payment->created_at) {
-            // Fallback to created_at if updated_at not available
+            
             $dateTime = $payment->created_at;
         } else {
-            // Last fallback to current time
+            
             $dateTime = now();
         }
 
-        // Convert to Carbon if not already
+        
         if (!$dateTime instanceof \Carbon\Carbon) {
             $dateTime = \Carbon\Carbon::parse($dateTime);
         }
 
-        // Format with timezone Indonesia (WIB) - shows actual date and time
+        
         $date = $dateTime->setTimezone('Asia/Jakarta')->format('d M Y H:i');
 
         $message = "✅ *DONASI BERHASIL*\n\n";
@@ -198,21 +183,14 @@ class WhatsAppService
         $message .= "Kwitansi juga telah dikirim ke email Anda dalam format PDF.\n\n";
         $message .= "_SIPZIS - Sistem Informasi Pengelolaan Zakat_";
 
-        // Send message with PDF receipt in one go
+        
         return $this->sendReceiptPDF($payment, $phone, $message);
     }
 
-    /**
-     * Send PDF receipt as document via WhatsApp
-     *
-     * @param ZakatPayment $payment
-     * @param string $phone
-     * @param string|null $customMessage Custom message to send with PDF. If null, uses default message.
-     * @return array
-     */
-    public function sendReceiptPDF(ZakatPayment $payment, $phone, $customMessage = null)
+    
+    public function sendReceiptPDF(Payment $payment, $phone, $customMessage = null)
     {
-        // Check if WhatsApp is enabled
+        
         if (!$this->enabled) {
             return [
                 'success' => false,
@@ -220,7 +198,7 @@ class WhatsAppService
             ];
         }
 
-        // Validate token
+        
         if (empty($this->token)) {
             Log::error('WhatsApp API token not configured');
             return [
@@ -229,7 +207,7 @@ class WhatsAppService
             ];
         }
 
-        // Format phone number
+        
         $formattedPhone = $this->formatPhoneNumber($phone);
 
         if (!$formattedPhone) {
@@ -240,37 +218,37 @@ class WhatsAppService
         }
 
         try {
-            // Generate PDF receipt
-            $payment->load(['muzakki', 'programType']);
+            
+            $payment->load(['muzakki', 'program']);
             $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('payments.guest-receipt-pdf', [
                 'payment' => $payment
             ]);
             $pdf->setPaper('A4');
 
-            // Generate PDF content
+            
             $pdfContent = $pdf->output();
 
-            // Save PDF to public storage for backup/reference
+            
             $filename = 'kwitansi-' . $payment->payment_code . '.pdf';
             $storagePath = 'receipts/' . $filename;
             Storage::disk('public')->put($storagePath, $pdfContent);
 
-            // Use custom message if provided, otherwise use default
+            
             $message = $customMessage ?? 'Kwitansi Pembayaran Donasi Anda';
 
-            // Get the full public URL for the PDF
-            // Ensure storage symlink exists: php artisan storage:link
+            
+            
             $publicUrl = asset('storage/' . $storagePath);
 
-            // If using localhost/development, use APP_URL for full URL
+            
             $appUrl = config('app.url');
             if (str_contains($publicUrl, 'localhost') || str_contains($publicUrl, '127.0.0.1')) {
-                // For local development, use the configured APP_URL
+                
                 $publicUrl = rtrim($appUrl, '/') . '/storage/' . $storagePath;
             }
 
-            // Try method 1: Using URL (works if URL is publicly accessible)
-            // But if we are on localhost, skip URL method and go straight to base64
+            
+            
             $isLocalhost = str_contains($publicUrl, 'localhost') || str_contains($publicUrl, '127.0.0.1');
             
             if (!$isLocalhost) {
@@ -286,12 +264,12 @@ class WhatsAppService
 
                 $result = $response->json();
             } else {
-                // Determine it as failed initially to trigger fallback logic below
+                
                 $response = isset($response) ? $response : null; 
             }
 
-            // If URL method fails or we are on localhost,
-            // try base64 method as fallback
+            
+            
             if ($isLocalhost || !$response || !$response->successful()) {
                 if (!$isLocalhost) {
                      Log::channel('whatsapp')->warning('URL method failed, trying base64 method', [
@@ -305,7 +283,7 @@ class WhatsAppService
                     ]);
                 }
 
-                // Convert PDF to base64 for Fonnte API
+                
                 $base64Pdf = base64_encode($pdfContent);
 
                 $response = Http::withHeaders([
@@ -334,12 +312,12 @@ class WhatsAppService
                 'response' => $result
             ];
         } catch (\Exception $e) {
-            // Clean up file from storage on error if it was created
+            
             if (isset($storagePath)) {
                 try {
                     Storage::disk('public')->delete($storagePath);
                 } catch (\Exception $deleteException) {
-                    // Ignore cleanup errors
+                    
                 }
             }
 
@@ -357,14 +335,12 @@ class WhatsAppService
         }
     }
 
-    /**
-     * Send payment failed notification
-     */
-    public function sendPaymentFailed(ZakatPayment $payment, $phone)
+    
+    public function sendPaymentFailed(Payment $payment, $phone)
     {
         $amount = number_format($payment->paid_amount, 0, ',', '.');
         $retryUrl = route('guest.payment.create', [
-            // 'program_id' => $payment->program_id, // REMOVED: Column doesn't exist
+            
             'category' => $payment->program_category,
             'amount' => $payment->paid_amount
         ]);
@@ -383,14 +359,12 @@ class WhatsAppService
         return $this->sendMessage($phone, $message);
     }
 
-    /**
-     * Send payment cancelled notification
-     */
-    public function sendPaymentCancelled(ZakatPayment $payment, $phone)
+    
+    public function sendPaymentCancelled(Payment $payment, $phone)
     {
         $amount = number_format($payment->paid_amount, 0, ',', '.');
         $retryUrl = route('guest.payment.create', [
-            // 'program_id' => $payment->program_id, // REMOVED: Column doesn't exist
+            
             'category' => $payment->program_category
         ]);
 
@@ -407,9 +381,7 @@ class WhatsAppService
         return $this->sendMessage($phone, $message);
     }
 
-    /**
-     * Send welcome message for new donor
-     */
+    
     public function sendWelcomeMessage($muzakki)
     {
         if (!$muzakki->phone) {
@@ -432,13 +404,11 @@ class WhatsAppService
         return $this->sendMessage($muzakki->phone, $message);
     }
 
-    /**
-     * Get program name from payment
-     */
-    protected function getProgramName(ZakatPayment $payment)
+    
+    protected function getProgramName(Payment $payment)
     {
-        // Note: program_id doesn't exist, so $payment->program relationship is disabled
-        // Check campaign first, then program_category
+        
+        
         if ($payment->campaign) {
             return $payment->campaign->title;
         }

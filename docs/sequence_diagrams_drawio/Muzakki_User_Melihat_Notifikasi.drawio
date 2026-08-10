@@ -7,7 +7,7 @@
         <mxCell id="2" value="sequenceDiagram
     actor Muzakki
     participant Icon as View (Notification Icon)
-    participant Controller as ZakatPaymentController
+    participant Controller as PaymentController
     participant View as View (Notifications)
     participant Model as Notification
 

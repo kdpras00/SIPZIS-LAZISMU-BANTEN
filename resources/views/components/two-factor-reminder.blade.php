@@ -7,11 +7,11 @@
     if ($user) {
         // Check 2FA
         if (!$user->two_factor_enabled) {
-            $messages[] = 'Aktifkan 2FA untuk keamanan ekstra.';
+            $messages[] = 'Aktifkan 2FA untuk keamanan ekstra akun Anda.';
             $actions[] = [
                 'label' => 'Aktifkan 2FA',
                 'url' => route('dashboard.two-factor.setup'),
-                'class' => 'text-orange-700 bg-orange-100 hover:bg-orange-200'
+                'class' => 'bg-white text-orange-700 border border-orange-200 hover:bg-orange-50'
             ];
         }
 
@@ -20,12 +20,10 @@
             $completeness = $user->muzakki->profile_completeness;
             if ($completeness < 100) {
                 $messages[] = 'Lengkapi profil Anda (' . $completeness . '%).';
-                // Avoid duplicate actions if we want to keep it simple, or add both.
-                // Let's add it as a separate action.
                 $actions[] = [
                     'label' => 'Lengkapi Profil',
                     'url' => route('profile.edit'),
-                    'class' => 'text-blue-700 bg-blue-100 hover:bg-blue-200'
+                    'class' => 'bg-orange-600 text-white hover:bg-orange-700 border border-transparent'
                 ];
             }
         }
@@ -37,58 +35,35 @@
 @endphp
 
 @if ($showReminder)
-    <div id="security-reminder" class="fixed top-24 right-4 z-50 w-72 bg-white rounded-2xl overflow-hidden" style="display: none; box-shadow: 0 4px 24px rgba(28,15,10,0.12); border: 1px solid #f0ece6;">
-        <!-- Header -->
-        <div class="px-4 py-3 flex justify-between items-center" style="background: #fff7ed; border-bottom: 1px solid #f0ece6;">
-            <div class="flex items-center gap-2">
-                <svg class="w-4 h-4 flex-shrink-0" style="color: #c2410c;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <span class="text-sm font-semibold" style="color: #c2410c;">Perhatian</span>
+    <div id="security-reminder" class="mb-6 bg-[#fff7ed] border border-[#ffedd5] rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm" style="display: none;">
+        
+        <div class="flex items-start gap-3.5 mb-4 md:mb-0">
+            <div class="p-2.5 bg-orange-100 rounded-xl text-orange-600 flex-shrink-0 mt-0.5">
+                <i class="bi bi-shield-exclamation text-xl"></i>
             </div>
-            <button id="close-reminder" class="transition-opacity hover:opacity-60" style="color: #8b7e74;" aria-label="Tutup">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+            <div>
+                <h3 class="text-sm font-bold text-orange-900 mb-1.5">Perhatian: Tindakan Diperlukan</h3>
+                <div class="text-sm text-orange-800 space-y-1">
+                    @foreach($messages as $message)
+                        <div class="flex items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-orange-400 text-[10px]"></i> {{ $message }}
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex flex-wrap items-center gap-2.5 w-full md:w-auto mt-2 md:mt-0 pt-3 md:pt-0 border-t border-orange-200/50 md:border-t-0">
+            @foreach($actions as $action)
+                <a href="{{ $action['url'] }}" class="inline-flex items-center justify-center px-4 py-2.5 text-xs font-semibold rounded-lg transition-colors {{ $action['class'] }}">
+                    {{ $action['label'] }}
+                </a>
+            @endforeach
+            <button id="close-reminder" type="button" class="inline-flex items-center justify-center p-2 text-orange-400 hover:text-orange-600 hover:bg-orange-100 rounded-lg transition-colors ml-auto md:ml-2" title="Tutup">
+                <i class="bi bi-x-lg"></i>
             </button>
         </div>
-
-        <!-- Content -->
-        <div class="p-4 bg-white">
-            <div class="space-y-3">
-                @foreach($messages as $message)
-                    <div class="flex items-start space-x-3 text-sm text-gray-600">
-                        <svg class="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>{{ $message }}</span>
-                    </div>
-                @endforeach
-            </div>
-
-            <!-- Actions -->
-            <div class="mt-4 space-y-2">
-                @foreach($actions as $action)
-                    <a href="{{ $action['url'] }}" class="block w-full text-center py-2 px-4 rounded-lg text-sm font-medium transition-colors {{ $action['class'] }}">
-                        {{ $action['label'] }}
-                    </a>
-                @endforeach
-            </div>
-        </div>
     </div>
-
-    <style>
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translate3d(0, 20px, 0);
-            }
-            to {
-                opacity: 1;
-                transform: translate3d(0, 0, 0);
-            }
-        }
-    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -99,21 +74,19 @@
             
             // Check if dismissed in this specific session
             if (!sessionStorage.getItem(storageKey)) {
-                reminder.style.display = 'block';
-            }
-
-            function dismissReminder() {
-                reminder.style.opacity = '0';
-                reminder.style.transform = 'translate3d(0, 20px, 0)';
-                setTimeout(() => {
-                    reminder.remove();
-                }, 300);
-                sessionStorage.setItem(storageKey, 'true');
+                reminder.style.display = 'flex';
             }
 
             if (closeBtn) {
-                closeBtn.addEventListener('click', function() {
-                    dismissReminder();
+                closeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Fade out animation
+                    reminder.style.transition = 'opacity 0.3s ease';
+                    reminder.style.opacity = '0';
+                    setTimeout(() => {
+                        reminder.style.display = 'none';
+                        sessionStorage.setItem(storageKey, 'true');
+                    }, 300);
                 });
             }
         });

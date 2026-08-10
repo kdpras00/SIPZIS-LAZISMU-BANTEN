@@ -6,9 +6,9 @@
 <div class="container mx-auto px-4 py-6">
     <div class="flex justify-center">
         <div class="w-full max-w-4xl">
-            <!-- Card Container -->
+            
             <div class="bg-white rounded-lg shadow-md mb-6 overflow-hidden">
-                <!-- Card Header -->
+                
                 <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <h6 class="text-lg font-semibold text-gray-800">Kwitansi Pembayaran Donasi</h6>
@@ -21,16 +21,16 @@
                     </div>
                 </div>
 
-                <!-- Card Body -->
+                
                 <div class="p-8">
                     <div class="receipt-content pl-8">
-                        <!-- Header -->
+                        
                         <div class="text-center mb-8">
                             <h4 class="text-2xl font-bold text-gray-900 mb-3">KWITANSI PEMBAYARAN DONASI</h4>
                             <hr class="border-gray-300">
                         </div>
 
-                        <!-- Receipt Info -->
+                        
                         <div class="mb-8">
                             <h6 class="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-4">Informasi Kwitansi</h6>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -83,7 +83,7 @@
                             </div>
                         </div>
 
-                        <!-- Donor Info -->
+                        
                         <div class="mb-8">
                             <h6 class="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-4">Informasi Donatur</h6>
                             <table class="w-full">
@@ -106,7 +106,7 @@
                             </table>
                         </div>
 
-                        <!-- Payment Details -->
+                        
                         <div class="mb-8">
                             <h6 class="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-4">Detail Pembayaran</h6>
                             <table class="w-full">
@@ -114,8 +114,8 @@
                                     <tr>
                                         <td class="py-2.5 pr-6 align-top" style="width: 30%;"><strong class="text-gray-700">Jenis Program:</strong></td>
                                         <td class="py-2.5 text-gray-900">
-                                            @if($payment->programType)
-                                            {{ $payment->programType->name }}
+                                            @if($payment->program)
+                                            {{ $payment->program->name }}
                                             @else
                                             {{ ucfirst(str_replace('-', ' ', $payment->program_category ?? 'Umum')) }}
                                             @endif
@@ -139,7 +139,7 @@
                             </table>
                         </div>
 
-                        <!-- Notes -->
+                        
                         @if($payment->notes)
                         <div class="mb-8">
                             <h6 class="text-base font-semibold text-gray-800 border-b border-gray-300 pb-2 mb-4">Catatan</h6>
@@ -147,8 +147,8 @@
                         </div>
                         @endif
 
-                        <!-- Signature -->
-                        <div class="mt-16 signature-section signature-section-right "> <!-- add shift right class -->
+                        
+                        <div class="mt-16 signature-section signature-section-right "> 
                             <div class="grid grid-cols-2 gap-12">
                                 <div class="text-center signature-box">
                                     <p class="font-semibold text-gray-800 mb-12 text-base">Penerima</p>

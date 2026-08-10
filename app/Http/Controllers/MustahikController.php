@@ -8,16 +8,14 @@ use Illuminate\Validation\Rule;
 
 class MustahikController extends Controller
 {
-    // Middleware is applied in routes
+    
 
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(Request $request)
     {
-        $query = Mustahik::with(['zakatDistributions'])->withCount('zakatDistributions');
+        $query = Mustahik::with(['distributions'])->withCount('distributions');
 
-        // Search functionality
+        
         if ($request->has('search')) {
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
@@ -27,19 +25,19 @@ class MustahikController extends Controller
             });
         }
 
-        // Filter by category (asnaf)
+        
         if ($request->has('category') && $request->category != '') {
             $query->where('category', $request->category);
         }
 
-        // Filter by city
+        
         if ($request->has('city') && $request->city != '') {
             $query->where('city', 'like', "%{$request->city}%");
         }
 
         $mustahik = $query->latest()->paginate(15)->withQueryString();
 
-        // Get filter options
+        
         $categories = array_keys(Mustahik::CATEGORIES);
         $cities = Mustahik::select('city')->distinct()->whereNotNull('city')->pluck('city');
         $stats = [
@@ -50,18 +48,14 @@ class MustahikController extends Controller
         return view('mustahik.index', compact('mustahik', 'categories', 'cities', 'stats'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
         $categories = Mustahik::CATEGORIES;
         return view('mustahik.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -95,20 +89,18 @@ class MustahikController extends Controller
         return redirect()->route('mustahik.index')->with('success', 'Data mustahik berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Mustahik $mustahik)
     {
-        $mustahik->load(['zakatDistributions.distributedBy']);
+        $mustahik->load(['distributions.distributedBy']);
 
         $stats = [
-            'total_received' => $mustahik->zakatDistributions()->sum('amount'),
-            'distribution_count' => $mustahik->zakatDistributions()->count(),
-            'last_distribution' => $mustahik->zakatDistributions()->latest('distribution_date')->first(),
+            'total_received' => $mustahik->distributions()->sum('amount'),
+            'distribution_count' => $mustahik->distributions()->count(),
+            'last_distribution' => $mustahik->distributions()->latest('distribution_date')->first(),
         ];
 
-        $recentDistributions = $mustahik->zakatDistributions()
+        $recentDistributions = $mustahik->distributions()
             ->with('distributedBy')
             ->latest('distribution_date')
             ->take(10)
@@ -117,18 +109,14 @@ class MustahikController extends Controller
         return view('mustahik.show', compact('mustahik', 'stats', 'recentDistributions'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(Mustahik $mustahik)
     {
         $categories = Mustahik::CATEGORIES;
         return view('mustahik.edit', compact('mustahik', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, Mustahik $mustahik)
     {
         $request->validate([
@@ -163,13 +151,11 @@ class MustahikController extends Controller
         return redirect()->route('mustahik.index')->with('success', 'Data mustahik berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Mustahik $mustahik)
     {
-        // Check if mustahik has received distributions
-        if ($mustahik->zakatDistributions()->count() > 0) {
+        
+        if ($mustahik->distributions()->count() > 0) {
             return redirect()->route('mustahik.index')->with('error', 'Mustahik tidak dapat dihapus karena sudah memiliki riwayat penerimaan zakat.');
         }
 
@@ -178,9 +164,7 @@ class MustahikController extends Controller
         return redirect()->route('mustahik.index')->with('success', 'Data mustahik berhasil dihapus.');
     }
 
-    /**
-     * Toggle mustahik status
-     */
+    
     public function toggleStatus(Mustahik $mustahik)
     {
         $mustahik->update(['is_active' => !$mustahik->is_active]);
@@ -189,9 +173,7 @@ class MustahikController extends Controller
         return redirect()->route('mustahik.index')->with('success', "Mustahik berhasil {$status}.");
     }
 
-    /**
-     * Get mustahik by category for AJAX
-     */
+    
     public function getByCategory(Request $request)
     {
         $category = $request->get('category');
@@ -203,14 +185,12 @@ class MustahikController extends Controller
         return response()->json($mustahik);
     }
 
-    /**
-     * AJAX search endpoint for real-time search
-     */
+    
     public function search(Request $request)
     {
-        $query = Mustahik::with(['zakatDistributions'])->withCount('zakatDistributions');
+        $query = Mustahik::with(['distributions'])->withCount('distributions');
 
-        // Search functionality
+        
         if ($request->has('search') && $request->search != '') {
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
@@ -220,19 +200,19 @@ class MustahikController extends Controller
             });
         }
 
-        // Filter by category (asnaf)
+        
         if ($request->has('category') && $request->category != '') {
             $query->where('category', $request->category);
         }
 
-        // Filter by city
+        
         if ($request->has('city') && $request->city != '') {
             $query->where('city', 'like', "%{$request->city}%");
         }
 
         $mustahik = $query->latest()->paginate(15);
 
-        // Calculate statistics
+        
         $totalCount = Mustahik::count();
         $thisMonthCount = Mustahik::where('created_at', '>=', now()->startOfMonth())->count();
 

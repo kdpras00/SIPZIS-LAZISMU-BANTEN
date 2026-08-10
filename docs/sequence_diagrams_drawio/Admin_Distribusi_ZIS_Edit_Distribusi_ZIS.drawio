@@ -8,8 +8,8 @@
     actor Admin
     participant Index as View (Index)
     participant Form as View (Edit Form)
-    participant Controller as ZakatDistributionController
-    participant Model as ZakatDistribution
+    participant Controller as DistributionController
+    participant Model as Distribution
     participant DB as Database
 
     Admin-&gt;&gt;Index: Klik Tombol Edit

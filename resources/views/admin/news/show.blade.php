@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    <!-- Header Section -->
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Detail Berita</h2>
@@ -25,11 +25,11 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Main Content Column -->
+        
         <div class="lg:col-span-2 space-y-8">
-            <!-- Content Card -->
+            
             <div class="bg-white rounded-3xl shadow-lg shadow-gray-100 overflow-hidden border border-gray-100">
-                <!-- Status Badge (Mobile Only) -->
+                
                 <div class="lg:hidden p-4 border-b border-gray-100 bg-gray-50">
                     <div class="flex items-center justify-between">
                         <span class="text-sm font-medium text-gray-500">Status Publikasi</span>
@@ -45,7 +45,7 @@
                     </div>
                 </div>
 
-                <!-- Featured Image -->
+                
                 @if($news->image)
                     <div class="relative w-full h-64 md:h-96 bg-gray-100 group overflow-hidden">
                         @php
@@ -75,7 +75,7 @@
                     </div>
                 @endif
                 
-                <!-- Content Body -->
+                
                 <div class="p-6 md:p-8">
                     @if($news->excerpt)
                         <div class="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 mb-8">
@@ -99,7 +99,7 @@
                 </div>
             </div>
             
-             <!-- SEO & Metadata Card -->
+             
              <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
                     <h3 class="font-semibold text-gray-900 flex items-center gap-2">
@@ -134,9 +134,9 @@
             </div>
         </div>
 
-        <!-- Right Sidebar -->
+        
         <div class="space-y-6">
-            <!-- Status Card -->
+            
             <div class="bg-white rounded-3xl shadow-lg shadow-gray-100 border border-gray-100 overflow-hidden">
                 <div class="p-6 text-center border-b border-gray-100 {{ $news->is_published ? 'bg-orange-50/50' : 'bg-amber-50/50' }}">
                     <div class="inline-flex items-center justify-center w-16 h-16 rounded-full {{ $news->is_published ? 'bg-orange-100 text-orange-600' : 'bg-amber-100 text-amber-600' }} mb-4">
@@ -169,7 +169,7 @@
                 </div>
             </div>
 
-            <!-- Stats Card -->
+            
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
                     <h3 class="font-semibold text-gray-900 text-sm uppercase tracking-wider">Statistik</h3>
@@ -190,7 +190,7 @@
                 </div>
             </div>
 
-            <!-- Actions Card -->
+            
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
                     <h3 class="font-semibold text-gray-900 text-sm uppercase tracking-wider">Aksi</h3>
@@ -216,7 +216,7 @@
                 </div>
             </div>
             
-            <!-- Timestamp Info -->
+            
             <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100 text-xs text-gray-500 space-y-2">
                 <div class="flex justify-between">
                     <span>Dibuat:</span>

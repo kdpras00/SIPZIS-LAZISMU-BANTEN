@@ -11,7 +11,7 @@ use App\Models\Program;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ChatbotController;
-use App\Http\Controllers\ZakatPaymentController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\GuestPaymentController;
 use App\Http\Controllers\PaymentNotificationController;
 use App\Http\Controllers\DonationController;
@@ -19,11 +19,11 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\ZakatCalculatorController;
+use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MuzakkiController;
 use App\Http\Controllers\MustahikController;
-use App\Http\Controllers\ZakatDistributionController;
+use App\Http\Controllers\DistributionController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\OTPController;
@@ -74,13 +74,13 @@ Route::get('/artikel', [HomeController::class, 'artikel'])->name('artikel.index'
 Route::get('/artikel/{slug}', [HomeController::class, 'artikelShow'])->name('artikel.show');
 
 // Public Zakat Calculator
-Route::get('/calculator', [ZakatCalculatorController::class, 'index'])->name('calculator.index');
-Route::post('/calculator/calculate', [ZakatCalculatorController::class, 'calculate'])->name('calculator.calculate');
-Route::get('/calculator/guide', [ZakatCalculatorController::class, 'guide'])->name('calculator.guide');
-Route::get('/calculator/gold-price', [ZakatCalculatorController::class, 'getGoldPrice'])->name('calculator.gold-price');
+Route::get('/calculator', [CalculatorController::class, 'index'])->name('calculator.index');
+Route::post('/calculator/calculate', [CalculatorController::class, 'calculate'])->name('calculator.calculate');
+Route::get('/calculator/guide', [CalculatorController::class, 'guide'])->name('calculator.guide');
+Route::get('/calculator/gold-price', [CalculatorController::class, 'getGoldPrice'])->name('calculator.gold-price');
 
 // Public Guest Donation & Payment Routes
-Route::get('/payments/search', [ZakatPaymentController::class, 'search'])->name('api.payments.search');
+Route::get('/payments/search', [PaymentController::class, 'search'])->name('api.payments.search');
 Route::get('/payment/{paymentCode}/failed', [GuestPaymentController::class, 'guestFailure'])->name('guest.payment.failed');
 Route::post('/account/claim', [AccountClaimController::class, 'claim'])->name('guest.account.claim');
 
@@ -91,7 +91,7 @@ Route::prefix('donasi')->name('guest.payment.')->group(function () {
     Route::get('/summary/{paymentCode}', [GuestPaymentController::class, 'guestSummary'])->name('summary');
     Route::get('/success/{paymentCode}', [GuestPaymentController::class, 'guestSuccess'])->name('success');
     Route::get('/check-status/{paymentCode}', [GuestPaymentController::class, 'guestCheckStatus'])->name('checkStatus');
-    Route::post('/leave-page/{paymentCode}', [GuestPaymentController::class, 'guestLeavePage'])->name('leavePage');
+
     Route::post('/get-token/{paymentCode}', [GuestPaymentController::class, 'getSnapToken'])->name('getToken');
     Route::post('/{paymentCode}/get-token-custom', [GuestPaymentController::class, 'getTokenCustom'])->name('getTokenCustom');
     Route::get('/{paymentCode}/receipt', [GuestPaymentController::class, 'guestReceiptByCode'])->name('receipt');
@@ -137,9 +137,9 @@ Route::get('/two-factor/verify', [TwoFactorController::class, 'showVerify'])->na
 Route::post('/two-factor/verify', [TwoFactorController::class, 'verify'])->name('two-factor.verify.post');
 
 // Payment Callbacks & Notifications
-Route::get('/payment/finish', [ZakatPaymentController::class, 'finish']);
-Route::get('/payment/unfinish', [ZakatPaymentController::class, 'unfinish']);
-Route::get('/payment/error', [ZakatPaymentController::class, 'error']);
+Route::get('/payment/finish', [PaymentController::class, 'finish']);
+Route::get('/payment/unfinish', [PaymentController::class, 'unfinish']);
+Route::get('/payment/error', [PaymentController::class, 'error']);
 Route::post('/midtrans/notification', [PaymentNotificationController::class, 'handleNotification']);
 Route::post('/firebase-login', fn(Request $request) => app(AuthController::class)->firebaseLogin($request) ?? response()->json(['success' => false], 400))->name('firebase.login');
 
@@ -227,12 +227,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/api/mustahik/search', [MustahikController::class, 'search'])->name('api.mustahik.search');
 
         // Zakat Distribution Management
-        Route::resource('distributions', ZakatDistributionController::class);
-        Route::patch('/distributions/{distribution}/mark-received', [ZakatDistributionController::class, 'markAsReceived'])->name('distributions.mark-received');
-        Route::get('/distributions-report/category', [ZakatDistributionController::class, 'reportByCategory'])->name('distributions.report.category');
-        Route::get('/api/distributions/mustahik-by-category', [ZakatDistributionController::class, 'getMustahikByCategory'])->name('api.distributions.mustahik-by-category');
-        Route::get('/api/distributions/search', [ZakatDistributionController::class, 'search'])->name('api.distributions.search');
-        Route::get('/distributions/{distribution}/receipt', [ZakatDistributionController::class, 'receipt'])->name('distributions.receipt');
+        Route::resource('distributions', DistributionController::class);
+        Route::patch('/distributions/{distribution}/mark-received', [DistributionController::class, 'markAsReceived'])->name('distributions.mark-received');
+        Route::get('/distributions-report/category', [DistributionController::class, 'reportByCategory'])->name('distributions.report.category');
+        Route::get('/api/distributions/mustahik-by-category', [DistributionController::class, 'getMustahikByCategory'])->name('api.distributions.mustahik-by-category');
+        Route::get('/api/distributions/search', [DistributionController::class, 'search'])->name('api.distributions.search');
+        Route::get('/distributions/{distribution}/receipt', [DistributionController::class, 'receipt'])->name('distributions.receipt');
 
         // Reports
         Route::prefix('reports')->name('reports.')->group(function () {
@@ -294,15 +294,15 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile', [MuzakkiController::class, 'update'])->name('profile.update');
 
         // Calculator & Payments
-        Route::get('/my-calculator', [ZakatCalculatorController::class, 'index'])->name('my-calculator');
+        Route::get('/my-calculator', [CalculatorController::class, 'index'])->name('my-calculator');
 
         Route::prefix('payments')->name('payments.')->group(function () {
-            Route::get('/', [ZakatPaymentController::class, 'index'])->name('index');
-            Route::get('/create', [ZakatPaymentController::class, 'create'])->name('create');
-            Route::post('/', [ZakatPaymentController::class, 'store'])->name('store');
-            Route::get('/{payment}', [ZakatPaymentController::class, 'show'])->name('show');
-            Route::put('/{payment}', [ZakatPaymentController::class, 'update'])->name('update');
-            Route::get('/{payment}/receipt', [ZakatPaymentController::class, 'receipt'])->name('receipt');
+            Route::get('/', [PaymentController::class, 'index'])->name('index');
+            Route::get('/create', [PaymentController::class, 'create'])->name('create');
+            Route::post('/', [PaymentController::class, 'store'])->name('store');
+            Route::get('/{payment}', [PaymentController::class, 'show'])->name('show');
+            Route::put('/{payment}', [PaymentController::class, 'update'])->name('update');
+            Route::get('/{payment}/receipt', [PaymentController::class, 'receipt'])->name('receipt');
         });
 
         // Notifications

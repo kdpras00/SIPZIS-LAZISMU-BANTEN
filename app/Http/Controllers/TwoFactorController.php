@@ -20,27 +20,25 @@ class TwoFactorController extends Controller
         $this->google2fa = new Google2FA();
     }
 
-    /**
-     * Show the TOTP setup page
-     */
+    
     public function showSetup()
     {
         $user = Auth::user();
         
-        // Generate secret if not exists
+        
         if (!$user->two_factor_secret) {
             $user->two_factor_secret = $this->google2fa->generateSecretKey();
             $user->save();
         }
 
-        // Generate QR Code URL
+        
         $qrCodeUrl = $this->google2fa->getQRCodeUrl(
             config('app.name', 'SIPZIS'),
             $user->email,
             $user->two_factor_secret
         );
 
-        // Generate QR Code using BaconQrCode
+        
         $renderer = new ImageRenderer(
             new RendererStyle(300),
             new SvgImageBackEnd()
@@ -48,7 +46,7 @@ class TwoFactorController extends Controller
         $writer = new Writer($renderer);
         $qrCodeSvg = $writer->writeString($qrCodeUrl);
         
-        // Convert to data URI
+        
         $qrCodeDataUri = 'data:image/svg+xml;base64,' . base64_encode($qrCodeSvg);
 
         return view('muzakki.dashboard.two-factor-setup', [
@@ -58,9 +56,7 @@ class TwoFactorController extends Controller
         ]);
     }
 
-    /**
-     * Enable TOTP after verification
-     */
+    
     public function enable(Request $request)
     {
         $request->validate([
@@ -73,7 +69,7 @@ class TwoFactorController extends Controller
             return back()->withErrors(['code' => 'Secret key tidak ditemukan. Silakan refresh halaman.']);
         }
 
-        // Verify the code
+        
         $valid = $this->google2fa->verifyKey(
             $user->two_factor_secret,
             $request->code
@@ -83,7 +79,7 @@ class TwoFactorController extends Controller
             return back()->withErrors(['code' => 'Kode verifikasi tidak valid.']);
         }
 
-        // Enable 2FA
+        
         $user->two_factor_enabled = true;
         $user->two_factor_confirmed_at = now();
         $user->save();
@@ -94,9 +90,7 @@ class TwoFactorController extends Controller
             ->with('success', 'Autentikasi dua faktor berhasil diaktifkan!');
     }
 
-    /**
-     * Disable TOTP
-     */
+    
     public function disable(Request $request)
     {
         $request->validate([
@@ -109,7 +103,7 @@ class TwoFactorController extends Controller
             return back()->withErrors(['code' => 'Autentikasi dua faktor belum diaktifkan.']);
         }
 
-        // Verify the code before disabling
+        
         $valid = $this->google2fa->verifyKey(
             $user->two_factor_secret,
             $request->code
@@ -119,7 +113,7 @@ class TwoFactorController extends Controller
             return back()->withErrors(['code' => 'Kode verifikasi tidak valid.']);
         }
 
-        // Disable 2FA
+        
         $user->two_factor_enabled = false;
         $user->two_factor_secret = null;
         $user->two_factor_confirmed_at = null;
@@ -131,9 +125,7 @@ class TwoFactorController extends Controller
             ->with('success', 'Autentikasi dua faktor berhasil dinonaktifkan!');
     }
 
-    /**
-     * Show TOTP verification page (for login)
-     */
+    
     public function showVerify(Request $request)
     {
         $userId = $request->session()->get('login.id');
@@ -142,15 +134,13 @@ class TwoFactorController extends Controller
             return redirect()->route('login')->withErrors(['message' => 'Sesi login tidak ditemukan.']);
         }
 
-        // Regenerate CSRF token to prevent 419 Page Expired
+        
         $request->session()->regenerateToken();
 
         return view('auth.two-factor-verify');
     }
 
-    /**
-     * Verify TOTP code (for login)
-     */
+    
     public function verify(Request $request)
     {
         $request->validate([
@@ -173,14 +163,14 @@ class TwoFactorController extends Controller
             return back()->withErrors(['code' => 'Kode verifikasi tidak valid.']);
         }
 
-        // Clear the login session
+        
         $request->session()->forget('login.id');
 
-        // Log in the user
+        
         Auth::login($user);
         $request->session()->regenerate();
 
-        // Redirect based on role
+        
         if ($user->role === 'admin') {
             return redirect()->route('dashboard');
         }

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\ZakatPayment;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 use Midtrans\Snap;
@@ -15,15 +15,13 @@ class MidtransService
         $this->configureMidtrans();
     }
 
-    /**
-     * Configure Midtrans credentials & environment.
-     */
+    
     protected function configureMidtrans(): void
     {
-        Config::$serverKey = config('services.midtrans.server_key');
-        Config::$isProduction = config('services.midtrans.is_production', false);
-        Config::$isSanitized = config('services.midtrans.is_sanitized', true);
-        Config::$is3ds = config('services.midtrans.is_3ds', true);
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production', false);
+        Config::$isSanitized = config('midtrans.is_sanitized', true);
+        Config::$is3ds = config('midtrans.is_3ds', true);
 
         $overrideServerKey = env('MIDTRANS_SERVER_KEY');
         if (!empty($overrideServerKey)) {
@@ -31,10 +29,8 @@ class MidtransService
         }
     }
 
-    /**
-     * Build Midtrans transaction parameter array for a payment.
-     */
-    public function buildTransactionParams(ZakatPayment $payment, string $paymentMethod = 'midtrans'): array
+    
+    public function buildTransactionParams(Payment $payment, string $paymentMethod = 'midtrans'): array
     {
         $orderId = $payment->payment_code;
         $grossAmount = (int) round($payment->paid_amount);
@@ -65,39 +61,54 @@ class MidtransService
             ]
         ];
 
-        // Specific payment method overrides if provided
-        if ($paymentMethod === 'gopay') {
-            $params['payment_type'] = 'gopay';
-            $params['gopay'] = [
-                'enable_callback' => true,
-                'callback_url' => route('guest.payment.success', ['paymentCode' => $payment->payment_code])
-            ];
-        } elseif (str_ends_with($paymentMethod, '_va')) {
-            $bank = str_replace('_va', '', $paymentMethod);
-            $params['payment_type'] = 'bank_transfer';
-            $params['bank_transfer'] = [
-                'bank' => $bank
-            ];
-        } elseif ($paymentMethod === 'qris') {
-            $params['payment_type'] = 'qris';
+        
+        if ($paymentMethod !== 'midtrans' && !empty($paymentMethod)) {
+            
+            
+            $mappedMethod = $paymentMethod;
+            if (in_array($paymentMethod, ['dana', 'ovo', 'linkaja'])) {
+                $mappedMethod = 'qris'; 
+            } elseif ($paymentMethod === 'mandiri_va') {
+                $mappedMethod = 'echannel'; 
+            }
+            
+            $params['enabled_payments'] = [$mappedMethod];
+
+            if ($paymentMethod === 'gopay') {
+                $params['payment_type'] = 'gopay';
+                $params['gopay'] = [
+                    'enable_callback' => true,
+                    'callback_url' => route('guest.payment.success', ['paymentCode' => $payment->payment_code])
+                ];
+            } elseif (str_ends_with($paymentMethod, '_va') && $paymentMethod !== 'mandiri_va') {
+                $bank = str_replace('_va', '', $paymentMethod);
+                $params['payment_type'] = 'bank_transfer';
+                $params['bank_transfer'] = [
+                    'bank' => $bank
+                ];
+            } elseif ($paymentMethod === 'mandiri_va') {
+                $params['payment_type'] = 'echannel';
+                $params['echannel'] = [
+                    'bill_info1' => 'Payment For:',
+                    'bill_info2' => 'Donation'
+                ];
+            } elseif (in_array($paymentMethod, ['qris', 'dana', 'ovo', 'linkaja'])) {
+                $params['payment_type'] = 'qris';
+            }
         }
 
         return $params;
     }
 
-    /**
-     * Create Snap Token from Midtrans.
-     */
-    public function createSnapToken(ZakatPayment $payment, string $paymentMethod = 'midtrans'): string
+    
+    public function createSnapToken(Payment $payment, string $paymentMethod = 'midtrans'): string
     {
         $params = $this->buildTransactionParams($payment, $paymentMethod);
         return Snap::getSnapToken($params);
     }
 
-    /**
-     * Process Midtrans Notification Payload.
-     */
-    public function handleNotificationPayload(array $payload): ?ZakatPayment
+    
+    public function handleNotificationPayload(array $payload): ?Payment
     {
         $orderId = $payload['order_id'] ?? null;
         $transactionStatus = $payload['transaction_status'] ?? null;
@@ -107,7 +118,7 @@ class MidtransService
             return null;
         }
 
-        $payment = ZakatPayment::where('payment_code', $orderId)->first();
+        $payment = Payment::where('payment_code', $orderId)->first();
         if (!$payment) {
             return null;
         }

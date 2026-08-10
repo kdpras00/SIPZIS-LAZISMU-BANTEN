@@ -7,9 +7,9 @@
 @endsection
 
 @section('content')
-    <div class="min-h-screen bg-gray-50 pb-12 pt-6"> <!-- pt-24 if navbar is fixed -->
+    <div class="min-h-screen bg-gray-50 pb-12 pt-6"> 
         
-        <!-- Breadcrumb & Back -->
+        
         <div class="container mx-auto px-4 max-w-7xl mb-6">
             <a href="{{ route('campaigns.index', $category) }}" 
                class="inline-flex items-center text-gray-500 hover:text-orange-600 transition-colors duration-200">
@@ -21,19 +21,25 @@
         <div class="container mx-auto px-4 max-w-7xl">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 
-                <!-- LEFT COLUMN: Main Content -->
+                
                 <div class="lg:col-span-2 space-y-8">
                     
-                    <!-- Campaign Image & Header -->
+                    
                     <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
-                        <div class="relative h-[300px] md:h-[400px] w-full group overflow-hidden">
+                        <div class="relative h-[300px] md:h-[400px] w-full group overflow-hidden bg-gray-200 flex items-center justify-center">
+                            @if($campaign->image_url)
                             <img src="{{ $campaign->image_url }}" 
                                  alt="{{ $campaign->title }}" 
-                                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                            <!-- Overlay dipergelap agar tulisan putih lebih terbaca -->
+                                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700">
+                            @else
+                            <svg class="w-24 h-24 text-gray-400 z-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            @endif
+                            
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                             
-                            <!-- Badges on Image -->
+                            
                             <div class="absolute bottom-4 left-4 right-4 text-white z-10">
                                 <span class="inline-block px-3 py-1 rounded-full bg-orange-600/90 backdrop-blur-sm text-xs font-semibold mb-2">
                                     {{ $categoryDetails['title'] }}
@@ -55,9 +61,9 @@
                         </div>
                     </div>
 
-                    <!-- Tabs/Navigation (Optional, keep simple for now) -->
                     
-                    <!-- Description -->
+                    
+                    
                     <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
                         <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
                             <i class="bi bi-card-text mr-3 text-orange-600"></i>
@@ -68,21 +74,18 @@
                         </div>
                     </div>
 
-                    <!-- Doa & Harapan (Placeholder for improvements) -->
-                    <!-- <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">Doa Donatur</h3>
-                         List of comments could go here 
-                    </div> -->
+                    
+                    
 
                 </div>
 
-                <!-- RIGHT COLUMN: Donation Action (Sticky) -->
+                
                 <div class="lg:col-span-1">
                     <div class="sticky top-24 space-y-6">
                         
-                        <!-- Donation Card -->
+                        
                         <div class="bg-white rounded-3xl p-6 shadow-lg border border-gray-100 relative overflow-hidden">
-                            <!-- Background Decoration -->
+                            
                             <div class="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 bg-orange-50 rounded-full blur-2xl opacity-50"></div>
                             
                             <h3 class="text-lg font-bold text-gray-900 mb-6">Target Donasi</h3>
@@ -93,7 +96,7 @@
                                 </div>
                                 <div class="flex justify-between text-xs text-gray-500 mb-3">
                                     <span>Terkumpul</span>
-                                    {{-- <span>Target: {{ $campaign->formatted_target_amount }}</span> --}}
+                                    
                                 </div>
                                 
                                 <div class="w-full bg-gray-100 rounded-full h-3">
@@ -110,12 +113,11 @@
                             </div>
 
                             <button id="donateButton" 
-                                    class="w-full group relative overflow-hidden bg-gradient-to-br from-orange-600 to-orange-700 text-white rounded-xl px-4 py-4 font-bold shadow-green-200 shadow-xl transition-all hover:shadow-green-300 hover:scale-[1.02] active:scale-[0.98]">
+                                    class="w-full relative overflow-hidden bg-gradient-to-br from-orange-600 to-orange-700 text-white rounded-xl px-4 py-4 font-bold transition-all">
                                 <div class="relative z-10 flex items-center justify-center">
                                     <span>Donasi Sekarang</span>
-                                    <i class="bi bi-heart-fill ml-2 group-hover:animate-pulse"></i>
+                                    <i class="bi bi-heart-fill ml-2"></i>
                                 </div>
-                                <div class="absolute inset-0 bg-gradient-to-br from-orange-500 to-orange-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                             </button>
 
                             <div class="mt-6 flex items-center justify-center space-x-4 text-xs text-gray-500">
@@ -130,17 +132,17 @@
                             </div>
                         </div>
 
-                        <!-- Donors List Card -->
+                        
                         <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="font-bold text-gray-900">Donatur Terbaru</h3>
                                 <span class="text-xs px-2 py-1 bg-orange-50 text-orange-700 rounded-full font-medium">
-                                    {{ $campaign->zakatPayments->count() }} Orang
+                                    {{ $campaign->payments->count() }} Orang
                                 </span>
                             </div>
 
                             <div class="max-h-[300px] overflow-y-auto pr-2 space-y-4 custom-scrollbar">
-                                @forelse($campaign->zakatPayments as $payment)
+                                @forelse($campaign->payments as $payment)
                                     <div class="flex items-start">
                                         <div class="flex-shrink-0">
                                             <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center text-orange-600 font-bold text-sm">
@@ -176,7 +178,7 @@
                             </div>
                         </div>
 
-                        <!-- Share Card -->
+                        
                         <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 text-center">
                             <h4 class="text-sm font-semibold text-gray-900 mb-3">Bagikan Campaign Ini</h4>
                             <div class="flex justify-center space-x-3">
@@ -201,7 +203,7 @@
         </div>
     </div>
 
-    <!-- Script for Redirect -->
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const donateButton = document.getElementById('donateButton');
@@ -215,7 +217,7 @@
         });
     </script>
 
-    <!-- Additional Styles -->
+    
     <style>
         .custom-scrollbar::-webkit-scrollbar {
             width: 4px;

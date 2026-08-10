@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="py-6 px-4 max-w-4xl mx-auto">
-    <!-- Header -->
+    
     <div class="flex items-center justify-between mb-6 pb-4 border-b border-[#f0ece6]">
         <div class="flex items-center gap-3">
             <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white border border-[#e8e0d6] text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#f0ece6] transition-all shadow-2xs">
@@ -21,7 +21,7 @@
         </a>
     </div>
 
-    <!-- Stats Summary Card Grid -->
+    
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div class="p-5 rounded-2xl bg-white border border-[#f0ece6] shadow-sm">
             <span class="text-xs font-semibold text-[#8b7e74] uppercase tracking-wider block mb-1">Total Donasi</span>
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <!-- Recent Donations -->
+    
     @if($payments->count() > 0)
     <div class="bg-white rounded-2xl border border-[#f0ece6] p-6 mb-6 shadow-sm">
         <div class="flex items-center justify-between mb-5 border-b border-[#f0ece6] pb-3">
@@ -59,7 +59,7 @@
             <div class="p-4 rounded-xl border border-[#f0ece6] hover:bg-[#fff7ed] hover:border-[#ffedd5] transition-all duration-200 {{ $loop->odd ? 'bg-[#faf8f5]' : 'bg-white' }} flex items-center justify-between gap-4">
                 <div>
                     <h4 class="text-xs font-bold text-[#1c0f0a] m-0 mb-1">
-                        {{ $payment->programType ? $payment->programType->name : 'Donasi Umum' }}
+                        {{ $payment->program ? $payment->program->name : 'Donasi Umum' }}
                     </h4>
                     <span class="text-[11px] text-[#8b7e74]">
                         {{ $payment->payment_date->translatedFormat('d F Y') }}
@@ -86,7 +86,7 @@
     </div>
     @endif
 
-    <!-- Fixed Bottom Navigation -->
+    
     <div class="fixed-bottom-nav bg-white border-t border-[#f0ece6]">
         <div class="flex justify-between items-center w-full px-2 py-2 overflow-x-auto gap-1 no-scrollbar">
             <a href="{{ route('home') }}" class="flex flex-shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] font-medium no-underline transition-all">

@@ -4,24 +4,20 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    {{-- Header --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Tambah Mustahik Baru</h2>
             <p class="text-sm" style="color: #8b7e74;">Menambahkan data mustahik (penerima zakat) baru ke dalam sistem</p>
         </div>
-        <a href="{{ route('mustahik.index') }}"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium transition-colors duration-200"
-            style="background: #f0ece6; color: #1c0f0a;">
-            <i class="bi bi-arrow-left"></i> Kembali
-        </a>
+       
     </div>
 
     <div class="rounded-2xl p-5 sm:p-6 bg-white border border-[#f0ece6]" style="box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
         <form action="{{ route('mustahik.store') }}" method="POST" id="mustahikForm">
             @csrf
 
-            {{-- Personal Information Section --}}
+            
             <div class="mb-6">
                 <h6 class="text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2" style="color: #c2410c;">
                     <i class="bi bi-person-fill text-sm"></i> Informasi Personal
@@ -132,7 +128,7 @@
                 </div>
             </div>
 
-            {{-- Address & Details Section --}}
+            
             <div class="mb-6 pt-5 border-t border-[#f0ece6]">
                 <h6 class="text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2" style="color: #c2410c;">
                     <i class="bi bi-geo-alt-fill text-sm"></i> Alamat & Detail Tambahan
@@ -179,7 +175,7 @@
                 </div>
             </div>
 
-            {{-- Actions --}}
+            
             <div class="flex justify-end gap-3 pt-5 border-t border-[#f0ece6]">
                 <a href="{{ route('mustahik.index') }}"
                     class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors" style="background: #f0ece6; color: #1c0f0a;">

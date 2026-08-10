@@ -10,12 +10,10 @@ use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
-    /**
-     * Display a listing of news articles
-     */
+    
     public function index()
     {
-        // For public berita page
+        
         $news = News::published()
             ->with('author')
             ->orderBy('created_at', 'desc')
@@ -24,9 +22,7 @@ class NewsController extends Controller
         return view('pages.berita', compact('news'));
     }
 
-    /**
-     * Display a listing of news articles for admin
-     */
+    
     public function adminIndex()
     {
         $news = News::with('author')
@@ -36,45 +32,35 @@ class NewsController extends Controller
         return view('admin.news.index', compact('news'));
     }
 
-    /**
-     * Display the specified news article for admin
-     */
+    
     public function adminShow(News $news)
     {
         $news->load('author');
         return view('admin.news.show', compact('news'));
     }
 
-    /**
-     * Show the form for creating a new news article
-     */
+    
     public function create()
     {
         return view('admin.news.create');
     }
 
-    /**
-     * Store a newly created news article
-     */
-    public function store(Request $request)
+    
+    public function store(\App\Http\Requests\StoreNewsRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'excerpt' => 'nullable|string|max:500',
-            'is_published' => 'boolean'
-        ]);
+        $validated = $request->validated();
 
-        // Generate slug
+        
         $validated['slug'] = News::generateSlug($validated['title']);
         $validated['author_id'] = Auth::id();
         $validated['is_published'] = $request->has('is_published');
 
-        // Handle image upload
+        
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('news', 'public');
-            $validated['image'] = $imagePath;
+            $validated['image'] = app(\App\Services\MediaService::class)->uploadImage(
+                $request->file('image'), 
+                'news'
+            );
         }
 
         News::create($validated);
@@ -83,43 +69,31 @@ class NewsController extends Controller
             ->with('success', 'Berita berhasil ditambahkan!');
     }
 
-    /**
-     * Show the form for editing the specified news article
-     */
+    
     public function edit(News $news)
     {
         return view('admin.news.edit', compact('news'));
     }
 
-    /**
-     * Update the specified news article
-     */
-    public function update(Request $request, News $news)
+    
+    public function update(\App\Http\Requests\UpdateNewsRequest $request, News $news)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'excerpt' => 'nullable|string|max:500',
-            'is_published' => 'boolean'
-        ]);
+        $validated = $request->validated();
 
-        // Update slug if title changed
+        
         if ($news->title !== $validated['title']) {
             $validated['slug'] = News::generateSlug($validated['title']);
         }
 
         $validated['is_published'] = $request->has('is_published');
 
-        // Handle image upload
+        
         if ($request->hasFile('image')) {
-            // Delete old image
-            if ($news->image) {
-                Storage::disk('public')->delete($news->image);
-            }
-
-            $imagePath = $request->file('image')->store('news', 'public');
-            $validated['image'] = $imagePath;
+            $validated['image'] = app(\App\Services\MediaService::class)->uploadImage(
+                $request->file('image'), 
+                'news',
+                $news->image
+            );
         }
 
         $news->update($validated);
@@ -128,14 +102,12 @@ class NewsController extends Controller
             ->with('success', 'Berita berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified news article
-     */
+    
     public function destroy(News $news)
     {
-        // Delete associated image
+        
         if ($news->image) {
-            Storage::disk('public')->delete($news->image);
+            app(\App\Services\MediaService::class)->deleteImage($news->image);
         }
 
         $news->delete();
@@ -144,9 +116,7 @@ class NewsController extends Controller
             ->with('success', 'Berita berhasil dihapus!');
     }
 
-    /**
-     * Toggle publish status
-     */
+    
     public function togglePublish(News $news)
     {
         $news->update([
@@ -158,9 +128,7 @@ class NewsController extends Controller
         return back()->with('success', "Berita berhasil {$status}!");
     }
 
-    /**
-     * Display published news for public (for berita page)
-     */
+    
     public function publicIndex()
     {
         $news = News::published()
@@ -171,9 +139,7 @@ class NewsController extends Controller
         return view('partials.berita', compact('news'));
     }
 
-    /**
-     * Show all news with pagination
-     */
+    
     public function all()
     {
         $news = News::published()
@@ -184,9 +150,7 @@ class NewsController extends Controller
         return view('news.all', compact('news'));
     }
 
-    /**
-     * Show single news article for public
-     */
+    
     public function show($slug)
     {
         $news = News::where('slug', $slug)

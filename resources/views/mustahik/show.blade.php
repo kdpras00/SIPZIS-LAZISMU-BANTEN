@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    <!-- Header -->
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Detail Mustahik</h2>
@@ -25,7 +25,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-6">
-            <!-- Personal Information Card -->
+            
             <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
                 <div class="px-6 py-4 border-b border-[#f0ece6]">
                     <h5 class="text-sm font-bold text-[#1c0f0a] mb-0 flex items-center">
@@ -114,7 +114,7 @@
                 </div>
             </div>
 
-            <!-- Address Information Card -->
+            
             <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
                 <div class="px-6 py-4 border-b border-[#f0ece6]">
                     <h5 class="text-sm font-bold text-[#1c0f0a] mb-0 flex items-center">
@@ -143,7 +143,7 @@
                 </div>
             </div>
 
-            <!-- Category Information Card -->
+            
             <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
                 <div class="px-6 py-4 border-b border-[#f0ece6]">
                     <h5 class="text-sm font-bold text-[#1c0f0a] mb-0 flex items-center">
@@ -187,7 +187,7 @@
         </div>
 
         <div class="lg:col-span-1 space-y-6">
-            <!-- Statistics Card -->
+            
             <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
                 <div class="px-6 py-4 border-b border-[#f0ece6]">
                     <h6 class="text-sm font-bold text-[#1c0f0a] mb-0 flex items-center">
@@ -222,7 +222,7 @@
                 </div>
             </div>
 
-            <!-- Recent Distributions Card -->
+            
             <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
                 <div class="px-6 py-4 border-b border-[#f0ece6]">
                     <h6 class="text-sm font-bold text-[#1c0f0a] mb-0 flex items-center">

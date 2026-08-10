@@ -7,15 +7,20 @@ use App\Models\Program;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+use App\Services\MediaService;
+
 class ProgramController extends Controller
 {
-    /**
-     * Display a listing of programs for admin management.
-     */
+    protected $mediaService;
+
+    public function __construct(MediaService $mediaService)
+    {
+        $this->mediaService = $mediaService;
+    }
+    
     public function adminIndex()
     {
-        $programs = Program::with('programType')
-            ->orderBy('category')
+        $programs = Program::orderBy('category')
             ->orderBy('name')
             ->get();
 
@@ -24,9 +29,7 @@ class ProgramController extends Controller
         return view('admin.programs.index', compact('groupedPrograms'));
     }
 
-    /**
-     * Show the form for creating a new program.
-     */
+    
     public function adminCreate()
     {
         $categories = $this->getAvailableCategories();
@@ -34,9 +37,7 @@ class ProgramController extends Controller
         return view('admin.programs.create', compact('categories'));
     }
 
-    /**
-     * Show the form for bulk creating programs.
-     */
+    
     public function adminBulkCreate()
     {
         $categories = $this->getAvailableCategories();
@@ -44,43 +45,22 @@ class ProgramController extends Controller
         return view('admin.programs.bulk-create', compact('categories'));
     }
 
-    /**
-     * Store a newly created program in storage.
-     */
-    public function adminStore(Request $request)
+    
+    public function adminStore(\App\Http\Requests\StoreProgramRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category' => 'required|string|in:zakat,infaq,shadaqah,pendidikan,kesehatan,ekonomi,sosial-dakwah,kemanusiaan,lingkungan',
-            'target_amount' => 'nullable|numeric|min:0',
-            'status' => 'required|in:active,inactive',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        // Get target_amount and ensure it's numeric (remove any formatting)
-        $targetAmount = $request->input('target_amount');
-        if ($targetAmount !== null && $targetAmount !== '') {
-            $targetAmount = str_replace(['.', ','], '', $targetAmount);
-            $targetAmount = is_numeric($targetAmount) ? (float)$targetAmount : 0;
-        } else {
-            $targetAmount = 0;
-        }
-
-        $data = $request->only(['name', 'description', 'status']);
-        $data['target_amount'] = $targetAmount;
-        $data['category'] = $request->category; // Use category directly
+        $data = $request->validated();
+        
         $data['slug'] = $this->generateUniqueSlug($data['name']);
 
-        // Cek duplikasi nama + kategori
+        
         if (Program::where('name', $data['name'])->where('category', $data['category'])->exists()) {
             return redirect()->back()->withInput()
                 ->withErrors(['name' => 'Program dengan nama dan kategori ini sudah ada.']);
         }
 
-        // Upload foto jika ada
+        
         if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('programs', 'public');
+            $data['photo'] = $this->mediaService->uploadImage($request->file('photo'), 'programs');
         }
 
         Program::create($data);
@@ -89,39 +69,22 @@ class ProgramController extends Controller
             ->with('success', 'Program berhasil ditambahkan.');
     }
 
-    /**
-     * Store multiple programs at once.
-     */
-    public function adminStoreBulk(Request $request)
+    
+    public function adminStoreBulk(\App\Http\Requests\StoreBulkProgramRequest $request)
     {
-        $request->validate([
-            'programs' => 'required|array',
-            'programs.*.name' => 'required|string|max:255',
-            'programs.*.category' => 'required|string|in:zakat,infaq,shadaqah,pendidikan,kesehatan,ekonomi,sosial-dakwah,kemanusiaan,lingkungan',
-            'programs.*.target_amount' => 'nullable|numeric|min:0',
-            'programs.*.status' => 'required|in:active,inactive',
-        ]);
+        $validated = $request->validated();
 
-        foreach ($request->programs as $programData) {
-            // Get target_amount and ensure it's numeric (remove any formatting)
-            $targetAmount = $programData['target_amount'] ?? 0;
-            if ($targetAmount && $targetAmount !== '') {
-                $targetAmount = str_replace(['.', ','], '', $targetAmount);
-                $targetAmount = is_numeric($targetAmount) ? (float)$targetAmount : 0;
-            } else {
-                $targetAmount = 0;
-            }
-
+        foreach ($validated['programs'] as $programData) {
             $data = [
                 'name' => $programData['name'],
                 'description' => $programData['description'] ?? '',
-                'target_amount' => $targetAmount,
+                'target_amount' => $programData['target_amount'] ?? 0,
                 'status' => $programData['status'],
-                'category' => $programData['category'], // Use category directly
+                'category' => $programData['category'], 
                 'slug' => $this->generateUniqueSlug($programData['name']),
             ];
 
-            // Cek duplikasi
+            
             if (Program::where('name', $data['name'])->where('category', $data['category'])->exists()) {
                 return redirect()->back()->withInput()
                     ->withErrors([
@@ -136,9 +99,7 @@ class ProgramController extends Controller
             ->with('success', 'Semua program berhasil dibuat.');
     }
 
-    /**
-     * Show the form for editing the specified program.
-     */
+    
     public function adminEdit(Program $program)
     {
         $categories = $this->getAvailableCategories();
@@ -146,40 +107,16 @@ class ProgramController extends Controller
         return view('admin.programs.edit', compact('program', 'categories'));
     }
 
-    /**
-     * Update the specified program in storage.
-     */
-    public function adminUpdate(Request $request, Program $program)
+    
+    public function adminUpdate(\App\Http\Requests\UpdateProgramRequest $request, Program $program)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category' => 'required|string|in:zakat,infaq,shadaqah,pendidikan,kesehatan,ekonomi,sosial-dakwah,kemanusiaan,lingkungan',
-            'target_amount' => 'nullable|numeric|min:0',
-            'status' => 'required|in:active,inactive',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        $data = $request->validated();
 
-        // Get target_amount and ensure it's numeric (remove any formatting)
-        $targetAmount = $request->input('target_amount');
-        if ($targetAmount !== null && $targetAmount !== '') {
-            $targetAmount = str_replace(['.', ','], '', $targetAmount);
-            $targetAmount = is_numeric($targetAmount) ? (float)$targetAmount : 0;
-        } else {
-            $targetAmount = 0;
-        }
-
-        $data = $request->only(['name', 'description', 'status']);
-        $data['target_amount'] = $targetAmount;
-        $data['category'] = $request->category; // Use category directly
         $data['slug'] = $this->generateUniqueSlug($data['name'], $program->id);
 
-        // Upload foto baru dan hapus yang lama
+        
         if ($request->hasFile('photo')) {
-            if ($program->photo) {
-                Storage::disk('public')->delete($program->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('programs', 'public');
+            $data['photo'] = $this->mediaService->uploadImage($request->file('photo'), 'programs', $program->photo);
         }
 
         $program->update($data);
@@ -188,14 +125,10 @@ class ProgramController extends Controller
             ->with('success', 'Program berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified program from storage.
-     */
+    
     public function adminDestroy(Program $program)
     {
-        if ($program->photo) {
-            Storage::disk('public')->delete($program->photo);
-        }
+        $this->mediaService->deleteImage($program->photo);
 
         $program->delete();
 
@@ -203,9 +136,7 @@ class ProgramController extends Controller
             ->with('success', 'Program berhasil dihapus.');
     }
 
-    /**
-     * Display the specified program.
-     */
+    
     public function show($slug)
     {
         $program = Program::where('slug', $slug)->active()->firstOrFail();
@@ -215,27 +146,25 @@ class ProgramController extends Controller
         $totalTarget = $program->total_target;
         $category = $program->category;
 
-        // Always use the individual program view for the show method
+        
         $viewName = 'programs.show';
 
         return view($viewName, compact('program', 'zakatTypes', 'collectedAmount', 'totalTarget', 'category'));
     }
 
-    /**
-     * Show program completed page with recommendations
-     */
+    
     public function completed($id)
     {
         $program = Program::findOrFail($id);
         
-        // Get similar active programs for recommendations (same category)
+        
         $recommendedPrograms = Program::active()
             ->where('id', '!=', $id)
             ->where('category', $program->category)
             ->limit(3)
             ->get();
         
-        // If no similar programs, get any active programs
+        
         if ($recommendedPrograms->count() < 3) {
             $additionalPrograms = Program::active()
                 ->where('id', '!=', $id)
@@ -249,9 +178,7 @@ class ProgramController extends Controller
         return view('programs.completed', compact('program', 'recommendedPrograms'));
     }
 
-    /**
-     * Get available categories for programs (main categories only).
-     */
+    
     private function getAvailableCategories(): array
     {
         return [
@@ -267,10 +194,7 @@ class ProgramController extends Controller
         ];
     }
 
-    /**
-     * Generate a unique slug for a program name.
-     * If the slug already exists, append a number to make it unique.
-     */
+    
     private function generateUniqueSlug(string $name, ?int $excludeId = null): string
     {
         $baseSlug = Str::slug($name);
@@ -280,7 +204,7 @@ class ProgramController extends Controller
         while (true) {
             $query = Program::where('slug', $slug);
             
-            // Exclude current program when updating
+            
             if ($excludeId) {
                 $query->where('id', '!=', $excludeId);
             }

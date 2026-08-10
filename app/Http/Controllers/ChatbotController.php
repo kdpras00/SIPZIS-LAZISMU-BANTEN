@@ -23,12 +23,12 @@ class ChatbotController extends Controller
         }
 
         try {
-            // Prompt sistem agar chatbot hanya fokus pada ZIS
+            
             $systemInstruction = "Kamu adalah asisten digital ahli dalam sistem pengelolaan zakat, infak, dan sedekah (SIPZIS). 
             Jawablah pertanyaan pengguna hanya seputar zakat, infak, sedekah, lembaga amil, mustahik, muzakki, sistem informasi zakat, pembayaran digital zakat, dan hal yang relevan.
             Jika pertanyaan di luar konteks, tolong jawab dengan sopan bahwa kamu hanya bisa membantu seputar pengelolaan zakat, infak, dan sedekah.";
 
-            // Gemini API
+            
             $apiKey = $this->getGeminiApiKey();
             
             if (!$apiKey) {
@@ -58,7 +58,7 @@ class ChatbotController extends Controller
             if ($response->successful()) {
                 $responseData = $response->json();
                 
-                // Extract text from Gemini response
+                
                 $text = '';
                 if (isset($responseData['candidates'][0]['content']['parts'][0]['text'])) {
                     $text = $responseData['candidates'][0]['content']['parts'][0]['text'];

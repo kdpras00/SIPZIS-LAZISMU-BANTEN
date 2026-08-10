@@ -1,13 +1,12 @@
 <div class="relative bg-gray-50 min-h-screen overflow-hidden"
     id="tentang">
-    <!-- Clean background tint -->
+    
     <div class="absolute inset-0 bg-white/90"></div>
 
     <div class="relative z-10 py-20">
         <div class="container mx-auto px-4 py-16">
 
-
-            <!-- Values Section -->
+            
             <div class="relative bg-white rounded-xl shadow-sm border border-gray-100 p-10 mb-20">
                 <div class="max-w-4xl mx-auto font-sans">
                     <div class="relative z-10">
@@ -33,9 +32,9 @@
                 </div>
             </div>
 
-            <!-- Core Values Section -->
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-20 max-w-5xl mx-auto">
-                <!-- Visi -->
+                
                 <div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                         <span class="w-8 h-1 bg-orange-600 rounded-full mr-4"></span>
@@ -48,7 +47,7 @@
                     </p>
                 </div>
 
-                <!-- Misi -->
+                
                 <div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                         <span class="w-8 h-1 bg-orange-600 rounded-full mr-4"></span>
@@ -63,7 +62,7 @@
                     </ul>
                 </div>
 
-                <!-- Prinsip -->
+                
                 <div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                         <span class="w-8 h-1 bg-orange-600 rounded-full mr-4"></span>
@@ -77,7 +76,7 @@
                     </ul>
                 </div>
 
-                <!-- Tujuan -->
+                
                 <div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                         <span class="w-8 h-1 bg-orange-600 rounded-full mr-4"></span>
@@ -91,13 +90,7 @@
                     </ul>
                 </div>
             </div>
-
-
-
-
-
         </div>
     </div>
 </div>
 
-<!-- Styles moved to tailwind.config.js for better performance -->

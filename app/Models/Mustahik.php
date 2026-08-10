@@ -35,7 +35,7 @@ class Mustahik extends Model
         'is_active' => 'boolean',
     ];
 
-    // Constants for categories (8 Asnaf)
+    
     public const CATEGORIES = [
         'fakir' => 'Fakir - Orang yang tidak memiliki harta dan pekerjaan',
         'miskin' => 'Miskin - Orang yang memiliki harta/pekerjaan tapi tidak mencukupi',
@@ -47,16 +47,16 @@ class Mustahik extends Model
         'ibnu_sabil' => 'Ibnu Sabil - Musafir yang kehabisan bekal dalam perjalanan'
     ];
 
-    // Relationships
-    public function zakatDistributions()
+    
+    public function distributions()
     {
-        return $this->hasMany(ZakatDistribution::class);
+        return $this->hasMany(Distribution::class);
     }
 
-    // Methods
+    
     public function getTotalZakatReceivedAttribute()
     {
-        return $this->zakatDistributions()->sum('amount');
+        return $this->distributions()->sum('amount');
     }
 
     public function getCategoryLabelAttribute()
@@ -71,10 +71,10 @@ class Mustahik extends Model
 
     public function getLastDistributionAttribute()
     {
-        return $this->zakatDistributions()->latest('distribution_date')->first();
+        return $this->distributions()->latest('distribution_date')->first();
     }
 
-    // Scopes
+    
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

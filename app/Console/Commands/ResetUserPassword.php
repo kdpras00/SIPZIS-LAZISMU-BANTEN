@@ -8,29 +8,19 @@ use Illuminate\Support\Facades\Hash;
 
 class ResetUserPassword extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    
     protected $signature = 'app:reset-user-password {email} {password?}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    
     protected $description = 'Reset password for a specific user by email';
 
-    /**
-     * Execute the console command.
-     */
+    
     public function handle()
     {
         $email = $this->argument('email');
-        $password = $this->argument('password') ?? 'password'; // Default password if not provided
+        $password = $this->argument('password') ?? 'password'; 
 
-        // Find the user by email
+        
         $user = User::where('email', $email)->first();
 
         if (!$user) {
@@ -38,7 +28,7 @@ class ResetUserPassword extends Command
             return 1;
         }
 
-        // Update the password
+        
         $user->password = Hash::make($password);
         $user->save();
 

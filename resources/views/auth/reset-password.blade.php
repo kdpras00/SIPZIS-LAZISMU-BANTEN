@@ -4,13 +4,13 @@
     <div class="min-h-screen flex items-center justify-center" style="background: #faf8f5;">
         <div class="w-full max-w-md px-6">
             <div class="bg-white rounded-2xl p-8" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06), 0 4px 16px rgba(28,15,10,0.06);">
-                <!-- Logo & Title -->
+                
                 <div class="text-center mb-8">
                     <img src="{{ asset('img/logo.png') }}" alt="Lazismu" class="h-12 mx-auto mb-3">
                     <p class="text-sm" style="color: #8b7e74;">Reset Password</p>
                 </div>
 
-                <!-- Error Messages -->
+                
                 @if($errors->any())
                     <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
                         <ul class="list-disc list-inside">
@@ -21,12 +21,12 @@
                     </div>
                 @endif
 
-                <!-- Reset Password Form -->
+                
                 <form method="POST" action="{{ route('password.update') }}" class="space-y-4">
                     @csrf
                     <input type="hidden" name="token" value="{{ $token }}">
 
-                    <!-- Email Input -->
+                    
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                         <input id="email" type="email"
@@ -38,7 +38,7 @@
                         @enderror
                     </div>
 
-                    <!-- Password Input -->
+                    
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password Baru</label>
                         <div class="relative">
@@ -56,7 +56,7 @@
                         @enderror
                     </div>
 
-                    <!-- Confirm Password Input -->
+                    
                     <div>
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Password</label>
                         <div class="relative">
@@ -74,14 +74,14 @@
                         @enderror
                     </div>
 
-                    <!-- Submit Button -->
+                    
                     <button type="submit"
                         class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
                         Reset Password
                     </button>
                 </form>
 
-                <!-- Back to Login Link -->
+                
                 <p class="text-center text-sm text-gray-600 mt-6">
                     <a href="{{ route('login') }}" class="text-orange-600 hover:text-orange-700 font-medium">
                         ← Kembali ke Login

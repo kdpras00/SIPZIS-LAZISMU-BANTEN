@@ -4,7 +4,7 @@
 <div class="min-h-screen flex items-center justify-center" style="background: #faf8f5;">
     <div class="w-full max-w-md px-6">
         <div class="bg-white rounded-2xl p-8" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06), 0 4px 16px rgba(28,15,10,0.06);">
-            <!-- Icon & Title -->
+            
             <div class="text-center mb-6">
                 <div class="mx-auto w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style="background: #fff7ed;">
                     <svg class="w-7 h-7" style="color: #c2410c;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -15,7 +15,7 @@
                 <p class="text-sm" style="color: #8b7e74;">Kami telah mengirimkan link verifikasi ke email Anda</p>
             </div>
 
-            <!-- Instructions -->
+            
             <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
                 <p class="text-sm text-orange-800 text-center">
                     <i class="bi bi-info-circle me-1"></i>
@@ -23,7 +23,7 @@
                 </p>
             </div>
 
-            <!-- Success Message -->
+            
             @if (session('success'))
                 <div class="mb-4 p-4 bg-orange-100 border border-orange-400 text-orange-700 rounded-lg text-sm">
                     <i class="bi bi-check-circle me-2"></i>
@@ -31,7 +31,7 @@
                 </div>
             @endif
 
-            <!-- Warning Message -->
+            
             @if (session('warning'))
                 <div class="mb-4 p-4 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded-lg text-sm">
                     <i class="bi bi-exclamation-triangle me-2"></i>
@@ -39,7 +39,7 @@
                 </div>
             @endif
 
-            <!-- Resend Form -->
+            
             <form method="POST" action="{{ route('verification.send') }}" class="mb-4">
                 @csrf
                 <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
@@ -50,7 +50,7 @@
                 </button>
             </form>
 
-            <!-- Divider -->
+            
             <div class="relative my-6">
                 <div class="absolute inset-0 flex items-center">
                     <div class="w-full border-t border-gray-200"></div>
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <!-- Logout Button -->
+            
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
@@ -71,7 +71,7 @@
                 </button>
             </form>
 
-            <!-- Help Text -->
+            
             <p class="text-center text-xs text-gray-500 mt-6">
                 Tidak menerima email? Periksa folder spam atau klik tombol kirim ulang di atas
             </p>

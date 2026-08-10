@@ -11,14 +11,14 @@
                     </div>
                 </div>
 
-                <!-- Success Message -->
+                
                 @if(session('status'))
                     <div class="mb-4 p-4 bg-orange-100 border border-orange-400 text-orange-700 rounded-lg">
                         {!! session('status') !!}
                     </div>
                 @endif
 
-                <!-- Error Messages -->
+                
                 @if($errors->any())
                     <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
                         <ul class="list-disc list-inside">
@@ -29,7 +29,7 @@
                     </div>
                 @endif
 
-                <!-- Forgot Password Form -->
+                
                 <form method="POST" action="{{ route('password.email') }}" class="space-y-4" id="forgotPasswordForm">
                     @csrf
 
@@ -37,7 +37,7 @@
                         Masukkan email Anda dan kami akan mengirimkan link untuk mereset password Anda.
                     </p>
 
-                    <!-- Email Input -->
+                    
                     <div>
                         <input id="email" type="email"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('email') border-red-500 @enderror"
@@ -48,14 +48,14 @@
                         @enderror
                     </div>
 
-                    <!-- Submit Button -->
+                    
                     <button type="submit"
                         class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
                         Kirim Link Reset Password
                     </button>
                 </form>
 
-                <!-- Back to Login Link -->
+                
                 <p class="text-center text-sm text-gray-600 mt-6">
                     <a href="{{ route('login') }}" class="text-orange-600 hover:text-orange-700 font-medium">
                         ← Kembali ke Login
@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <!-- Google reCAPTCHA v3 -->
+    
     <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
 
     <script>

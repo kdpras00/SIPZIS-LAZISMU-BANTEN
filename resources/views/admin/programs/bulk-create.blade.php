@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    {{-- Header --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Tambah Program Secara Massal</h2>
@@ -44,7 +44,7 @@
             </div>
 
             <div id="programs-container" class="space-y-4">
-                <!-- Program forms will be added here dynamically -->
+                
             </div>
 
             <div class="flex items-center justify-between mt-6 pt-5 border-t border-[#f0ece6]">

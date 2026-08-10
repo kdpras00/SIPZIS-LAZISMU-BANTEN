@@ -49,7 +49,7 @@
         @endif
     </td>
     <td class="px-5 py-4 whitespace-nowrap text-center">
-        <div class="flex items-center justify-center gap-1.5">
+        <div class="flex items-center justify-start xl:justify-center gap-1.5">
             <a href="{{ route('admin.programs.edit', $program) }}" 
                class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium transition-colors"
                style="background: #f0ece6; color: #1c0f0a;"

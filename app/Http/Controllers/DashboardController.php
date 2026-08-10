@@ -4,14 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Muzakki;
 use App\Models\Mustahik;
-use App\Models\ZakatPayment;
+use App\Models\Payment;
 use App\Models\Program;
-use App\Models\ZakatDistribution;
+use App\Models\Distribution;
+use App\Services\DashboardStatsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    protected $dashboardStatsService;
+
+    public function __construct(DashboardStatsService $dashboardStatsService)
+    {
+        $this->dashboardStatsService = $dashboardStatsService;
+    }
     public function index(Request $request)
     {
         $user = Auth::user();
@@ -28,9 +35,7 @@ class DashboardController extends Controller
         return redirect('/');
     }
 
-    /**
-     * Helper privat untuk memastikan profil muzakki selalu ada tanpa forced redirect.
-     */
+    
     private function getMuzakkiProfile($user)
     {
         $muzakki = $user->muzakki;
@@ -52,56 +57,24 @@ class DashboardController extends Controller
         $currentYear = $request->input('year', date('Y'));
         $currentMonth = date('m');
 
-        $stats = cache()->remember('admin_dashboard_stats_' . $currentYear . '_' . $currentMonth, 300, function () use ($currentYear, $currentMonth) {
-            return [
-                'total_muzakki' => Muzakki::active()->count(),
-                'total_mustahik' => Mustahik::active()->count(),
-                'total_payments_this_year' => ZakatPayment::completed()->byYear($currentYear)->sum('paid_amount'),
-                'total_distributions_this_year' => ZakatDistribution::byYear($currentYear)->sum('amount'),
-                'total_payments_this_month' => ZakatPayment::completed()->byMonth($currentMonth)->sum('paid_amount'),
-                'total_distributions_this_month' => ZakatDistribution::byYear($currentYear)->whereMonth('distribution_date', $currentMonth)->sum('amount'),
-            ];
-        });
+        $stats = $this->dashboardStatsService->getAdminStats($currentYear, $currentMonth);
+        $availableYears = $this->dashboardStatsService->getAvailableYears();
 
-        $availableYears = cache()->remember('available_payment_years', 600, function () {
-            $years = ZakatPayment::selectRaw('YEAR(payment_date) as year')
-                ->distinct()
-                ->orderBy('year', 'desc')
-                ->pluck('year')
-                ->toArray();
-            if (!in_array(date('Y'), $years)) {
-                array_unshift($years, date('Y'));
-            }
-            return $years;
-        });
-
-        $recentPayments = ZakatPayment::with(['muzakki', 'program'])
+        $recentPayments = Payment::with(['muzakki', 'program'])
             ->completed()
             ->latest('payment_date')
             ->take(5)
             ->get();
 
-        $recentDistributions = ZakatDistribution::with(['mustahik'])
+        $recentDistributions = Distribution::with(['mustahik'])
             ->whereHas('mustahik')
             ->latest('distribution_date')
             ->take(5)
             ->get();
 
-        $monthlyPayments = ZakatPayment::completed()
-            ->byYear($currentYear)
-            ->selectRaw('MONTH(payment_date) as month, SUM(paid_amount) as total')
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get()
-            ->pluck('total', 'month')
-            ->toArray();
+        $chartData = $this->dashboardStatsService->getMonthlyChartData($currentYear);
 
-        $chartData = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $chartData[] = $monthlyPayments[$i] ?? 0;
-        }
-
-        $programTypeStats = ZakatPayment::completed()
+        $programTypeStats = Payment::completed()
             ->byYear($currentYear)
             ->selectRaw('program_id, SUM(paid_amount) as total')
             ->groupBy('program_id')
@@ -131,31 +104,16 @@ class DashboardController extends Controller
 
         $currentYear = date('Y');
 
-        $aggregateStats = clone $muzakki->zakatPayments()->completed();
-        $aggregateResult = $aggregateStats->selectRaw("
-            SUM(paid_amount) as total_zakat,
-            SUM(CASE WHEN YEAR(payment_date) = ? THEN paid_amount ELSE 0 END) as zakat_year,
-            COUNT(id) as payment_count
-        ", [$currentYear])->first();
+        $stats = $this->dashboardStatsService->getMuzakkiStats($muzakki, $currentYear);
 
-        $stats = [
-            'total_zakat_paid' => $aggregateResult->total_zakat ?? 0,
-            'total_donated' => $aggregateResult->total_zakat ?? 0,
-            'zakat_this_year' => $aggregateResult->zakat_year ?? 0,
-            'this_year' => $aggregateResult->zakat_year ?? 0,
-            'payment_count' => $aggregateResult->payment_count ?? 0,
-            'total_count' => $aggregateResult->payment_count ?? 0,
-            'last_payment' => $muzakki->zakatPayments()->completed()->latest('payment_date')->first(),
-        ];
-
-        $recentPayments = $muzakki->zakatPayments()
+        $recentPayments = $muzakki->payments()
             ->with('program')
             ->completed()
             ->latest('payment_date')
             ->take(5)
             ->get();
 
-        $yearlyPayments = $muzakki->zakatPayments()
+        $yearlyPayments = $muzakki->payments()
             ->completed()
             ->selectRaw('YEAR(payment_date) as year, SUM(paid_amount) as total')
             ->groupBy('year')
@@ -179,21 +137,7 @@ class DashboardController extends Controller
         $currentYear = date('Y');
         $currentMonth = date('m');
 
-        $data = cache()->remember('api_dashboard_stats_' . $currentYear . '_' . $currentMonth, 300, function () use ($currentYear, $currentMonth) {
-            return [
-                'payments' => [
-                    'total_this_year' => ZakatPayment::completed()->byYear($currentYear)->sum('paid_amount'),
-                    'total_this_month' => ZakatPayment::completed()->byMonth($currentMonth)->sum('paid_amount'),
-                    'count_this_year' => ZakatPayment::completed()->byYear($currentYear)->count(),
-                ],
-                'distributions' => [
-                    'total_this_year' => ZakatDistribution::byYear($currentYear)->sum('amount'),
-                    'total_this_month' => ZakatDistribution::byYear($currentYear)->whereMonth('distribution_date', $currentMonth)->sum('amount'),
-                    'count_this_year' => ZakatDistribution::byYear($currentYear)->count(),
-                ],
-                'balance' => ZakatPayment::completed()->sum('paid_amount') - ZakatDistribution::sum('amount'),
-            ];
-        });
+        $data = $this->dashboardStatsService->getApiStats($currentYear, $currentMonth);
 
         return response()->json($data);
     }
@@ -203,7 +147,7 @@ class DashboardController extends Controller
         $user = Auth::user();
         $muzakki = $this->getMuzakkiProfile($user);
 
-        $payments = $muzakki->zakatPayments()
+        $payments = $muzakki->payments()
             ->with(['program'])
             ->latest('payment_date')
             ->paginate(10);
@@ -288,7 +232,7 @@ class DashboardController extends Controller
         $user = Auth::user();
         $muzakki = $this->getMuzakkiProfile($user);
 
-        $payments = $muzakki->zakatPayments()
+        $payments = $muzakki->payments()
             ->with('program')
             ->completed()
             ->latest('payment_date')
@@ -296,9 +240,9 @@ class DashboardController extends Controller
             ->get();
 
         $stats = [
-            'total_donated' => $muzakki->zakatPayments()->completed()->sum('paid_amount'),
-            'total_count' => $muzakki->zakatPayments()->completed()->count(),
-            'this_year' => $muzakki->zakatPayments()->completed()->byYear(date('Y'))->sum('paid_amount'),
+            'total_donated' => $muzakki->payments()->completed()->sum('paid_amount'),
+            'total_count' => $muzakki->payments()->completed()->count(),
+            'this_year' => $muzakki->payments()->completed()->byYear(date('Y'))->sum('paid_amount'),
         ];
 
         return view('muzakki.amalanku', compact('muzakki', 'payments', 'stats'));

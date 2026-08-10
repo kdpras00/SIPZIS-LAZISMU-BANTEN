@@ -14,11 +14,7 @@ class EmailVerification extends Mailable
     public $user;
     public $verificationUrl;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
+    
     public function __construct($user)
     {
         $this->user = $user;
@@ -29,11 +25,7 @@ class EmailVerification extends Mailable
         );
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
+    
     public function build()
     {
         return $this->subject('🔑 Verifikasi Alamat Email Anda')

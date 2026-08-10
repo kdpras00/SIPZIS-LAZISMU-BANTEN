@@ -10,9 +10,7 @@ use Illuminate\Support\Str;
 
 class ArtikelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         $artikels = Artikel::with('author')
@@ -22,36 +20,28 @@ class ArtikelController extends Controller
         return view('admin.artikel.index', compact('artikels'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
         return view('admin.artikel.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    
+    public function store(\App\Http\Requests\StoreArtikelRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'excerpt' => 'nullable|string|max:500',
-            'is_published' => 'boolean'
-        ]);
+        $validated = $request->validated();
 
-        // Generate slug
+        
         $validated['slug'] = Artikel::generateSlug($validated['title']);
         $validated['author_id'] = Auth::id();
         $validated['is_published'] = $request->has('is_published');
 
-        // Handle image upload
+        
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('artikel', 'public');
-            $validated['image'] = $imagePath;
+            $validated['image'] = app(\App\Services\MediaService::class)->uploadImage(
+                $request->file('image'), 
+                'artikel'
+            );
         }
 
         Artikel::create($validated);
@@ -60,52 +50,38 @@ class ArtikelController extends Controller
             ->with('success', 'Artikel berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Artikel $artikel)
     {
         $artikel->load('author');
         return view('admin.artikel.show', compact('artikel'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(Artikel $artikel)
     {
         return view('admin.artikel.edit', compact('artikel'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Artikel $artikel)
+    
+    public function update(\App\Http\Requests\UpdateArtikelRequest $request, Artikel $artikel)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'excerpt' => 'nullable|string|max:500',
-            'is_published' => 'boolean'
-        ]);
+        $validated = $request->validated();
 
-        // Update slug if title changed
+        
         if ($artikel->title !== $validated['title']) {
             $validated['slug'] = Artikel::generateSlug($validated['title']);
         }
 
         $validated['is_published'] = $request->has('is_published');
 
-        // Handle image upload
+        
         if ($request->hasFile('image')) {
-            // Delete old image
-            if ($artikel->image) {
-                Storage::disk('public')->delete($artikel->image);
-            }
-
-            $imagePath = $request->file('image')->store('artikel', 'public');
-            $validated['image'] = $imagePath;
+            $validated['image'] = app(\App\Services\MediaService::class)->uploadImage(
+                $request->file('image'), 
+                'artikel',
+                $artikel->image
+            );
         }
 
         $artikel->update($validated);
@@ -114,14 +90,12 @@ class ArtikelController extends Controller
             ->with('success', 'Artikel berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Artikel $artikel)
     {
-        // Delete associated image
+        
         if ($artikel->image) {
-            Storage::disk('public')->delete($artikel->image);
+            app(\App\Services\MediaService::class)->deleteImage($artikel->image);
         }
 
         $artikel->delete();
@@ -130,9 +104,7 @@ class ArtikelController extends Controller
             ->with('success', 'Artikel berhasil dihapus!');
     }
 
-    /**
-     * Toggle publish status
-     */
+    
     public function togglePublish(Artikel $artikel)
     {
         $artikel->update([
@@ -144,9 +116,7 @@ class ArtikelController extends Controller
         return back()->with('success', "Artikel berhasil {$status}!");
     }
 
-    /**
-     * Display published articles for public
-     */
+    
     public function publicIndex()
     {
         $artikels = Artikel::published()
@@ -157,9 +127,7 @@ class ArtikelController extends Controller
         return view('artikel.index', compact('artikels'));
     }
 
-    /**
-     * Show single article for public
-     */
+    
     public function publicShow($slug)
     {
         $artikel = Artikel::where('slug', $slug)

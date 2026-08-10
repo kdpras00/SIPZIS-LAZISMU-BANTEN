@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    {{-- Header Section --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Edit Data Pembayaran</h2>
@@ -155,7 +155,7 @@
                 </div>
             </div>
 
-            {{-- Actions --}}
+            
             <div class="flex justify-end gap-3 pt-5 border-t border-[#f0ece6]">
                 <a href="{{ route('payments.index') }}"
                     class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors" style="background: #f0ece6; color: #1c0f0a;">

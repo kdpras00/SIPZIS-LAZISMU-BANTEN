@@ -11,7 +11,7 @@
     
     <div class="container mx-auto px-4 max-w-7xl">
         
-        <!-- Breadcrumb -->
+        
         <div class="mb-6">
             <a href="{{ route('berita.index') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-orange-600 transition-colors">
                 <i class="bi bi-arrow-left-circle mr-2"></i>
@@ -21,10 +21,10 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
             
-            <!-- LEFT COLUMN: Main Content (2/3) -->
+            
             <div class="lg:col-span-2">
                 
-                <!-- Article Header -->
+                
                 <div class="mb-8">
                     <span class="inline-block px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-sm font-semibold mb-4">
                         Berita
@@ -56,7 +56,7 @@
                     </div>
                 </div>
 
-                <!-- Featured Image -->
+                
                 <div class="bg-gray-100 rounded-2xl overflow-hidden mb-8 shadow-sm">
                     @if($news->image)
                         @php
@@ -65,7 +65,9 @@
                         <img src="{{ $imageUrl }}" alt="{{ $news->title }}" class="w-full h-auto object-cover">
                     @else
                         <div class="w-full h-96 flex items-center justify-center bg-gray-200 text-gray-400">
-                            <i class="bi bi-image text-6xl"></i>
+                            <svg class="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
                         </div>
                     @endif
                     <div class="px-4 py-2 bg-gray-50 text-xs text-gray-500 italic text-center border-t border-gray-100">
@@ -73,7 +75,7 @@
                     </div>
                 </div>
 
-                <!-- Content -->
+                
                 <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
                     <div class="article-content text-gray-800 leading-loose text-lg text-justify font-light font-sans">
                         @foreach(preg_split('/\r\n|\r|\n/', $news->content) as $paragraph)
@@ -83,7 +85,7 @@
                         @endforeach
                     </div>
                     
-                    <!-- Tags / Share Bottom -->
+                    
                     <div class="mt-10 pt-8 border-t border-gray-100">
                         <h4 class="text-sm font-bold text-gray-900 mb-4">Bagikan Artikel Ini:</h4>
                         <div class="flex gap-3">
@@ -102,16 +104,14 @@
 
             </div>
 
-            <!-- RIGHT COLUMN: Sidebar (1/3) -->
+            
             <div class="lg:col-span-1">
                 <div class="sticky top-24 space-y-8">
                     
-                    <!-- Search Widget -->
-                    <!-- <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                         Search logic here if needed 
-                    </div> -->
+                    
+                    
 
-                    <!-- Recent News Widget -->
+                    
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                         <h3 class="text-lg font-bold text-gray-900 mb-6 flex items-center">
                             <span class="w-1 h-6 bg-orange-600 rounded-full mr-3"></span>
@@ -136,8 +136,10 @@
                                             @endphp
                                             <img src="{{ $sImg }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
                                         @else
-                                            <div class="w-full h-full flex items-center justify-center text-gray-300">
-                                                <i class="bi bi-image"></i>
+                                            <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-300">
+                                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                </svg>
                                             </div>
                                         @endif
                                     </div>
@@ -162,7 +164,7 @@
                         </a>
                     </div>
 
-                    <!-- CTA Widget -->
+                    
                     <div class="bg-orange-600 rounded-xl p-6 text-white text-center shadow-sm">
                         
                         <h3 class="text-xl font-bold mb-2 relative z-10">Dukung Program Kebaikan</h3>

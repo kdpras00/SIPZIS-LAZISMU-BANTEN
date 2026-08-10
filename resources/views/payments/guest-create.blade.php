@@ -2,7 +2,6 @@
 
 @section('title', 'Donasi Program - SIPZIS')
 
-{{-- Add CSS untuk intl-tel-input --}}
 @push('styles')
     <link rel="stylesheet" href="{{ asset('vendor/intl-tel-input/css/intlTelInput.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -27,7 +26,7 @@
         }
 
         .iti__tel-input:focus {
-            border-color: #22c55e !important;
+            border-color: #f97316 !important;
             outline: none !important;
             box-shadow: none !important
         }
@@ -37,12 +36,12 @@
             border-radius: .75rem 0 0 .75rem
         }
 
-        .iti__tel-input.border-red-300 {
-            border-color: #fca5a5 !important
+        .iti__tel-input.border-red-500 {
+            border-color: #ef4444 !important
         }
 
-        .iti__tel-input.border-green-300 {
-            border-color: #22c55e !important
+        .iti__tel-input.border-orange-500 {
+            border-color: #f97316 !important
         }
 
         .iti--separate-dial-code .iti__tel-input,
@@ -71,7 +70,7 @@
 
 @section('content')
     <div class="min-h-screen bg-gray-50 pb-32 sm:pb-12 font-sans">
-        {{-- Top Navigation / Header --}}
+        
         <div class="bg-orange-600 pb-32 pt-8 px-4 shadow-sm">
             <div class="max-w-2xl mx-auto">
                 <a href="{{ route('home') }}" class="inline-flex items-center text-orange-100 hover:text-white mb-6 transition-colors font-medium">
@@ -83,7 +82,7 @@
         </div>
 
         <div class="max-w-2xl mx-auto px-4 -mt-24 relative z-10">
-            {{-- Campaign Info Card --}}
+            
             <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-6 transition-transform hover:scale-[1.01] duration-300">
                 <div class="p-6">
                     <div class="flex flex-col sm:flex-row gap-5 items-start">
@@ -93,14 +92,21 @@
                             } elseif (isset($program)) {
                                 $imageUrl = $program->image_url;
                             } else {
-                                $categoryProgram = \App\Models\Program::byCategory($programCategory)->first();
-                                $imageUrl = $categoryProgram ? $categoryProgram->image_url : asset('img/masjidbanten.png');
+                                $imageUrl = $categoryProgram ? $categoryProgram->image_url : null;
                             }
                         @endphp
                         
                         <div class="relative w-full sm:w-auto">
+                            @if($imageUrl)
                             <img src="{{ $imageUrl }}" alt="Program {{ $displayTitle }}"
                                 class="w-full sm:w-28 sm:h-28 h-48 object-cover rounded-xl shadow-sm">
+                            @else
+                            <div class="w-full sm:w-28 sm:h-28 h-48 bg-gray-200 rounded-xl shadow-sm flex items-center justify-center shrink-0">
+                                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            @endif
                             <div class="absolute top-2 right-2 sm:hidden bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold text-orange-700 shadow-sm border border-orange-100">
                                 <i class="fas fa-check-circle mr-1"></i> Official
                             </div>
@@ -139,10 +145,7 @@
                                     <span class="text-xs text-gray-500 font-medium uppercase tracking-wider">Terkumpul</span>
                                     <div class="text-orange-700 font-bold text-lg">Rp {{ number_format($collectedAmount, 0, ',', '.') }}</div>
                                 </div>
-                                {{-- <div class="text-right">
-                                    <span class="text-xs text-gray-400">dari target</span>
-                                    <div class="text-gray-600 font-semibold text-sm">Rp {{ number_format($targetAmount, 0, ',', '.') }}</div>
-                                </div> --}}
+                                
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
                                 <div class="bg-gradient-to-r from-orange-500 to-orange-400 h-3 rounded-full transition-all duration-1000 ease-out" 
@@ -157,12 +160,12 @@
                 </div>
             </div>
 
-            {{-- Donation Form Card --}}
+            
             <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-8 relative">
                 <form id="donation-form" class="space-y-8" autocomplete="off">
                     @csrf
                     
-                    {{-- Hidden inputs --}}
+                    
                     <input type="hidden" name="program_category" value="{{ $programCategory }}" autocomplete="off">
                     @if (isset($program))
                         <input type="hidden" name="program_id" value="{{ $program->id }}" autocomplete="off">
@@ -173,11 +176,11 @@
                     <input type="hidden" name="program_type_id" id="program_type_id"
                         value="{{ request()->query('program_type_id') }}" autocomplete="off">
                     <input type="hidden" name="zakat_amount" id="zakat_amount" value="0" autocomplete="off">
-                    <input type="hidden" name="paid_amount" id="paid_amount" value="0" autocomplete="off">
-                    <input type="hidden" name="donor_phone" id="donor_phone_full" autocomplete="off">
-                    <input type="hidden" name="payment_method" value="" autocomplete="off">
+                    <input type="hidden" name="amount" id="paid_amount" value="0" autocomplete="off">
+                    <input type="hidden" name="phone" id="donor_phone_full" autocomplete="off">
+                    <input type="hidden" name="payment_method" value="midtrans" autocomplete="off">
 
-                    {{-- Section: Nominal Donasi --}}
+                    
                     <div>
                         <div class="flex items-center mb-4">
                             <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 mr-3 font-bold text-sm">1</div>
@@ -191,14 +194,14 @@
                                 data-amount="{{ $amt }}">
                                 <span class="text-orange-600 font-bold text-lg group-[.selected]:scale-110 transition-transform">Rp {{ number_format($amt / 1000, 0) }}k</span>
                                 <span class="text-xs text-gray-400 mt-1 font-medium group-hover:text-orange-600">Rp {{ number_format($amt, 0, ',', '.') }}</span>
-                                {{-- Checkmark Icon for Active State --}}
+                                
                                 <div class="absolute top-2 right-2 w-5 h-5 bg-orange-500 rounded-full text-white text-xs flex items-center justify-center opacity-0 scale-0 transition-all duration-200 check-icon">
                                     <i class="fas fa-check"></i>
                                 </div>
                             </button>
                             @endforeach
                             
-                            {{-- Custom Amount Button --}}
+                            
                             <button type="button"
                                 class="quick-amount-btn col-span-2 sm:col-span-1 group relative flex flex-col items-center justify-center p-4 border-2 border-gray-100 rounded-xl hover:border-orange-500 hover:bg-orange-50 transition-all duration-200"
                                 data-amount="custom">
@@ -210,30 +213,30 @@
                             </button>
                         </div>
 
-                        {{-- Custom Input (Initially Disabled) --}}
+                        
                         <div class="relative transition-all duration-300 transform origin-top" id="custom-amount-container">
                             <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400 font-bold">Rp</span>
                             <input type="text" id="donation_amount_display" inputmode="numeric"
                                 oninput="formatAndSetValues(this)"
-                                class="w-full border-2 border-gray-200 rounded-xl pl-12 pr-4 py-4 font-bold text-lg text-gray-800 placeholder-gray-300 focus:border-orange-500 focus:ring-4 focus:ring-orange-50 focus:outline-none transition-all disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-400"
+                                class="w-full border-2 border-gray-200 rounded-xl pl-12 pr-4 py-4 font-bold text-lg text-gray-800 placeholder-gray-300 focus:border-orange-500 focus:ring-4 focus:ring-orange-50 focus:outline-none transition-all bg-white disabled:bg-white disabled:cursor-not-allowed disabled:text-gray-400"
                                 placeholder="Pilih nominal atau klik 'Nominal Lain'" required autocomplete="off" disabled>
                         </div>
                     </div>
 
-                    {{-- Section: Data Donatur --}}
+                    
                     <div class="pt-2">
                         <div class="flex items-center mb-4">
                             <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 mr-3 font-bold text-sm">2</div>
                             <h3 class="text-gray-800 font-bold text-lg">Data Hamba Allah</h3>
                         </div>
 
-                        {{-- Donor Information Fields --}}
+                        
                         <div class="space-y-4">
                             @if (!isset($loggedInMuzakki))
-                                {{-- Guest User Form Fields --}}
+                                
                                 <div>
                                     <label for="donor_name" class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
-                                    <input type="text" id="donor_name" name="donor_name"
+                                    <input type="text" id="donor_name" name="name"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-orange-500 focus:outline-none transition-colors"
                                         placeholder="Nama Lengkap" required autocomplete="off">
                                 </div>
@@ -246,24 +249,40 @@
     
                                 <div>
                                     <label for="donor_email" class="block text-sm font-semibold text-gray-700 mb-2">Email <span class="text-red-500">*</span></label>
-                                    <input type="email" id="donor_email" name="donor_email"
+                                    <input type="email" id="donor_email" name="email"
                                         class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-orange-500 focus:outline-none transition-colors"
                                         placeholder="email@contoh.com" required autocomplete="off">
                                 </div>
+
+                                <div>
+                                    <label for="donor_name" class="block text-sm font-semibold text-gray-700 mb-2">Sembunyikan Nama (Hamba Allah)</label>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" name="is_anonymous" id="toggle_anonymous" value="1" class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-600"></div>
+                                    </label>
+                                </div>
                             @else
-                                {{-- Logged in Users --}}
-                                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-lg cursor-default">
-                                        {{ substr($loggedInMuzakki->name, 0, 1) }}
+                                
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
+                                    <div class="relative">
+                                        <input type="text" 
+                                            class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-gray-50 text-gray-500 cursor-not-allowed outline-none"
+                                            value="{{ $loggedInMuzakki->name }}" 
+                                            readonly>
                                     </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm text-gray-500">Masuk sebagai:</p>
-                                        <p class="font-bold text-gray-800">{{ $loggedInMuzakki->name }}</p>
-                                        <p class="text-xs text-gray-500">{{ $loggedInMuzakki->email }}</p>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                                    <div class="relative">
+                                        <input type="email" 
+                                            class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-gray-50 text-gray-500 cursor-not-allowed outline-none"
+                                            value="{{ $loggedInMuzakki->email }}" 
+                                            readonly>
                                     </div>
                                 </div>
 
-                                {{-- Optional Phone logic for logged in users --}}
+                                
                                 @if (!$loggedInMuzakki->phone)
                                     <div class="mt-4">
                                         <label for="phone_input_optional" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -271,16 +290,16 @@
                                         </label>
                                         <input type="tel" id="phone_input_optional" placeholder="81234567890" autocomplete="off">
                                     </div>
-                                    <input type="hidden" name="donor_name" value="{{ $loggedInMuzakki->name }}" autocomplete="off">
-                                    <input type="hidden" name="donor_email" value="{{ $loggedInMuzakki->email }}" autocomplete="off">
+                                    <input type="hidden" name="name" value="{{ $loggedInMuzakki->name }}" autocomplete="off">
+                                    <input type="hidden" name="email" value="{{ $loggedInMuzakki->email }}" autocomplete="off">
                                 @else
-                                    <input type="hidden" name="donor_name" value="{{ $loggedInMuzakki->name }}" autocomplete="off">
+                                    <input type="hidden" name="name" value="{{ $loggedInMuzakki->name }}" autocomplete="off">
                                     <input type="hidden" id="donor_phone_hidden" value="{{ $loggedInMuzakki->phone }}" autocomplete="off">
-                                    <input type="hidden" name="donor_email" value="{{ $loggedInMuzakki->email }}" autocomplete="off">
+                                    <input type="hidden" name="email" value="{{ $loggedInMuzakki->email }}" autocomplete="off">
                                 @endif
                             @endif
 
-                            {{-- Message/Doa --}}
+                            
                             <div class="pt-2">
                                 <label for="notes" class="block text-sm font-semibold text-gray-700 mb-2">Pesan / Doa <span class="font-normal text-gray-400">(Opsional)</span></label>
                                 <textarea name="notes" rows="3"
@@ -290,15 +309,15 @@
                         </div>
                     </div>
 
-                    {{-- Desktop Submit Button --}}
+                    
                     <div class="pt-6 border-t border-gray-100 hidden sm:block">
                         <button type="submit"
-                            class="w-full bg-yellow-500 text-white px-8 py-4 rounded-xl hover:bg-yellow-600 font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all flex items-center justify-center group">
+                            class="w-full bg-yellow-500 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center">
                             <span>Lanjut Pembayaran</span>
-                            <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                            <i class="fas fa-arrow-right ml-2 transition-transform"></i>
                         </button>
                         
-                        {{-- Trust Signals --}}
+                        
                         <div class="flex items-center justify-center gap-6 mt-6">
                              <div class="flex items-center gap-2 text-gray-400">
                                 <i class="fas fa-lock text-orange-500"></i>
@@ -311,7 +330,7 @@
                         </div>
                     </div>
                         @php
-                            $prayersQuery = \App\Models\ZakatPayment::where('status', 'completed')
+                            $prayersQuery = \App\Models\Payment::where('status', 'completed')
                                 ->whereNotNull('notes')
                                 ->where('notes', '!=', '');
 
@@ -326,7 +345,7 @@
                                 ->get();
                         @endphp
 
-                        {{-- Doa Ticker (Social Proof) --}}
+                        
                         <div class="mt-8 bg-gray-50 rounded-xl p-5 border border-gray-100">
                              <div class="flex items-center gap-2 mb-3">
                                 <i class="fas fa-praying-hands text-orange-500"></i>
@@ -345,7 +364,7 @@
                                     </div>
                                     @endforeach
                                     
-                                    {{-- Duplicate for smooth loop --}}
+                                    
                                     @foreach($tickerPrayers as $prayer)
                                     <div class="text-sm bg-white p-2 rounded-lg shadow-sm border border-gray-100">
                                         <span class="font-bold text-gray-800 mr-1">{{ optional($prayer->muzakki)->name ?? 'Hamba Allah' }}:</span>
@@ -363,8 +382,8 @@
                         </div>
                     </div>
                 </form>
-            </div> {{-- End Card --}}
-        </div> {{-- End Container --}}
+            </div> 
+        </div> 
     </div>
     
     <style>
@@ -380,7 +399,7 @@
     }
     </style>
 
-    {{-- Mobile Sticky Bottom Bar --}}
+    
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] sm:hidden z-50">
         <div class="flex items-center gap-3">
              <div class="flex-1">
@@ -395,7 +414,6 @@
     </div>
 @endsection
 
-{{-- Add JS untuk intl-tel-input --}}
 @push('scripts')
     <script src="{{ asset('vendor/intl-tel-input/js/intlTelInput.min.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -412,6 +430,26 @@
         };
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Hamba Allah Toggle Logic
+            const toggleAnonymous = document.getElementById('toggle_anonymous');
+            const donorNameInput = document.getElementById('donor_name');
+            let previousName = '';
+
+            if (toggleAnonymous && donorNameInput) {
+                toggleAnonymous.addEventListener('change', function() {
+                    if (this.checked) {
+                        previousName = donorNameInput.value;
+                        donorNameInput.value = 'Hamba Allah';
+                        donorNameInput.readOnly = true;
+                        donorNameInput.classList.add('bg-gray-100', 'text-gray-500', 'cursor-not-allowed');
+                    } else {
+                        donorNameInput.value = previousName !== 'Hamba Allah' ? previousName : '';
+                        donorNameInput.readOnly = false;
+                        donorNameInput.classList.remove('bg-gray-100', 'text-gray-500', 'cursor-not-allowed');
+                    }
+                });
+            }
+
             // Initialize intl-tel-input
             const phoneInput = document.querySelector("#phone_input");
             if (phoneInput) {
@@ -528,8 +566,8 @@
             const isValid = itiInstance.isValidNumber();
             const errorEl = inputElement.id === 'phone_input' ? document.getElementById('phone_error') : null;
 
-            inputElement.classList.toggle('border-red-300', !isValid);
-            inputElement.classList.toggle('border-green-300', isValid);
+            inputElement.classList.toggle('border-red-500', !isValid);
+            inputElement.classList.toggle('border-orange-500', isValid);
 
             if (errorEl) {
                 if (isValid) {

@@ -3,15 +3,13 @@
 namespace App\Services;
 
 use App\Models\Notification;
-use App\Models\ZakatPayment;
-use App\Models\ZakatDistribution;
+use App\Models\Payment;
+use App\Models\Distribution;
 
 class NotificationService
 {
-    /**
-     * Membuat notifikasi pembayaran untuk muzakki.
-     */
-    public function createPaymentNotification($muzakki, ZakatPayment $payment, string $status): Notification
+    
+    public function createPaymentNotification($muzakki, Payment $payment, string $status): Notification
     {
         $paymentType = 'Donasi';
         if ($payment->program_category) {
@@ -39,30 +37,33 @@ class NotificationService
             'pending' => 'Menunggu Konfirmasi'
         ];
 
-        return Notification::create([
-            'muzakki_id' => $muzakki->id,
-            'user_id' => $muzakki->user_id,
-            'type' => 'payment',
-            'title' => $titles[$status] ?? 'Notifikasi Pembayaran',
-            'message' => $messages[$status] ?? 'Status pembayaran Anda diperbarui.',
-            'notifiable_type' => ZakatPayment::class,
-            'notifiable_id' => $payment->id,
-            'data' => [
-                'payment_id' => $payment->id,
-                'payment_code' => $payment->payment_code,
-                'status' => $status,
-                'amount' => $payment->paid_amount,
-                'program_category' => $payment->program_category,
-                'payment_type' => $paymentType,
-                'is_guest_payment' => $payment->is_guest_payment
+        return Notification::updateOrCreate(
+            [
+                'muzakki_id' => $muzakki->id,
+                'notifiable_type' => Payment::class,
+                'notifiable_id' => $payment->id,
+            ],
+            [
+                'user_id' => $muzakki->user_id,
+                'type' => 'payment',
+                'title' => $titles[$status] ?? 'Notifikasi Pembayaran',
+                'message' => $messages[$status] ?? 'Status pembayaran Anda diperbarui.',
+                'is_read' => false, 
+                'data' => [
+                    'payment_id' => $payment->id,
+                    'payment_code' => $payment->payment_code,
+                    'status' => $status,
+                    'amount' => $payment->paid_amount,
+                    'program_category' => $payment->program_category,
+                    'payment_type' => $paymentType,
+                    'is_guest_payment' => $payment->is_guest_payment
+                ]
             ]
-        ]);
+        );
     }
 
-    /**
-     * Membuat notifikasi penyaluran donasi untuk muzakki.
-     */
-    public function createDistributionNotification($muzakki, ZakatDistribution $distribution): Notification
+    
+    public function createDistributionNotification($muzakki, Distribution $distribution): Notification
     {
         return Notification::create([
             'muzakki_id' => $muzakki->id,
@@ -70,7 +71,7 @@ class NotificationService
             'type' => 'distribution',
             'title' => 'Donasi Telah Disalurkan',
             'message' => 'Donasi Anda telah disalurkan kepada mustahik di wilayah ' . ($distribution->location ?? 'yang membutuhkan') . '.',
-            'notifiable_type' => ZakatDistribution::class,
+            'notifiable_type' => Distribution::class,
             'notifiable_id' => $distribution->id,
             'data' => [
                 'distribution_id' => $distribution->id,
@@ -79,9 +80,7 @@ class NotificationService
         ]);
     }
 
-    /**
-     * Membuat notifikasi terkait akun user.
-     */
+    
     public function createAccountNotification($user, string $eventType, $muzakki = null): Notification
     {
         $muzakki = $muzakki ?: $user->muzakki;

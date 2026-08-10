@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    {{-- Header Section --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Tambah Distribusi Zakat</h2>
@@ -18,13 +18,13 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {{-- Main Form Section --}}
+        
         <div class="lg:col-span-2">
             <div class="rounded-2xl p-5 sm:p-6 bg-white border border-[#f0ece6]" style="box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <form action="{{ route('distributions.store') }}" method="POST" id="distributionForm">
                     @csrf
 
-                    {{-- Mustahik Selection Section --}}
+                    
                     <div class="mb-6">
                         <h6 class="text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2" style="color: #c2410c;">
                             <i class="bi bi-person-fill text-sm"></i> Informasi Mustahik
@@ -76,7 +76,7 @@
                             </div>
                         </div>
 
-                        {{-- Mustahik Details Display --}}
+                        
                         <div id="mustahik-details" class="hidden transition-all duration-300">
                             <div class="rounded-xl p-4 border border-[#f0ece6]" style="background: #faf8f5;">
                                 <div class="flex items-center mb-3">
@@ -101,7 +101,7 @@
                         </div>
                     </div>
 
-                    {{-- Distribution Details Section --}}
+                    
                     <div class="mb-6 pt-5 border-t border-[#f0ece6]">
                         <h6 class="text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2" style="color: #c2410c;">
                             <i class="bi bi-box-seam-fill text-sm"></i> Detail Distribusi
@@ -145,7 +145,7 @@
                             </div>
                         </div>
 
-                        {{-- Goods Description --}}
+                        
                         <div class="mb-4 hidden transition-all duration-300" id="goods-description-field">
                             <label for="goods_description" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
                                 Deskripsi Barang / Layanan <span class="text-red-500">*</span>
@@ -189,7 +189,7 @@
                         </div>
                     </div>
 
-                    {{-- Program Information Section --}}
+                    
                     <div class="mb-6 pt-5 border-t border-[#f0ece6]">
                         <h6 class="text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2" style="color: #c2410c;">
                             <i class="bi bi-journal-text text-sm"></i> Program & Catatan
@@ -221,7 +221,7 @@
                         </div>
                     </div>
 
-                    {{-- Form Actions --}}
+                    
                     <div class="flex justify-end gap-3 pt-5 border-t border-[#f0ece6]">
                         <a href="{{ route('distributions.index') }}"
                             class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors" style="background: #f0ece6; color: #1c0f0a;">
@@ -236,9 +236,9 @@
             </div>
         </div>
 
-        {{-- Sidebar Info Section --}}
+        
         <div class="lg:col-span-1 space-y-4">
-            {{-- Available Balance Card --}}
+            
             <div class="rounded-2xl p-5 bg-white border border-[#f0ece6]" style="box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <p class="text-xs font-semibold uppercase tracking-wider mb-1" style="color: #8b7e74;">Saldo Tersedia</p>
                 <h3 class="text-2xl font-bold text-[#c2410c] mb-1" id="available-balance">
@@ -249,7 +249,7 @@
                 </p>
             </div>
 
-            {{-- Guidelines Card --}}
+            
             <div class="rounded-2xl p-5 bg-white border border-[#f0ece6]" style="box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <h6 class="text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2" style="color: #1c0f0a;">
                     <i class="bi bi-info-circle-fill text-sm" style="color: #c2410c;"></i> Panduan Distribusi

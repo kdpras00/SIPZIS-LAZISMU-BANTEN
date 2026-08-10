@@ -11,7 +11,7 @@
     style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4; margin: 0; padding: 0;">
     <div
         style="max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-        <!-- Header -->
+        
         <div
             style="
             @if ($status == 'completed') background: #0d8a00;
@@ -24,7 +24,7 @@
             <p style="margin: 5px 0 0; font-size: 16px;">Sistem Informasi Pengelolaan Zakat</p>
         </div>
 
-        <!-- Content -->
+        
         <div style="padding: 30px;">
             <h2
                 style="
@@ -97,10 +97,11 @@
             </div>
         </div>
 
-        <!-- Footer -->
+        
         <div style="background: #f4f4f4; padding: 15px; text-align: center; font-size: 12px; color: #666;">
             <p>Email ini dikirim secara otomatis. Mohon tidak membalas email ini.</p>
-            <p>&copy; {{ date('Y') }} SIPZIS. All rights reserved.</p>
+            <p>&copy; <b>Created By :</b> — Kurniawan Dwi Prasetyo<br>
+            Hak Cipta Dilindungi.</p>
         </div>
     </div>
 </body>

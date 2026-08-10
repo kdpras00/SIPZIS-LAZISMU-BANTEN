@@ -21,20 +21,10 @@
                 @endif
             </p>
         </div>
-        <!-- <div>
-                                                        @if (auth()->user()->role !== 'muzakki')
-    <a href="{{ route('payments.create') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
-                                                            <i class="bi bi-plus-circle-fill ></i> Tambah Pembayaran
-                                                        </a>
-@else
-    <a href="{{ route('muzakki.payments.create') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
-                                                            <i class="bi bi-plus-circle-fill ></i> Bayar Zakat
-                                                        </a>
-    @endif
-                                                    </div> -->
+        
     </div>
 
-    <!-- Filter Section -->
+    
     <div class="rounded-2xl mb-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         <div class="px-5 py-3.5 flex items-center justify-between" style="border-bottom: 1px solid #f0ece6;">
             <div class="flex items-center gap-2">
@@ -44,7 +34,7 @@
         </div>
         
         <div class="p-5 sm:p-6">
-            <!-- Search Input -->
+            
             <div class="mb-5">
                 <label for="search-input" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
                     <i class="bi bi-search mr-1" style="color: #8b7e74;"></i> Pencarian Cepat
@@ -59,7 +49,7 @@
                 </div>
             </div>
 
-            <!-- Filters Grid -->
+            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 <div>
                     <label for="zakat-type-filter" class="block text-sm font-medium text-gray-700 mb-2">
@@ -67,10 +57,14 @@
                         Jenis Zakat
                     </label>
                     @php
-                        $zakatOptions = ['' => 'Semua Jenis'];
-                        foreach ($zakatTypes as $type) {
-                            $zakatOptions[$type->id] = $type->name;
-                        }
+                        $zakatOptions = [
+                            '' => 'Semua Jenis',
+                            'zakat' => 'Zakat',
+                            'infaq' => 'Infaq',
+                            'shadaqah' => 'Shadaqah',
+                            'fidyah' => 'Fidyah',
+                            'umum' => 'Umum'
+                        ];
                     @endphp
                     <x-custom-select 
                         id="zakat-type-filter"
@@ -123,9 +117,7 @@
                 
                 <div class="lg:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
+                        <i class="far fa-calendar-alt inline mr-1"></i>
                         Rentang Tanggal
                     </label>
                     <div class="grid grid-cols-2 gap-3">
@@ -147,7 +139,7 @@
                 </div>
             </div>
 
-            <!-- Loading Indicator -->
+            
             <div id="search-loading" class="hidden mt-4 pt-4 border-t border-gray-200">
                 <div class="flex items-center justify-center gap-3 text-blue-600">
                     <div class="inline-block animate-spin rounded-full h-5 w-5 border-3 border-blue-600 border-t-transparent"></div>
@@ -157,7 +149,7 @@
         </div>
     </div>
 
-    <!-- Stats -->
+    
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
             <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total terkumpul</p>
@@ -366,7 +358,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-900">${paymentDate}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-center">
-                            <div class="flex items-center justify-center space-x-2">
+                            <div class="flex items-center justify-start xl:justify-center gap-1.5">
                                 <a href="/payments/${payment.payment_code}" 
                                    class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200" 
                                    title="Lihat Detail">
@@ -378,9 +370,7 @@
                                 <a href="/payments/${payment.id}/receipt" 
                                    class="inline-flex items-center px-3 py-1.5 border border-orange-300 shadow-sm text-sm font-medium rounded-md text-orange-700 bg-white hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200" 
                                    title="Kwitansi" target="_blank">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
+                                    <i class="far fa-bell-slash"></i>
                                 </a>
                                 ${config.isNotMuzakki ? `
                                     <a href="/payments/${payment.id}/edit" 

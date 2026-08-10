@@ -34,7 +34,18 @@ export function initTable(selector, opts = {}) {
         return null;
     }
 
-    // Destroy any existing instance before re-init (needed after AJAX rebuild)
+    // Check if we are on desktop
+    const isDesktop = window.innerWidth >= 1024;
+
+    // If desktop, we do NOT want DataTables. Destroy if it exists.
+    if (isDesktop) {
+        if (DataTable.isDataTable(selector)) {
+            new DataTable(selector).destroy();
+        }
+        return null;
+    }
+
+    // Destroy any existing instance before re-init (needed after AJAX rebuild or resize)
     if (DataTable.isDataTable(selector)) {
         new DataTable(selector).destroy();
     }
@@ -83,11 +94,23 @@ function initStaticTables() {
         '#table-mustahik',
         '#table-distributions',
         '#table-payments',
+        '#table-artikel',
+        '#table-news',
+        '#table-report-category'
     ].forEach(sel => initTable(sel));
 }
 
 document.addEventListener('DOMContentLoaded', initStaticTables);
 
+// Re-evaluate on window resize
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        initStaticTables();
+    }, 250);
+});
+
 // Expose globally so Blade @push('scripts') blocks can call initTable
 // without needing an ES-module import.
-window.SipzisTable = { initTable };
+window.SipzisTable = { initTable, initStaticTables };

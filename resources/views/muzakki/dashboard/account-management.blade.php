@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="py-4 px-4 max-w-4xl mx-auto">
-    <!-- Header -->
+    
     <div class="flex items-center mb-6">
         <a href="{{ route('dashboard') }}" class="text-gray-700 mr-3 hover:text-gray-900">
             <i class="bi bi-arrow-left-circle text-xl"></i>
@@ -12,13 +12,12 @@
         <h5 class="text-xl font-semibold text-gray-900 mb-0">Manajemen akun</h5>
     </div>
 
-    <!-- 2FA Reminder Banner -->
+    
 
-
-    <!-- Account Settings Menu -->
+    
     <div class="bg-white rounded-xl shadow-md mb-6 overflow-hidden">
         <div class="divide-y divide-gray-100">
-            <!-- Transfer Campaign Ownership -->
+            
             <a href="{{ route('dashboard.management.transfer-account') }}" class="flex items-center gap-4 p-5 hover:bg-orange-50 transition-all duration-300 group">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +33,7 @@
                 </svg>
             </a>
 
-            <!-- Delete Account -->
+            
             <a href="{{ route('dashboard.management.delete-account') }}" class="flex items-center gap-4 p-5 hover:bg-red-50 transition-all duration-300 group">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -53,7 +52,6 @@
     </div>
 </div>
 
-<!-- Bottom Navigation -->
 <nav class="fixed-bottom-nav bg-white border-t border-[#f0ece6]" aria-label="Navigasi Utama">
             <div class="flex justify-between items-center w-full px-2 py-2 overflow-x-auto gap-1 no-scrollbar">
             <a href="{{ route('home') }}" class="flex flex-shrink-0 items-center gap-1.5 px-3 py-2 rounded-xl text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#faf8f5] font-medium no-underline transition-all">

@@ -6,20 +6,18 @@
             <div class="bg-white rounded-2xl p-8" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06), 0 4px 16px rgba(28,15,10,0.06);">
                 <div class="mb-8 text-center relative">
                     <a href="{{ route('login') }}" class="absolute left-0 top-0 inline-flex items-center text-orange-600 hover:text-orange-700">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
+                        <i class="fas fa-chevron-left mr-2"></i>
                     </a>
                     <div class="mx-auto mb-2" style="width: 120px;">
                         <img src="{{ asset('img/logo.png') }}" alt="Lazismu" class="w-full object-contain">
                     </div>
                 </div>
 
-                <!-- Register Form -->
+                
                 <form method="POST" action="{{ route('register') }}" class="space-y-4" id="registerForm">
                     @csrf
 
-                    <!-- Nama Lengkap -->
+                    
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
                             Nama Lengkap <span class="text-red-500">*</span>
@@ -33,7 +31,7 @@
                         @enderror
                     </div>
 
-                    <!-- Email -->
+                    
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
                             Email <span class="text-red-500">*</span>
@@ -47,7 +45,7 @@
                         @enderror
                     </div>
 
-                    <!-- No. Telepon -->
+                    
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
                             No. Telepon <span class="text-red-500">*</span>
@@ -61,7 +59,7 @@
                         @enderror
                     </div>
 
-                    <!-- Kata Sandi -->
+                    
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
                             Kata Sandi <span class="text-red-500">*</span>
@@ -95,7 +93,7 @@
                         @enderror
                     </div>
 
-                    <!-- Konfirmasi Password -->
+                    
                     <div>
                         <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">
                             Konfirmasi Password <span class="text-red-500">*</span>
@@ -113,7 +111,7 @@
                         </div>
                     </div>
 
-                    <!-- Hidden fields with null values -->
+                    
                     <input type="hidden" name="nik" value="">
                     <input type="hidden" name="gender" value="">
                     <input type="hidden" name="address" value="">
@@ -123,14 +121,14 @@
                     <input type="hidden" name="monthly_income" value="">
                     <input type="hidden" name="date_of_birth" value="">
 
-                    <!-- Submit Button -->
+                    
                     <button type="submit"
                         class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 mt-6">
                         Daftar
                     </button>
                 </form>
 
-                <!-- Login Link -->
+                
                 <p class="text-center text-sm text-gray-600 mt-6">
                     Sudah punya akun?
                     <a href="{{ route('login') }}" class="text-orange-600 hover:text-orange-700 font-medium">
@@ -141,7 +139,7 @@
         </div>
     </div>
 
-    <!-- Google reCAPTCHA v3 -->
+    
     <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
 
     <script>

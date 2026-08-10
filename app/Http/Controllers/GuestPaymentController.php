@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ZakatPayment;
+use App\Models\Payment;
 use App\Models\Program;
 use App\Models\Campaign;
 use App\Models\Muzakki;
@@ -23,9 +23,6 @@ class GuestPaymentController extends Controller
         $this->midtransService = $midtransService;
     }
 
-    /**
-     * Display guest payment create form.
-     */
     public function guestCreate(Request $request)
     {
         $program = null;
@@ -42,97 +39,95 @@ class GuestPaymentController extends Controller
             }
         }
 
-        return view('guest.payment.create', compact('program', 'campaign'));
+        $displayTitle = '';
+        $programCategory = 'umum';
+
+        if ($campaign) {
+            $displayTitle = $campaign->title;
+            $programCategory = $campaign->program_category;
+        } elseif ($program) {
+            $displayTitle = $program->name;
+            $programCategory = $program->slug;
+        }
+
+        $categoryMap = [
+            'pendidikan'    => 'Mencerahkan Masa Depan dalam Membangun Negeri',
+            'kesehatan'     => 'Mewujudkan Kehidupan yang Lebih Sehat untuk Semua',
+            'ekonomi'       => 'Memberdayakan Masyarakat secara Ekonomi',
+            'sosial-dakwah' => 'Membangun Masyarakat yang Berkualitas',
+            'kemanusiaan'   => 'Menyejahterakan Umat Manusia Tanpa Diskriminasi',
+            'lingkungan'    => 'Menjaga Lingkungan untuk Generasi Mendatang',
+            'zakat'         => 'Menyalurkan Zakat dengan Amanah dan Transparan',
+            'infaq'         => 'Bersedekah untuk Keberkahan Bersama',
+            'shadaqah'      => 'Membuka Pintu Rezeki dengan Shadaqah',
+            'umum'          => 'Bersama Kita Wujudkan Kebaikan',
+        ];
+
+        $displaySubtitle = $categoryMap[$programCategory] ?? 'Bersama Kita Wujudkan Kebaikan';
+
+        $loggedInMuzakki = auth()->check() && auth()->user()->role === 'muzakki' ? auth()->user() : null;
+
+        $collectedAmount = $campaign ? $campaign->collected_amount : ($program ? $program->total_collected : 0);
+        $targetAmount = $campaign ? $campaign->target_amount : 0;
+        $percentage = $campaign ? $campaign->progress_percentage : ($program ? $program->progress_percentage : 0);
+
+        $tickerPrayers = \App\Models\Payment::whereNotNull('notes')->latest()->take(5)->get();
+
+        return view('payments.guest-create', compact(
+            'program', 'campaign', 'displayTitle', 'displaySubtitle',
+            'programCategory', 'loggedInMuzakki', 'collectedAmount',
+            'targetAmount', 'percentage', 'tickerPrayers'
+        ));
     }
 
-    /**
-     * Store a guest payment transaction.
-     */
-    public function guestStore(Request $request)
+    public function guestStore(\App\Http\Requests\StoreGuestPaymentRequest $request, \App\Services\DonationService $donationService)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\'\`-]+$/'],
-            'phone' => ['required', 'string', 'regex:/^[0-9]{10,15}$/'],
-            'email' => 'nullable|email',
-            'amount' => 'required|numeric|min:10000',
-            'payment_method' => 'required|string',
-            'program_id' => 'nullable|exists:programs,id',
-            'campaign_id' => 'nullable|exists:campaigns,id',
-            'notes' => 'nullable|string|max:500',
-            'is_anonymous' => 'nullable|boolean',
-        ], [
-            'name.regex' => 'Nama hanya boleh berisi huruf dan tanda petik.',
-            'phone.regex' => 'Nomor telepon harus berupa 10 hingga 15 digit angka.',
-            'amount.min' => 'Nominal donasi minimal Rp 10.000.',
-        ]);
-
-        DB::beginTransaction();
         try {
-            // Find or create muzakki
-            $muzakki = null;
-            if ($request->filled('email')) {
-                $muzakki = Muzakki::where('email', $request->email)->first();
+            $validated = $request->validated();
+
+            $programCategory = 'umum';
+            if (!empty($validated['campaign_id'])) {
+                $campaign = \App\Models\Campaign::find($validated['campaign_id']);
+                if ($campaign) $programCategory = $campaign->program_category;
+            } elseif (!empty($validated['program_id'])) {
+                $program = \App\Models\Program::find($validated['program_id']);
+                if ($program) $programCategory = $program->slug;
+            }
+            $validated['program_category'] = $programCategory;
+
+            $payment = $donationService->processGuestDonation($validated);
+
+            $snapToken = $this->midtransService->createSnapToken($payment);
+
+            if (!$snapToken) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal mendapatkan token pembayaran dari Midtrans.'
+                ], 500);
             }
 
-            if (!$muzakki && $request->filled('phone')) {
-                $muzakki = Muzakki::where('phone', $request->phone)->first();
-            }
+            $payment->update(['snap_token' => $snapToken]);
 
-            if (!$muzakki) {
-                $user = null;
-                if ($request->filled('email')) {
-                    $user = User::create([
-                        'name' => $request->name,
-                        'email' => $request->email,
-                        'password' => Hash::make(Str::random(16)),
-                        'role' => 'muzakki',
-                        'is_active' => true,
-                    ]);
-                }
-
-                $muzakki = Muzakki::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'phone' => $request->phone,
-                    'gender' => 'male',
-                    'user_id' => $user?->id,
-                    'is_active' => true,
-                ]);
-            }
-
-            $paymentCode = 'ZKT-' . date('Ymd') . '-' . strtoupper(Str::random(6));
-
-            $payment = ZakatPayment::create([
-                'payment_code' => $paymentCode,
-                'midtrans_order_id' => $paymentCode,
-                'muzakki_id' => $muzakki->id,
-                'program_id' => $request->program_id,
-                'campaign_id' => $request->campaign_id,
-                'paid_amount' => $request->amount,
-                'payment_method' => $request->payment_method,
-                'payment_date' => now(),
-                'status' => 'pending',
-                'is_guest_payment' => true,
-                'notes' => $request->notes,
-                'is_anonymous' => $request->boolean('is_anonymous'),
+            return response()->json([
+                'success' => true,
+                'snap_token' => $snapToken,
+                'payment_code' => $payment->payment_code,
+                'redirect_url' => route('guest.payment.summary', $payment->payment_code),
+                'message' => 'Silakan selesaikan pembayaran Anda.'
             ]);
 
-            DB::commit();
-
-            return redirect()->route('guest.payment.summary', ['paymentCode' => $paymentCode]);
         } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Guest Payment Store Error: ' . $e->getMessage());
-            return back()->with('error', 'Gagal memproses transaksi. Silakan coba lagi.');
+            \Illuminate\Support\Facades\Log::error('Guest Payment Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.'
+            ], 500);
         }
     }
 
-    /**
-     * Show guest payment summary page.
-     */
     public function guestSummary($paymentCode)
     {
-        $payment = ZakatPayment::where('payment_code', $paymentCode)
+        $payment = Payment::where('payment_code', $paymentCode)
             ->where('is_guest_payment', true)
             ->firstOrFail();
 
@@ -146,12 +141,9 @@ class GuestPaymentController extends Controller
         return view('payments.guest-summary', compact('payment', 'snapToken'));
     }
 
-    /**
-     * Get Snap token via AJAX.
-     */
     public function getSnapToken($paymentCode)
     {
-        $payment = ZakatPayment::where('payment_code', $paymentCode)->firstOrFail();
+        $payment = Payment::where('payment_code', $paymentCode)->firstOrFail();
 
         try {
             $snapToken = $this->midtransService->createSnapToken($payment, $payment->payment_method);
@@ -161,14 +153,11 @@ class GuestPaymentController extends Controller
         }
     }
 
-    /**
-     * Custom method to get Snap token with payment method override.
-     */
     public function getTokenCustom(Request $request, $paymentCode)
     {
         $request->validate(['method' => 'required|string']);
 
-        $payment = ZakatPayment::where('payment_code', $paymentCode)->firstOrFail();
+        $payment = Payment::where('payment_code', $paymentCode)->firstOrFail();
         $payment->update(['payment_method' => $request->method]);
 
         try {
@@ -179,59 +168,47 @@ class GuestPaymentController extends Controller
         }
     }
 
-    /**
-     * Guest success page.
-     */
     public function guestSuccess($paymentCode)
     {
-        $payment = ZakatPayment::where('payment_code', $paymentCode)->firstOrFail();
+        $payment = Payment::where('payment_code', $paymentCode)->firstOrFail();
+
+        if (in_array($payment->status, ['pending', 'unpaid'])) {
+            try {
+                $statusResponse = \Midtrans\Transaction::status($paymentCode);
+                $statusArray = json_decode(json_encode($statusResponse), true);
+                app(\App\Services\MidtransService::class)->handleNotificationPayload($statusArray);
+                $payment->refresh();
+            } catch (\Exception $e) {
+            }
+        }
+
         return view('payments.guest-success', compact('payment'));
     }
 
-    /**
-     * Guest failure page.
-     */
     public function guestFailure($paymentCode)
     {
-        $payment = ZakatPayment::where('payment_code', $paymentCode)->firstOrFail();
+        $payment = Payment::where('payment_code', $paymentCode)->firstOrFail();
         return view('payments.guest-failure', compact('payment'));
     }
 
-    /**
-     * Guest receipt by code.
-     */
     public function guestReceiptByCode($paymentCode)
     {
-        $payment = ZakatPayment::where('payment_code', $paymentCode)->firstOrFail();
+        $payment = Payment::where('payment_code', $paymentCode)->firstOrFail();
         return view('payments.guest-receipt', compact('payment'));
     }
 
-    /**
-     * Download guest receipt PDF/print.
-     */
     public function downloadGuestReceipt($paymentCode)
     {
-        $payment = ZakatPayment::where('payment_code', $paymentCode)->firstOrFail();
+        $payment = Payment::where('payment_code', $paymentCode)->firstOrFail();
         return view('payments.guest-receipt', compact('payment'));
     }
 
-    /**
-     * Check payment status via AJAX polling.
-     */
     public function guestCheckStatus($paymentCode)
     {
-        $payment = ZakatPayment::where('payment_code', $paymentCode)->first();
+        $payment = Payment::where('payment_code', $paymentCode)->first();
         if (!$payment) {
             return response()->json(['status' => 'not_found'], 404);
         }
         return response()->json(['status' => $payment->status]);
-    }
-
-    /**
-     * Handle guest leave page.
-     */
-    public function guestLeavePage(Request $request, $paymentCode)
-    {
-        return response()->json(['status' => 'acknowledged']);
     }
 }

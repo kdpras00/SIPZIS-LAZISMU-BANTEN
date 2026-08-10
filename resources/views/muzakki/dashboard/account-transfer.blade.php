@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="py-6 px-4 max-w-2xl mx-auto">
-    <!-- Header Navigation -->
+    
     <div class="flex items-center gap-3 mb-6 pb-4 border-b border-[#f0ece6]">
         <a href="{{ route('dashboard.management') }}" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white border border-[#e8e0d6] text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#f0ece6] transition-all shadow-sm">
             <i class="bi bi-arrow-left text-lg"></i>
@@ -15,10 +15,10 @@
         </div>
     </div>
 
-    <!-- Main Card -->
+    
     <div class="bg-white rounded-2xl border border-[#f0ece6] p-6 shadow-sm space-y-6">
         
-        <!-- Info Banner -->
+        
         <div class="bg-amber-50/80 border border-amber-200/80 rounded-xl p-4 flex items-start gap-3">
             <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0 text-amber-700">
                 <i class="bi bi-shield-exclamation text-lg"></i>
@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <!-- Transfer Form -->
+        
         <form id="transferOwnershipForm" class="space-y-4">
             <div>
                 <label for="campaign_select" class="block text-xs font-medium text-[#8b7e74] mb-1.5 uppercase tracking-wider">Pilih Campaign</label>

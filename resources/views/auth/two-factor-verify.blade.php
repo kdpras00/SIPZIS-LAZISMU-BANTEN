@@ -4,7 +4,7 @@
 <div class="min-h-screen flex items-center justify-center" style="background: #faf8f5;">
     <div class="w-full max-w-md px-6">
         <div class="bg-white rounded-2xl p-8" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06), 0 4px 16px rgba(28,15,10,0.06);">
-            <!-- Logo & Title -->
+            
             <div class="text-center mb-8">
                 <div class="mx-auto w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style="background: #fff7ed;">
                     <i class="bi bi-shield-lock text-2xl" style="color: #c2410c;"></i>
@@ -13,11 +13,11 @@
                 <p class="text-sm" style="color: #8b7e74;">Masukkan kode 6 digit dari Google Authenticator</p>
             </div>
 
-            <!-- Verification Form -->
+            
             <form method="POST" action="{{ route('two-factor.verify.post') }}" class="space-y-4" id="verifyForm">
                 @csrf
 
-                <!-- Code Input -->
+                
                 <div>
                     <input id="code" 
                            type="text" 
@@ -34,14 +34,14 @@
                     @enderror
                 </div>
 
-                <!-- Submit Button -->
+                
                 <button type="submit"
                         class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
                     Verifikasi
                 </button>
             </form>
 
-            <!-- Help Text -->
+            
             <div class="mt-6 text-center">
                 <p class="text-sm text-gray-600">
                     Tidak memiliki akses ke aplikasi authenticator?<br>

@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Http;
 
 class RegionController extends Controller
 {
-    // Semua negara
+    
     public function countries()
     {
-        // Use local data for faster response
+        
         $localCountries = [
             ['id' => 'ID', 'name' => 'Indonesia'],
             ['id' => 'MY', 'name' => 'Malaysia'],
@@ -34,7 +34,7 @@ class RegionController extends Controller
             ['id' => 'AE', 'name' => 'United Arab Emirates'],
         ];
 
-        // Try to fetch from external API with timeout
+        
         try {
             $response = Http::timeout(3)->get('https://restcountries.com/v3.1/all?fields=name,cca2');
             
@@ -49,21 +49,21 @@ class RegionController extends Controller
                 return response()->json($countries);
             }
         } catch (\Exception $e) {
-            // Fallback to local data if API fails
+            
         }
 
-        // Return local data if API fails or times out
+        
         return response()->json(collect($localCountries)->sortBy('name')->values());
     }
 
-    // Provinsi berdasarkan negara
+    
     public function provinces($country)
     {
         if (strtolower($country) !== 'indonesia') {
             return response()->json([]);
         }
 
-        // Cache for 24 hours
+        
         $provinces = cache()->remember('provinces_indonesia', 86400, function () {
             $response = Http::timeout(5)->get('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
             return $response->successful() ? $response->json() : [];
@@ -72,10 +72,10 @@ class RegionController extends Controller
         return response()->json($provinces);
     }
 
-    // Kota berdasarkan provinsi
+    
     public function cities($provinceId)
     {
-        // Cache for 24 hours per province
+        
         $cities = cache()->remember("cities_province_{$provinceId}", 86400, function () use ($provinceId) {
             $response = Http::timeout(5)->get("https://www.emsifa.com/api-wilayah-indonesia/api/regencies/{$provinceId}.json");
             return $response->successful() ? $response->json() : [];
@@ -84,10 +84,10 @@ class RegionController extends Controller
         return response()->json($cities);
     }
 
-    // Kecamatan berdasarkan kota
+    
     public function districts($cityId)
     {
-        // Cache for 24 hours per city
+        
         $districts = cache()->remember("districts_city_{$cityId}", 86400, function () use ($cityId) {
             $response = Http::timeout(5)->get("https://www.emsifa.com/api-wilayah-indonesia/api/districts/{$cityId}.json");
             return $response->successful() ? $response->json() : [];
@@ -96,10 +96,10 @@ class RegionController extends Controller
         return response()->json($districts);
     }
 
-    // Kelurahan berdasarkan kecamatan
+    
     public function villages($districtId)
     {
-        // Cache for 24 hours per district
+        
         $villages = cache()->remember("villages_district_{$districtId}", 86400, function () use ($districtId) {
             $response = Http::timeout(5)->get("https://www.emsifa.com/api-wilayah-indonesia/api/villages/{$districtId}.json");
             return $response->successful() ? $response->json() : [];
@@ -108,7 +108,7 @@ class RegionController extends Controller
         return response()->json($villages);
     }
 
-    // Validate postal code based on district and village
+    
     public function validatePostalCode(Request $request)
     {
         $request->validate([
@@ -117,14 +117,14 @@ class RegionController extends Controller
         ]);
 
         try {
-            // Use the kodepos API to validate postal code
+            
             $response = Http::get("https://kodepos.vercel.app/search?q=" . urlencode($request->district));
 
             if ($response->successful()) {
                 $data = $response->json();
 
                 if (!empty($data) && isset($data['data']) && is_array($data['data'])) {
-                    // If village is specified, filter by village
+                    
                     if ($request->village) {
                         $filteredData = array_filter($data['data'], function ($item) use ($request) {
                             return isset($item['village']) &&
@@ -143,7 +143,7 @@ class RegionController extends Controller
                         }
                     }
 
-                    // Get unique postal codes for the district
+                    
                     $postalCodes = collect($data['data'])->pluck('code')->unique()->values();
                     return response()->json([
                         'success' => true,
@@ -166,7 +166,7 @@ class RegionController extends Controller
         }
     }
 
-    // Get postal code for a specific village
+    
     public function getPostalCodeByVillage(Request $request)
     {
         $request->validate([
@@ -174,14 +174,14 @@ class RegionController extends Controller
         ]);
 
         try {
-            // Use the kodepos API to get postal code by village
+            
             $response = Http::get("https://kodepos.vercel.app/search?q=" . urlencode($request->village));
 
             if ($response->successful()) {
                 $data = $response->json();
 
                 if (!empty($data) && is_array($data)) {
-                    // Return the first match
+                    
                     return response()->json([
                         'success' => true,
                         'postal_code' => $data[0]['code'] ?? null,

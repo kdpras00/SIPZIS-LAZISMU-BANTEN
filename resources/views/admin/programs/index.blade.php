@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    {{-- Header --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Kelola Program</h2>
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    {{-- Category Tabs --}}
+    
     <div class="rounded-2xl overflow-hidden mb-6" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         <div style="border-bottom: 1px solid #f0ece6;">
             <nav class="flex -mb-px overflow-x-auto" aria-label="Tabs">
@@ -49,9 +49,9 @@
             </nav>
         </div>
 
-        {{-- Tab Contents --}}
+        
         <div class="p-4 sm:p-6">
-            {{-- Zakat Tab --}}
+            
             <div id="zakat-content" class="tab-content">
                 @php
                 $zakatPrograms = $groupedPrograms->filter(function($programs) {
@@ -88,7 +88,7 @@
                 @endif
             </div>
 
-            {{-- Infaq Tab --}}
+            
             <div id="infaq-content" class="tab-content hidden">
                 @php
                 $infaqPrograms = $groupedPrograms->filter(function($programs) {
@@ -125,7 +125,7 @@
                 @endif
             </div>
 
-            {{-- Shadaqah Tab --}}
+            
             <div id="shadaqah-content" class="tab-content hidden">
                 @php
                 $shadaqahPrograms = $groupedPrograms->filter(function($programs) {
@@ -162,7 +162,7 @@
                 @endif
             </div>
 
-            {{-- Pilar Tab --}}
+            
             <div id="pilar-content" class="tab-content hidden">
                 @php
                 $pilarPrograms = $groupedPrograms->filter(function($programs) {

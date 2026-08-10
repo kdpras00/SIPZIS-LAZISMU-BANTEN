@@ -6,13 +6,11 @@
 <div class="min-h-screen bg-gray-50 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <!-- Header -->
+            
             <div class="bg-white px-6 py-4 border-b border-gray-200">
                 <div class="mb-4">
                     <a href="{{ route('dashboard') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
+                        <i class="fas fa-arrow-left mr-2"></i>
                         Kembali ke Dashboard
                     </a>
                 </div>
@@ -24,7 +22,7 @@
                 </div>
             </div>
 
-            <!-- Filter Tabs -->
+            
             <div class="border-b border-gray-200">
                 <nav class="flex -mb-px">
                     <a href="{{ route('notifications.index', ['filter' => 'all']) }}"
@@ -58,7 +56,7 @@
                 </nav>
             </div>
 
-            <!-- Content -->
+            
             <div class="p-6">
                 @if(session()->has('notifications_success'))
                 <div class="mb-4 p-4 rounded-lg border border-orange-200 bg-orange-50 text-orange-800">
@@ -84,19 +82,17 @@
                                         'message' => 'indigo'
                                         ][$notification->type] ?? 'gray';
 
-                                        $iconPath = [
-                                        'payment' => 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
-                                        'distribution' => 'M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3',
-                                        'program' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
-                                        'account' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
-                                        'reminder' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
-                                        'message' => 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z'
-                                        ][$notification->type] ?? 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z';
+                                        $faIcon = [
+                                        'payment' => 'fas fa-wallet',
+                                        'distribution' => 'fas fa-hand-holding-heart',
+                                        'program' => 'fas fa-mosque',
+                                        'account' => 'fas fa-user-circle',
+                                        'reminder' => 'fas fa-clock',
+                                        'message' => 'fas fa-envelope'
+                                        ][$notification->type] ?? 'fas fa-bell';
                                         @endphp
                                         <div class="h-10 w-10 rounded-full bg-{{ $colorClass }}-100 flex items-center justify-center">
-                                            <svg class="h-6 w-6 text-{{ $colorClass }}-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $iconPath }}"></path>
-                                            </svg>
+                                            <i class="{{ $faIcon }} text-lg text-{{ $colorClass }}-600"></i>
                                         </div>
                                     </div>
                                     <div class="ml-4">
@@ -123,7 +119,7 @@
                                 @php
                                     $actionUrl = $notification->action_url ?? null;
                                 @endphp
-                                @if($notification->notifiable_type === 'App\Models\ZakatPayment' && $actionUrl)
+                                @if($notification->notifiable_type === 'App\Models\Payment' && $actionUrl)
                                 <a href="{{ $actionUrl }}"
                                     class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                     Lihat Detail
@@ -135,7 +131,7 @@
                     @endforeach
                 </div>
 
-                <!-- Pagination -->
+                
                 @if($notifications->hasPages())
                 <div class="mt-6">
                     {{ $notifications->links() }}
@@ -143,9 +139,7 @@
                 @endif
                 @else
                 <div class="text-center py-12">
-                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
+                    <i class="far fa-bell-slash text-5xl text-gray-400 mx-auto"></i>
                     <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak ada notifikasi</h3>
                     <p class="mt-1 text-sm text-gray-500">Anda tidak memiliki notifikasi saat ini.</p>
                     <div class="mt-6">

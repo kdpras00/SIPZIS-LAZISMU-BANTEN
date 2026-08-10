@@ -303,7 +303,6 @@
     </div>
 </div>
 
-<!-- Modal -->
 <div id="markReceivedModal"
      class="fixed inset-0 z-50 hidden items-center justify-center overflow-y-auto overflow-x-hidden bg-gray-900/50 p-4">
     <div class="w-full max-w-lg rounded-2xl bg-white shadow-xl">

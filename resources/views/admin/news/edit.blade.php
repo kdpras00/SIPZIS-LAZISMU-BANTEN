@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    <!-- Header -->
+    
     <div class="mb-6 flex items-center justify-between">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Edit Berita</h2>
@@ -23,9 +23,9 @@
             @method('PUT')
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Main Content -->
+                
                 <div class="lg:col-span-2 space-y-6">
-                    <!-- Title -->
+                    
                     <div>
                         <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
                             Judul Berita <span class="text-red-500">*</span>
@@ -39,7 +39,7 @@
                         @enderror
                     </div>
 
-                    <!-- Excerpt -->
+                    
                     <div>
                         <label for="excerpt" class="block text-sm font-medium text-gray-700 mb-2">
                             Ringkasan (Opsional)
@@ -52,7 +52,7 @@
                         @enderror
                     </div>
 
-                    <!-- Content -->
+                    
                     <div>
                         <label for="content" class="block text-sm font-medium text-gray-700 mb-2">
                             Konten Berita <span class="text-red-500">*</span>
@@ -66,9 +66,9 @@
                     </div>
                 </div>
 
-                <!-- Sidebar -->
+                
                 <div class="lg:col-span-1 space-y-6">
-                    <!-- Current Image -->
+                    
                     @if($news->image)
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Saat Ini</label>
@@ -85,7 +85,7 @@
                     </div>
                     @endif
 
-                    <!-- Image Upload -->
+                    
                     <div>
                         <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
                             {{ $news->image ? 'Ganti Gambar' : 'Gambar Berita' }}
@@ -110,13 +110,13 @@
                         @enderror
                     </div>
 
-                    <!-- Preview Image -->
+                    
                     <div id="image-preview" class="hidden">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Preview Gambar Baru</label>
                         <img id="preview-img" src="" alt="Preview" class="w-full h-48 object-cover rounded-lg">
                     </div>
 
-                    <!-- Publish Status -->
+                    
                     <div>
                         <label class="flex items-center">
                             <input type="checkbox" name="is_published" value="1"
@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <!-- Actions -->
+            
             <div class="flex justify-end space-x-4 pt-6 border-t">
                 <a href="{{ route('admin.news.index') }}"
                     class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition duration-200">

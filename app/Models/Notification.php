@@ -33,7 +33,7 @@ class Notification extends Model
         'data' => 'array'
     ];
 
-    // Relationships
+    
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -49,7 +49,7 @@ class Notification extends Model
         return $this->morphTo();
     }
 
-    // Scopes
+    
     public function scopeUnread($query)
     {
         return $query->where('is_read', false);
@@ -70,7 +70,7 @@ class Notification extends Model
         return $query->where('muzakki_id', $muzakkiId);
     }
 
-    // Methods
+    
     public function markAsRead(): void
     {
         if (!$this->is_read) {
@@ -81,7 +81,7 @@ class Notification extends Model
         }
     }
 
-    // Backward compatibility delegates to NotificationService
+    
     public static function createPaymentNotification($muzakki, $payment, $status)
     {
         return app(\App\Services\NotificationService::class)->createPaymentNotification($muzakki, $payment, $status);

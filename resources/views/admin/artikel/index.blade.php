@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    {{-- Header --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Manajemen Artikel</h2>
@@ -15,10 +15,10 @@
         </a>
     </div>
 
-    {{-- Table Card --}}
+    
     <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-[#f0ece6]">
+            <table id="table-artikel" class="min-w-full divide-y divide-[#f0ece6]">
                 <thead style="background: #faf8f5;">
                     <tr>
                         <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Judul</th>

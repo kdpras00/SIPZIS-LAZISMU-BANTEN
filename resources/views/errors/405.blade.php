@@ -13,7 +13,7 @@
 
         <div class="relative">
             <div class="mx-auto w-32 h-32 rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center mb-6">
-                <!-- Ban / Stop Icon -->
+                
                 <svg viewBox="0 0 24 24" fill="none" class="w-16 h-16 text-rose-500" stroke="currentColor" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
                 </svg>

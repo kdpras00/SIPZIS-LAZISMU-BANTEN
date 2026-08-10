@@ -4,6 +4,7 @@
             <thead style="background: #faf8f5;">
                 <tr>
                     <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Nama</th>
+                    <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">NIK</th>
                     <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Kategori</th>
                     <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Telepon</th>
                     <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Kota</th>
@@ -16,17 +17,10 @@
                 @foreach ($muzakki as $item)
                     <tr class="hover:bg-[#faf8f5]/60 transition-colors duration-150">
                         <td class="px-5 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-xl flex items-center justify-center mr-3 border border-[#f0ece6] flex-shrink-0" style="background: #faf8f5;">
-                                    <i class="bi bi-person-heart text-sm" style="color: #c2410c;"></i>
-                                </div>
-                                <div class="min-w-0">
-                                    <div class="text-xs font-bold truncate" style="color: #1c0f0a;">{{ $item->name }}</div>
-                                    @if ($item->nik)
-                                        <div class="text-[11px]" style="color: #8b7e74;">NIK: {{ $item->nik }}</div>
-                                    @endif
-                                </div>
-                            </div>
+                            <div class="text-xs font-bold truncate" style="color: #1c0f0a;">{{ $item->name }}</div>
+                        </td>
+                        <td class="px-5 py-4 whitespace-nowrap text-xs font-medium" style="color: #1c0f0a;">
+                            {{ $item->nik ?: "-" }}
                         </td>
                         <td class="px-5 py-4 whitespace-nowrap">
                             @if ($item->occupation)
@@ -48,7 +42,7 @@
                             {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}
                         </td>
                         <td class="px-5 py-4 whitespace-nowrap text-center text-xs">
-                            <div class="flex items-center justify-center gap-1.5">
+                            <div class="flex items-center justify-start xl:justify-center gap-1.5">
                                 <a href="{{ route('muzakki.show', $item->id) }}"
                                    class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium transition-colors" style="background: #f0ece6; color: #1c0f0a;"
                                    title="Lihat Detail">
@@ -68,7 +62,7 @@
                                         <i class="bi bi-toggle-{{ $item->is_active ? 'on' : 'off' }} text-xs"></i>
                                     </button>
                                 </form>
-                                @if ($item->zakat_payments_count == 0)
+                                @if ($item->payments_count == 0)
                                     <form action="{{ route('muzakki.destroy', $item->id) }}" method="POST"
                                         class="inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                         @csrf

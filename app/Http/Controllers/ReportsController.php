@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ZakatPayment;
-use App\Models\ZakatDistribution;
+use App\Models\Payment;
+use App\Models\Distribution;
 use App\Models\Mustahik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -13,10 +13,10 @@ class ReportsController extends Controller
 {
     public function incoming(Request $request)
     {
-        // Build query for zakat payments
-        $query = ZakatPayment::with(['muzakki', 'program', 'receivedBy']);
+        
+        $query = Payment::with(['muzakki', 'program', 'receivedBy']);
 
-        // Search functionality
+        
         if ($request->has('search')) {
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
@@ -28,22 +28,22 @@ class ReportsController extends Controller
             });
         }
 
-        // Filter by zakat type
+        
         if ($request->has('zakat_type') && $request->zakat_type != '') {
             $query->where('zakat_type_id', $request->zakat_type);
         }
 
-        // Filter by program type
+        
         if ($request->has('program_type') && $request->program_type != '') {
             $query->where('program_type_id', $request->program_type);
         }
 
-        // Filter by payment method
+        
         if ($request->has('payment_method') && $request->payment_method != '') {
             $query->where('payment_method', $request->payment_method);
         }
 
-        // Filter by date range
+        
         if ($request->has('date_from') && $request->date_from != '') {
             $query->whereDate('payment_date', '>=', $request->date_from);
         }
@@ -51,7 +51,7 @@ class ReportsController extends Controller
             $query->whereDate('payment_date', '<=', $request->date_to);
         }
 
-        // Check if export is requested
+        
         if ($request->has('export')) {
             $exportFormat = $request->get('export');
             Log::info('Export requested', ['format' => $exportFormat]);
@@ -60,10 +60,10 @@ class ReportsController extends Controller
             return $this->exportIncomingReport($payments, $exportFormat);
         }
 
-        // Get paginated results
+        
         $payments = $query->latest('payment_date')->paginate(15)->withQueryString();
 
-        // Stats scoped to the active filters so numbers match what's on screen
+        
         $filteredQuery = clone $query;
         $stats = [
             'total_amount' => (clone $filteredQuery)->where('status', 'completed')->sum('paid_amount'),
@@ -80,17 +80,17 @@ class ReportsController extends Controller
 
     public function outgoing(Request $request)
     {
-        // Log the request for debugging
+        
         Log::info('Outgoing report request', [
             'query_params' => $request->all(),
             'has_export' => $request->has('export'),
             'export_value' => $request->get('export')
         ]);
 
-        // Build query for zakat distributions
-        $query = ZakatDistribution::with(['mustahik', 'distributedBy']);
+        
+        $query = Distribution::with(['mustahik', 'distributedBy']);
 
-        // Search functionality
+        
         if ($request->has('search')) {
             $search = $request->get('search');
             $query->where(function ($q) use ($search) {
@@ -102,19 +102,19 @@ class ReportsController extends Controller
             });
         }
 
-        // Filter by mustahik category
+        
         if ($request->has('category') && $request->category != '') {
             $query->whereHas('mustahik', function ($q) use ($request) {
                 $q->where('category', $request->category);
             });
         }
 
-        // Filter by distribution type
+        
         if ($request->has('distribution_type') && $request->distribution_type != '') {
             $query->where('distribution_type', $request->distribution_type);
         }
 
-        // Filter by date range
+        
         if ($request->has('date_from') && $request->date_from != '') {
             $query->whereDate('distribution_date', '>=', $request->date_from);
         }
@@ -122,7 +122,7 @@ class ReportsController extends Controller
             $query->whereDate('distribution_date', '<=', $request->date_to);
         }
 
-        // Check if export is requested
+        
         if ($request->has('export')) {
             $exportFormat = $request->get('export');
             Log::info('Export requested', ['format' => $exportFormat]);
@@ -131,7 +131,7 @@ class ReportsController extends Controller
             return $this->exportOutgoingReport($distributions, $exportFormat);
         }
 
-        // Get paginated results
+        
         $distributions = $query->latest('distribution_date')->paginate(15)->withQueryString();
 
         $categories = array_keys(Mustahik::CATEGORIES);
@@ -142,7 +142,7 @@ class ReportsController extends Controller
             'total_count'      => (clone $filteredQuery)->count(),
             'this_month'       => (clone $filteredQuery)->whereMonth('distribution_date', date('m'))->sum('amount'),
             'pending_receipt'  => (clone $filteredQuery)->where('is_received', false)->count(),
-            'available_balance' => ZakatPayment::completed()->sum('paid_amount') - ZakatDistribution::sum('amount'),
+            'available_balance' => Payment::completed()->sum('paid_amount') - Distribution::sum('amount'),
         ];
 
         return view('reports.outgoing', compact(
@@ -212,7 +212,7 @@ class ReportsController extends Controller
 
     private function exportIncomingToExcel($payments)
     {
-        // Create a simple CSV export as an alternative to Excel
+        
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="laporan-zakat-masuk.csv"',
@@ -243,7 +243,7 @@ class ReportsController extends Controller
 
     private function exportOutgoingToExcel($distributions)
     {
-        // Create a simple CSV export as an alternative to Excel
+        
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="laporan-zakat-keluar.csv"',

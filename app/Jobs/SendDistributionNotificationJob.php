@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Muzakki;
 use App\Models\Notification;
-use App\Models\ZakatDistribution;
+use App\Models\Distribution;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -18,7 +18,7 @@ class SendDistributionNotificationJob implements ShouldQueue
     public int $tries = 3;
 
     public function __construct(
-        public readonly ZakatDistribution $distribution
+        public readonly Distribution $distribution
     ) {}
 
     public function handle(): void

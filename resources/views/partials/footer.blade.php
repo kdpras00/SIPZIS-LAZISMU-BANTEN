@@ -2,7 +2,7 @@
     <div class="container mx-auto px-6 py-14">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
 
-            <!-- Logo & Deskripsi -->
+            
             <div class="space-y-5">
                 <div class="flex items-center mb-2">
                     <img src="{{ asset('img/logo.png') }}" alt="Logo Lazismu Banten" class="h-24 w-auto -mt-2">
@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <!-- Tautan Cepat -->
+            
 
             <div>
                 <h3 class="text-lg font-bold mb-5 border-b border-orange-700 pb-2 uppercase tracking-wide">Tautan Cepat</h3>
@@ -31,11 +31,11 @@
                     <li><a href="{{ route('berita.index') }}" class="text-orange-200 hover:text-white transition-colors">Berita</a></li>
                     <li><a href="{{ route('artikel.index') }}" class="text-orange-200 hover:text-white transition-colors">Artikel</a></li>
                     <li><a href="{{ route('calculator.index') }}" class="text-orange-200 hover:text-white transition-colors">Kalkulator Zakat</a></li>
-                    <!-- <li><a href="{{ route('guest.payment.create') }}" class="text-orange-200 hover:text-white transition-colors">Bayar Zakat</a></li> -->
+                    
                 </ul>
             </div>
 
-            <!-- Kontak Kami -->
+            
             <div>
                 <h3 class="text-lg font-bold mb-5 border-b border-orange-700 pb-2 uppercase tracking-wide">Kontak Kami</h3>
                 <ul class="space-y-3 text-sm">
@@ -54,7 +54,7 @@
                 </ul>
             </div>
 
-            <!-- Tentang -->
+            
             <div>
                 <h3 class="text-lg font-bold mb-5 border-b border-orange-700 pb-2 uppercase tracking-wide">Tentang</h3>
                 <p class="text-orange-100 text-sm leading-relaxed text-justify hyphens-auto" lang="id">

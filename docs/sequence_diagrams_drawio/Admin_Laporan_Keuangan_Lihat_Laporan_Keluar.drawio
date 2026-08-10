@@ -9,7 +9,7 @@
     participant Menu as View (Menu)
     participant Controller as ReportsController
     participant View as View (Outgoing Report)
-    participant Model as ZakatDistribution
+    participant Model as Distribution
 
     Admin-&gt;&gt;Menu: Klik Menu Laporan Keluar
     Menu-&gt;&gt;Controller: GET /reports/outgoing (outgoing)

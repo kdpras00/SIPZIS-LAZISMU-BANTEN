@@ -3,34 +3,32 @@
     @section('title', 'Ringkasan Pembayaran - SIPZIS Lazismu')
 
     @section('navbar')
-        @include('partials.navbarHome', ['activePage' => 'program'])
+        
     @endsection
 
     @section('content')
 
+    <div class="min-h-screen bg-gray-50 pt-8 pb-12 px-4 sm:px-6 lg:px-8 font-sans flex justify-center items-start">
 
-    <div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center font-sans">
-        {{-- Main Card: Changed max-w-md to max-w-2xl for wider layout --}}
-        <div class="max-w-2xl w-full space-y-6 bg-white p-8 rounded-2xl shadow-xl border-t-4 border-orange-500 relative overflow-hidden">
+        
+        <div class="max-w-sm mx-auto w-full space-y-5 bg-white p-6 rounded-[1.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border-t-[5px] border-orange-500 relative overflow-hidden">
             
-            {{-- Decorative Background Elements --}}
+            
             <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-orange-50 opacity-50 blur-xl"></div>
             <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-32 h-32 rounded-full bg-yellow-50 opacity-50 blur-xl"></div>
 
             <div class="relative z-10">
-                {{-- Header --}}
-                    <!-- <div class="text-center mb-6">
-                        <img class="mx-auto h-14 w-auto object-contain mb-3" src="{{ asset('img/logo.png') }}" alt="Lazismu Logo">
-                    </div> -->
+                
+                    
 
-                {{-- Amount Card (Compact) --}}
-                <div class="bg-gradient-to-br from-orange-50 to-orange-50 rounded-xl p-5 border border-orange-100 shadow-sm mb-6 text-center transform transition-all hover:shadow-md">
-                    <p class="text-xs font-bold text-orange-600 uppercase tracking-widest mb-1">Total Pembayaran</p>
-                    <div class="text-4xl font-extrabold text-gray-900 my-2 tracking-tight">
+                
+                <div class="bg-gradient-to-br from-orange-50 to-orange-50 rounded-xl p-3 border border-orange-100 shadow-sm mb-4 text-center transform transition-all hover:shadow-md">
+                    <p class="text-[9px] font-bold text-orange-600 uppercase tracking-widest mb-1">Total Pembayaran</p>
+                    <div class="text-2xl font-extrabold text-gray-900 my-1 tracking-tight">
                         Rp {{ number_format($payment->paid_amount, 0, ',', '.') }}
                     </div>
                     
-                    {{-- Countdown Timer --}}
+                    
                     <div id="countdown-container" class="mt-3 inline-flex items-center justify-center text-xs font-semibold text-amber-600 bg-white px-4 py-1.5 rounded-full border border-amber-100 shadow-sm">
                         <i class="far fa-clock mr-2 animate-pulse"></i>
                         <span id="countdown-timer">Memuat waktu...</span>
@@ -41,63 +39,94 @@
                     @endphp
                 </div>
 
-                {{-- Payment Methods --}}
-                <div class="space-y-5">
-                    <h3 class="text-sm font-bold text-gray-800 flex items-center">
-                        <span class="w-1 h-5 bg-orange-500 rounded-full mr-3"></span>
+                
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold text-gray-800 flex items-center">
+                        <span class="w-1 h-4 bg-orange-500 rounded-full mr-2"></span>
                         Metode Pembayaran
                     </h3>
 
                     <div>
-                        {{-- Group: E-Wallet / QRIS --}}
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">QRIS & E-Wallet</p>
-                        {{-- Grid 4 Columns for Wallets --}}
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="qris">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" class="h-6 mb-2 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
-                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-orange-700 transition-colors">Scan QR</span>
+                        
+                        <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2">QRIS & E-Wallet</p>
+                        
+                        <div class="grid grid-cols-3 gap-2.5">
+                            <button class="payment-method-btn flex flex-col items-center justify-center py-3 px-2 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-sm transition-all duration-200 group bg-white" data-method="qris">
+                                <div class="h-6 w-full flex items-center justify-center mb-2">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" class="max-h-full max-w-[48px] filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100 object-contain">
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-orange-700 transition-colors">Scan QR</span>
                             </button>
-                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="gopay">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Logo_Gopay.svg" class="h-4 mb-3 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
-                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-orange-700 transition-colors">GoPay</span>
+                            <button class="payment-method-btn flex flex-col items-center justify-center py-3 px-2 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-sm transition-all duration-200 group bg-white" data-method="gopay">
+                                <div class="h-6 w-full flex items-center justify-center mb-2">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Logo_Gopay.svg" class="max-h-full max-w-[48px] filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100 object-contain">
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-orange-700 transition-colors">GoPay</span>
                             </button>
-                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="shopeepay">
-                                <img src="https://images.seeklogo.com/logo-png/40/1/shopee-pay-logo-png_seeklogo-406839.png" class="h-6 mb-2 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
-                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-orange-700 transition-colors">ShopeePay</span>
+                            <button class="payment-method-btn flex flex-col items-center justify-center py-3 px-2 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-sm transition-all duration-200 group bg-white" data-method="shopeepay">
+                                <div class="h-6 w-full flex items-center justify-center mb-2">
+                                    <img src="https://images.seeklogo.com/logo-png/40/1/shopee-pay-logo-png_seeklogo-406839.png" class="max-h-full max-w-[44px] filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100 object-contain">
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-orange-700 transition-colors">ShopeePay</span>
                             </button>
-                            <button class="payment-method-btn flex flex-col items-center justify-center p-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-md transition-all duration-200 group bg-white h-24" data-method="dana">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" class="h-4 mb-3 filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100">
-                                <span class="text-[10px] font-medium text-gray-500 group-hover:text-orange-700 transition-colors">Dana (Link)</span>
+                            <button class="payment-method-btn flex flex-col items-center justify-center py-3 px-2 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-sm transition-all duration-200 group bg-white" data-method="dana">
+                                <div class="h-6 w-full flex items-center justify-center mb-2">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" class="max-h-full max-w-[48px] filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100 object-contain">
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-orange-700 transition-colors">Dana (Link)</span>
+                            </button>
+                            <button class="payment-method-btn flex flex-col items-center justify-center py-3 px-2 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-sm transition-all duration-200 group bg-white" data-method="ovo">
+                                <div class="h-6 w-full flex items-center justify-center mb-2">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg" class="max-h-full max-w-[36px] filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100 object-contain">
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-orange-700 transition-colors">OVO (Link)</span>
+                            </button>
+                            <button class="payment-method-btn flex flex-col items-center justify-center py-3 px-2 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-sm transition-all duration-200 group bg-white" data-method="linkaja">
+                                <div class="h-6 w-full flex items-center justify-center mb-2">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/LinkAja.svg" class="max-h-full max-w-[32px] filter grayscale group-hover:grayscale-0 transition-all opacity-70 group-hover:opacity-100 object-contain">
+                                </div>
+                                <span class="text-[10px] font-semibold text-gray-500 group-hover:text-orange-700 transition-colors">LinkAja (Link)</span>
                             </button>
                         </div>
                     </div>
 
-                    {{-- Group: Banks --}}
+                    
                     <div>
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2 mt-4">Virtual Account</p>
-                        {{-- Grid 2 Columns for Banks --}}
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            @foreach(['bca_va' => ['BCA', 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg'], 
-                                    'mandiri_va' => ['Mandiri', 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg'],
-                                    'bri_va' => ['BRI', 'https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg'],
-                                    'bni_va' => ['BNI', 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg']] as $method => $details)
+                        <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2 mt-4">Virtual Account</p>
+                        
+                        <div class="grid grid-cols-2 gap-2.5">
+                            @foreach(['bca_va' => ['BCA', 'img', 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg'], 
+                                    'mandiri_va' => ['Mandiri', 'img', 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg'],
+                                    'bri_va' => ['BRI', 'img', 'https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg'],
+                                    'bni_va' => ['BNI', 'img', 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Bank_Negara_Indonesia_logo_%282004%29.svg'],
+                                    'permata_va' => ['Permata', 'icon', 'fas fa-university text-emerald-600'],
+                                    'cimb_va' => ['CIMB', 'icon', 'fas fa-building text-red-600']
+                                    ] as $method => $details)
                             <button class="flex items-center px-4 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-orange-500 hover:shadow-sm payment-method-btn transition-all text-left group" data-method="{{ $method }}">
-                                <img src="{{ $details[1] }}" class="h-5 w-10 object-contain mr-3 filter grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 transition-all">
-                                <span class="text-sm font-medium text-gray-600 group-hover:text-gray-900 transition-colors">{{ $details[0] }} VA</span>
+                                @if($details[1] === 'img')
+                                    <div class="h-5 w-8 flex-shrink-0 flex items-center justify-start mr-2 opacity-75 group-hover:opacity-100 transition-all">
+                                        <img src="{{ $details[2] }}" class="max-h-full max-w-full object-contain filter grayscale group-hover:grayscale-0">
+                                    </div>
+                                @else
+                                    <div class="h-5 w-8 flex-shrink-0 flex items-center justify-start mr-2 opacity-75 group-hover:opacity-100 transition-all">
+                                        <i class="{{ $details[2] }} text-[18px]"></i>
+                                    </div>
+                                @endif
+                                <span class="text-[11px] font-semibold text-gray-600 group-hover:text-gray-900 transition-colors">{{ $details[0] }}</span>
                             </button>
                             @endforeach
                         </div>
                     </div>
                 </div>
 
-                {{-- Action Buttons --}}
-                <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-50 mt-6">
+                
+                <div class="flex gap-2.5 pt-5 border-t border-gray-100 mt-6">
                     <button id="leave-page-button"
-                        class="w-full sm:w-1/3 order-2 sm:order-1 bg-white border border-gray-200 text-gray-500 font-medium py-3 rounded-xl hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50 transition text-sm">
+                        class="w-1/3 bg-white border-2 border-gray-200 text-gray-600 font-bold py-3 rounded-xl hover:text-orange-600 hover:border-orange-200 hover:bg-orange-50 transition text-xs shadow-sm">
                         Bayar Nanti
                     </button>
                     <button id="pay-button"
-                        class="w-full sm:w-2/3 order-1 sm:order-2 bg-orange-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-orange-700 transition shadow-lg shadow-orange-200 disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] flex items-center justify-center text-base"
+                        class="w-2/3 bg-orange-600 border-2 border-orange-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-orange-700 hover:border-orange-700 transition shadow-md shadow-orange-200/50 disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98] flex items-center justify-center text-[13px]"
                         disabled>
                         Pilih Metode
                     </button>
@@ -107,13 +136,14 @@
                 </p>
                 
                 <p class="text-center text-[10px] text-gray-300 mt-6">
-                    &copy; {{ date('Y') }} SIPZIS Lazismu.
+                    &copy; <span class="font-semibold text-gray-500">Created By : </span> — Kurniawan Dwi Prasetyo<br>
+                    <span class="text-gray-400">Hak Cipta Dilindungi.</span>
                 </p>
             </div>
         </div>
     </div>
 
-    {{-- Midtrans Snap --}}
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Configuration
@@ -270,10 +300,6 @@
             const leavePageButton = document.getElementById('leave-page-button');
             if(leavePageButton) {
                 leavePageButton.addEventListener('click', function() {
-                    fetch('{{ route('guest.payment.leavePage', $payment->payment_code) }}', {
-                        method: 'POST',
-                        headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}
-                    });
                     Swal.fire({
                         icon: 'info',
                         title: 'Link Tersimpan',

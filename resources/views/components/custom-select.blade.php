@@ -36,6 +36,11 @@
     selectedLabel: '{{ addslashes($initialLabel) }}',
     placeholder: '{{ addslashes($placeholder) }}',
     options: {{ json_encode($formattedOptions) }},
+    search: '',
+    get filteredOptions() {
+        if (this.search === '') return this.options;
+        return this.options.filter(opt => opt.label.toLowerCase().includes(this.search.toLowerCase()));
+    },
     selectOption(opt) {
         this.open = false;
         this.selectedValue = opt.value;
@@ -53,9 +58,10 @@
     }
 }" 
 @click.outside="open = false" 
+x-init="$watch('open', value => { if(value) { search = ''; setTimeout(() => $refs.searchInput.focus(), 100); } })"
 class="relative {{ $variant === 'pill' ? 'inline-block' : 'w-full' }} {{ $class }}">
 
-    <!-- Hidden native select for form submission and JS compatibility -->
+    
     <select name="{{ $name }}" id="{{ $id }}" x-ref="hiddenInput" class="sr-only" {{ $required ? 'required' : '' }}>
         <option value="">{{ $placeholder }}</option>
         @foreach($formattedOptions as $opt)
@@ -63,7 +69,7 @@ class="relative {{ $variant === 'pill' ? 'inline-block' : 'w-full' }} {{ $class 
         @endforeach
     </select>
 
-    <!-- Trigger Button -->
+    
     @if($variant === 'pill')
         <button type="button" 
             @click="open = !open"
@@ -72,7 +78,7 @@ class="relative {{ $variant === 'pill' ? 'inline-block' : 'w-full' }} {{ $class 
                 <i class="{{ $icon }} text-xs text-[#8b7e74] pointer-events-none"></i>
             @endif
             <span class="truncate" x-text="selectedLabel || placeholder" :class="!selectedValue ? 'text-gray-400' : 'text-[#1c0f0a]'">{{ $initialLabel ?: $placeholder }}</span>
-            <i class="bi bi-chevron-down text-[10px] text-[#8b7e74] pointer-events-none ml-0.5"></i>
+            <i class="fa-solid fa-chevron-down text-[10px] text-[#8b7e74] pointer-events-none ml-0.5"></i>
         </button>
     @else
         <button type="button" 
@@ -81,12 +87,12 @@ class="relative {{ $variant === 'pill' ? 'inline-block' : 'w-full' }} {{ $class 
             class="w-full h-11 pl-4 pr-9 rounded-xl border bg-white text-xs font-medium text-[#1c0f0a] transition-colors duration-150 flex items-center justify-between outline-none cursor-pointer text-left relative">
             <span class="truncate" x-text="selectedLabel || placeholder" :class="!selectedValue ? 'text-gray-400' : 'text-[#1c0f0a]'">{{ $initialLabel ?: $placeholder }}</span>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-[#8b7e74]">
-                <i class="bi bi-chevron-down text-xs"></i>
+                <i class="fa-solid fa-chevron-down text-xs"></i>
             </div>
         </button>
     @endif
 
-    <!-- Dropdown Menu Popup -->
+    
     <div x-show="open" 
         x-cloak
         x-transition:enter="transition ease-out duration-100"
@@ -95,20 +101,29 @@ class="relative {{ $variant === 'pill' ? 'inline-block' : 'w-full' }} {{ $class 
         style="display: none;"
         class="absolute z-[100] left-0 top-full mt-1 min-w-[130px] w-full bg-white rounded-2xl border border-[#e8e0d6] shadow-xl py-1.5 max-h-60 overflow-y-auto">
         
+        <div class="px-2 pb-2 sticky top-0 bg-white border-b border-[#e8e0d6] z-10 mb-1" @click.stop>
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                <input type="text" x-model="search" placeholder="Cari..." 
+                       class="w-full text-xs border border-gray-200 rounded-lg pl-8 pr-3 py-1.5 focus:border-[#c2410c] focus:outline-none focus:ring-1 focus:ring-[#c2410c] transition-colors"
+                       x-ref="searchInput">
+            </div>
+        </div>
+        
         <div @click="selectOption({value: '', label: ''})"
             :class="!selectedValue ? 'bg-[#fff7ed] text-[#c2410c] font-semibold' : 'text-[#1c0f0a] hover:bg-orange-50/60'"
             class="mx-1.5 px-3.5 py-2.5 rounded-xl text-xs cursor-pointer transition-colors flex items-center justify-between select-none">
             <span x-text="placeholder"></span>
-            <i x-show="!selectedValue" class="bi bi-check2 text-sm text-[#c2410c]"></i>
+            <i x-show="!selectedValue" class="fa-solid fa-check text-sm text-[#c2410c]"></i>
         </div>
 
-        <template x-for="opt in options" :key="opt.value">
+        <template x-for="opt in filteredOptions" :key="opt.value">
             <template x-if="opt.value !== ''">
                 <div @click="selectOption(opt)"
                     :class="opt.value === selectedValue ? 'bg-[#fff7ed] text-[#c2410c] font-semibold' : 'text-[#1c0f0a] hover:bg-orange-50/60'"
                     class="mx-1.5 px-3.5 py-2.5 rounded-xl text-xs cursor-pointer transition-colors flex items-center justify-between select-none">
                     <span x-text="opt.label"></span>
-                    <i x-show="opt.value === selectedValue" class="bi bi-check2 text-sm text-[#c2410c]"></i>
+                    <i x-show="opt.value === selectedValue" class="fa-solid fa-check text-sm text-[#c2410c]"></i>
                 </div>
             </template>
         </template>

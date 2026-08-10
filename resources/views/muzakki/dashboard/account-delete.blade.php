@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="py-6 px-4 max-w-2xl mx-auto">
-    <!-- Header Navigation -->
+    
     <div class="flex items-center gap-3 mb-6 pb-4 border-b border-[#f0ece6]">
         <a href="{{ route('dashboard.management') }}" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white border border-[#e8e0d6] text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#f0ece6] transition-all shadow-sm">
             <i class="bi bi-arrow-left text-lg"></i>
@@ -15,10 +15,10 @@
         </div>
     </div>
 
-    <!-- Main Card -->
+    
     <div class="bg-white rounded-2xl border border-[#f0ece6] p-6 shadow-sm space-y-6">
         
-        <!-- Danger Warning Banner -->
+        
         <div class="bg-rose-50/80 border border-rose-200/80 rounded-xl p-4 flex items-start gap-3">
             <div class="w-9 h-9 rounded-lg bg-rose-100 flex items-center justify-center flex-shrink-0 text-rose-700">
                 <i class="bi bi-exclamation-triangle-fill text-lg"></i>
@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <!-- Consequences List -->
+        
         <div>
             <h3 class="text-xs font-semibold text-[#1c0f0a] uppercase tracking-wider mb-3">Data yang akan terhapus secara permanen:</h3>
             <div class="space-y-2.5">
@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <!-- Preparation Checklist -->
+        
         <div class="bg-[#faf8f5] p-4 rounded-xl border border-[#f0ece6] space-y-2">
             <p class="text-xs font-semibold text-[#1c0f0a] m-0">Sebelum melanjutkan, kami menyarankan Anda untuk:</p>
             <ul class="text-xs text-[#8b7e74] space-y-1.5 pl-0 mb-0 list-none">
@@ -69,7 +69,7 @@
             </ul>
         </div>
 
-        <!-- Confirmation Form -->
+        
         <form id="deleteAccountForm" class="pt-2 border-t border-[#f0ece6] space-y-5">
             <div class="flex items-start gap-3">
                 <input class="w-4 h-4 mt-0.5 text-rose-600 border-[#e8e0d6] rounded focus:ring-rose-500/20 cursor-pointer" type="checkbox" id="confirmDelete" required>

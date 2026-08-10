@@ -9,28 +9,18 @@ use Illuminate\Support\Facades\Log;
 
 class UpdateCampaignStatuses extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    
     protected $signature = 'campaigns:update-statuses';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    
     protected $description = 'Automatically mark campaigns as completed when they expire or reach their target amount';
 
-    /**
-     * Execute the console command.
-     */
+    
     public function handle()
     {
         $this->info('Updating campaign statuses...');
 
-        // Find all published campaigns
+        
         $publishedCampaigns = Campaign::where('status', 'published')->get();
 
         $completedCount = 0;
@@ -38,7 +28,7 @@ class UpdateCampaignStatuses extends Command
 
         foreach ($publishedCampaigns as $campaign) {
             try {
-                // Check if campaign should be completed (expired OR target reached)
+                
                 $shouldComplete = false;
                 $reason = '';
 
@@ -53,13 +43,13 @@ class UpdateCampaignStatuses extends Command
                 if ($shouldComplete) {
                     $campaignTitle = $campaign->title;
                     
-                    // Mark as completed
+                    
                     $campaign->update(['status' => 'completed']);
                     $completedCount++;
 
                     $this->info("Marked campaign '{$campaignTitle}' as completed (Reason: {$reason}).");
                     
-                    // Log the update
+                    
                     Log::info("Campaign automatically marked as completed", [
                         'campaign_id' => $campaign->id,
                         'campaign_title' => $campaignTitle,
@@ -86,7 +76,7 @@ class UpdateCampaignStatuses extends Command
             $this->warn("Encountered errors with {$errorCount} campaigns.");
         }
 
-        // Also log for monitoring purposes
+        
         Log::info("Campaign status update job completed", [
             'total_checked' => $publishedCampaigns->count(),
             'completed_count' => $completedCount,

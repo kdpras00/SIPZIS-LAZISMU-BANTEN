@@ -26,22 +26,24 @@
 
     $user = auth()->user();
     $unreadCount = 0;
-    if ($user->role === 'muzakki' && $user->muzakki) {
-        $unreadCount = $user->muzakki->unread_notifications_count;
-    } else {
-        $unreadCount = $user->unread_notifications_count;
+    if ($user) {
+        if ($user->role === 'muzakki' && $user->muzakki) {
+            $unreadCount = $user->muzakki->unread_notifications_count;
+        } else {
+            $unreadCount = $user->unread_notifications_count;
+        }
     }
 @endphp
 
 <header class="flex items-center justify-between px-6" style="background: #faf8f5; border-bottom: 1px solid #f0ece6; height: 68px; box-sizing: border-box; position: relative; z-index: 1051;">
 
-    {{-- Left: Toggle + Breadcrumb --}}
+    
     <div class="flex items-center gap-4">
         <button id="sidebarToggle" class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-200 hover:bg-gray-100" style="color: #8b7e74; border: 1px solid #f0ece6; background: transparent; cursor: pointer;" aria-label="Toggle Sidebar">
             <i class="bi bi-list text-lg"></i>
         </button>
 
-        {{-- Desktop breadcrumb --}}
+        
         <nav class="hidden sm:flex items-center gap-1.5 text-sm">
             <a href="{{ route('dashboard') }}" class="no-underline transition-colors hover:opacity-70" style="color: #8b7e74;">Dashboard</a>
             @if($currentPage !== 'Overview' && $currentPage !== 'Dashboard')
@@ -50,16 +52,16 @@
             @endif
         </nav>
 
-        {{-- Mobile: show current page name instead of breadcrumb --}}
+        
         <span class="sm:hidden text-sm font-semibold" style="color: #1c0f0a;">
             {{ $currentPage === 'Overview' ? 'Dashboard' : $currentPage }}
         </span>
     </div>
 
-    {{-- Right: Actions --}}
+    
     <div class="flex items-center gap-3">
 
-        {{-- Notifications --}}
+        
         <div class="dropdown relative">
             <button class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-200 relative hover:bg-gray-100" 
                 type="button" data-bs-toggle="dropdown" aria-expanded="false"
@@ -82,10 +84,12 @@
                         @php
                             $notifications = collect();
                             $limit = 10;
-                            if ($user->role === 'muzakki' && $user->muzakki) {
-                                $notifications = $user->muzakki->notifications()->latest()->limit($limit)->get();
-                            } else {
-                                $notifications = $user->notifications()->latest()->limit($limit)->get();
+                            if ($user) {
+                                if ($user->role === 'muzakki' && $user->muzakki) {
+                                    $notifications = $user->muzakki->notifications()->latest()->limit($limit)->get();
+                                } else {
+                                    $notifications = $user->notifications()->latest()->limit($limit)->get();
+                                }
                             }
                         @endphp
 
@@ -121,24 +125,24 @@
             </ul>
         </div>
 
-        {{-- Divider --}}
+        
         <div class="w-px h-6" style="background: #f0ece6;"></div>
 
-        {{-- User Dropdown --}}
+        
+        @if($user)
         <div class="dropdown relative">
             <button class="flex items-center gap-2.5 px-2 py-1.5 rounded-lg transition-colors duration-200 hover:bg-gray-100"
                 type="button" data-bs-toggle="dropdown" aria-expanded="false"
                 style="border: none; background: transparent; cursor: pointer;">
                 <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style="background: #c2410c;">
-                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    {{ strtoupper(substr($user->name, 0, 1)) }}
                 </div>
-                <span class="text-sm font-medium hidden sm:inline" style="color: #1c0f0a;">{{ auth()->user()->name }}</span>
+                <span class="text-sm font-medium hidden sm:inline" style="color: #1c0f0a;">{{ $user->name }}</span>
                 <i class="bi bi-chevron-down text-xs hidden sm:inline" style="color: #8b7e74;"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-xl overflow-hidden" style="border: 1px solid #f0ece6; min-width: 200px;">
                 <li class="px-4 py-2.5" style="border-bottom: 1px solid #f0ece6;">
-                    <p class="text-xs font-semibold mb-0" style="color: #8b7e74;">{{ ucfirst(auth()->user()->role) }}</p>
-                </li>
+                    <p class="text-xs font-semibold mb-0" style="color: #8b7e74;">{{ ucfirst($user->role) }}</p>
                 <li>
                     <a class="flex items-center gap-2.5 px-4 py-2.5 text-sm no-underline transition-colors hover:bg-gray-50" href="{{ route('profile.show') }}" style="color: #1c0f0a;">
                         <i class="bi bi-person text-base" style="color: #8b7e74;"></i>
@@ -155,6 +159,7 @@
                 </li>
             </ul>
         </div>
+        @endif
     </div>
 </header>
 

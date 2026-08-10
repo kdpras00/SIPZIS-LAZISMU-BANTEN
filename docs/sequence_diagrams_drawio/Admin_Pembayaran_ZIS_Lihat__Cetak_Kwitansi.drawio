@@ -7,9 +7,9 @@
         <mxCell id="2" value="sequenceDiagram
     actor Admin
     participant Index as View (Index)
-    participant Controller as ZakatPaymentController
+    participant Controller as PaymentController
     participant View as View (Receipt)
-    participant Model as ZakatPayment
+    participant Model as Payment
 
     Admin-&gt;&gt;Index: Klik Tombol Kwitansi
     Index-&gt;&gt;Controller: GET /payments/{id}/receipt (receipt)

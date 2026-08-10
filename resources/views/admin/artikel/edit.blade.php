@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    {{-- Header --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Edit Artikel</h2>
@@ -23,9 +23,9 @@
             @method('PUT')
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                {{-- Main Content --}}
+                
                 <div class="lg:col-span-2 space-y-5">
-                    {{-- Title --}}
+                    
                     <div>
                         <label for="title" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
                             Judul Artikel <span class="text-red-500">*</span>
@@ -39,7 +39,7 @@
                         @enderror
                     </div>
 
-                    {{-- Excerpt --}}
+                    
                     <div>
                         <label for="excerpt" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
                             Ringkasan (Opsional)
@@ -52,7 +52,7 @@
                         @enderror
                     </div>
 
-                    {{-- Content --}}
+                    
                     <div>
                         <label for="content" class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
                             Konten Artikel <span class="text-red-500">*</span>
@@ -66,9 +66,9 @@
                     </div>
                 </div>
 
-                {{-- Sidebar --}}
+                
                 <div class="lg:col-span-1 space-y-5">
-                    {{-- Image Upload --}}
+                    
                     <div>
                         <label class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">
                             Gambar Artikel
@@ -86,7 +86,7 @@
                         @enderror
                     </div>
 
-                    {{-- Current & Preview Image --}}
+                    
                     @if($artikel->image)
                     <div>
                         <label class="block text-xs font-semibold mb-1.5" style="color: #1c0f0a;">Gambar Saat Ini</label>
@@ -99,7 +99,7 @@
                         <img id="preview-img" src="" alt="Preview" class="w-full h-44 object-cover rounded-xl border border-[#f0ece6]">
                     </div>
 
-                    {{-- Publish Checkbox --}}
+                    
                     <div class="p-4 rounded-xl border border-[#f0ece6] bg-[#faf8f5]">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" name="is_published" value="1"
@@ -111,7 +111,7 @@
                 </div>
             </div>
 
-            {{-- Actions --}}
+            
             <div class="flex justify-end gap-3 pt-5 border-t border-[#f0ece6]">
                 <a href="{{ route('admin.artikel.index') }}"
                     class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors" style="background: #f0ece6; color: #1c0f0a;">

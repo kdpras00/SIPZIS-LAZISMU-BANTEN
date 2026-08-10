@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    <!-- Header -->
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Detail Muzakki</h2>
@@ -24,9 +24,9 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Muzakki Profile Information -->
+        
         <div class="lg:col-span-1 space-y-6">
-            <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+            <div class="bg-white rounded-3xl overflow-hidden border border-[#f0ece6] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:shadow-[0_8px_30px_-4px_rgba(194,65,12,0.12)] hover:-translate-y-1">
                 <div class="px-6 py-4 border-b border-[#f0ece6]">
                     <h5 class="text-sm font-bold text-[#1c0f0a] flex items-center mb-0">
                         <i class="bi bi-person-fill mr-2" style="color: #c2410c;"></i> Informasi Pribadi
@@ -34,7 +34,7 @@
                 </div>
                 <div class="p-6">
                     <div class="text-center mb-6">
-                        <div class="rounded-full p-4 inline-flex items-center justify-center w-20 h-20 mx-auto mb-3" style="background: #fff7ed; color: #c2410c;">
+                        <div class="rounded-full p-4 inline-flex items-center justify-center w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-[#fff7ed] to-orange-100 text-[#c2410c] shadow-inner ring-4 ring-white">
                             <i class="bi bi-person-fill text-3xl"></i>
                         </div>
                         <h4 class="text-lg font-bold text-[#1c0f0a] mt-2 mb-1.5">{{ $muzakki->name }}</h4>
@@ -44,19 +44,19 @@
                     </div>
 
                     <div class="space-y-3 text-xs">
-                        <div class="flex border-b border-[#f0ece6] pb-3">
+                        <div class="flex border-b border-dashed border-[#e8e0d6] pb-3">
                             <div class="text-[#8b7e74] w-24 flex-shrink-0">NIK</div>
                             <div class="text-[#1c0f0a] font-medium">{{ $muzakki->nik ?: '-' }}</div>
                         </div>
-                        <div class="flex border-b border-[#f0ece6] pb-3">
+                        <div class="flex border-b border-dashed border-[#e8e0d6] pb-3">
                             <div class="text-[#8b7e74] w-24 flex-shrink-0">Email</div>
                             <div class="text-[#1c0f0a] font-medium">{{ $muzakki->email ?: '-' }}</div>
                         </div>
-                        <div class="flex border-b border-[#f0ece6] pb-3">
+                        <div class="flex border-b border-dashed border-[#e8e0d6] pb-3">
                             <div class="text-[#8b7e74] w-24 flex-shrink-0">Telepon</div>
                             <div class="text-[#1c0f0a] font-medium">{{ $muzakki->phone ?: '-' }}</div>
                         </div>
-                        <div class="flex border-b border-[#f0ece6] pb-3">
+                        <div class="flex border-b border-dashed border-[#e8e0d6] pb-3">
                             <div class="text-[#8b7e74] w-24 flex-shrink-0">Gender</div>
                             <div>
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $muzakki->gender === 'male' ? 'bg-blue-50 text-blue-700' : 'bg-pink-50 text-pink-700' }}">
@@ -65,16 +65,16 @@
                             </div>
                         </div>
                         @if ($muzakki->date_of_birth)
-                            <div class="flex border-b border-[#f0ece6] pb-3">
+                            <div class="flex border-b border-dashed border-[#e8e0d6] pb-3">
                                 <div class="text-[#8b7e74] w-24 flex-shrink-0">Tanggal Lahir</div>
                                 <div class="text-[#1c0f0a] font-medium">{{ $muzakki->date_of_birth->format('d F Y') }}</div>
                             </div>
-                            <div class="flex border-b border-[#f0ece6] pb-3">
+                            <div class="flex border-b border-dashed border-[#e8e0d6] pb-3">
                                 <div class="text-[#8b7e74] w-24 flex-shrink-0">Usia</div>
                                 <div class="text-[#1c0f0a] font-medium">{{ $muzakki->age ?? '-' }} tahun</div>
                             </div>
                         @endif
-                        <div class="flex border-b border-[#f0ece6] pb-3">
+                        <div class="flex border-b border-dashed border-[#e8e0d6] pb-3">
                             <div class="text-[#8b7e74] w-24 flex-shrink-0">Pekerjaan</div>
                             <div class="text-[#1c0f0a] font-medium">
                                 {{ $muzakki->occupation ? ucwords(str_replace('_', ' ', $muzakki->occupation)) : '-' }}
@@ -90,8 +90,8 @@
                 </div>
             </div>
 
-            <!-- Address Information -->
-            <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+            
+            <div class="bg-white rounded-3xl overflow-hidden border border-[#f0ece6] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:shadow-[0_8px_30px_-4px_rgba(194,65,12,0.12)] hover:-translate-y-1">
                 <div class="px-6 py-4 border-b border-[#f0ece6]">
                     <h6 class="text-sm font-bold text-[#1c0f0a] flex items-center mb-0">
                         <i class="bi bi-geo-alt-fill mr-2" style="color: #c2410c;"></i> Alamat
@@ -116,9 +116,9 @@
                 </div>
             </div>
 
-            <!-- Account Information -->
+            
             @if ($muzakki->user)
-                <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+                <div class="bg-white rounded-3xl overflow-hidden border border-[#f0ece6] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:shadow-[0_8px_30px_-4px_rgba(194,65,12,0.12)] hover:-translate-y-1">
                     <div class="px-6 py-4 border-b border-[#f0ece6]">
                         <h6 class="text-sm font-bold text-[#1c0f0a] flex items-center mb-0">
                             <i class="bi bi-shield-lock-fill mr-2" style="color: #c2410c;"></i> Akun Pengguna
@@ -126,7 +126,7 @@
                     </div>
                     <div class="p-6">
                         <div class="space-y-3 text-xs">
-                            <div class="flex border-b border-[#f0ece6] pb-3">
+                            <div class="flex border-b border-dashed border-[#e8e0d6] pb-3">
                                 <div class="text-[#8b7e74] w-24 flex-shrink-0">Status</div>
                                 <div>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $muzakki->user->is_active ? 'bg-[#fff7ed] text-[#c2410c]' : 'bg-red-50 text-red-700' }}">
@@ -134,7 +134,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="flex border-b border-[#f0ece6] pb-3">
+                            <div class="flex border-b border-dashed border-[#e8e0d6] pb-3">
                                 <div class="text-[#8b7e74] w-24 flex-shrink-0">Role</div>
                                 <div>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-800">
@@ -152,37 +152,37 @@
             @endif
         </div>
 
-        <!-- Zakat Statistics and Payments -->
+        
         <div class="lg:col-span-2 space-y-6">
-            <!-- Unified Statistics Cards -->
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+                <div class="bg-white rounded-3xl p-5 border border-[#f0ece6] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:shadow-[0_8px_30px_-4px_rgba(194,65,12,0.12)] hover:-translate-y-1 group">
                     <div class="flex justify-between items-start">
                         <div>
                             <p class="text-xs font-medium mb-1" style="color: #8b7e74;">Total Zakat</p>
                             <h4 class="text-xl font-bold mb-0" style="color: #1c0f0a;">Rp {{ number_format($stats['total_zakat'], 0, ',', '.') }}</h4>
                         </div>
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: #fff7ed; color: #c2410c;">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[#fff7ed] to-orange-50 text-[#c2410c] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-sm border border-orange-100/50">
                             <i class="bi bi-wallet2 text-lg"></i>
                         </div>
                     </div>
                     <p class="text-[11px] mt-2 mb-0" style="color: #8b7e74;">Sepanjang masa</p>
                 </div>
 
-                <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+                <div class="bg-white rounded-3xl p-5 border border-[#f0ece6] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:shadow-[0_8px_30px_-4px_rgba(194,65,12,0.12)] hover:-translate-y-1 group">
                     <div class="flex justify-between items-start">
                         <div>
                             <p class="text-xs font-medium mb-1" style="color: #8b7e74;">Total Transaksi</p>
                             <h4 class="text-xl font-bold mb-0" style="color: #1c0f0a;">{{ number_format($stats['payment_count']) }}</h4>
                         </div>
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: #fff7ed; color: #c2410c;">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[#fff7ed] to-orange-50 text-[#c2410c] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-sm border border-orange-100/50">
                             <i class="bi bi-[#c2410c] bi-receipt text-lg"></i>
                         </div>
                     </div>
                     <p class="text-[11px] mt-2 mb-0" style="color: #8b7e74;">Pembayaran selesai</p>
                 </div>
 
-                <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+                <div class="bg-white rounded-3xl p-5 border border-[#f0ece6] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:shadow-[0_8px_30px_-4px_rgba(194,65,12,0.12)] hover:-translate-y-1 group">
                     <div class="flex justify-between items-start">
                         <div>
                             <p class="text-xs font-medium mb-1" style="color: #8b7e74;">Terakhir Bayar</p>
@@ -194,7 +194,7 @@
                                 @endif
                             </h4>
                         </div>
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: #fff7ed; color: #c2410c;">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br from-[#fff7ed] to-orange-50 text-[#c2410c] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-sm border border-orange-100/50">
                             <i class="bi bi-clock-history text-lg"></i>
                         </div>
                     </div>
@@ -206,8 +206,8 @@
                 </div>
             </div>
 
-            <!-- Recent Payments -->
-            <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
+            
+            <div class="bg-white rounded-3xl overflow-hidden border border-[#f0ece6] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:shadow-[0_8px_30px_-4px_rgba(194,65,12,0.12)] hover:-translate-y-1">
                 <div class="px-6 py-4 border-b border-[#f0ece6] flex justify-between items-center">
                     <h5 class="text-sm font-bold text-[#1c0f0a] flex items-center mb-0">
                         <i class="bi bi-journal-check mr-2" style="color: #c2410c;"></i> Riwayat Pembayaran Donasi
@@ -243,7 +243,7 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-gray-100 text-gray-800">
-                                                    {{ $payment->programType ? $payment->programType->name : 'Donasi Umum' }}
+                                                    {{ $payment->program ? $payment->program->name : 'Donasi Umum' }}
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap font-bold">

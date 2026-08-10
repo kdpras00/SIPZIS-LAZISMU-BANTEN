@@ -7,9 +7,9 @@
         <mxCell id="2" value="sequenceDiagram
     actor Admin
     participant Index as View (Index)
-    participant Controller as ZakatDistributionController
+    participant Controller as DistributionController
     participant View as View (Detail)
-    participant Model as ZakatDistribution
+    participant Model as Distribution
 
     Admin-&gt;&gt;Index: Klik Tombol Detail
     Index-&gt;&gt;Controller: GET /distributions/{id} (show)

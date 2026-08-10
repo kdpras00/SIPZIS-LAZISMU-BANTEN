@@ -5,7 +5,7 @@
 @section('content')
 <div class="py-6 px-4 max-w-6xl mx-auto space-y-6">
 
-    <!-- Profile Header Card -->
+    
     <div class="bg-white rounded-2xl border border-[#f0ece6] p-6 shadow-sm">
         <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
             <div class="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            <!-- Share Profile Action -->
+            
             <div class="flex items-center gap-3 flex-shrink-0">
                 <button type="button" 
                         onclick="copyProfileLink('{{ url()->current() }}')"
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <!-- Campaign Metrics Grid -->
+    
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="bg-white rounded-2xl border border-[#f0ece6] p-5 shadow-sm text-center">
             <div class="w-10 h-10 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center mx-auto mb-2 text-rose-600">
@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    <!-- Campaigns List Section -->
+    
     <div class="space-y-4">
         <div class="flex items-center justify-between">
             <h2 class="text-base font-bold text-[#1c0f0a] m-0">Daftar Campaign Aktif</h2>
@@ -100,17 +100,23 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             @foreach($campaigns as $campaign)
             <div class="bg-white rounded-2xl border border-[#f0ece6] overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
-                <!-- Campaign Image -->
-                <div class="relative h-44 bg-[#faf8f5] overflow-hidden">
-                    <img src="{{ $campaign->photo ? (filter_var($campaign->photo, FILTER_VALIDATE_URL) ? $campaign->photo : asset('storage/' . $campaign->photo)) : asset('img/masjidbanten.png') }}"
+                
+                <div class="relative h-44 bg-gray-200 overflow-hidden flex items-center justify-center">
+                    @if($campaign->image_url)
+                    <img src="{{ $campaign->image_url }}"
                          alt="{{ $campaign->title }}"
-                         class="w-full h-full object-cover">
-                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-white/90 backdrop-blur-sm text-[#1c0f0a] shadow-xs uppercase tracking-wider">
+                         class="absolute inset-0 w-full h-full object-cover z-0">
+                    @else
+                    <svg class="w-12 h-12 text-gray-400 z-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    @endif
+                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg text-[10px] font-semibold bg-white/90 backdrop-blur-sm text-[#1c0f0a] shadow-xs uppercase tracking-wider z-10">
                         {{ ucfirst($campaign->program_category ?? 'Zakat') }}
                     </span>
                 </div>
 
-                <!-- Campaign Content -->
+                
                 <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
                     <div class="space-y-2">
                         <h3 class="text-sm font-bold text-[#1c0f0a] line-clamp-2 leading-snug m-0">
@@ -122,7 +128,7 @@
                     </div>
 
                     <div class="space-y-3 pt-2 border-t border-[#f0ece6]">
-                        <!-- Progress Bar -->
+                        
                         <div>
                             <div class="flex justify-between text-xs mb-1">
                                 <span class="text-[#8b7e74]">Terkumpul</span>

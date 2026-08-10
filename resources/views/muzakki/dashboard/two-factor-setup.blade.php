@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="py-6 px-4 max-w-3xl mx-auto">
-    <!-- Header Navigation & Title -->
+    
     <div class="flex items-center gap-3 mb-6 pb-4 border-b border-[#f0ece6]">
         @php
             $backRoute = auth()->user()->role === 'admin' ? route('dashboard') : route('dashboard.management');
@@ -19,9 +19,9 @@
     </div>
 
     @if($user->two_factor_enabled)
-    <!-- State: Already Enabled -->
+    
     <div class="bg-white rounded-2xl border border-[#f0ece6] p-6 shadow-sm mb-6">
-        <!-- Active Status Banner -->
+        
         <div class="bg-emerald-50/80 border border-emerald-200/80 rounded-xl p-4 mb-6 flex items-start gap-3">
             <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0 text-emerald-700">
                 <i class="bi bi-shield-check text-xl"></i>
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <!-- Disable 2FA Form -->
+        
         <div class="pt-2 border-t border-[#f0ece6]">
             <h3 class="text-sm font-semibold text-[#1c0f0a] mb-2">Nonaktifkan 2FA</h3>
             <p class="text-xs text-[#8b7e74] mb-4">
@@ -66,10 +66,10 @@
         </div>
     </div>
     @else
-    <!-- State: Setup Mode -->
+    
     <div class="bg-white rounded-2xl border border-[#f0ece6] p-6 shadow-sm mb-6 space-y-8">
         
-        <!-- Step 1: Install App -->
+        
         <div class="flex items-start gap-4">
             <div class="w-8 h-8 rounded-full bg-[#fff7ed] border border-[#ffedd5] text-[#c2410c] font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
                 1
@@ -98,7 +98,7 @@
 
         <hr class="border-[#f0ece6] m-0">
 
-        <!-- Step 2: Scan QR Code or Manual Secret -->
+        
         <div class="flex items-start gap-4">
             <div class="w-8 h-8 rounded-full bg-[#fff7ed] border border-[#ffedd5] text-[#c2410c] font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
                 2
@@ -109,7 +109,7 @@
                     Buka aplikasi authenticator di smartphone Anda, pilih opsi <strong>Pindai QR Code</strong>, dan arahkan kamera ke kode di bawah ini.
                 </p>
                 
-                <!-- QR Code Box -->
+                
                 <div class="flex flex-col sm:flex-row items-center gap-6 bg-[#faf8f5] p-5 rounded-2xl border border-[#f0ece6]">
                     <div class="bg-white p-3 rounded-xl border border-[#e8e0d6] shadow-sm flex-shrink-0">
                         <img src="{{ $qrCode }}" 
@@ -138,7 +138,7 @@
 
         <hr class="border-[#f0ece6] m-0">
 
-        <!-- Step 3: Verify 6-digit Code -->
+        
         <div class="flex items-start gap-4">
             <div class="w-8 h-8 rounded-full bg-[#fff7ed] border border-[#ffedd5] text-[#c2410c] font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
                 3

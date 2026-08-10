@@ -18,29 +18,29 @@ class OTPController extends Controller
         $this->whatsAppService = $whatsAppService;
     }
 
-    // Kirim kode OTP ke nomor WA
+    
     public function sendOTP(Request $request)
     {
         try {
             Log::info('sendOTP request received', ['input' => $request->all()]);
 
-            // Handle both +62 and 62 formats
+            
             $phone = $request->input('phone');
             if (substr($phone, 0, 1) === '+') {
                 $phone = substr($phone, 1);
             }
 
-            // Validate the processed phone number
+            
             $request->merge(['phone' => $phone]);
             $validated = $request->validate([
-                'phone' => ['required', 'regex:/^62\d{8,15}$/'], // format: 628xxxx
+                'phone' => ['required', 'regex:/^62\d{8,15}$/'], 
             ]);
 
             Log::info('sendOTP phone validation passed', ['phone' => $phone]);
 
             $otp = rand(1000, 9999);
 
-            // Simpan ke session
+            
             Session::put('otp_code', $otp);
             Session::put('otp_phone', $phone);
             Session::put('otp_expires', now()->addMinutes(5));
@@ -51,7 +51,7 @@ class OTPController extends Controller
                 'otp_expires' => Session::get('otp_expires')
             ]);
 
-            // Kirim via WhatsAppService (Fonnte)
+            
             $message = "Kode OTP Anda adalah *{$otp}*. Berlaku 5 menit.";
             $result = $this->whatsAppService->sendMessage($phone, $message);
 
@@ -62,7 +62,7 @@ class OTPController extends Controller
             ]);
 
             if ($result['success']) {
-                // TIDAK PERLU ALERT - Toast akan handle di frontend
+                
                 return response()->json([
                     'success' => true,
                     'message' => 'Kode OTP telah dikirim ke WhatsApp Anda.'
@@ -93,7 +93,7 @@ class OTPController extends Controller
         }
     }
 
-    // Verifikasi kode OTP
+    
     public function verifyOTP(Request $request)
     {
         try {
@@ -117,7 +117,7 @@ class OTPController extends Controller
                 'otp_expires' => Session::get('otp_expires')
             ]);
 
-            // Check expiration
+            
             if (now()->greaterThan(Session::get('otp_expires'))) {
                 Session::forget(['otp_code', 'otp_phone', 'otp_expires']);
                 Log::info('verifyOTP OTP expired');
@@ -127,19 +127,19 @@ class OTPController extends Controller
                 ]);
             }
 
-            // Verify OTP code
+            
             if ($request->otp == Session::get('otp_code')) {
                 $otpPhone = Session::get('otp_phone');
 
-                // Clear OTP session
+                
                 Session::forget(['otp_code', 'otp_phone', 'otp_expires']);
                 Log::info('verifyOTP successful');
 
-                // Update muzakki record to mark phone as verified
+                
                 if (Auth::check()) {
                     $muzakki = Auth::user()->muzakki;
                     if ($muzakki) {
-                        // Normalize phone numbers for comparison
+                        
                         $normalizedMuzakkiPhone = preg_replace('/^\+/', '', $muzakki->phone);
                         $normalizedOtpPhone = preg_replace('/^\+/', '', $otpPhone);
 
@@ -156,7 +156,7 @@ class OTPController extends Controller
                     }
                 }
 
-                // TIDAK PERLU ALERT - Toast akan handle di frontend
+                
                 return response()->json([
                     'success' => true,
                     'message' => 'Nomor WhatsApp berhasil diverifikasi.',
@@ -192,13 +192,11 @@ class OTPController extends Controller
         }
     }
 
-    /**
-     * Resend OTP (optional - untuk handling resend yang lebih baik)
-     */
+    
     public function resendOTP(Request $request)
     {
         try {
-            // Check if there's an active OTP session
+            
             if (!Session::has('otp_phone')) {
                 return response()->json([
                     'success' => false,
@@ -208,10 +206,10 @@ class OTPController extends Controller
 
             $phone = Session::get('otp_phone');
 
-            // Generate new OTP
+            
             $otp = rand(1000, 9999);
 
-            // Update session
+            
             Session::put('otp_code', $otp);
             Session::put('otp_expires', now()->addMinutes(5));
 
@@ -220,7 +218,7 @@ class OTPController extends Controller
                 'otp' => $otp
             ]);
 
-            // Send via WhatsAppService (Fonnte)
+            
             $message = "Kode OTP Anda adalah *{$otp}*. Berlaku 5 menit.";
             $result = $this->whatsAppService->sendMessage($phone, $message);
 

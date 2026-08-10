@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\ZakatPayment;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,14 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class AccountClaimController extends Controller
 {
-    /**
-     * Aktivasi akun bagi muzakki yang bertransaksi sebagai donatur umum (guest).
-     */
+    
     public function claim(Request $request)
     {
         $request->validate([
             'email' => 'required|email|exists:users,email',
-            'payment_code' => 'required|string|exists:zakat_payments,payment_code',
+            'payment_code' => 'required|string|exists:payments,payment_code',
             'password' => 'required|string|min:8|confirmed',
         ], [
             'email.exists' => 'Email tidak terdaftar dalam sistem.',
@@ -30,8 +28,8 @@ class AccountClaimController extends Controller
         try {
             $user = User::where('email', $request->email)->firstOrFail();
 
-            // Keamanan: Hanya izinkan aktivasi dari transaksi donatur umum (guest payment)
-            $payment = ZakatPayment::where('payment_code', $request->payment_code)
+            
+            $payment = Payment::where('payment_code', $request->payment_code)
                 ->where('is_guest_payment', true)
                 ->first();
 

@@ -13,7 +13,7 @@
 
         <div class="relative">
             <div class="mx-auto w-32 h-32 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center mb-6">
-                <!-- Clock / Speedometer Icon -->
+                
                 <svg viewBox="0 0 24 24" fill="none" class="w-16 h-16 text-blue-500" stroke="currentColor" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>

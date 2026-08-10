@@ -5,25 +5,31 @@
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-        <!-- Foto Profil Card -->
+        
         <article class="p-5 rounded-2xl bg-[#faf8f5] border border-[#e8e0d6] text-center flex flex-col items-center justify-between h-full min-h-[220px]">
             <div class="w-full">
                 <label class="block text-xs font-semibold text-[#8b7e74] mb-3 uppercase tracking-wider text-left">Foto Profil</label>
                 <figure class="relative inline-block mb-3 m-0">
-                    <img src="{{ $muzakki->profile_photo ? asset('storage/' . $muzakki->profile_photo) : '' }}"
+                    @php
+                        $hasAvatar = Auth::check() && Auth::user()->avatar;
+                        $hasProfilePhoto = $muzakki->profile_photo ? true : false;
+                        $avatarSrc = $hasProfilePhoto ? asset('storage/' . $muzakki->profile_photo) : ($hasAvatar ? Auth::user()->avatar : '');
+                        $showAvatar = $hasProfilePhoto || $hasAvatar;
+                    @endphp
+                    <img src="{{ $avatarSrc }}"
                         alt="Foto Profil {{ $muzakki->name }}" 
                         class="w-20 h-20 rounded-full object-cover border-2 border-white shadow-sm mx-auto"
                         id="profilePhotoPreview"
-                        style="{{ $muzakki->profile_photo ? '' : 'display: none;' }}">
+                        style="{{ $showAvatar ? '' : 'display: none;' }}">
                     
                     <div id="defaultAvatarIcon" 
                          class="w-20 h-20 rounded-full bg-white border-2 border-[#e8e0d6] flex items-center justify-center text-[#c2410c] text-3xl mx-auto shadow-2xs"
-                         style="{{ $muzakki->profile_photo ? 'display: none;' : '' }}"
+                         style="{{ $showAvatar ? 'display: none;' : '' }}"
                          aria-hidden="true">
                         <i class="bi bi-person-fill"></i>
                     </div>
                 </figure>
-                <p class="text-xs text-[#8b7e74] mb-3" id="profilePhotoText">{{ $muzakki->profile_photo ? 'Foto profil aktif' : 'Belum ada foto profil tersimpan' }}</p>
+                <p class="text-xs text-[#8b7e74] mb-3" id="profilePhotoText">{{ $showAvatar ? 'Foto profil aktif' : 'Belum ada foto profil tersimpan' }}</p>
             </div>
             
             <button type="button" 
@@ -35,7 +41,7 @@
             <input type="file" id="profilePhotoInput" name="profile_photo" class="hidden" accept="image/*" aria-label="Unggah Foto Profil">
         </article>
 
-        <!-- Foto KTP Dropzone Card -->
+        
         <article class="p-5 rounded-2xl bg-[#faf8f5] border border-[#e8e0d6] flex flex-col justify-between h-full min-h-[220px]">
             <div>
                 <label for="ktpInput" class="block text-xs font-semibold text-[#8b7e74] mb-3 uppercase tracking-wider">Foto KTP / Kartu Identitas <span class="text-rose-500">*</span></label>

@@ -7,29 +7,19 @@ use App\Models\Muzakki;
 
 class GenerateMuzakkiCampaignUrls extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+    
     protected $signature = 'muzakki:generate-campaign-urls 
                             {--force : Force regenerate campaign URLs for all muzakki}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    
     protected $description = 'Generate campaign URLs for muzakki that don\'t have one';
 
-    /**
-     * Execute the console command.
-     */
+    
     public function handle()
     {
         $this->info('Starting campaign URL generation...');
         
-        // Get muzakki based on options
+        
         if ($this->option('force')) {
             $muzakkis = Muzakki::whereNotNull('email')->get();
             $this->info('Force mode: Regenerating campaign URLs for ALL muzakki with email...');
@@ -61,13 +51,13 @@ class GenerateMuzakkiCampaignUrls extends Command
                 $oldUrl = $muzakki->campaign_url;
                 $newUrl = url('/campaigner/' . $muzakki->email);
                 
-                // Update campaign URL
+                
                 $muzakki->campaign_url = $newUrl;
                 $muzakki->save();
                 
                 $updated++;
                 
-                // Show detailed info if verbose
+                
                 if ($this->output->isVerbose()) {
                     $this->newLine();
                     $this->line("Updated: {$muzakki->name} ({$muzakki->email})");
@@ -88,7 +78,7 @@ class GenerateMuzakkiCampaignUrls extends Command
         $bar->finish();
         $this->newLine(2);
         
-        // Summary
+        
         $this->info('Campaign URL Generation Complete!');
         $this->table(
             ['Status', 'Count'],

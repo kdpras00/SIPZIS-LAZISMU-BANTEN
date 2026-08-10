@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="px-4 sm:px-6 py-5 w-full mx-auto" style="max-width: 1280px;">
-    {{-- Header Section --}}
+    
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Laporan Distribusi per Asnaf</h2>
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    {{-- Year Filter --}}
+    
     <div class="rounded-2xl p-5 mb-6" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         <form method="GET" action="{{ route('distributions.report.category') }}" class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="flex items-center gap-3">
@@ -51,7 +51,7 @@
         </form>
     </div>
 
-    {{-- Summary Statistics --}}
+    
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
             <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total Kategori</p>
@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    {{-- Distribution Chart --}}
+    
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div class="lg:col-span-2 rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
             <h5 class="text-xs font-bold uppercase tracking-wider mb-4" style="color: #8b7e74;">Distribusi per Kategori Asnaf</h5>
@@ -87,11 +87,11 @@
         </div>
     </div>
 
-    {{-- Detailed Report Table --}}
+    
     <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         @if($distributions->count() > 0)
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-[#f0ece6]">
+            <table id="table-report-category" class="min-w-full divide-y divide-[#f0ece6]">
                 <thead style="background: #faf8f5;">
                     <tr>
                         <th class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Kategori Asnaf</th>

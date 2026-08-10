@@ -1,16 +1,16 @@
-<nav class="fixed w-full z-50 bg-white transition-all duration-300 font-poppins bold" id="navbar">
+<nav class="fixed w-full z-50 bg-white border-b border-transparent transition-all duration-300 font-poppins bold" id="navbar">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-16 relative">
-            <!-- SIPZ Title - Left Side -->
+            
             <div class="flex items-center">
                 <a href="{{ url('/') }}" class="flex-shrink-0 flex items-center ml-0 md:ml-4">
                     <img src="{{ asset('img/logo.png') }}" alt="Logo Lazismu Banten" width="180" height="80" class="h-20 w-auto -mt-2">
                 </a>
             </div>
 
-            <!-- Mobile Icons - Notification and Hamburger Menu Buttons -->
+            
             <div class="md:hidden flex items-center space-x-3">
-                <!-- Notification Icon for Mobile -->
+                
                 @auth
                     @if (Auth::user()->role === 'muzakki' && Auth::user()->muzakki)
                         @php
@@ -21,15 +21,10 @@
                                 id="mobile-notification-button" aria-label="Notifikasi">
                                 <div
                                     class="h-6 w-6 rounded-full bg-orange-600 flex items-center justify-center text-white hover:bg-orange-700 transition-colors">
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                                        </path>
-                                    </svg>
+                                    <i class="fas fa-bell"></i>
                                 </div>
                             </button>
-                            <!-- Notification Badge -->
+                            
                             @if ($unreadNotificationsCount > 0)
                                 <span
                                     class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
@@ -40,17 +35,13 @@
                     @endif
                 @endauth
 
-                <!-- Hamburger Menu Button - Mobile -->
+                
                 <button id="mobile-menu-button" class="text-gray-800 hover:text-orange-600 focus:outline-none" aria-label="Buka Menu">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
 
-            <!-- Navigation Links - Center (Presisi Matematik di Tengah Navbar) -->
+            
             <div class="hidden md:flex items-center justify-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto">
                 <div class="flex items-center space-x-8" id="href-navbar">
                     @php $isActive = fn($route, $page) => request()->routeIs($route) || (isset($activePage) && $activePage === $page); @endphp
@@ -66,7 +57,7 @@
                 </div>
             </div>
 
-            <!-- Mobile Menu (Hidden by default) -->
+            
             <div id="mobile-menu" class="md:hidden fixed inset-0 bg-white bg-opacity-[0.98] z-40 hidden">
                 <div class="flex flex-col h-full">
                     <div class="flex justify-between items-center p-4 border-b border-gray-200">
@@ -74,16 +65,11 @@
                             <img src="{{ asset('img/logo.png') }}" alt="Logo Lazismu Banten" width="144" height="64" class="h-9 w-auto">
                         </a>
                         <button id="close-mobile-menu" class="text-gray-800 hover:text-orange-600 focus:outline-none" aria-label="Tutup Menu">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
+                            <i class="fas fa-times"></i>
                         </button>
                     </div>
                     <div class="flex flex-col py-4 space-y-4 overflow-y-auto">
-                        <!-- <a href="{{ route('home') }}"
-                            class="block px-4 py-2 text-center text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300 navbar-link font-medium">Home</a> -->
+                        
                         <a href="{{ route('tentang') }}"
                             class="block px-4 py-2 text-center {{ $isActive('tentang*', 'tentang') ? 'text-orange-600 font-bold bg-orange-50' : 'text-gray-800 font-medium' }} hover:bg-orange-50 hover:text-orange-600 transition duration-300 navbar-link border-l-4 {{ $isActive('tentang*', 'tentang') ? 'border-orange-600' : 'border-transparent' }}">Tentang</a>
                         <a href="{{ route('program') }}"
@@ -139,12 +125,12 @@
                 </div>
             </div>
 
-            <!-- Profile/Login Section - Right Side -->
+            
             <div class="hidden md:flex items-center space-x-2">
                 @auth
-                    <!-- Show different navigation based on user role -->
+                    
                     @if (Auth::user()->role === 'admin')
-                        <!-- Admin Navigation -->
+                        
                         <div class="flex items-center space-x-4">
                             <a href="{{ route('dashboard') }}"
                                 class="text-gray-800 hover:text-orange-600 transition duration-300 font-medium">
@@ -159,8 +145,8 @@
                             </form>
                         </div>
                     @else
-                        <!-- Muzakki Navigation -->
-                        <!-- Notification Icon -->
+                        
+                        
                         @if (Auth::user()->muzakki)
                             @php
                                 $unreadNotificationsCount = Auth::user()->muzakki->unread_notifications_count;
@@ -170,15 +156,10 @@
                                     id="notification-button" aria-label="Notifikasi">
                                     <div
                                         class="h-8 w-8 rounded-full bg-orange-600 flex items-center justify-center text-white hover:bg-orange-700 transition-colors">
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                                            </path>
-                                        </svg>
+                                        <i class="fas fa-bell"></i>
                                     </div>
                                 </button>
-                                <!-- Notification Badge -->
+                                
                                 @if ($unreadNotificationsCount > 0)
                                     <span
                                         class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
@@ -186,23 +167,19 @@
                                     </span>
                                 @endif
 
-                                <!-- Notification Popup -->
-                                <div id="notification-popup" style="width: 32rem; top: 100%; margin-top: 0.75rem;"
+                                
+                                <div id="notification-popup" style="width: 21rem; top: 100%; margin-top: 0.75rem;"
                                     class="origin-top-right absolute right-0 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-10 hidden z-50 transition-all duration-200 ease-out transform opacity-0 scale-95">
                                     <div class="flex items-center justify-between border-b border-gray-200 pb-3 px-4 pt-4">
                                         <h3 class="text-lg font-semibold text-gray-900">Notifikasi</h3>
                                         <button id="close-notification" aria-label="Tutup Notifikasi"
                                             class="text-gray-400 hover:text-gray-500 rounded-full p-1 hover:bg-gray-100 transition-colors duration-200">
-                                            <svg class="h-5 w-5" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M6 18L18 6M6 6l12 12"></path>
-                                            </svg>
+                                            <i class="fas fa-times"></i>
                                         </button>
                                     </div>
                                     <div id="notification-content" class="max-h-[28rem] overflow-y-auto p-4"
                                         style="scrollbar-width: thin;">
-                                        <!-- Notifications will be loaded here via AJAX -->
+                                        
                                         <div class="flex justify-center py-8">
                                             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600">
                                             </div>
@@ -212,32 +189,30 @@
                             </div>
                         @endif
 
-                        <!-- Profile Dropdown -->
+                        
                         <div class="relative">
                             <div>
                                 <button type="button" class="flex text-sm rounded-full focus:outline-none"
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="sr-only">Open user menu</span>
-                                    <div
-                                        class="h-8 w-8 rounded-full bg-orange-500 flex items-center justify-center text-white hover:bg-orange-600 transition-colors">
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
-                                            </path>
-                                        </svg>
-                                    </div>
+                                    @if(Auth::check() && Auth::user()->avatar)
+                                        <img src="{{ Auth::user()->avatar }}" alt="Profile Photo" class="h-8 w-8 rounded-full object-cover">
+                                    @else
+                                        <div class="h-8 w-8 rounded-full bg-orange-500 flex items-center justify-center text-white hover:bg-orange-600 transition-colors">
+                                            <i class="fas fa-user-circle"></i>
+                                        </div>
+                                    @endif
                                 </button>
                             </div>
 
-                            <!-- Dropdown menu -->
+                            
                             <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 hidden"
                                 role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                                 tabindex="-1" id="user-dropdown">
                                 <a href="{{ route('dashboard') }}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
                                     tabindex="-1">Profil</a>
-                                <!-- <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">Dashboard</a> -->
+                                
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit"
@@ -248,7 +223,7 @@
                         </div>
                     @endif
                 @else
-                    <!-- Login/Register Buttons -->
+                    
                     <div class="flex items-center space-x-4">
                         <a href="{{ route('login') }}"
                             class="text-orange-600 border border-orange-600 px-4 py-2 rounded-full hover:bg-orange-50 hover:text-orange-700 transition duration-300 font-medium">
@@ -278,8 +253,18 @@
         const userDropdown = document.getElementById('user-dropdown');
 
         if (userMenuButton && userDropdown) {
-            userMenuButton.addEventListener('click', function() {
+            userMenuButton.addEventListener('click', function(e) {
+                e.stopPropagation();
                 userDropdown.classList.toggle('hidden');
+
+                // Close notification popup if open
+                const notificationPopup = document.getElementById('notification-popup');
+                if (notificationPopup && !notificationPopup.classList.contains('hidden')) {
+                    notificationPopup.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => {
+                        notificationPopup.classList.add('hidden');
+                    }, 200);
+                }
             });
 
             // Close dropdown when clicking outside
@@ -312,12 +297,14 @@
 
         if (scrollTop > 20) {
             if (!isScrolled) {
-                navbar.classList.add('shadow-sm', 'border-b', 'border-gray-100');
+                navbar.classList.add('shadow-sm', 'border-gray-100');
+                navbar.classList.remove('border-transparent');
                 isScrolled = true;
             }
         } else {
             if (isScrolled) {
-                navbar.classList.remove('shadow-sm', 'border-b', 'border-gray-100');
+                navbar.classList.remove('shadow-sm', 'border-gray-100');
+                navbar.classList.add('border-transparent');
                 isScrolled = false;
             }
         }
@@ -367,6 +354,12 @@
             // Toggle notification popup
             notificationButton.addEventListener('click', function(e) {
                 e.stopPropagation();
+
+                // Close user dropdown if open
+                const userDropdown = document.getElementById('user-dropdown');
+                if (userDropdown && !userDropdown.classList.contains('hidden')) {
+                    userDropdown.classList.add('hidden');
+                }
 
                 // Toggle popup visibility with animation
                 if (notificationPopup.classList.contains('hidden')) {
@@ -551,8 +544,6 @@
         border-bottom: 2px solid #ea580c !important;
         font-weight: 600;
     }
-
-
 
     /* Special styling for payment link */
     .navbar-payment-link {

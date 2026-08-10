@@ -51,7 +51,7 @@ class BankAccountController extends Controller
 
         $bankAccount->delete();
 
-        // If the deleted account was primary, set another as primary
+        
         if ($bankAccount->is_primary) {
             $next = $bankAccount->muzakki->bankAccounts()->first();
             if ($next) {

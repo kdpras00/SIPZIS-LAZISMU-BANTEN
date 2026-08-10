@@ -76,7 +76,7 @@
                 </td>
                 <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-medium" style="color: #1c0f0a;">{{ $distribution->distribution_date->format('d M Y') }}</td>
                 <td class="px-5 py-4 whitespace-nowrap text-center">
-                    <div class="flex items-center justify-center gap-1.5">
+                    <div class="flex items-center justify-start xl:justify-center gap-1.5">
                         <a href="{{ route('distributions.show', $distribution) }}" 
                            class="inline-flex items-center justify-center h-8 px-2.5 rounded-lg text-xs font-medium transition-colors" style="background: #f0ece6; color: #1c0f0a;"
                            title="Lihat Detail">
@@ -138,7 +138,6 @@
 </div>
 @endif
 
-<!-- Mark as Received Modal -->
 <div class="fixed inset-0 bg-black/40 backdrop-blur-xs hidden overflow-y-auto h-full w-full z-50 flex items-center justify-center" id="markReceivedModal">
     <div class="relative p-6 border border-[#f0ece6] w-full max-w-md shadow-2xl rounded-2xl bg-white m-4">
         <div class="flex justify-between items-center pb-3 border-b border-[#f0ece6]">

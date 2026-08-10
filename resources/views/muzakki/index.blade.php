@@ -15,7 +15,7 @@
         </a>
     </div>
 
-    <!-- Filter Section -->
+    
     <div class="rounded-2xl mb-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         <div class="px-5 py-3.5 flex items-center justify-between" style="border-bottom: 1px solid #f0ece6;">
             <div class="flex items-center gap-2">
@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <!-- Statistics Cards -->
+    
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
             <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total muzakki</p>
@@ -80,7 +80,7 @@
         </div>
     </div>
 
-    <!-- Muzakki Table -->
+    
     <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04); border: 1px solid #f0ece6;">
         <div class="p-0" id="muzakki-table-container">
             @include('muzakki.partials.table')
@@ -155,7 +155,8 @@
                     <table id="table-muzakki" class="w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 28%;">Nama</th>
+                                <th class="px-4 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 14%;">Nama</th>
+                                <th class="px-2 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 14%;">NIK</th>
                                 <th class="px-2 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 12%;">Kategori</th>
                                 <th class="px-2 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 12%;">Telepon</th>
                                 <th class="px-2 py-2.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style="width: 12%;">Kota</th>
@@ -207,7 +208,7 @@
                         </td>
                         <td class="px-2 py-3 text-gray-900 text-sm whitespace-nowrap">${createdAt}</td>
                         <td class="px-2 py-3">
-                            <div class="flex items-center gap-1">
+                            <div class="flex items-center justify-start xl:justify-center gap-1.5">
                                 <a href="/muzakki/${item.id}" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Lihat Detail">
                                     <i class="bi bi-eye-fill"></i>
                                 </a>
@@ -221,7 +222,7 @@
                                         <i class="bi bi-toggle-${item.is_active ? 'on' : 'off'}"></i>
                                     </button>
                                 </form>
-                                ${item.zakat_payments_count == 0 ? `
+                                ${item.payments_count == 0 ? `
                                 <form action="/muzakki/${item.id}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                     <input type="hidden" name="_token" value="${csrfToken}">
                                     <input type="hidden" name="_method" value="DELETE">

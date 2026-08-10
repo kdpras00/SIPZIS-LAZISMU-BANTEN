@@ -10,91 +10,91 @@
 
 <aside id="sidebar" class="flex flex-col h-screen overflow-y-auto overflow-x-hidden scrollbar-hide" style="background: #faf8f5; border-right: 1px solid #f0ece6;">
 
-    {{-- Brand --}}
+    
     <div class="flex items-center px-5" style="flex-shrink: 0; border-bottom: 1px solid #f0ece6; height: 68px; box-sizing: border-box;">
         <a href="{{ route('dashboard') }}" class="block no-underline" aria-label="Halaman Utama Dashboard">
-            <img src="{{ asset('img/logo.png') }}" alt="Logo Lazismu Banten" width="160" height="50" loading="lazy" style="height: 46px; width: auto; max-width: 180px; object-fit: contain; object-position: left;">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo Lazismu Banten" loading="lazy" style="height: 60px; width: auto; object-fit: contain; object-position: left; transform: scale(1.6) translate(15px, -4px);">
         </a>
     </div>
 
-    {{-- Navigation --}}
+    
     <nav class="flex-1 px-4 pt-4 pb-2">
 
-        {{-- Main --}}
+        
         <div class="mb-6">
             <a href="{{ route('dashboard') }}"
                 class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 no-underline mb-0.5 {{ $currentRoute === 'dashboard' ? 'active' : '' }}">
-                <i class="bi bi-grid-1x2-fill text-base" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-gauge text-base" style="min-width: 20px;"></i>
                 <span>Dashboard</span>
             </a>
         </div>
 
         @if ($user->role === 'admin')
-        {{-- Data Management --}}
+        
         <div class="mb-6">
             <a href="{{ route('muzakki.index') }}"
                 class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'muzakki.') && !str_contains($currentRoute, 'dashboard') ? 'active' : '' }}">
-                <i class="bi bi-people-fill text-base" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-users text-base" style="min-width: 20px;"></i>
                 <span>Muzakki</span>
             </a>
 
             <a href="{{ route('mustahik.index') }}"
                 class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'mustahik.') ? 'active' : '' }}">
-                <i class="bi bi-person-hearts text-base" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-hand-holding-heart text-base" style="min-width: 20px;"></i>
                 <span>Mustahik</span>
             </a>
 
             <a href="{{ route('payments.index') }}"
                 class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'payments.') ? 'active' : '' }}">
-                <i class="bi bi-credit-card-fill text-base" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-wallet text-base" style="min-width: 20px;"></i>
                 <span>Pembayaran ZIS</span>
             </a>
 
             <a href="{{ route('distributions.index') }}"
                 class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'distributions.') ? 'active' : '' }}">
-                <i class="bi bi-archive-fill text-base" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-box-archive text-base" style="min-width: 20px;"></i>
                 <span>Distribusi ZIS</span>
             </a>
         </div>
 
-        {{-- Reports --}}
+        
         <div class="mb-6" style="border-top: 1px solid #f0ece6; padding-top: 1.25rem;">
             <a href="{{ route('reports.incoming') }}"
                 class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 no-underline mb-0.5 {{ $currentRoute === 'reports.incoming' ? 'active' : '' }}">
-                <i class="bi bi-arrow-down-circle-fill text-base" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-arrow-turn-down text-base" style="min-width: 20px;"></i>
                 <span>Laporan Masuk</span>
             </a>
 
             <a href="{{ route('reports.outgoing') }}"
                 class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 no-underline mb-0.5 {{ $currentRoute === 'reports.outgoing' ? 'active' : '' }}">
-                <i class="bi bi-arrow-up-circle-fill text-base" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-arrow-turn-up text-base" style="min-width: 20px;"></i>
                 <span>Laporan Keluar</span>
             </a>
         </div>
 
-        {{-- Content --}}
+        
         <div class="mb-6" style="border-top: 1px solid #f0ece6; padding-top: 1.25rem;">
             <a href="{{ route('admin.news.index') }}"
                 class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'admin.news.') ? 'active' : '' }}">
-                <i class="bi bi-file-earmark-richtext text-base" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-file-lines text-base" style="min-width: 20px;"></i>
                 <span>Berita</span>
             </a>
 
             <a href="{{ route('admin.artikel.index') }}"
                 class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'admin.artikel.') ? 'active' : '' }}">
-                <i class="bi bi-file-earmark-text text-base" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-file-invoice text-base" style="min-width: 20px;"></i>
                 <span>Artikel</span>
             </a>
 
             <a href="{{ route('admin.campaigns.index') }}"
                 class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'admin.campaigns.') ? 'active' : '' }}">
-                <i class="bi bi-megaphone text-base" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-bullhorn text-base" style="min-width: 20px;"></i>
                 <span>Campaign</span>
             </a>
 
             <a href="{{ route('admin.programs.index') }}"
                 class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors duration-200 no-underline mb-0.5 {{ str_starts_with($currentRoute, 'admin.programs.') ? 'active' : '' }}">
-                <i class="bi bi-grid-fill text-base" style="min-width: 20px;"></i>
+                <i class="fa-solid fa-table-cells-large text-base" style="min-width: 20px;"></i>
                 <span>Program</span>
             </a>
         </div>

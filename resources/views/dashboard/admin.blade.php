@@ -3,6 +3,7 @@
 @section('page-title', 'Dashboard Admin')
 
 @section('content')
+
 @push('styles')
 <style>
     body { background: #faf8f5 !important; }
@@ -33,8 +34,9 @@
 @endphp
 
 <div class="w-full mx-auto px-4 sm:px-6 py-5" style="max-width: 1280px;">
+    @include('components.two-factor-reminder')
 
-    {{-- Greeting --}}
+    
     <div class="mb-8 appear relative z-20">
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
@@ -46,9 +48,9 @@
                 </p>
             </div>
 
-            {{-- Filter Pill --}}
+            
             <div class="inline-flex items-center rounded-xl overflow-visible" style="background: #fff; border: 1px solid #e8e0d6; box-shadow: 0 1px 3px rgba(28,15,10,0.06);">
-                {{-- Year filter --}}
+                
                 <form action="{{ route('dashboard') }}" method="GET" class="flex items-center">
                     <x-custom-select 
                         name="year" 
@@ -60,10 +62,10 @@
                         icon="bi bi-calendar3-fill" />
                 </form>
 
-                {{-- Divider --}}
+                
                 <div class="w-px self-stretch my-2" style="background: #e8e0d6;"></div>
 
-                {{-- Date display --}}
+                
                 <div class="hidden sm:flex items-center gap-2 px-3 py-2.5 text-sm" style="color: #8b7e74; white-space: nowrap;">
                     <i class="bi bi-clock-fill text-xs"></i>
                     {{ \Carbon\Carbon::now('Asia/Jakarta')->locale('id')->isoFormat('ddd, D MMM YYYY') }}
@@ -72,10 +74,10 @@
         </div>
     </div>
 
-    {{-- Bento Grid Stats --}}
+    
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
 
-        {{-- Donasi — Larger card spanning 2 cols on mobile --}}
+        
         <div class="col-span-2 appear appear-d1">
             <div class="rounded-2xl p-5 transition-colors duration-200" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <div class="flex items-center justify-between mb-3">
@@ -90,7 +92,7 @@
             </div>
         </div>
 
-        {{-- Distribusi --}}
+        
         <div class="appear appear-d2">
             <div class="rounded-2xl p-5 h-full transition-colors duration-200" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Distribusi</p>
@@ -99,7 +101,7 @@
             </div>
         </div>
 
-        {{-- Saldo --}}
+        
         <div class="appear appear-d3">
             <div class="rounded-2xl p-5 h-full transition-colors duration-200" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Saldo</p>
@@ -108,7 +110,7 @@
             </div>
         </div>
 
-        {{-- Muzakki --}}
+        
         <div class="appear appear-d4">
             <div class="rounded-2xl p-5 h-full transition-colors duration-200" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Muzakki</p>
@@ -117,7 +119,7 @@
             </div>
         </div>
 
-        {{-- Mustahik --}}
+        
         <div class="appear appear-d4">
             <div class="rounded-2xl p-5 h-full transition-colors duration-200" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Mustahik</p>
@@ -126,7 +128,7 @@
             </div>
         </div>
 
-        {{-- Zakat per Jenis — right-aligned with proportion bar --}}
+        
         <div class="col-span-2 appear appear-d4">
             <div class="rounded-2xl p-5 h-full" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <p class="text-sm text-gray-500 mb-4">Donasi per Jenis</p>
@@ -155,10 +157,10 @@
         </div>
     </div>
 
-    {{-- Chart + Mustahik Grid --}}
+    
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
 
-        {{-- Chart --}}
+        
         <div class="lg:col-span-2 appear appear-d5">
             <div class="rounded-2xl p-5" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <div class="flex items-center justify-between mb-5">
@@ -173,7 +175,7 @@
             </div>
         </div>
 
-        {{-- Mustahik Categories --}}
+        
         <div class="appear appear-d6">
             <div class="rounded-2xl p-5 h-full" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <h3 class="text-base font-bold mb-4" style="color: #1c0f0a;">Kategori Mustahik</h3>
@@ -195,10 +197,10 @@
         </div>
     </div>
 
-    {{-- Unified Activity Timeline --}}
+    
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 appear appear-d7">
 
-        {{-- Pembayaran Terbaru --}}
+        
         <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
             <div class="flex items-center justify-between px-5 py-4" style="border-bottom: 1px solid #f0ece6;">
                 <h3 class="text-base font-bold mb-0" style="color: #1c0f0a;">Donasi masuk</h3>
@@ -229,7 +231,7 @@
             @endforelse
         </div>
 
-        {{-- Distribusi Terbaru --}}
+        
         <div class="rounded-2xl overflow-hidden" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
             <div class="flex items-center justify-between px-5 py-4" style="border-bottom: 1px solid #f0ece6;">
                 <h3 class="text-base font-bold mb-0" style="color: #1c0f0a;">Distribusi keluar</h3>
