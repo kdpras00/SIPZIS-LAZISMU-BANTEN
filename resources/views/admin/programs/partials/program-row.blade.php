@@ -1,10 +1,17 @@
 <tr class="hover:bg-[#faf8f5]/60 transition-colors duration-150">
     <td class="px-5 py-4 whitespace-nowrap">
         <div class="flex items-center">
-            <img src="{{ $program->image_url }}" 
-                 alt="{{ $program->name }}"
-                 onerror="this.src='{{ asset('img/masjidbanten.png') }}';"
-                 class="h-14 w-14 rounded-xl object-cover mr-3.5 flex-shrink-0 border border-[#f0ece6]">
+            @if($program->image_url)
+                <img src="{{ $program->image_url }}" 
+                     alt="{{ $program->name }}"
+                     class="h-14 w-14 rounded-xl object-cover mr-3.5 flex-shrink-0 border border-[#f0ece6]">
+            @else
+                <div class="h-14 w-14 rounded-xl mr-3.5 flex-shrink-0 border border-[#f0ece6] bg-gray-200 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+            @endif
             <div class="min-w-0">
                 <div class="text-xs font-bold truncate max-w-[220px]" style="color: #1c0f0a;">
                     {{ $program->name }}
@@ -16,7 +23,7 @@
         </div>
     </td>
     <td class="px-5 py-4 whitespace-nowrap">
-        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">
+        <span class="inline-flex items-center text-[#c2410c] text-xs font-semibold">
             {{ $categoryName }}
         </span>
     </td>
@@ -39,11 +46,11 @@
     </td>
     <td class="px-5 py-4 whitespace-nowrap text-center">
         @if($program->status == 'active')
-            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">
+            <span class="inline-flex items-center text-[#c2410c] text-xs font-semibold">
                 Aktif
             </span>
         @else
-            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #8b7e74;">
+            <span class="inline-flex items-center text-[#8b7e74] text-xs font-semibold">
                 Tidak Aktif
             </span>
         @endif

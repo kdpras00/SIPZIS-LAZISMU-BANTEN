@@ -311,14 +311,6 @@ class AuthController extends Controller
                 [
                     'name' => $request->name,
                     'phone' => $request->phone ?? null,
-                    'nik' => $request->nik ?? null,
-                    'gender' => $request->gender ?? null,
-                    'address' => $request->address ?? null,
-                    'city' => $request->city ?? null,
-                    'province' => $request->province ?? null,
-                    'occupation' => $request->occupation ?? null,
-                    'monthly_income' => $request->monthly_income ?? null,
-                    'date_of_birth' => $request->date_of_birth ?? null,
                     'user_id' => $user->id,
                     'is_active' => true,
                     'campaign_url' => $campaignUrl, 
@@ -561,5 +553,121 @@ class AuthController extends Controller
         Log::info('Password reset successful for user: ' . $user->email);
 
         return redirect()->route('login')->with('success', 'Password berhasil direset. Silakan login dengan password baru.');
+    }
+
+    public function firebaseLogin(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|string',
+        ]);
+
+        $idToken = $request->token;
+        $projectId = config('services.firebase.project_id');
+
+        if (!$projectId) {
+            return response()->json(['success' => false, 'message' => 'Firebase Project ID is not configured.'], 500);
+        }
+
+        try {
+            // Fetch Google's public keys
+            $keysUrl = 'https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com';
+            
+            $keys = cache()->remember('firebase_public_keys', 3600, function () use ($keysUrl) {
+                $response = Http::get($keysUrl);
+                if (!$response->successful()) {
+                    throw new \Exception('Failed to fetch Firebase public keys.');
+                }
+                return $response->json();
+            });
+
+            // Extract kid from the JWT header
+            $tks = explode('.', $idToken);
+            if (count($tks) != 3) {
+                throw new \Exception('Invalid ID token format.');
+            }
+
+            $headb64 = $tks[0];
+            $headbody = json_decode(base64_decode(strtr($headb64, '-_', '+/')), true);
+
+            if (!isset($headbody['kid'])) {
+                throw new \Exception('No kid in JWT header.');
+            }
+
+            $kid = $headbody['kid'];
+            if (!isset($keys[$kid])) {
+                throw new \Exception('Unknown kid.');
+            }
+
+            $publicKey = $keys[$kid];
+            
+            // Decode the token securely
+            $decoded = \Firebase\JWT\JWT::decode($idToken, new \Firebase\JWT\Key($publicKey, 'RS256'));
+
+            // Verify claims
+            if ($decoded->aud !== $projectId) {
+                throw new \Exception('Invalid audience.');
+            }
+            if ($decoded->iss !== 'https://securetoken.google.com/' . $projectId) {
+                throw new \Exception('Invalid issuer.');
+            }
+            if ($decoded->exp < time()) {
+                throw new \Exception('Token expired.');
+            }
+
+            $email = $decoded->email;
+            $name = $decoded->name ?? 'Muzakki User';
+
+            $user = User::where('email', $email)->first();
+
+            if (!$user) {
+                $user = User::create([
+                    'name' => $name,
+                    'email' => $email,
+                    'password' => Hash::make(Str::random(24)),
+                    'role' => 'muzakki',
+                    'is_active' => true,
+                    'email_verified_at' => now(),
+                ]);
+
+                $campaignUrl = url('/campaigner/' . $email);
+                $muzakki = Muzakki::updateOrCreate(
+                    ['email' => $email],
+                    [
+                        'name' => $name,
+                        'user_id' => $user->id,
+                        'is_active' => true,
+                        'campaign_url' => $campaignUrl, 
+                    ]
+                );
+            } elseif (!$user->is_active) {
+                return response()->json(['success' => false, 'message' => 'Akun Anda tidak aktif.'], 403);
+            }
+
+            // Login the user
+            Auth::login($user);
+            
+            if ($user->role === 'muzakki') {
+                $muzakki = Muzakki::where('user_id', $user->id)->first();
+                if ($muzakki && empty($muzakki->campaign_url)) {
+                    $muzakki->campaign_url = url('/campaigner/' . $user->email);
+                    $muzakki->save();
+                }
+            }
+            
+            if ($user->hasTwoFactorEnabled()) {
+                $request->session()->put('login.id', $user->id);
+                Auth::logout();
+                return response()->json(['success' => true, 'redirect' => route('two-factor.verify')]);
+            }
+
+            $request->session()->regenerate();
+            
+            $intendedUrl = session()->pull('url.intended', '/');
+            return response()->json(['success' => true, 'redirect' => url($intendedUrl)]);
+
+        } catch (\Exception $e) {
+            Log::error('Firebase Login Error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Gagal verifikasi token Firebase: ' . $e->getMessage()], 401);
+        }
     }
 }

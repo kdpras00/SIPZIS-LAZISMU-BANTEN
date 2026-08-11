@@ -53,9 +53,17 @@
                     <tr class="hover:bg-[#faf8f5]/60 transition-colors duration-150">
                         <td class="px-5 py-4 whitespace-nowrap">
                             <div class="flex items-center">
-                                <img src="{{ $campaign->image_url }}"
-                                     alt="{{ $campaign->title }}"
-                                     class="h-14 w-14 rounded-xl object-cover mr-3.5 flex-shrink-0 border border-[#f0ece6]">
+                                @if($campaign->image_url)
+                                    <img src="{{ $campaign->image_url }}" 
+                                         alt="{{ $campaign->title }}"
+                                         class="h-14 w-14 rounded-xl object-cover mr-3.5 flex-shrink-0 border border-[#f0ece6]">
+                                @else
+                                    <div class="h-14 w-14 rounded-xl mr-3.5 flex-shrink-0 border border-[#f0ece6] bg-gray-200 flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                @endif
                                 <div class="min-w-0">
                                     <div class="text-xs font-bold truncate max-w-[220px]" style="color: #1c0f0a;">
                                         {{ $campaign->title }}
@@ -67,7 +75,7 @@
                             </div>
                         </td>
                         <td class="px-5 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">
+                            <span class="inline-flex items-center text-[#c2410c] text-xs font-semibold">
                                 {{ ucfirst(str_replace('-', ' ', $campaign->program_category)) }}
                             </span>
                         </td>
@@ -91,45 +99,45 @@
                         <td class="px-5 py-4 whitespace-nowrap text-center">
                             @if($campaign->end_date)
                                 @if($campaign->remaining_days > 0)
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium" style="background: #f0ece6; color: #1c0f0a;">
+                                    <span class="inline-flex items-center text-[#1c0f0a] text-xs font-medium">
                                         <i class="bi bi-clock mr-1 text-[11px]" style="color: #8b7e74;"></i> {{ $campaign->remaining_days }} hari
                                     </span>
                                 @elseif($campaign->remaining_days == 0)
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c;">
+                                    <span class="inline-flex items-center text-[#c2410c] text-xs font-semibold">
                                         Hari terakhir
                                     </span>
                                 @else
                                     @if($campaign->status == 'completed')
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #ecfdf5; color: #059669;">
+                                        <span class="inline-flex items-center text-[#059669] text-xs font-semibold">
                                             Selesai
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fef2f2; color: #dc2626;">
+                                        <span class="inline-flex items-center text-[#dc2626] text-xs font-semibold">
                                             Waktu Habis
                                         </span>
                                     @endif
                                 @endif
                             @else
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium" style="background: #f0ece6; color: #8b7e74;">
+                                <span class="inline-flex items-center text-[#8b7e74] text-xs font-medium">
                                     Tanpa batas
                                 </span>
                             @endif
                         </td>
                         <td class="px-5 py-4 whitespace-nowrap text-center">
                             @if($campaign->status == 'published')
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">
+                                <span class="inline-flex items-center text-[#c2410c] text-xs font-semibold">
                                     Published
                                 </span>
                             @elseif($campaign->status == 'draft')
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">
+                                <span class="inline-flex items-center text-[#1c0f0a] text-xs font-semibold">
                                     Draft
                                 </span>
                             @elseif($campaign->status == 'completed')
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #ecfdf5; color: #059669;">
+                                <span class="inline-flex items-center text-[#059669] text-xs font-semibold">
                                     Completed
                                 </span>
                             @elseif($campaign->status == 'cancelled')
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fef2f2; color: #dc2626;">
+                                <span class="inline-flex items-center text-[#dc2626] text-xs font-semibold">
                                     Cancelled
                                 </span>
                             @endif

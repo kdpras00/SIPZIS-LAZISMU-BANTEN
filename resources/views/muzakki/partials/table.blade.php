@@ -24,7 +24,7 @@
                         </td>
                         <td class="px-5 py-4 whitespace-nowrap">
                             @if ($item->occupation)
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">{{ ucwords(str_replace('_', ' ', $item->occupation)) }}</span>
+                                <span class="inline-flex items-center text-xs font-semibold" style="color: #c2410c;">{{ ucwords(str_replace('_', ' ', $item->occupation)) }}</span>
                             @else
                                 <span class="text-xs" style="color: #8b7e74;">-</span>
                             @endif
@@ -33,9 +33,9 @@
                         <td class="px-5 py-4 whitespace-nowrap text-xs font-medium" style="color: #1c0f0a;">{{ $item->city ?: '-' }}</td>
                         <td class="px-5 py-4 whitespace-nowrap">
                             @if ($item->is_active)
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">Terverifikasi</span>
+                                <span class="inline-flex items-center text-xs font-semibold" style="color: #c2410c;">Terverifikasi</span>
                             @else
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">Menunggu</span>
+                                <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">Menunggu</span>
                             @endif
                         </td>
                         <td class="px-5 py-4 whitespace-nowrap text-xs" style="color: #8b7e74;">

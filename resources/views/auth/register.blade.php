@@ -320,7 +320,7 @@
         }
 
         .iti__tel-input.border-orange-300 {
-            border-color: #6ee7b7 !important;
+            border-color: #fdba74 !important;
         }
 
         .iti--separate-dial-code .iti__tel-input,

@@ -22,7 +22,7 @@
                     {{ $item->nik ?: "-" }}
                 </td>
                 <td class="px-5 py-4 whitespace-nowrap">
-                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">{{ ucfirst(str_replace('_', ' ', $item->category)) }}</span>
+                    <span class="inline-flex items-center text-xs font-semibold" style="color: #c2410c;">{{ ucfirst(str_replace('_', ' ', $item->category)) }}</span>
                 </td>
                 <td class="px-5 py-4 whitespace-nowrap text-xs font-medium" style="color: #1c0f0a;">{{ $item->phone ?: '-' }}</td>
                 <td class="px-5 py-4 whitespace-nowrap text-xs font-medium" style="color: #1c0f0a;">{{ $item->city ?: '-' }}</td>

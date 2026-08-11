@@ -6,10 +6,8 @@
         <div class="bg-white rounded-2xl p-8" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06), 0 4px 16px rgba(28,15,10,0.06);">
             
             <div class="text-center mb-6">
-                <div class="mx-auto w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style="background: #fff7ed;">
-                    <svg class="w-7 h-7" style="color: #c2410c;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                    </svg>
+                <div class="mx-auto mb-4" style="width: 120px;">
+                    <img src="{{ asset('img/logo.png') }}" alt="Lazismu" class="w-full object-contain">
                 </div>
                 <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">Verifikasi Email Anda</h2>
                 <p class="text-sm" style="color: #8b7e74;">Kami telah mengirimkan link verifikasi ke email Anda</p>

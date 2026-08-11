@@ -26,7 +26,7 @@
     <title>{{ isset($title) && $title ? $title . ' - SIPZIS' : 'SIPZIS' }}</title>
     
     @if(Route::currentRouteName() === 'home')
-    <link rel="preload" href="{{ asset('img/masjidbanten.png') }}" as="image" fetchpriority="high">
+    <link rel="preload" href="{{ asset('img/masjidbanten.webp') }}" as="image" fetchpriority="high">
     @endif
     
     <link rel="preconnect" href="https://fonts.googleapis.com">

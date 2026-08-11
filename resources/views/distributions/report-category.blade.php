@@ -120,9 +120,9 @@
                                 <div>
                                     <div class="text-xs font-bold" style="color: #1c0f0a;">{{ ucfirst(str_replace('_', ' ', $categoryKey)) }}</div>
                                     @if($categoryData['count'] > 0)
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">Aktif</span>
+                                    <span class="inline-flex items-center text-[10px] font-semibold" style="color: #c2410c;">Aktif</span>
                                     @else
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-medium" style="background: #f0ece6; color: #8b7e74;">Belum Ada Distribusi</span>
+                                    <span class="inline-flex items-center text-[10px] font-medium" style="color: #8b7e74;">Belum Ada Distribusi</span>
                                     @endif
                                 </div>
                             </div>
@@ -132,14 +132,14 @@
                         </td>
                         <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-bold" style="color: #1c0f0a;">
                             @if($categoryData['count'] > 0)
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">{{ number_format($categoryData['count']) }}</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">{{ number_format($categoryData['count']) }}</span>
                             @else
                             <span style="color: #8b7e74;">-</span>
                             @endif
                         </td>
                         <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-bold" style="color: #1c0f0a;">
                             @if($categoryData['mustahik']->count() > 0)
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">{{ $categoryData['mustahik']->count() }}</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">{{ $categoryData['mustahik']->count() }}</span>
                             @else
                             <span style="color: #8b7e74;">-</span>
                             @endif

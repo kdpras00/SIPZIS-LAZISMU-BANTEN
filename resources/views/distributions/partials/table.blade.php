@@ -35,7 +35,7 @@
                 </td>
                 <td class="px-5 py-4 whitespace-nowrap">
                     @if($distribution->program_name)
-                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">{{ $distribution->program_name }}</span>
+                    <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">{{ $distribution->program_name }}</span>
                     @else
                     <span class="text-xs" style="color: #8b7e74;">-</span>
                     @endif
@@ -43,19 +43,19 @@
                 <td class="px-5 py-4 whitespace-nowrap text-center">
                     @switch($distribution->distribution_type)
                         @case('cash')
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">Tunai</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #c2410c;">Tunai</span>
                             @break
                         @case('goods')
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">Barang</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">Barang</span>
                             @break
                         @case('voucher')
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">Voucher</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">Voucher</span>
                             @break
                         @case('service')
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">Layanan</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">Layanan</span>
                             @break
                         @default
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #8b7e74;">{{ ucwords($distribution->distribution_type) }}</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #8b7e74;">{{ ucwords($distribution->distribution_type) }}</span>
                     @endswitch
                 </td>
                 <td class="px-5 py-4 whitespace-nowrap text-center">
@@ -66,12 +66,12 @@
                 </td>
                 <td class="px-5 py-4 whitespace-nowrap text-center">
                     @if($distribution->is_received)
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">Sudah Diterima</span>
+                        <span class="inline-flex items-center text-xs font-semibold" style="color: #c2410c;">Sudah Diterima</span>
                         @if($distribution->received_date)
                         <div class="text-[11px] mt-0.5" style="color: #8b7e74;">{{ $distribution->received_date->format('d M Y') }}</div>
                         @endif
                     @else
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">Belum Diterima</span>
+                        <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">Belum Diterima</span>
                     @endif
                 </td>
                 <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-medium" style="color: #1c0f0a;">{{ $distribution->distribution_date->format('d M Y') }}</td>

@@ -58,8 +58,8 @@
                             <form action="{{ route('admin.artikel.toggle-publish', $artikel) }}" method="POST" class="inline">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
-                                    style="{{ $artikel->is_published ? 'background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;' : 'background: #f0ece6; color: #1c0f0a;' }}">
+                                <button type="submit" class="inline-flex items-center text-xs font-semibold transition-colors cursor-pointer"
+                                    style="{{ $artikel->is_published ? 'color: #c2410c;' : 'color: #1c0f0a;' }}">
                                     <i class="bi bi-circle-fill text-[8px] mr-1.5" style="{{ $artikel->is_published ? 'color: #c2410c;' : 'color: #8b7e74;' }}"></i>
                                     {{ $artikel->is_published ? 'Published' : 'Draft' }}
                                 </button>

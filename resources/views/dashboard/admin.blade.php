@@ -82,7 +82,7 @@
             <div class="rounded-2xl p-5 transition-colors duration-200" style="background: #fff; box-shadow: 0 1px 3px rgba(28,15,10,0.04);">
                 <div class="flex items-center justify-between mb-3">
                     <p class="text-xs font-medium leading-tight" style="color: #8b7e74;">Total Donasi {{ $currentYear }}</p>
-                    <span class="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full flex-shrink-0" style="background: #f0fdf4; color: #15803d;">
+                    <span class="inline-flex items-center gap-1 text-xs font-medium flex-shrink-0" style="color: #15803d;">
                         <i class="fas fa-arrow-up text-[10px]"></i>
                         bulan ini
                     </span>
@@ -250,7 +250,7 @@
                         </p>
                         <div class="flex items-center gap-1.5">
                             @if ($distribution->mustahik)
-                                <span class="text-xs px-1.5 py-0.5 rounded" style="background: #fff7ed; color: #c2410c;">{{ ucfirst($distribution->mustahik->category) }}</span>
+                                <span class="text-xs" style="color: #c2410c;">{{ ucfirst($distribution->mustahik->category) }}</span>
                             @endif
                             <span class="text-xs" style="color: #8b7e74;">{{ $distribution->distribution_type }}</span>
                         </div>

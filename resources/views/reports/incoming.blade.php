@@ -119,7 +119,7 @@
                         <td class="px-5 py-4 whitespace-nowrap text-xs font-bold" style="color: #1c0f0a;">{{ $payment->payment_code }}</td>
                         <td class="px-5 py-4 whitespace-nowrap text-xs font-bold" style="color: #1c0f0a;">{{ $payment->muzakki?->name ?? '-' }}</td>
                         <td class="px-5 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">{{ $payment->zakatType?->name ?? '-' }}</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">{{ $payment->zakatType?->name ?? '-' }}</span>
                         </td>
                         <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-medium" style="color: #8b7e74;">
                             @switch($payment->payment_method)
@@ -133,11 +133,11 @@
                         <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-medium" style="color: #1c0f0a;">{{ $payment->payment_date->format('d M Y') }}</td>
                         <td class="px-5 py-4 whitespace-nowrap text-center">
                             @if($payment->status == 'completed')
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">Selesai</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #c2410c;">Selesai</span>
                             @elseif($payment->status == 'pending')
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">Menunggu</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">Menunggu</span>
                             @else
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fef2f2; color: #dc2626;">{{ ucfirst($payment->status) }}</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #dc2626;">{{ ucfirst($payment->status) }}</span>
                             @endif
                         </td>
                     </tr>

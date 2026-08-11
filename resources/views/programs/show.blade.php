@@ -62,7 +62,7 @@
                         
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg font-semibold text-gray-800">Dana Terkumpul</h3>
-                            <span class="bg-orange-100 text-orange-700 text-xs font-semibold px-3 py-1 rounded-full">
+                            <span class="text-orange-700 text-xs font-semibold">
                                 {{ number_format($program->progress_percentage, 1) }}%
                             </span>
                         </div>

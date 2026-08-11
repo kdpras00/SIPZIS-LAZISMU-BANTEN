@@ -63,11 +63,11 @@
                                         </svg>
                                         @endif
                                         <div class="absolute top-3 left-3">
-                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #c2410c;">Zakat</span>
+                                            <span class="inline-block text-[#c2410c] bg-white/90 backdrop-blur-sm text-xs font-bold px-2 py-1 rounded-md">Zakat</span>
                                         </div>
                                         @if($program->isCompleted())
                                         <div class="absolute top-3 right-3">
-                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #15803d;">Target Tercapai</span>
+                                            <span class="inline-block text-[#15803d] bg-white/90 backdrop-blur-sm text-xs font-bold px-2 py-1 rounded-md">Target Tercapai</span>
                                         </div>
                                         @endif
                                     </div>
@@ -117,11 +117,11 @@
                                         </svg>
                                         @endif
                                         <div class="absolute top-3 left-3">
-                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #c2410c;">Infaq</span>
+                                            <span class="inline-block text-[#c2410c] bg-white/90 backdrop-blur-sm text-xs font-bold px-2 py-1 rounded-md">Infaq</span>
                                         </div>
                                         @if($program->isCompleted())
                                         <div class="absolute top-3 right-3">
-                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #15803d;">Target Tercapai</span>
+                                            <span class="inline-block text-[#15803d] bg-white/90 backdrop-blur-sm text-xs font-bold px-2 py-1 rounded-md">Target Tercapai</span>
                                         </div>
                                         @endif
                                     </div>
@@ -171,11 +171,11 @@
                                         </svg>
                                         @endif
                                         <div class="absolute top-3 left-3">
-                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #c2410c;">Shadaqah</span>
+                                            <span class="inline-block text-[#c2410c] bg-white/90 backdrop-blur-sm text-xs font-bold px-2 py-1 rounded-md">Shadaqah</span>
                                         </div>
                                         @if($program->isCompleted())
                                         <div class="absolute top-3 right-3">
-                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #15803d;">Target Tercapai</span>
+                                            <span class="inline-block text-[#15803d] bg-white/90 backdrop-blur-sm text-xs font-bold px-2 py-1 rounded-md">Target Tercapai</span>
                                         </div>
                                         @endif
                                     </div>
@@ -225,11 +225,11 @@
                                         </svg>
                                         @endif
                                         <div class="absolute top-3 left-3">
-                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #c2410c;">Program Pilar</span>
+                                            <span class="inline-block text-[#c2410c] bg-white/90 backdrop-blur-sm text-xs font-bold px-2 py-1 rounded-md">Program Pilar</span>
                                         </div>
                                         @if($program->isCompleted())
                                         <div class="absolute top-3 right-3">
-                                            <span class="inline-block text-white text-xs font-semibold px-2.5 py-1 rounded-full" style="background: #15803d;">Target Tercapai</span>
+                                            <span class="inline-block text-[#15803d] bg-white/90 backdrop-blur-sm text-xs font-bold px-2 py-1 rounded-md">Target Tercapai</span>
                                         </div>
                                         @endif
                                     </div>

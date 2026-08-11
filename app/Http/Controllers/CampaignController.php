@@ -293,7 +293,7 @@ public function adminIndex()
         return $categories[$category] ?? [
             'title' => ucfirst($category),
             'subtitle' => 'Program ' . ucfirst($category),
-            'image' => asset('img/masjidbanten.png'),
+            'image' => asset('img/masjidbanten.webp'),
             'text_color' => 'text-emerald-800',
             'bg_color' => 'bg-emerald-100',
             'border_color' => 'border-emerald-200'

@@ -44,16 +44,16 @@
                         <td class="px-5 py-4 whitespace-nowrap text-center">
                             @switch($payment->status)
                                 @case('pending')
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">Menunggu</span>
+                                    <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">Menunggu</span>
                                 @break
                                 @case('completed')
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">Selesai</span>
+                                    <span class="inline-flex items-center text-xs font-semibold" style="color: #c2410c;">Selesai</span>
                                 @break
                                 @case('cancelled')
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fef2f2; color: #dc2626;">Dibatalkan</span>
+                                    <span class="inline-flex items-center text-xs font-semibold" style="color: #dc2626;">Dibatalkan</span>
                                 @break
                                 @default
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #8b7e74;">{{ ucwords($payment->status) }}</span>
+                                    <span class="inline-flex items-center text-xs font-semibold" style="color: #8b7e74;">{{ ucwords($payment->status) }}</span>
                             @endswitch
                         </td>
                         <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-medium" style="color: #1c0f0a;">

@@ -49,7 +49,7 @@
                                 </div>
                                 <div>
                                     <p class="mb-0.5" style="color: #8b7e74;">Kategori Asnaf</p>
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">
+                                    <span class="inline-flex items-center text-xs font-semibold" style="color: #c2410c;">
                                         {{ ucfirst(str_replace('_', ' ', $distribution->mustahik->category)) }}
                                     </span>
                                 </div>

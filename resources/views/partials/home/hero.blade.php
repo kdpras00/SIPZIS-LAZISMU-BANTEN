@@ -4,7 +4,7 @@
 
         
         <div class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out z-10 opacity-100" data-slide="0">
-            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('img/masjidbanten.png') }}');"></div>
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('img/masjidbanten.webp') }}');"></div>
             <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/30"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-white via-white/90 to-transparent md:hidden"></div>
             <div class="relative container h-full mx-auto px-6 md:px-12 flex flex-col justify-center items-start z-10 pt-20">

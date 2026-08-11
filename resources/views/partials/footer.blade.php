@@ -3,14 +3,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
 
             
-            <div class="space-y-5">
-                <div class="flex items-center mb-2">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo Lazismu Banten" class="h-24 w-auto -mt-2">
+            <div class="flex flex-col">
+                <div class="flex items-start mb-2 -mt-6 md:-mt-8">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo Lazismu Banten" class="h-24 w-auto object-contain">
                 </div>
-                <p class="text-orange-100 leading-relaxed text-sm text-justify hyphens-auto" lang="id">
+                <p class="text-orange-100 leading-relaxed text-sm text-justify hyphens-auto -mt-4 mb-5" lang="id">
                     Plat&shy;form di&shy;gi&shy;tal za&shy;kat, in&shy;faq, dan se&shy;de&shy;kah yang trans&shy;pa&shy;ran, aman, dan se&shy;suai sya&shy;ri&shy;at Is&shy;lam.
                 </p>
-                <div class="flex space-x-4 pt-2">
+                <div class="flex space-x-4">
                     <a href="https://www.facebook.com/LazismuOfficial" class="text-orange-300 hover:text-white transition-colors" aria-label="Facebook"><i class="fab fa-facebook-f text-lg"></i></a>
                     <a href="https://x.com/lazismu" class="text-orange-300 hover:text-white transition-colors" aria-label="Twitter"><i class="fab fa-twitter text-lg"></i></a>
                     <a href="https://www.instagram.com/lazismupusat/#" class="text-orange-300 hover:text-white transition-colors" aria-label="Instagram"><i class="fab fa-instagram text-lg"></i></a>

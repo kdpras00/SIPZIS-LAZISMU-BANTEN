@@ -12,7 +12,7 @@
     
     <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-cover bg-center opacity-10"
-             style="background-image: url('{{ asset('img/masjidbanten.png') }}');">
+             style="background-image: url('{{ asset('img/masjidbanten.webp') }}');">
         </div>
         <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/80 to-white/60"></div>
     </div>
@@ -89,7 +89,7 @@
                             
                             
                             <div class="absolute top-4 left-4">
-                                <span class="bg-white/95 backdrop-blur-sm text-orange-700 text-xs font-bold px-3 py-1.5 rounded-full shadow-sm border border-orange-100">
+                                <span class="text-orange-700 text-xs font-bold">
                                     {{ $categoryTitle }}
                                 </span>
                             </div>
@@ -114,7 +114,7 @@
                                         <span class="text-xs text-gray-500 mb-0.5">Terkumpul</span>
                                         <span class="text-sm font-bold text-orange-600">{{ $campaign->formatted_collected_amount }}</span>
                                     </div>
-                                    <span class="text-xs font-bold text-gray-700 bg-gray-100 px-2 py-1 rounded-lg">
+                                    <span class="text-xs font-bold text-gray-700">
                                         {{ number_format($campaign->progress_percentage, 0) }}%
                                     </span>
                                 </div>

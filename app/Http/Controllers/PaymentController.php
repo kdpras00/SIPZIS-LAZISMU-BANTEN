@@ -149,6 +149,8 @@ class PaymentController extends Controller
         $validated = $request->validated();
 
         if (Auth::user()->role !== 'admin') {
+            $muzakkiId = Auth::user()->muzakki?->id;
+            abort_unless($muzakkiId && (int) $validated['muzakki_id'] === $muzakkiId, 403, 'Anda tidak dapat membuat pembayaran atas nama muzakki lain.');
             abort_if(in_array($validated['status'], ['completed', 'cancelled'], true), 403, 'Anda tidak dapat mengubah status pembayaran.');
             $validated['status'] = 'pending';
         }

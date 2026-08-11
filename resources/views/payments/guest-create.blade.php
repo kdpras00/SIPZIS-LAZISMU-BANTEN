@@ -92,7 +92,7 @@
                             } elseif (isset($program)) {
                                 $imageUrl = $program->image_url;
                             } else {
-                                $imageUrl = $categoryProgram ? $categoryProgram->image_url : null;
+                                $imageUrl = isset($categoryProgram) && $categoryProgram ? $categoryProgram->image_url : null;
                             }
                         @endphp
                         
@@ -107,13 +107,13 @@
                                 </svg>
                             </div>
                             @endif
-                            <div class="absolute top-2 right-2 sm:hidden bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold text-orange-700 shadow-sm border border-orange-100">
+                            <div class="absolute top-2 right-2 sm:hidden text-xs font-bold text-orange-700">
                                 <i class="fas fa-check-circle mr-1"></i> Official
                             </div>
                         </div>
 
                         <div class="flex-1 w-full">
-                            <div class="hidden sm:inline-block px-3 py-1 bg-orange-50 text-orange-700 text-xs font-bold rounded-full mb-3 border border-orange-100">
+                            <div class="hidden sm:inline-block text-orange-700 text-xs font-bold mb-3">
                                 <i class="fas fa-check-circle mr-1"></i> Program Resmi Lazismu
                             </div>
                             <h2 class="text-xl font-bold text-gray-900 leading-tight mb-2">
@@ -153,7 +153,7 @@
                                      <script>setTimeout(() => document.querySelector('.bg-gradient-to-r').style.width = '{{ $percentage }}%', 100);</script>
                             </div>
                             <div class="text-right mt-1">
-                                <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-md">{{ $percentage }}% Tercapai</span>
+                                <span class="text-xs font-bold text-orange-600">{{ $percentage }}% Tercapai</span>
                             </div>
                         </div>
                     @endif
@@ -227,7 +227,7 @@
                     <div class="pt-2">
                         <div class="flex items-center mb-4">
                             <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 mr-3 font-bold text-sm">2</div>
-                            <h3 class="text-gray-800 font-bold text-lg">Data Hamba Allah</h3>
+                            <h3 class="text-gray-800 font-bold text-lg">Informasi Donatur</h3>
                         </div>
 
                         
@@ -317,16 +317,9 @@
                             <i class="fas fa-arrow-right ml-2 transition-transform"></i>
                         </button>
                         
-                        
-                        <div class="flex items-center justify-center gap-6 mt-6">
-                             <div class="flex items-center gap-2 text-gray-400">
-                                <i class="fas fa-lock text-orange-500"></i>
-                                <span class="text-xs font-medium">Pembayaran Aman</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-gray-400">
-                                <i class="fas fa-check-circle text-blue-500"></i>
-                                <span class="text-xs font-medium">Terverifikasi</span>
-                            </div>
+                        <div class="flex items-center justify-center gap-2 mt-4 text-gray-400">
+                            <i class="fas fa-lock text-xs"></i>
+                            <span class="text-xs font-medium">Pembayaran Aman & Terverifikasi</span>
                         </div>
                     </div>
                         @php

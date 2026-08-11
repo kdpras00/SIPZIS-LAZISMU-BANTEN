@@ -136,7 +136,7 @@
                         <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="font-bold text-gray-900">Donatur Terbaru</h3>
-                                <span class="text-xs px-2 py-1 bg-orange-50 text-orange-700 rounded-full font-medium">
+                                <span class="text-xs text-orange-700 font-medium">
                                     {{ $campaign->payments->count() }} Orang
                                 </span>
                             </div>

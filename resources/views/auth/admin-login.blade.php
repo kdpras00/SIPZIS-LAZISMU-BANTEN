@@ -3,7 +3,7 @@
 @section('content')
 <div class="relative min-h-screen flex items-center justify-center overflow-hidden" style="background: #faf8f5;">
 
-    <div class="absolute inset-0 opacity-[0.06]" style="background-image: url('{{ asset("img/masjidbanten.png") }}'); background-size: cover; background-position: center;"></div>
+    <div class="absolute inset-0 opacity-[0.06]" style="background-image: url('{{ asset("img/masjidbanten.webp") }}'); background-size: cover; background-position: center;"></div>
 
     <div class="relative z-10 w-full max-w-md mx-auto px-6">
         <div class="bg-white rounded-2xl p-8" style="box-shadow: 0 1px 3px rgba(28,15,10,0.06), 0 4px 16px rgba(28,15,10,0.06);">

@@ -42,12 +42,12 @@
                                     <div class="flex gap-3 mb-6">
                                         <button type="button" onclick="togglePenghasilanType('perbulan')"
                                             id="penghasilan-perbulan"
-                                            class="flex-1 py-3 px-4 bg-orange-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-orange-600 shadow-sm">
+                                            class="flex-1 py-3 px-4 bg-orange-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 hover:opacity-80 shadow-sm">
                                             <i class="fas fa-calendar-alt mr-2"></i>Perbulan
                                         </button>
                                         <button type="button" onclick="togglePenghasilanType('pertahun')"
                                             id="penghasilan-pertahun"
-                                            class="flex-1 py-3 px-4 bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-orange-600 shadow-sm">
+                                            class="flex-1 py-3 px-4 bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm transition-all duration-300 hover:opacity-80 shadow-sm">
                                             <i class="fas fa-calendar mr-2"></i>Pertahun
                                         </button>
                                     </div>
@@ -64,9 +64,9 @@
                                         </label>
                                         <div
                                             class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
-                                            <span class="px-3 text-gray-500 text-sm">Rp</span>
+                                            <span class="px-3 text-gray-500">Rp</span>
                                             <input type="text" id="income"
-                                                class="w-full py-3 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
+                                                class="w-full py-3 pl-2 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
                                                 oninput="formatNumber(this); calculatePenghasilan()">
                                         </div>
                                     </div>
@@ -76,9 +76,9 @@
                                         </label>
                                         <div
                                             class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
-                                            <span class="px-3 text-gray-500 text-sm">Rp</span>
+                                            <span class="px-3 text-gray-500">Rp</span>
                                             <input type="text" id="otherIncome"
-                                                class="w-full py-3 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
+                                                class="w-full py-3 pl-2 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
                                                 oninput="formatNumber(this); calculatePenghasilan()">
                                         </div>
                                     </div>
@@ -89,9 +89,9 @@
                                         </label>
                                         <div
                                             class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
-                                            <span class="px-3 text-gray-500 text-sm">Rp</span>
+                                            <span class="px-3 text-gray-500">Rp</span>
                                             <input type="text" id="debt"
-                                                class="w-full py-3 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
+                                                class="w-full py-3 pl-2 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
                                                 oninput="formatNumber(this); calculatePenghasilan()">
                                         </div>
                                     </div>
@@ -104,11 +104,11 @@
                                 <div class="mb-6">
                                     <div class="flex gap-3 mb-6">
                                         <button type="button" onclick="toggleHartaType('perbulan')" id="harta-perbulan"
-                                            class="flex-1 py-3 px-4 bg-orange-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-orange-600 shadow-sm">
+                                            class="flex-1 py-3 px-4 bg-orange-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 hover:opacity-80 shadow-sm">
                                             <i class="fas fa-calendar-alt mr-2"></i>Perbulan (Simulasi)
                                         </button>
                                         <button type="button" onclick="toggleHartaType('pertahun')" id="harta-pertahun"
-                                            class="flex-1 py-3 px-4 bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-orange-600 shadow-sm">
+                                            class="flex-1 py-3 px-4 bg-gray-200 text-gray-700 rounded-lg font-semibold text-sm transition-all duration-300 hover:opacity-80 shadow-sm">
                                             <i class="fas fa-calendar mr-2"></i>Pertahun
                                         </button>
                                     </div>
@@ -126,9 +126,9 @@
                                         </label>
                                         <div
                                             class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
-                                            <span class="px-3 text-gray-500 text-sm">Rp</span>
+                                            <span class="px-3 text-gray-500">Rp</span>
                                             <input type="text" id="savings"
-                                                class="w-full py-3 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
+                                                class="w-full py-3 pl-2 pr-3 outline-none rounded-r-lg text-left" placeholder="0"
                                                 oninput="formatNumber(this); calculateHarta()">
                                         </div>
                                     </div>
@@ -139,9 +139,9 @@
                                         </label>
                                         <div
                                             class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
-                                            <span class="px-3 text-gray-500 text-sm">Rp</span>
+                                            <span class="px-3 text-gray-500">Rp</span>
                                             <input type="text" id="gold"
-                                                class="w-full py-3 pr-3 outline-none rounded-r-lg text-left"
+                                                class="w-full py-3 pl-2 pr-3 outline-none rounded-r-lg text-left"
                                                 placeholder="0" oninput="formatNumber(this); calculateHarta()">
                                         </div>
                                     </div>
@@ -152,9 +152,9 @@
                                         </label>
                                         <div
                                             class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
-                                            <span class="px-3 text-gray-500 text-sm">Rp</span>
+                                            <span class="px-3 text-gray-500">Rp</span>
                                             <input type="text" id="property"
-                                                class="w-full py-3 pr-3 outline-none rounded-r-lg text-left"
+                                                class="w-full py-3 pl-2 pr-3 outline-none rounded-r-lg text-left"
                                                 placeholder="0" oninput="formatNumber(this); calculateHarta()">
                                         </div>
                                     </div>
@@ -165,9 +165,9 @@
                                         </label>
                                         <div
                                             class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
-                                            <span class="px-3 text-gray-500 text-sm">Rp</span>
+                                            <span class="px-3 text-gray-500">Rp</span>
                                             <input type="text" id="other"
-                                                class="w-full py-3 pr-3 outline-none rounded-r-lg text-left"
+                                                class="w-full py-3 pl-2 pr-3 outline-none rounded-r-lg text-left"
                                                 placeholder="0" oninput="formatNumber(this); calculateHarta()">
                                         </div>
                                     </div>
@@ -178,9 +178,9 @@
                                         </label>
                                         <div
                                             class="flex items-center border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-orange-500">
-                                            <span class="px-3 text-gray-500 text-sm">Rp</span>
+                                            <span class="px-3 text-gray-500">Rp</span>
                                             <input type="text" id="hartaDebt"
-                                                class="w-full py-3 pr-3 outline-none rounded-r-lg text-left"
+                                                class="w-full py-3 pl-2 pr-3 outline-none rounded-r-lg text-left"
                                                 placeholder="0" oninput="formatNumber(this); calculateHarta()">
                                         </div>
                                     </div>
@@ -532,21 +532,21 @@
 
         /* Active tab styles */
         .tab-button.active {
-            border-bottom-color: #22c55e !important;
-            color: #16a34a !important;
-            background-color: #f0fdf4 !important;
+            border-bottom-color: #ea580c !important;
+            color: #ea580c !important;
+            background-color: #ffedd5 !important;
         }
 
         /* Inactive tab hover styles */
         .tab-button:not(.active):hover {
-            color: #16a34a !important;
-            background-color: #f0fdf4 !important;
-            border-bottom-color: #22c55e !important;
+            color: #c2410c !important;
+            background-color: #ffedd5 !important;
+            border-bottom-color: #c2410c !important;
         }
 
         /* Active tab hover styles */
         .tab-button.active:hover {
-            background-color: #dcfce7 !important;
+            background-color: #fed7aa !important;
         }
 
         .calculator-content,
@@ -566,10 +566,6 @@
             }
         }
 
-        input:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
-        }
 
         .rounded-xl {
             border-radius: 0.75rem;

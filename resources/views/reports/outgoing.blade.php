@@ -123,7 +123,7 @@
                         <td class="px-5 py-4 whitespace-nowrap text-xs font-bold" style="color: #1c0f0a;">{{ $distribution->distribution_code }}</td>
                         <td class="px-5 py-4 whitespace-nowrap text-xs font-bold" style="color: #1c0f0a;">{{ $distribution->mustahik->name }}</td>
                         <td class="px-5 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">
                                 {{ \App\Models\Mustahik::CATEGORIES[$distribution->mustahik->category] ?? $distribution->mustahik->category }}
                             </span>
                         </td>
@@ -139,9 +139,9 @@
                         <td class="px-5 py-4 whitespace-nowrap text-center text-xs font-medium" style="color: #1c0f0a;">{{ $distribution->distribution_date->format('d M Y') }}</td>
                         <td class="px-5 py-4 whitespace-nowrap text-center">
                             @if($distribution->is_received)
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5;">Sudah Diterima</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #c2410c;">Sudah Diterima</span>
                             @else
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold" style="background: #f0ece6; color: #1c0f0a;">Belum Diterima</span>
+                            <span class="inline-flex items-center text-xs font-semibold" style="color: #1c0f0a;">Belum Diterima</span>
                             @endif
                         </td>
                     </tr>
