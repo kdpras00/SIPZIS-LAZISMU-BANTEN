@@ -10,6 +10,22 @@ class UpdateMuzakkiRequest extends FormRequest
     
     public function authorize(): bool
     {
+        $user = $this->user();
+
+        if (!$user) {
+            return false;
+        }
+
+        if ($user->role === 'admin') {
+            return true;
+        }
+
+        $routeMuzakki = $this->route('muzakki');
+
+        if ($routeMuzakki) {
+            abort(403, 'Muzakki tidak dapat memperbarui profil muzakki lain.');
+        }
+
         return true;
     }
 

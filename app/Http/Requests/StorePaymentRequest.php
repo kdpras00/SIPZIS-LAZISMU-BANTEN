@@ -10,7 +10,30 @@ class StorePaymentRequest extends FormRequest
     
     public function authorize(): bool
     {
-        return true; 
+        $user = $this->user();
+
+        if (!$user) {
+            return false;
+        }
+
+        if ($user->role === 'admin') {
+            return true;
+        }
+
+        $muzakkiId = $user->muzakki?->id;
+
+        if (!$muzakkiId) {
+            return false;
+        }
+
+        $idField = $this->input('muzakki_id');
+        $routePayment = $this->route('payment');
+
+        if ($routePayment && $routePayment->muzakki_id !== $muzakkiId) {
+            abort(403, 'Anda tidak memiliki akses ke pembayaran ini.');
+        }
+
+        return $idField === null || (int) $idField === $muzakkiId;
     }
 
     protected function prepareForValidation()

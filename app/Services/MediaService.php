@@ -14,7 +14,14 @@ class MediaService
             return $oldPath; 
         }
 
+        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+        $allowedExtensions = ['jpeg', 'png', 'jpg', 'gif', 'webp'];
         
+        if (!in_array(strtolower($file->getClientMimeType()), $allowedMimeTypes) ||
+            !in_array(strtolower($file->getClientOriginalExtension()), $allowedExtensions)) {
+            throw new \InvalidArgumentException('Tipe file tidak diizinkan. Harap unggah gambar.');
+        }
+
         if ($oldPath && !filter_var($oldPath, FILTER_VALIDATE_URL)) {
             if (Storage::disk('public')->exists($oldPath)) {
                 Storage::disk('public')->delete($oldPath);

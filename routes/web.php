@@ -45,7 +45,7 @@ use App\Http\Controllers\AccountClaimController;
 // ============================================================================
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/tentang', [HomeController::class, 'tentang'])->name('tentang');
-Route::post('/chatbot', [ChatbotController::class, 'ask'])->name('chatbot.ask');
+Route::post('/chatbot', [ChatbotController::class, 'ask'])->name('chatbot.ask')->middleware('throttle:10,1');
 
 // Admin Entrance Redirect
 Route::get('/admin', function () {
@@ -80,7 +80,6 @@ Route::get('/calculator/guide', [CalculatorController::class, 'guide'])->name('c
 Route::get('/calculator/gold-price', [CalculatorController::class, 'getGoldPrice'])->name('calculator.gold-price');
 
 // Public Guest Donation & Payment Routes
-Route::get('/payments/search', [PaymentController::class, 'search'])->name('api.payments.search');
 Route::get('/payment/{paymentCode}/failed', [GuestPaymentController::class, 'guestFailure'])->name('guest.payment.failed');
 Route::post('/account/claim', [AccountClaimController::class, 'claim'])->name('guest.account.claim');
 
@@ -88,14 +87,14 @@ Route::prefix('donasi')->name('guest.payment.')->group(function () {
     Route::get('/', fn() => redirect()->route('program'));
     Route::get('/create', [GuestPaymentController::class, 'guestCreate'])->name('create');
     Route::post('/store', [GuestPaymentController::class, 'guestStore'])->name('store');
-    Route::get('/summary/{paymentCode}', [GuestPaymentController::class, 'guestSummary'])->name('summary');
-    Route::get('/success/{paymentCode}', [GuestPaymentController::class, 'guestSuccess'])->name('success');
-    Route::get('/check-status/{paymentCode}', [GuestPaymentController::class, 'guestCheckStatus'])->name('checkStatus');
+    Route::get('/summary/{paymentCode}', [GuestPaymentController::class, 'guestSummary'])->name('summary')->middleware('throttle:60,1');
+    Route::get('/success/{paymentCode}', [GuestPaymentController::class, 'guestSuccess'])->name('success')->middleware('throttle:60,1');
+    Route::get('/check-status/{paymentCode}', [GuestPaymentController::class, 'guestCheckStatus'])->name('checkStatus')->middleware('throttle:60,1');
 
-    Route::post('/get-token/{paymentCode}', [GuestPaymentController::class, 'getSnapToken'])->name('getToken');
-    Route::post('/{paymentCode}/get-token-custom', [GuestPaymentController::class, 'getTokenCustom'])->name('getTokenCustom');
-    Route::get('/{paymentCode}/receipt', [GuestPaymentController::class, 'guestReceiptByCode'])->name('receipt');
-    Route::get('/{paymentCode}/receipt/download', [GuestPaymentController::class, 'downloadGuestReceipt'])->name('receipt.download');
+    Route::post('/get-token/{paymentCode}', [GuestPaymentController::class, 'getSnapToken'])->name('getToken')->middleware('throttle:30,1');
+    Route::post('/{paymentCode}/get-token-custom', [GuestPaymentController::class, 'getTokenCustom'])->name('getTokenCustom')->middleware('throttle:30,1');
+    Route::get('/{paymentCode}/receipt', [GuestPaymentController::class, 'guestReceiptByCode'])->name('receipt')->middleware('throttle:60,1');
+    Route::get('/{paymentCode}/receipt/download', [GuestPaymentController::class, 'downloadGuestReceipt'])->name('receipt.download')->middleware('throttle:60,1');
     Route::get('/{slug}', [DonationController::class, 'show'])->name('show');
 });
 
@@ -118,30 +117,30 @@ Route::get('/images/{path}', function ($path) {
 // AUTHENTICATION & GUEST ACCESS ROUTES
 // ============================================================================
 Route::get('/admin/login', [AuthController::class, 'showAdminLogin'])->name('admin.login');
-Route::post('/admin/login', [AuthController::class, 'adminLogin']);
+Route::post('/admin/login', [AuthController::class, 'adminLogin'])->middleware('throttle:5,1');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,1');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Password Reset Routes
 Route::get('/password/reset', [AuthController::class, 'showForgotPassword'])->name('password.request');
-Route::post('/password/email', [AuthController::class, 'sendPasswordResetEmail'])->name('password.email');
+Route::post('/password/email', [AuthController::class, 'sendPasswordResetEmail'])->name('password.email')->middleware('throttle:3,1');
 Route::get('/password/reset/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
-Route::post('/password/reset', [AuthController::class, 'resetPassword'])->name('password.update');
+Route::post('/password/reset', [AuthController::class, 'resetPassword'])->name('password.update')->middleware('throttle:5,1');
 
 // 2FA Verification during Login
 Route::get('/two-factor/verify', [TwoFactorController::class, 'showVerify'])->name('two-factor.verify');
-Route::post('/two-factor/verify', [TwoFactorController::class, 'verify'])->name('two-factor.verify.post');
+Route::post('/two-factor/verify', [TwoFactorController::class, 'verify'])->name('two-factor.verify.post')->middleware('throttle:5,1');
 
 // Payment Callbacks & Notifications
 Route::get('/payment/finish', [PaymentController::class, 'finish']);
 Route::get('/payment/unfinish', [PaymentController::class, 'unfinish']);
 Route::get('/payment/error', [PaymentController::class, 'error']);
-Route::post('/midtrans/notification', [PaymentNotificationController::class, 'handleNotification']);
-Route::post('/firebase-login', fn(Request $request) => app(AuthController::class)->firebaseLogin($request) ?? response()->json(['success' => false], 400))->name('firebase.login');
+Route::post('/midtrans/notification', [PaymentNotificationController::class, 'handleNotification'])->middleware('throttle:30,1');
+
 
 // Region & OTP API Routes
 Route::prefix('regions')->name('regions.')->group(function () {
@@ -154,9 +153,9 @@ Route::prefix('regions')->name('regions.')->group(function () {
     Route::post('/get-postal-code', [RegionController::class, 'getPostalCodeByVillage'])->name('get.postal.code');
 });
 
-Route::post('/send-otp', [OTPController::class, 'sendOTP'])->name('otp.send');
-Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('otp.verify');
-Route::post('/resend-otp', [OTPController::class, 'resendOTP'])->name('otp.resend');
+Route::post('/send-otp', [OTPController::class, 'sendOTP'])->name('otp.send')->middleware('throttle:3,1');
+Route::post('/verify-otp', [OTPController::class, 'verifyOTP'])->name('otp.verify')->middleware('throttle:5,1');
+Route::post('/resend-otp', [OTPController::class, 'resendOTP'])->name('otp.resend')->middleware('throttle:3,1');
 
 // Email Verification (Auth Middleware)
 Route::middleware('auth')->group(function () {
@@ -300,6 +299,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [PaymentController::class, 'index'])->name('index');
             Route::get('/create', [PaymentController::class, 'create'])->name('create');
             Route::post('/', [PaymentController::class, 'store'])->name('store');
+            Route::get('/search', [PaymentController::class, 'search'])->name('api.payments.search');
             Route::get('/{payment}', [PaymentController::class, 'show'])->name('show');
             Route::put('/{payment}', [PaymentController::class, 'update'])->name('update');
             Route::get('/{payment}/receipt', [PaymentController::class, 'receipt'])->name('receipt');

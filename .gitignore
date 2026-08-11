@@ -3,6 +3,9 @@
 .env
 .env.backup
 .env.production
+.env.*.local
+.env.testing
+.env.docker
 .phpactor.json
 .phpunit.result.cache
 /.fleet
@@ -23,6 +26,12 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 AGEN-AGENKU/
+*.sqlite
+*.sqlite-journal
+*.pem
+/coverage
+/public/uploads
+/storage/app/public/*.pdf
 
 # AI & Local Development Tooling
 CLAUDE.md

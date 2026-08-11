@@ -38,18 +38,13 @@ class OTPController extends Controller
 
             Log::info('sendOTP phone validation passed', ['phone' => $phone]);
 
-            $otp = rand(1000, 9999);
+            $otp = random_int(1000, 9999);
 
             
             Session::put('otp_code', $otp);
             Session::put('otp_phone', $phone);
             Session::put('otp_expires', now()->addMinutes(5));
-
-            Log::info('sendOTP session data stored', [
-                'otp_code' => $otp,
-                'otp_phone' => $phone,
-                'otp_expires' => Session::get('otp_expires')
-            ]);
+            Session::put('otp_attempts', 0);
 
             
             $message = "Kode OTP Anda adalah *{$otp}*. Berlaku 5 menit.";
@@ -111,15 +106,20 @@ class OTPController extends Controller
                 ]);
             }
 
-            Log::info('verifyOTP session data found', [
-                'otp_code' => Session::get('otp_code'),
-                'otp_phone' => Session::get('otp_phone'),
-                'otp_expires' => Session::get('otp_expires')
-            ]);
+            $attempts = Session::get('otp_attempts', 0) + 1;
+            Session::put('otp_attempts', $attempts);
+
+            if ($attempts > 5) {
+                Session::forget(['otp_code', 'otp_phone', 'otp_expires', 'otp_attempts']);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terlalu banyak percobaan yang salah. Silakan minta kode OTP baru.'
+                ]);
+            }
 
             
             if (now()->greaterThan(Session::get('otp_expires'))) {
-                Session::forget(['otp_code', 'otp_phone', 'otp_expires']);
+                Session::forget(['otp_code', 'otp_phone', 'otp_expires', 'otp_attempts']);
                 Log::info('verifyOTP OTP expired');
                 return response()->json([
                     'success' => false,
@@ -132,7 +132,7 @@ class OTPController extends Controller
                 $otpPhone = Session::get('otp_phone');
 
                 
-                Session::forget(['otp_code', 'otp_phone', 'otp_expires']);
+                Session::forget(['otp_code', 'otp_phone', 'otp_expires', 'otp_attempts']);
                 Log::info('verifyOTP successful');
 
                 
@@ -163,10 +163,6 @@ class OTPController extends Controller
                     'verified' => true
                 ]);
             } else {
-                Log::info('verifyOTP code mismatch', [
-                    'input_otp' => $request->otp,
-                    'session_otp' => Session::get('otp_code')
-                ]);
                 return response()->json([
                     'success' => false,
                     'message' => 'Kode OTP salah. Silakan coba lagi.'
@@ -207,16 +203,12 @@ class OTPController extends Controller
             $phone = Session::get('otp_phone');
 
             
-            $otp = rand(1000, 9999);
+            $otp = random_int(1000, 9999);
 
             
             Session::put('otp_code', $otp);
             Session::put('otp_expires', now()->addMinutes(5));
-
-            Log::info('resendOTP new code generated', [
-                'phone' => $phone,
-                'otp' => $otp
-            ]);
+            Session::put('otp_attempts', 0);
 
             
             $message = "Kode OTP Anda adalah *{$otp}*. Berlaku 5 menit.";

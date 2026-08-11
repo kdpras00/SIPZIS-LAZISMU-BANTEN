@@ -200,7 +200,8 @@ class GuestPaymentController extends Controller
     public function downloadGuestReceipt($paymentCode)
     {
         $payment = Payment::where('payment_code', $paymentCode)->firstOrFail();
-        return view('payments.guest-receipt', compact('payment'));
+        $pdf = app('dompdf.wrapper')->loadView('payments.guest-receipt', compact('payment'));
+        return $pdf->download("Kwitansi-Donasi-{$payment->payment_code}.pdf");
     }
 
     public function guestCheckStatus($paymentCode)

@@ -21,8 +21,6 @@ class PaymentNotificationController extends Controller
     
     public function handleNotification(Request $request)
     {
-        Log::info('Midtrans Webhook Received', $request->all());
-
         try {
             $payment = $this->midtransService->handleNotificationPayload($request->all());
             if ($payment) {

@@ -101,20 +101,13 @@ class Payment extends Model
     
     public static function generatePaymentCode(): string
     {
-        
-        return \Illuminate\Support\Facades\DB::transaction(function () {
-            $year = date('Y');
-            $last = self::where('payment_code', 'like', "DNS-{$year}-%")
-                ->lockForUpdate()
-                ->orderBy('id', 'desc')
-                ->first();
+        $year = date('Y');
+        do {
+            $random = strtoupper(\Illuminate\Support\Str::random(8));
+            $code = "DNS-{$year}-{$random}";
+        } while (self::where('payment_code', $code)->exists());
 
-            $next = $last
-                ? ((int) (explode('-', $last->payment_code)[2] ?? 0)) + 1
-                : 1;
-
-            return "DNS-{$year}-" . str_pad($next % 10000, 3, '0', STR_PAD_LEFT);
-        });
+        return $code;
     }
 
     public static function generateReceiptNumber(): string

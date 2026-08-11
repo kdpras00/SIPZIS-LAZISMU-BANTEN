@@ -22,11 +22,6 @@ class MidtransService
         Config::$isProduction = config('midtrans.is_production', false);
         Config::$isSanitized = config('midtrans.is_sanitized', true);
         Config::$is3ds = config('midtrans.is_3ds', true);
-
-        $overrideServerKey = env('MIDTRANS_SERVER_KEY');
-        if (!empty($overrideServerKey)) {
-            Config::$serverKey = $overrideServerKey;
-        }
     }
 
     
@@ -113,6 +108,9 @@ class MidtransService
         $orderId = $payload['order_id'] ?? null;
         $transactionStatus = $payload['transaction_status'] ?? null;
         $fraudStatus = $payload['fraud_status'] ?? null;
+        $statusCode = $payload['status_code'] ?? null;
+        $grossAmount = $payload['gross_amount'] ?? null;
+        $signatureKey = $payload['signature_key'] ?? null;
 
         if (!$orderId) {
             return null;
@@ -120,6 +118,19 @@ class MidtransService
 
         $payment = Payment::where('payment_code', $orderId)->first();
         if (!$payment) {
+            return null;
+        }
+
+        // Validate signature key
+        $expectedSignature = hash('sha512', $orderId . $statusCode . $grossAmount . Config::$serverKey);
+        if ($signatureKey !== $expectedSignature) {
+            Log::warning('Midtrans Webhook: Invalid signature', ['order_id' => $orderId]);
+            return null;
+        }
+
+        // Validate gross amount matches
+        if ((float)$payment->paid_amount !== (float)$grossAmount) {
+            Log::warning('Midtrans Webhook: Gross amount mismatch', ['order_id' => $orderId]);
             return null;
         }
 

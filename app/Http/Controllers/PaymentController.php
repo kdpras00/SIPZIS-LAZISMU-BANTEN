@@ -21,6 +21,17 @@ class PaymentController extends Controller
     }
 
     
+    protected function authorizeAccess(Payment $payment): void
+    {
+        if (Auth::user()->role === 'admin') {
+            return;
+        }
+
+        $muzakkiId = Auth::user()->muzakki?->id;
+        abort_unless($muzakkiId && $payment->muzakki_id === $muzakkiId, 403, 'Anda tidak memiliki akses ke pembayaran ini.');
+    }
+
+    
     public function index(Request $request)
     {
         $query = Payment::with(['muzakki', 'program'])->latest();
@@ -86,7 +97,14 @@ class PaymentController extends Controller
     public function store(\App\Http\Requests\StorePaymentRequest $request)
     {
         $validated = $request->validated();
-        
+
+        if (Auth::user()->role !== 'admin') {
+            $muzakkiId = Auth::user()->muzakki?->id;
+            abort_unless($muzakkiId && (int) $validated['muzakki_id'] === $muzakkiId, 403, 'Anda tidak dapat membuat pembayaran atas nama muzakki lain.');
+            abort_if(in_array($validated['status'], ['completed', 'cancelled'], true), 403, 'Anda tidak dapat mengubah status pembayaran.');
+            $validated['status'] = 'pending';
+        }
+
         $paymentCode = 'ZKT-' . date('Ymd') . '-' . strtoupper(Str::random(6));
 
         Payment::create([
@@ -109,6 +127,7 @@ class PaymentController extends Controller
     
     public function show(Payment $payment)
     {
+        $this->authorizeAccess($payment);
         $payment->load(['muzakki', 'program', 'receivedBy']);
         return view('payments.show', compact('payment'));
     }
@@ -116,6 +135,7 @@ class PaymentController extends Controller
     
     public function edit(Payment $payment)
     {
+        $this->authorizeAccess($payment);
         $allMuzakki = Muzakki::active()->orderBy('name')->get();
         $programs = Program::orderBy('name')->get();
 
@@ -125,7 +145,13 @@ class PaymentController extends Controller
     
     public function update(\App\Http\Requests\StorePaymentRequest $request, Payment $payment)
     {
+        $this->authorizeAccess($payment);
         $validated = $request->validated();
+
+        if (Auth::user()->role !== 'admin') {
+            abort_if(in_array($validated['status'], ['completed', 'cancelled'], true), 403, 'Anda tidak dapat mengubah status pembayaran.');
+            $validated['status'] = 'pending';
+        }
 
         $payment->update($request->only([
             'muzakki_id',
@@ -144,6 +170,7 @@ class PaymentController extends Controller
     
     public function destroy(Payment $payment)
     {
+        $this->authorizeAccess($payment);
         $payment->delete();
         return redirect()->route('payments.index')->with('success', 'Data pembayaran berhasil dihapus.');
     }
@@ -151,6 +178,7 @@ class PaymentController extends Controller
     
     public function receipt(Payment $payment)
     {
+        $this->authorizeAccess($payment);
         $payment->load(['muzakki', 'program', 'receivedBy']);
         return view('payments.receipt', compact('payment'));
     }
@@ -159,15 +187,22 @@ class PaymentController extends Controller
     public function search(Request $request)
     {
         $query = $request->get('q');
-        $payments = Payment::with('muzakki')
-            ->where('payment_code', 'like', "%{$query}%")
-            ->orWhereHas('muzakki', function ($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%");
-            })
-            ->take(10)
-            ->get();
+        $payments = Payment::with('muzakki');
 
-        return response()->json($payments);
+        if (Auth::user()->role !== 'admin') {
+            $muzakkiId = Auth::user()->muzakki?->id;
+            abort_unless($muzakkiId, 403);
+            $payments->where('muzakki_id', $muzakkiId);
+        }
+
+        $payments->where(function ($q) use ($query) {
+            $q->where('payment_code', 'like', "%{$query}%")
+                ->orWhereHas('muzakki', function ($mq) use ($query) {
+                    $mq->where('name', 'like', "%{$query}%");
+                });
+        });
+
+        return response()->json($payments->take(10)->get());
     }
 
     public function finish()

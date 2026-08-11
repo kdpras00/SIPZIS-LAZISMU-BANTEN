@@ -410,142 +410,6 @@ class AuthController extends Controller
         return redirect('/')->with('success', 'Anda telah berhasil logout.');
     }
 
-    
-    public function firebaseLogin(Request $request)
-    {
-        
-        
-        
-        
-        
-        $request->validate([
-            'uid' => 'required|string',
-            'email' => 'required|email',
-            'name' => 'required|string',
-            'phone' => 'nullable|string',
-            'avatar' => 'nullable|string'
-        ]);
-
-        try {
-            
-            $user = User::firstOrCreate(
-                ['email' => $request->email],
-                [
-                    'name' => $request->name,
-                    'password' => Hash::make(uniqid()), 
-                    'role' => 'muzakki',
-                    'is_active' => true,
-                    'phone' => $request->phone ?? null,
-                ]
-            );
-
-            
-            $isNewUser = $user->wasRecentlyCreated;
-
-            
-            if ($request->filled('avatar') && $user->avatar !== $request->avatar) {
-                $user->avatar = $request->avatar;
-                $user->save();
-            }
-
-            
-            
-            $campaignUrl = url('/campaigner/' . $request->email);
-
-            $muzakki = Muzakki::updateOrCreate(
-                ['email' => $request->email],
-                [
-                    'name' => $request->name,
-                    'phone' => $request->phone ?? null,
-                    'user_id' => $user->id,
-                    'is_active' => true,
-                    'campaign_url' => $campaignUrl, 
-                ]
-            );
-
-            
-            $user->refresh();
-
-            
-            if ($isNewUser) {
-                try {
-                    Mail::to($user->email)->send(new \App\Mail\WelcomeMail($user));
-                    Log::info('Welcome email sent to Firebase user: ' . $user->email);
-                } catch (\Exception $e) {
-                    
-                    Log::error('Failed to send welcome email to Firebase user: ' . $e->getMessage());
-                }
-
-                
-                try {
-                    
-                    if ($muzakki && $muzakki->user_id === $user->id) {
-                        
-                        \App\Models\Notification::createAccountNotification($user, 'profile', $muzakki);
-                        Log::info('Welcome notification created for Firebase user', [
-                            'user_id' => $user->id,
-                            'muzakki_id' => $muzakki->id
-                        ]);
-                    } else {
-                        Log::warning('Muzakki not properly linked to user', [
-                            'user_id' => $user->id,
-                            'muzakki_id' => $muzakki->id ?? null,
-                            'muzakki_user_id' => $muzakki->user_id ?? null
-                        ]);
-                    }
-                } catch (\Exception $e) {
-                    Log::error('Failed to create welcome notification for Firebase user: ' . $e->getMessage(), [
-                        'user_id' => $user->id,
-                        'muzakki_id' => $muzakki->id ?? null,
-                        'error' => $e->getMessage(),
-                        'trace' => $e->getTraceAsString()
-                    ]);
-                }
-            }
-
-            if (!$user->is_active) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Akun Anda tidak aktif. Silakan hubungi administrator.'
-                ], 403);
-            }
-
-            if ($user->role !== 'muzakki') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Login Google hanya tersedia untuk akun muzakki.'
-                ], 403);
-            }
-
-            
-            if ($user->hasTwoFactorEnabled()) {
-                $request->session()->put('login.id', $user->id);
-                Auth::logout();
-
-                return response()->json([
-                    'success' => true,
-                    'two_factor_required' => true,
-                    'redirect' => route('two-factor.verify'),
-                    'message' => 'Autentikasi dua faktor diperlukan.'
-                ]);
-            }
-
-            
-            Auth::login($user);
-            $request->session()->regenerate();
-
-            return response()->json([
-                'success' => true,
-                'redirect' => '/',
-                'message' => 'Login berhasil.'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Authentication failed: ' . $e->getMessage()
-            ], 500);
-        }
-    }
 
     
     public function showForgotPassword()
@@ -562,38 +426,29 @@ class AuthController extends Controller
 
         
         $recaptchaToken = $request->input('g-recaptcha-response');
-        if ($recaptchaToken && config('services.recaptcha.secret_key')) {
-            try {
-                $verification = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-                    'secret' => config('services.recaptcha.secret_key'),
-                    'response' => $recaptchaToken,
-                    'remoteip' => $request->ip(),
-                ])->json();
+        if (!$recaptchaToken) {
+            return back()->withErrors(['email' => 'Validasi reCAPTCHA diperlukan.'])->withInput();
+        }
 
-                if (!($verification['success'] ?? false)) {
-                    Log::warning('reCAPTCHA verification failed for password reset', [
-                        'email' => $request->email,
-                        'verification' => $verification
-                    ]);
-                    
-                } else {
-                    $score = (float) ($verification['score'] ?? 0);
-                    $action = $verification['action'] ?? null;
-                    $threshold = (float) config('services.recaptcha.threshold', 0.5);
+        try {
+            $verification = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => config('services.recaptcha.secret_key'),
+                'response' => $recaptchaToken,
+                'remoteip' => $request->ip(),
+            ])->json();
 
-                    if ($score < $threshold) {
-                        Log::warning('reCAPTCHA score too low for password reset', [
-                            'email' => $request->email,
-                            'score' => $score,
-                            'threshold' => $threshold
-                        ]);
-                        
-                    }
-                }
-            } catch (\Throwable $e) {
-                Log::error('reCAPTCHA verification failed: ' . $e->getMessage());
-                
+            if (!($verification['success'] ?? false)) {
+                return back()->withErrors(['email' => 'Verifikasi reCAPTCHA gagal.'])->withInput();
             }
+
+            $score = (float) ($verification['score'] ?? 0);
+            $threshold = (float) config('services.recaptcha.threshold', 0.5);
+
+            if ($score < $threshold) {
+                return back()->withErrors(['email' => 'Aktivitas mencurigakan terdeteksi.'])->withInput();
+            }
+        } catch (\Throwable $e) {
+            return back()->withErrors(['email' => 'Layanan reCAPTCHA tidak tersedia.'])->withInput();
         }
 
         
@@ -636,26 +491,16 @@ class AuthController extends Controller
                     
                     Mail::to($user->email)->send(new \App\Mail\PasswordReset($user, $token));
                     Log::info('Password reset email sent via log driver to: ' . $user->email);
-                    Log::info('Password reset link: ' . url('password/reset', $token));
-                    
                     
                     config(['mail.default' => $originalMailer]);
                     
-                    
-                    $resetLink = url('password/reset', $token);
-                    return back()->with('status', 'Link reset password telah dibuat. Karena SMTP Gmail gagal, email disimpan di log. Link reset password: <a href="' . $resetLink . '" class="text-green-600 underline">' . $resetLink . '</a>');
+                    return back()->with('status', 'Jika email terdaftar, link reset password telah dikirim ke email Anda.');
                 } catch (\Exception $logException) {
                     Log::error('Failed to send email even with log driver: ' . $logException->getMessage());
                     
                     return back()->with('status', 'Jika email terdaftar, link reset password telah dikirim ke email Anda.');
                 }
             }
-            
-            
-            if (config('app.debug')) {
-                return back()->withErrors(['email' => 'Gagal mengirim email: ' . $e->getMessage() . '. Silakan cek konfigurasi MAIL di .env atau gunakan MAIL_MAILER=log untuk development.'])->withInput();
-            }
-            
             
             return back()->withErrors(['email' => 'Gagal mengirim email. Silakan coba lagi nanti atau hubungi admin.'])->withInput();
         }

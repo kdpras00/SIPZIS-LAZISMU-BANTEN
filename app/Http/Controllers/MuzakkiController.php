@@ -240,7 +240,10 @@ class MuzakkiController extends Controller
         $updateData['address'] = $request->address;
         $updateData['occupation'] = $request->occupation;
         $updateData['bio'] = $request->bio;
-        $updateData['is_active'] = $request->is_active ?? $muzakki->is_active;
+
+        if (Auth::user()->role === 'admin') {
+            $updateData['is_active'] = $request->is_active ?? $muzakki->is_active;
+        }
 
         
         if ($request->hasFile('profile_photo')) {
@@ -270,12 +273,15 @@ class MuzakkiController extends Controller
             $updateData['country'] = 'Indonesia';
         }
 
-        
-        if ($request->filled('campaign_url')) {
-            $updateData['campaign_url'] = $request->campaign_url;
+        if (Auth::user()->role === 'admin') {
+            if ($request->filled('campaign_url')) {
+                $updateData['campaign_url'] = $request->campaign_url;
+            }
+            if ($request->has('phone_verified')) {
+                $updateData['phone_verified'] = (int)$request->phone_verified;
+            }
         } else {
-            
-            if (!empty($updateData['email'])) {
+            if (!empty($updateData['email']) && empty($muzakki->campaign_url)) {
                 $updateData['campaign_url'] = url('/campaigner/' . $updateData['email']);
             }
         }
@@ -283,11 +289,6 @@ class MuzakkiController extends Controller
         
         if ($request->filled('date_of_birth')) {
             $updateData['date_of_birth'] = $request->date_of_birth;
-        }
-
-        
-        if ($request->has('phone_verified')) {
-            $updateData['phone_verified'] = (int)$request->phone_verified;
         }
 
         
@@ -321,9 +322,6 @@ class MuzakkiController extends Controller
 
         
         unset($updateData['created_at'], $updateData['updated_at']);
-
-        
-        \Illuminate\Support\Facades\Log::info('Muzakki Update Data:', $updateData);
 
         
         $muzakki->update($updateData);
