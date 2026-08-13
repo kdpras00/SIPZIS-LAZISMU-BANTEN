@@ -22,7 +22,7 @@
     <meta property="twitter:description" content="{{ $meta_description ?? 'Lazismu Banten - Portal resmi pengelolaan ZIS.' }}">
     <meta property="twitter:image" content="{{ asset('img/logo.png') }}">
 
-    <link rel="icon" type="image/png" href="{{ asset('img/lazismu-icon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/lazismu-icon.ico') }}">
     <title>{{ isset($title) ? $title . ' - Lazismu Banten' : 'Lazismu Banten' }}</title>
 
     
