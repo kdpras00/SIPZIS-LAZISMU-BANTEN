@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page-title', 'Galang Dana Saya - SIPZIS Lazismu Banten')
+@section('page-title', 'Galang Dana Saya - Lazismu Banten')
 
 @section('content')
 <div class="py-6 px-4 max-w-4xl mx-auto">

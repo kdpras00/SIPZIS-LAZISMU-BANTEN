@@ -34,7 +34,7 @@ use App\Http\Controllers\AccountClaimController;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes - SIPZIS LAZISMU BANTEN
+| Web Routes - LAZISMU BANTEN
 |--------------------------------------------------------------------------
 | Standardized & Cleaned RESTful Routes Architecture
 |

@@ -43,7 +43,7 @@
 
             <div class="mt-10 text-sm text-gray-500">
                 <p>Butuh bantuan? <a href="{{ route('home') }}#contact"
-                        class="text-orange-600 font-medium hover:underline">Hubungi tim SIPZIS</a></p>
+                        class="text-orange-600 font-medium hover:underline">Hubungi tim Lazismu Banten</a></p>
             </div>
         </div>
     </div>

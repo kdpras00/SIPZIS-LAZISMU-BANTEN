@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', $news->title . ' - SIPZIS')
+@section('title', $news->title . ' - Lazismu Banten')
 @section('meta_description', Str::limit(strip_tags($news->content), 150))
 @section('meta_image', $news->image ? asset('storage/' . $news->image) : asset('img/logo.png'))
 

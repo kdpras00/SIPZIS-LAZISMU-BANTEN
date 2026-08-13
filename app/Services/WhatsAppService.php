@@ -128,7 +128,7 @@ class WhatsAppService
 
         $message = "🕐 *DONASI PENDING*\n\n";
         $message .= "Halo *{$payment->muzakki->name}*,\n\n";
-        $message .= "Terima kasih telah berdonasi melalui SIPZIS!\n\n";
+        $message .= "Terima kasih telah berdonasi melalui Lazismu Banten!\n\n";
         $message .= "📋 *Detail Donasi:*\n";
         $message .= "• Kode: {$payment->payment_code}\n";
         $message .= "• Program: {$programName}\n";
@@ -137,7 +137,7 @@ class WhatsAppService
         $message .= "💳 Silakan selesaikan pembayaran Anda.\n\n";
         $message .= "Cek status: {$trackingUrl}\n\n";
         $message .= "Setelah pembayaran berhasil, kwitansi akan dikirim ke email Anda.\n\n";
-        $message .= "_SIPZIS - Sistem Informasi Pengelolaan Zakat_";
+        $message .= "_Lazismu Banten - Layanan Zakat, Infaq, Sedekah_";
 
         return $this->sendMessage($phone, $message);
     }
@@ -181,7 +181,7 @@ class WhatsAppService
         $message .= "Jazakallahu khairan katsiran! 🤲\n\n";
         $message .= "📄 Kwitansi pembayaran dilampirkan pada pesan ini.\n";
         $message .= "Kwitansi juga telah dikirim ke email Anda dalam format PDF.\n\n";
-        $message .= "_SIPZIS - Sistem Informasi Pengelolaan Zakat_";
+        $message .= "_Lazismu Banten - Layanan Zakat, Infaq, Sedekah_";
 
         
         return $this->sendReceiptPDF($payment, $phone, $message);
@@ -353,8 +353,8 @@ class WhatsAppService
         $message .= "• Nominal: Rp {$amount}\n\n";
         $message .= "Silakan coba lagi atau hubungi kami.\n\n";
         $message .= "🔄 Donasi Ulang: {$retryUrl}\n";
-        $message .= "📞 Bantuan: admin@sipzis.com\n\n";
-        $message .= "_SIPZIS - Sistem Informasi Pengelolaan Zakat_";
+        $message .= "📞 Bantuan: admin@lazismu-banten.or.id\n\n";
+        $message .= "_Lazismu Banten - Layanan Zakat, Infaq, Sedekah_";
 
         return $this->sendMessage($phone, $message);
     }
@@ -376,7 +376,7 @@ class WhatsAppService
         $message .= "• Nominal: Rp {$amount}\n\n";
         $message .= "Ingin berdonasi lagi?\n";
         $message .= "🔄 Donasi Baru: {$retryUrl}\n\n";
-        $message .= "_SIPZIS - Sistem Informasi Pengelolaan Zakat_";
+        $message .= "_Lazismu Banten - Layanan Zakat, Infaq, Sedekah_";
 
         return $this->sendMessage($phone, $message);
     }
@@ -391,15 +391,15 @@ class WhatsAppService
             ];
         }
 
-        $message = "👋 *SELAMAT DATANG DI SIPZIS*\n\n";
+        $message = "👋 *SELAMAT DATANG DI LAZISMU BANTEN*\n\n";
         $message .= "Halo *{$muzakki->name}*!\n\n";
-        $message .= "Terima kasih telah bergabung dengan Sistem Informasi Pengelolaan Zakat (SIPZIS).\n\n";
+        $message .= "Terima kasih telah bergabung dengan Lazismu Banten.\n\n";
         $message .= "Bersama kita wujudkan:\n";
         $message .= "✅ Transparansi pengelolaan zakat\n";
         $message .= "✅ Kemudahan berdonasi\n";
         $message .= "✅ Penyaluran tepat sasaran\n\n";
         $message .= "Mari mulai berbagi kebaikan! 💚\n\n";
-        $message .= "_SIPZIS - Sistem Informasi Pengelolaan Zakat_";
+        $message .= "_Lazismu Banten - Layanan Zakat, Infaq, Sedekah_";
 
         return $this->sendMessage($muzakki->phone, $message);
     }

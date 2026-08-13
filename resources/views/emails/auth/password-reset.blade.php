@@ -12,7 +12,7 @@
         
         <div style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%); color: white; padding: 20px; text-align: center;">
             <h1 style="margin: 0; font-size: 24px;">🔒 Reset Password</h1>
-            <p style="margin: 5px 0 0; font-size: 16px;">SIPZIS - Sistem Informasi Pengelolaan Zakat</p>
+            <p style="margin: 5px 0 0; font-size: 16px;">Lazismu Banten</p>
         </div>
 
         
@@ -52,10 +52,10 @@
             <p>Wassalamu'alaikum wr. wb.</p>
 
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                <p style="margin: 0;"><strong>Yayasan SIPZIS</strong></p>
-                <p style="margin: 5px 0 0;">Jl. Contoh Alamat No. 123</p>
-                <p style="margin: 0;">Jakarta, Indonesia</p>
-                <p style="margin: 5px 0 0;">Email: info@sipzis.id</p>
+                <p style="margin: 0;"><strong>Lazismu Banten</strong></p>
+                <p style="margin: 5px 0 0;">Jl. Raya Banten</p>
+                <p style="margin: 0;">Serang, Banten, Indonesia</p>
+                <p style="margin: 5px 0 0;">Email: info@lazismu-banten.or.id</p>
             </div>
         </div>
 

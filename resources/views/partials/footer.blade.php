@@ -58,7 +58,7 @@
             <div>
                 <h3 class="text-lg font-bold mb-5 border-b border-orange-700 pb-2 uppercase tracking-wide">Tentang</h3>
                 <p class="text-orange-100 text-sm leading-relaxed text-justify hyphens-auto" lang="id">
-                    SIPZIS ber&shy;ko&shy;mit&shy;men un&shy;tuk me&shy;mu&shy;dah&shy;kan umat da&shy;lam ber&shy;za&shy;kat, ber&shy;in&shy;faq, dan ber&shy;se&shy;de&shy;kah se&shy;ca&shy;ra di&shy;gi&shy;tal de&shy;ngan pe&shy;nuh tang&shy;gung ja&shy;wab dan trans&shy;pa&shy;ran&shy;si.
+                    Lazismu Banten ber&shy;ko&shy;mit&shy;men un&shy;tuk me&shy;mu&shy;dah&shy;kan umat da&shy;lam ber&shy;za&shy;kat, ber&shy;in&shy;faq, dan ber&shy;se&shy;de&shy;kah se&shy;ca&shy;ra di&shy;gi&shy;tal de&shy;ngan pe&shy;nuh tang&shy;gung ja&shy;wab dan trans&shy;pa&shy;ran&shy;si.
                 </p>
             </div>
         </div>

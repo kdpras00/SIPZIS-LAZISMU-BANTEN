@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Donasi Program - SIPZIS')
+@section('title', 'Donasi Program - Lazismu Banten')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('vendor/intl-tel-input/css/intlTelInput.css') }}">

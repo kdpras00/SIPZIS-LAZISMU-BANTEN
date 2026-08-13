@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', '{{ $program->name }} - SIPZIS')
+@section('title', $program->name . ' - Lazismu Banten')
 
 @section('navbar')
 @include('partials.navbarHome')

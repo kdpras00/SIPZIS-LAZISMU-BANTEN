@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page-title', 'Autentikasi Dua Faktor (2FA) - SIPZIS Lazismu Banten')
+@section('page-title', 'Autentikasi Dua Faktor (2FA) - Lazismu Banten')
 
 @section('content')
 <div class="py-6 px-4 max-w-3xl mx-auto">

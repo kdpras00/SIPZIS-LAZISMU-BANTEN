@@ -1,6 +1,6 @@
     @extends('layouts.main')
 
-    @section('title', 'Ringkasan Pembayaran - SIPZIS Lazismu')
+    @section('title', 'Ringkasan Pembayaran - Lazismu Banten')
 
     @section('navbar')
         

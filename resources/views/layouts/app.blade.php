@@ -5,25 +5,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="{{ $meta_description ?? 'Sistem Informasi Pengelolaan Zakat, Infaq, dan Sadaqah (SIPZIS) Lazismu Banten. Portal resmi untuk mengelola dan menyalurkan ZIS.' }}">
+    <meta name="description" content="{{ $meta_description ?? 'Lazismu Banten - Portal resmi untuk mengelola dan menyalurkan Zakat, Infaq, dan Sedekah.' }}">
     <meta name="theme-color" content="#c2410c">
     
     
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="{{ isset($title) ? $title . ' - SIPZIS Lazismu' : 'SIPZIS - Lazismu Banten' }}">
-    <meta property="og:description" content="{{ $meta_description ?? 'Sistem Informasi Pengelolaan Zakat, Infaq, dan Sadaqah (SIPZIS) Lazismu Banten.' }}">
+    <meta property="og:title" content="{{ isset($title) ? $title . ' - Lazismu Banten' : 'Lazismu Banten' }}">
+    <meta property="og:description" content="{{ $meta_description ?? 'Lazismu Banten - Portal resmi pengelolaan ZIS.' }}">
     <meta property="og:image" content="{{ asset('img/logo.png') }}">
 
     
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
-    <meta property="twitter:title" content="{{ isset($title) ? $title . ' - SIPZIS Lazismu' : 'SIPZIS - Lazismu Banten' }}">
-    <meta property="twitter:description" content="{{ $meta_description ?? 'Sistem Informasi Pengelolaan Zakat, Infaq, dan Sadaqah (SIPZIS) Lazismu Banten.' }}">
+    <meta property="twitter:title" content="{{ isset($title) ? $title . ' - Lazismu Banten' : 'Lazismu Banten' }}">
+    <meta property="twitter:description" content="{{ $meta_description ?? 'Lazismu Banten - Portal resmi pengelolaan ZIS.' }}">
     <meta property="twitter:image" content="{{ asset('img/logo.png') }}">
 
     <link rel="icon" type="image/png" href="{{ asset('img/lazismu-icon.ico') }}">
-    <title>{{ isset($title) ? $title . ' - SIPZIS Lazismu Banten' : 'SIPZIS - Lazismu Banten' }}</title>
+    <title>{{ isset($title) ? $title . ' - Lazismu Banten' : 'Lazismu Banten' }}</title>
 
     
     <link rel="preconnect" href="https://fonts.googleapis.com">

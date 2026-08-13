@@ -16,14 +16,14 @@
                         </div>
                         <div class="max-w-4xl text-lg text-gray-900 space-y-6 text-justify">
                             <p class="leading-relaxed">
-                                SIPZIS adalah sistem informasi berbasis web yang dirancang khusus untuk memudahkan
+                                Lazismu Banten adalah platform digital yang dirancang khusus untuk memudahkan
                                 pengelolaan zakat, infaq, dan shodaqoh sesuai dengan prinsip-prinsip syariat Islam.
                                 Platform ini menggabungkan teknologi modern dengan nilai-nilai keislaman untuk
                                 memberikan solusi komprehensif dalam pengumpulan, pendistribusian, dan pelaporan dana
                                 zakat.
                             </p>
                             <p class="leading-relaxed">
-                                Dengan SIPZIS, kami bertujuan untuk meningkatkan kesadaran dan partisipasi masyarakat
+                                Melalui platform ini, kami bertujuan untuk meningkatkan kesadaran dan partisipasi masyarakat
                                 dalam menunaikan zakat, serta memastikan bahwa setiap rupiah zakat disalurkan kepada
                                 para mustahik yang tepat sasaran dengan transparansi penuh.
                             </p>

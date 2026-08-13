@@ -20,7 +20,7 @@
             @else
                 background: #f44336; @endif
             color: white; padding: 20px; text-align: center;">
-            <h1 style="margin: 0; font-size: 24px;">SIPZIS</h1>
+            <h1 style="margin: 0; font-size: 24px;">Lazismu Banten</h1>
             <p style="margin: 5px 0 0; font-size: 16px;">Sistem Informasi Pengelolaan Zakat</p>
         </div>
 
@@ -79,9 +79,9 @@
                 </div>
             @elseif($status == 'pending')
                 <p>Pembayaran donasi Anda sedang dalam proses verifikasi. Mohon menunggu konfirmasi selanjutnya. Jika
-                    Anda memiliki bukti transfer, silakan kirimkan ke admin@sipzis.id</p>
+                    Anda memiliki bukti transfer, silakan kirimkan ke admin@lazismu-banten.or.id</p>
             @else
-                <p>Mohon maaf, pembayaran donasi Anda gagal diproses. Silakan coba kembali atau hubungi admin@sipzis.id
+                <p>Mohon maaf, pembayaran donasi Anda gagal diproses. Silakan coba kembali atau hubungi admin@lazismu-banten.or.id
                     untuk bantuan lebih lanjut.</p>
             @endif
 
@@ -90,10 +90,10 @@
             <p>Wassalamu'alaikum wr. wb.</p>
 
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                <p style="margin: 0;"><strong>Yayasan SIPZIS</strong></p>
-                <p style="margin: 5px 0 0;">Jl. Contoh Alamat No. 123</p>
-                <p style="margin: 0;">Jakarta, Indonesia</p>
-                <p style="margin: 5px 0 0;">Email: info@sipzis.id</p>
+                <p style="margin: 0;"><strong>Lazismu Banten</strong></p>
+                <p style="margin: 5px 0 0;">Jl. Raya Banten</p>
+                <p style="margin: 0;">Serang, Banten, Indonesia</p>
+                <p style="margin: 5px 0 0;">Email: info@lazismu-banten.or.id</p>
             </div>
         </div>
 

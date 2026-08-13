@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Semua Campaign - SIPZIS')
+@section('title', 'Semua Campaign - Lazismu Banten')
 
 @section('navbar')
     @include('partials.navbarHome')

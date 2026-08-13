@@ -1,6 +1,6 @@
 @extends($layout ?? 'layouts.main')
 
-@section('title', 'Notifikasi - SIPZIS')
+@section('title', 'Notifikasi - Lazismu Banten')
 
 @section('content')
 <div class="min-h-screen bg-gray-50 py-8">

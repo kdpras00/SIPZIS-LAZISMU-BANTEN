@@ -31,10 +31,10 @@ class MidtransService
         $grossAmount = (int) round($payment->paid_amount);
 
         $payerName = $payment->muzakki?->name ?? 'Donatur';
-        $payerEmail = $payment->muzakki?->email ?? 'donatur@sipzis-lazismu-banten.or.id';
+        $payerEmail = $payment->muzakki?->email ?? 'donatur@lazismu-banten.or.id';
         $payerPhone = $payment->muzakki?->phone ?? '081234567890';
 
-        $programName = $payment->program?->name ?? 'Donasi SIPZIS Lazismu Banten';
+        $programName = $payment->program?->name ?? 'Lazismu Banten';
 
         $params = [
             'transaction_details' => [
