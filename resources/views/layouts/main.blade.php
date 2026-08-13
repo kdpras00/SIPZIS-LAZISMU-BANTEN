@@ -6,20 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="title" content="{{ isset($title) && $title ? $title . ' - SIPZIS Lazismu' : 'SIPZIS Lazismu - Sistem Informasi Pengelolaan Zakat' }}">
-    <meta name="description" content="Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.">
+    <meta name="description" content="@yield('meta_description', 'Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.')">
     <meta name="application-name" content="SIPZIS">
     
     
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ isset($title) && $title ? $title . ' - SIPZIS Lazismu' : 'SIPZIS Lazismu - Sistem Informasi Pengelolaan Zakat' }}">
-    <meta property="og:description" content="Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.">
-    <meta property="og:image" content="{{ asset('img/logo.png') }}">
+    <meta property="og:description" content="@yield('meta_description', 'Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.')">
+    <meta property="og:image" content="@yield('meta_image', asset('img/logo.png'))">
+    <meta property="og:url" content="{{ url()->current() }}">
 
     
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:title" content="{{ isset($title) && $title ? $title . ' - SIPZIS Lazismu' : 'SIPZIS Lazismu - Sistem Informasi Pengelolaan Zakat' }}">
-    <meta property="twitter:description" content="Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.">
-    <meta property="twitter:image" content="{{ asset('img/logo.png') }}">
+    <meta property="twitter:description" content="@yield('meta_description', 'Platform digital pengelolaan Zakat, Infaq, dan Sedekah secara mudah, transparan, dan sesuai syariat Islam dari Lazismu Banten.')">
+    <meta property="twitter:image" content="@yield('meta_image', asset('img/logo.png'))">
+
+    <link rel="canonical" href="{{ url()->current() }}">
 
     <link rel="icon" type="image/x-icon" href="{{ asset('img/lazismu-icon.ico') }}">
 
@@ -92,7 +95,7 @@
 
         <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const useSweetAlert = {{ auth()->check() && auth()->user()->role === 'muzakki' ? 'true' : 'false' }};
+            const useSweetAlert = {{ auth()->check() && auth()->user()->hasRole('muzakki') ? 'true' : 'false' }};
 
             if (!useSweetAlert || typeof Swal === 'undefined') {
                 return;

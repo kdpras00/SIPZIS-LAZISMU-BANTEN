@@ -21,7 +21,7 @@ class AuthController extends Controller
     
     protected function authenticated(Request $request, $user)
     {
-        if ($user->role === 'muzakki') {
+        if ($user->hasRole('muzakki')) {
             $muzakki = Muzakki::where('user_id', $user->id)->first();
 
             if ($muzakki && (empty($muzakki->campaign_url) || !$muzakki->campaign_url)) {
@@ -95,7 +95,7 @@ class AuthController extends Controller
             }
 
             
-            if ($user->role !== 'muzakki') {
+            if (!$user->hasRole('muzakki')) {
                 Auth::logout();
                 return back()->withErrors(['email' => 'Halaman ini hanya untuk muzakki. Silakan gunakan halaman login admin.']);
             }
@@ -111,7 +111,7 @@ class AuthController extends Controller
             }
 
             
-            if ($user->role === 'muzakki') {
+            if ($user->hasRole('muzakki')) {
                 $muzakki = Muzakki::where('user_id', $user->id)->first();
 
                 if ($muzakki && (empty($muzakki->campaign_url) || !$muzakki->campaign_url)) {
@@ -204,7 +204,7 @@ class AuthController extends Controller
             }
 
             
-            if ($user->role !== 'admin') {
+            if (!$user->hasRole('admin')) {
                 Auth::logout();
                 return back()->withErrors(['email' => 'Anda tidak memiliki akses ke halaman admin.']);
             }
@@ -298,10 +298,10 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'role' => 'muzakki',
                 'is_active' => true,
                 'phone' => $fullPhone,
             ]);
+            $user->assignRole('muzakki');
 
             
             $campaignUrl = url('/campaigner/' . $request->email);
@@ -384,7 +384,7 @@ class AuthController extends Controller
     {
         
         $user = Auth::user();
-        $role = $user ? $user->role : null;
+        $isAdmin = $user ? $user->hasRole('admin') : false;
 
         
         Auth::logout();
@@ -394,7 +394,7 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         
-        if ($role === 'admin') {
+        if ($isAdmin) {
             return redirect()->route('admin.login')->with('success', 'Anda telah berhasil logout.');
         }
 
@@ -624,10 +624,10 @@ class AuthController extends Controller
                     'name' => $name,
                     'email' => $email,
                     'password' => Hash::make(Str::random(24)),
-                    'role' => 'muzakki',
                     'is_active' => true,
                     'email_verified_at' => now(),
                 ]);
+                $user->assignRole('muzakki');
 
                 $campaignUrl = url('/campaigner/' . $email);
                 $muzakki = Muzakki::updateOrCreate(
@@ -646,7 +646,7 @@ class AuthController extends Controller
             // Login the user
             Auth::login($user);
             
-            if ($user->role === 'muzakki') {
+            if ($user->hasRole('muzakki')) {
                 $muzakki = Muzakki::where('user_id', $user->id)->first();
                 if ($muzakki && empty($muzakki->campaign_url)) {
                     $muzakki->campaign_url = url('/campaigner/' . $user->email);

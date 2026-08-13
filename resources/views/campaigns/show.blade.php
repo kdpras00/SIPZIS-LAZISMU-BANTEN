@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
 @section('title', $campaign->title . ' - SIPZIS')
+@section('meta_description', Str::limit(strip_tags($campaign->description), 150))
+@section('meta_image', $campaign->photo ? asset('storage/' . $campaign->photo) : asset('img/logo.png'))
 
 @section('navbar')
     @include('partials.navbarHome')

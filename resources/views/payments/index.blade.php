@@ -7,14 +7,14 @@
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
             <h2 class="text-xl font-bold mb-1" style="color: #1c0f0a;">
-                @if (auth()->user()->role === 'muzakki')
+                @if (auth()->user()->hasRole('muzakki'))
                     Riwayat Donasi
                 @else
                     Data Pembayaran ZIS
                 @endif
             </h2>
             <p class="text-sm" style="color: #8b7e74;">
-                @if (auth()->user()->role === 'muzakki')
+                @if (auth()->user()->hasRole('muzakki'))
                     Lihat riwayat pembayaran donasi Anda
                 @else
                     Kelola data pembayaran zakat, infaq, dan sedekah
@@ -185,7 +185,7 @@
 
             // Configuration from server
             const config = {
-                isNotMuzakki: {!! auth()->user()->role !== 'muzakki' ? 'true' : 'false' !!},
+                isNotMuzakki: {!! !auth()->user()->hasRole('muzakki') ? 'true' : 'false' !!},
                 apiRoute: '{!! url('/payments/search') !!}',
                 csrfToken: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             };

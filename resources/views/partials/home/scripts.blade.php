@@ -546,7 +546,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             ['campaigns', 'news', 'artikel'].forEach(s => {
                 initSlider(s);
-                setupAutoScroll(s);
+                // setupAutoScroll(s); // Disabled auto-scroll as requested
             });
         });
 

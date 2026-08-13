@@ -65,7 +65,7 @@ class GuestPaymentController extends Controller
 
         $displaySubtitle = $categoryMap[$programCategory] ?? 'Bersama Kita Wujudkan Kebaikan';
 
-        $loggedInMuzakki = auth()->check() && auth()->user()->role === 'muzakki' ? auth()->user() : null;
+        $loggedInMuzakki = auth()->check() && auth()->user()->hasRole('muzakki') ? auth()->user() : null;
 
         $collectedAmount = $campaign ? $campaign->collected_amount : ($program ? $program->total_collected : 0);
         $targetAmount = $campaign ? $campaign->target_amount : 0;

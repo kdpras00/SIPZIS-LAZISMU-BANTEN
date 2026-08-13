@@ -17,7 +17,7 @@ class PreventAdminAccess
     public function handle(Request $request, Closure $next): Response
     {
         // If user is logged in and has admin role, redirect to dashboard
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        if (Auth::check() && Auth::user()->hasRole('admin')) {
             return redirect()->route('dashboard');
         }
 

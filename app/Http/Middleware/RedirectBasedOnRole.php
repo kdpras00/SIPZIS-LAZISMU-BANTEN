@@ -21,14 +21,14 @@ class RedirectBasedOnRole
             $user = Auth::user();
 
             // If user is admin, redirect them to admin dashboard
-            if ($user->role === 'admin') {
+            if ($user->hasRole('admin')) {
                 // Only redirect if they're trying to access public pages
                 if ($request->is('/') || $request->is('program*') || $request->is('berita*') || $request->is('artikel*') || $request->is('tentang*')) {
                     return redirect()->route('dashboard');
                 }
             }
             // If user is muzakki, ensure they're not accessing admin routes
-            elseif ($user->role === 'muzakki') {
+            elseif ($user->hasRole('muzakki')) {
                 // If they're trying to access admin routes, redirect to home
                 if ($request->is('admin*') || $request->is('dashboard') && !$request->is('muzakki/dashboard*')) {
                     // Check if it's actually the admin dashboard route

@@ -23,7 +23,7 @@ class PaymentController extends Controller
     
     protected function authorizeAccess(Payment $payment): void
     {
-        if (Auth::user()->role === 'admin') {
+        if (Auth::user()->hasRole('admin')) {
             return;
         }
 
@@ -36,7 +36,7 @@ class PaymentController extends Controller
     {
         $query = Payment::with(['muzakki', 'program'])->latest();
 
-        if (Auth::check() && Auth::user()->role === 'muzakki') {
+        if (Auth::check() && Auth::user()->hasRole('muzakki')) {
             $muzakki = Auth::user()->muzakki;
             if (!$muzakki) {
                 abort(404, 'Profil muzakki tidak ditemukan.');
@@ -64,7 +64,7 @@ class PaymentController extends Controller
 
         $payments = $query->paginate(15)->withQueryString();
 
-        if (Auth::check() && Auth::user()->role === 'muzakki') {
+        if (Auth::check() && Auth::user()->hasRole('muzakki')) {
             $muzakki = Auth::user()->muzakki;
             $stats = [
                 'total_amount' => $muzakki->payments()->completed()->sum('paid_amount'),
@@ -98,7 +98,7 @@ class PaymentController extends Controller
     {
         $validated = $request->validated();
 
-        if (Auth::user()->role !== 'admin') {
+        if (!Auth::user()->hasRole('admin')) {
             $muzakkiId = Auth::user()->muzakki?->id;
             abort_unless($muzakkiId && (int) $validated['muzakki_id'] === $muzakkiId, 403, 'Anda tidak dapat membuat pembayaran atas nama muzakki lain.');
             abort_if(in_array($validated['status'], ['completed', 'cancelled'], true), 403, 'Anda tidak dapat mengubah status pembayaran.');
@@ -148,7 +148,7 @@ class PaymentController extends Controller
         $this->authorizeAccess($payment);
         $validated = $request->validated();
 
-        if (Auth::user()->role !== 'admin') {
+        if (!Auth::user()->hasRole('admin')) {
             $muzakkiId = Auth::user()->muzakki?->id;
             abort_unless($muzakkiId && (int) $validated['muzakki_id'] === $muzakkiId, 403, 'Anda tidak dapat membuat pembayaran atas nama muzakki lain.');
             abort_if(in_array($validated['status'], ['completed', 'cancelled'], true), 403, 'Anda tidak dapat mengubah status pembayaran.');
@@ -191,7 +191,7 @@ class PaymentController extends Controller
         $query = $request->get('q');
         $payments = Payment::with('muzakki');
 
-        if (Auth::user()->role !== 'admin') {
+        if (!Auth::user()->hasRole('admin')) {
             $muzakkiId = Auth::user()->muzakki?->id;
             abort_unless($muzakkiId, 403);
             $payments->where('muzakki_id', $muzakkiId);

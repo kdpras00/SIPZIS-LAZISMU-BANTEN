@@ -45,7 +45,7 @@ class PaymentNotificationController extends Controller
         $filter = $request->get('filter', 'all');
         $query = Notification::query();
 
-        if (Auth::check() && Auth::user()->role === 'muzakki') {
+        if (Auth::check() && Auth::user()->hasRole('muzakki')) {
             $muzakki = Auth::user()->muzakki;
             if ($muzakki) {
                 $query->where('muzakki_id', $muzakki->id);
@@ -70,7 +70,7 @@ class PaymentNotificationController extends Controller
     
     public function markNotificationsAsRead(Request $request)
     {
-        if (Auth::check() && Auth::user()->role === 'muzakki') {
+        if (Auth::check() && Auth::user()->hasRole('muzakki')) {
             $muzakki = Auth::user()->muzakki;
             if ($muzakki) {
                 Notification::where('muzakki_id', $muzakki->id)
@@ -92,7 +92,7 @@ class PaymentNotificationController extends Controller
         $unreadCount = 0;
         $notifications = [];
 
-        if (Auth::check() && Auth::user()->role === 'muzakki') {
+        if (Auth::check() && Auth::user()->hasRole('muzakki')) {
             $muzakki = Auth::user()->muzakki;
             if ($muzakki) {
                 $unreadCount = Notification::where('muzakki_id', $muzakki->id)->where('is_read', false)->count();

@@ -76,10 +76,10 @@ class MuzakkiController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'role' => 'muzakki',
                 'is_active' => true,
                 'phone' => $request->phone,
             ]);
+            $user->assignRole('muzakki');
         }
 
         
@@ -205,7 +205,7 @@ class MuzakkiController extends Controller
         }
 
         
-        if (Auth::user()->role === 'admin' && $request->filled('new_password')) {
+        if (Auth::user()->hasRole('admin') && $request->filled('new_password')) {
             $request->validate([
                 'new_password' => 'required|string|min:8|confirmed',
             ]);
@@ -241,7 +241,7 @@ class MuzakkiController extends Controller
         $updateData['occupation'] = $request->occupation;
         $updateData['bio'] = $request->bio;
 
-        if (Auth::user()->role === 'admin') {
+        if (Auth::user()->hasRole('admin')) {
             $updateData['is_active'] = $request->is_active ?? $muzakki->is_active;
         }
 
@@ -273,7 +273,7 @@ class MuzakkiController extends Controller
             $updateData['country'] = 'Indonesia';
         }
 
-        if (Auth::user()->role === 'admin') {
+        if (Auth::user()->hasRole('admin')) {
             if ($request->filled('campaign_url')) {
                 $updateData['campaign_url'] = $request->campaign_url;
             }

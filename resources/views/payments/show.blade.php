@@ -341,7 +341,7 @@
                     </div>
                     @endif
 
-                    @if(auth()->user()->role === 'admin')
+                    @if(auth()->user()->hasRole('admin'))
                     <div class="border-t pt-4 mt-4">
                         <a href="{{ route('muzakki.show', $payment->muzakki) }}" 
                             class="w-full inline-flex justify-center items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm">

@@ -12,7 +12,7 @@
             <div class="md:hidden flex items-center space-x-3">
                 
                 @auth
-                    @if (Auth::user()->role === 'muzakki' && Auth::user()->muzakki)
+                    @if (Auth::user()->hasRole('muzakki') && Auth::user()->muzakki)
                         @php
                             $unreadNotificationsCount = Auth::user()->muzakki->unread_notifications_count;
                         @endphp
@@ -80,7 +80,7 @@
                             class="block px-4 py-2 text-center {{ $isActive('artikel*', 'artikel') ? 'text-orange-600 font-bold bg-orange-50' : 'text-gray-800 font-medium' }} hover:bg-orange-50 hover:text-orange-600 transition duration-300 navbar-link border-l-4 {{ $isActive('artikel*', 'artikel') ? 'border-orange-600' : 'border-transparent' }}">Artikel</a>
 
                         @auth
-                            @if (Auth::user()->role === 'admin')
+                            @if (Auth::user()->hasRole('admin'))
                                 <div class="border-t border-gray-200 mt-4 pt-4">
                                     <a href="{{ route('dashboard') }}"
                                         class="block px-4 py-2 text-center text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition duration-300 font-medium">
@@ -129,7 +129,7 @@
             <div class="hidden md:flex items-center space-x-2">
                 @auth
                     
-                    @if (Auth::user()->role === 'admin')
+                    @if (Auth::user()->hasRole('admin'))
                         
                         <div class="flex items-center space-x-4">
                             <a href="{{ route('dashboard') }}"

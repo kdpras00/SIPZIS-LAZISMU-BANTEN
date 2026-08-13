@@ -486,7 +486,7 @@
     <div class="w-full">
         <div class="flex min-h-screen">
             @auth
-                @if (auth()->user()->role !== 'muzakki')
+                @if (!auth()->user()->hasRole('muzakki'))
                     @include('components.sidebar', [
                         'user' => auth()->user(),
                         'currentRoute' => request()->route()->getName() ?? '',

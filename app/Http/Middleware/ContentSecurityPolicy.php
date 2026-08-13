@@ -22,7 +22,7 @@ class ContentSecurityPolicy
         $response->headers->set('Content-Security-Policy', implode('; ', $directives));
 
         // ponytail: unconditionally set COOP to allow Firebase popups. No route whitelist needed.
-        $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+        $response->headers->set('Cross-Origin-Opener-Policy', 'unsafe-none');
         $response->headers->set('Cross-Origin-Embedder-Policy', 'unsafe-none');
 
         return $response;

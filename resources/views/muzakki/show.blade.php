@@ -138,7 +138,7 @@
                                 <div class="text-[#8b7e74] w-24 flex-shrink-0">Role</div>
                                 <div>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-800">
-                                        {{ ucfirst($muzakki->user->role) }}
+                                        {{ ucfirst($muzakki->user->roles->first()?->name ?? 'User') }}
                                     </span>
                                 </div>
                             </div>

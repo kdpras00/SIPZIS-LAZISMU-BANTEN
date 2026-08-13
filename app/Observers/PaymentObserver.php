@@ -93,7 +93,7 @@ class PaymentObserver
         
         if ($payment->received_by !== null) {
             $user = User::find($payment->received_by);
-            if ($user && $user->role !== 'admin') {
+            if ($user && !$user->hasRole('admin')) {
                 
                 $payment->received_by = null;
             }

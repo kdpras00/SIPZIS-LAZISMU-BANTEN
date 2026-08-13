@@ -16,7 +16,7 @@ class StorePaymentRequest extends FormRequest
             return false;
         }
 
-        if ($user->role === 'admin') {
+        if ($user->hasRole('admin')) {
             return true;
         }
 

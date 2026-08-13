@@ -16,7 +16,7 @@
         }
 
         // Check Profile Completeness (only for Muzakki)
-        if ($user->role === 'muzakki' && $user->muzakki) {
+        if ($user->hasRole('muzakki') && $user->muzakki) {
             $completeness = $user->muzakki->profile_completeness;
             if ($completeness < 100) {
                 $messages[] = 'Lengkapi profil Anda (' . $completeness . '%).';

@@ -43,41 +43,51 @@ use App\Http\Controllers\AccountClaimController;
 // ============================================================================
 // PUBLIC ROUTES
 // ============================================================================
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/tentang', [HomeController::class, 'tentang'])->name('tentang');
+// ----------------------------------------------------------------------------
+// CACHED PUBLIC ROUTES (Frontend Caching)
+// ----------------------------------------------------------------------------
+Route::middleware('cache.headers:private;max_age=300;etag')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/tentang', [HomeController::class, 'tentang'])->name('tentang');
+    
+    // Program & Category Routes
+    Route::get('/program', [HomeController::class, 'program'])->name('program');
+    Route::get('/program/zakat', fn() => app(HomeController::class)->programByCategory('zakat'))->name('program.zakat');
+    Route::get('/program/infaq', fn() => app(HomeController::class)->programByCategory('infaq'))->name('program.infaq');
+    Route::get('/program/shadaqah', fn() => app(HomeController::class)->programByCategory('shadaqah'))->name('program.shadaqah');
+    Route::get('/program/pilar', fn() => app(HomeController::class)->programByCategory('pilar'))->name('program.pilar');
+    Route::get('/program/{slug}', [ProgramController::class, 'show'])->name('program.show');
+    Route::get('/program/{id}/completed', [ProgramController::class, 'completed'])->name('program.completed');
+
+    // Campaign Public Routes
+    Route::get('/campaigns/all', [CampaignController::class, 'all'])->name('campaigns.all');
+    Route::get('/campaigns/{category}', [CampaignController::class, 'index'])->name('campaigns.index');
+    Route::get('/campaigns/{category}/{campaign}', [CampaignController::class, 'show'])->name('campaigns.show');
+    Route::get('/campaigner/{email}', [CampaignController::class, 'showPersonalCampaign'])->name('campaigner.personal');
+
+    // News & Articles
+    Route::get('/berita', [HomeController::class, 'berita'])->name('berita.index');
+    Route::get('/berita/{slug}', [NewsController::class, 'show'])->name('news.show');
+    Route::get('/artikel', [HomeController::class, 'artikel'])->name('artikel.index');
+    Route::get('/artikel/{slug}', [HomeController::class, 'artikelShow'])->name('artikel.show');
+
+    // Public Zakat Calculator
+    Route::get('/calculator', [CalculatorController::class, 'index'])->name('calculator.index');
+    Route::get('/calculator/guide', [CalculatorController::class, 'guide'])->name('calculator.guide');
+});
+
+// Non-cached POST route
 Route::post('/chatbot', [ChatbotController::class, 'ask'])->name('chatbot.ask')->middleware('throttle:10,1');
+Route::post('/calculator/calculate', [CalculatorController::class, 'calculate'])->name('calculator.calculate');
+
+// Gold Price API (Cache aggressively publicly)
+Route::get('/calculator/gold-price', [CalculatorController::class, 'getGoldPrice'])->name('calculator.gold-price')->middleware('cache.headers:public;max_age=86400;etag');
 
 // Admin Entrance Redirect
 Route::get('/admin', function () {
     return redirect()->route('admin.login');
 });
 
-// Program & Category Routes
-Route::get('/program', [HomeController::class, 'program'])->name('program');
-Route::get('/program/zakat', fn() => app(HomeController::class)->programByCategory('zakat'))->name('program.zakat');
-Route::get('/program/infaq', fn() => app(HomeController::class)->programByCategory('infaq'))->name('program.infaq');
-Route::get('/program/shadaqah', fn() => app(HomeController::class)->programByCategory('shadaqah'))->name('program.shadaqah');
-Route::get('/program/pilar', fn() => app(HomeController::class)->programByCategory('pilar'))->name('program.pilar');
-Route::get('/program/{slug}', [ProgramController::class, 'show'])->name('program.show');
-Route::get('/program/{id}/completed', [ProgramController::class, 'completed'])->name('program.completed');
-
-// Campaign Public Routes
-Route::get('/campaigns/all', [CampaignController::class, 'all'])->name('campaigns.all');
-Route::get('/campaigns/{category}', [CampaignController::class, 'index'])->name('campaigns.index');
-Route::get('/campaigns/{category}/{campaign}', [CampaignController::class, 'show'])->name('campaigns.show');
-Route::get('/campaigner/{email}', [CampaignController::class, 'showPersonalCampaign'])->name('campaigner.personal');
-
-// News & Articles
-Route::get('/berita', [HomeController::class, 'berita'])->name('berita.index');
-Route::get('/berita/{slug}', [NewsController::class, 'show'])->name('news.show');
-Route::get('/artikel', [HomeController::class, 'artikel'])->name('artikel.index');
-Route::get('/artikel/{slug}', [HomeController::class, 'artikelShow'])->name('artikel.show');
-
-// Public Zakat Calculator
-Route::get('/calculator', [CalculatorController::class, 'index'])->name('calculator.index');
-Route::post('/calculator/calculate', [CalculatorController::class, 'calculate'])->name('calculator.calculate');
-Route::get('/calculator/guide', [CalculatorController::class, 'guide'])->name('calculator.guide');
-Route::get('/calculator/gold-price', [CalculatorController::class, 'getGoldPrice'])->name('calculator.gold-price');
 
 // Public Guest Donation & Payment Routes
 Route::get('/payment/{paymentCode}/failed', [GuestPaymentController::class, 'guestFailure'])->name('guest.payment.failed');

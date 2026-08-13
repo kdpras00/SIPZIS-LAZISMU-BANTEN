@@ -4,7 +4,7 @@
             <thead style="background: #faf8f5;">
                 <tr>
                     <th scope="col" class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Kode Pembayaran</th>
-                    @if (auth()->user()->role !== 'muzakki')
+                    @if (!auth()->user()->hasRole('muzakki'))
                         <th scope="col" class="px-5 py-3.5 text-left text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Muzakki</th>
                     @endif
                     <th scope="col" class="px-5 py-3.5 text-center text-xs font-semibold uppercase tracking-wider" style="color: #8b7e74;">Jumlah Bayar</th>
@@ -27,7 +27,7 @@
                                 </div>
                             </div>
                         </td>
-                        @if (auth()->user()->role !== 'muzakki')
+                        @if (!auth()->user()->hasRole('muzakki'))
                             <td class="px-5 py-4 whitespace-nowrap">
                                 <div class="text-xs font-bold" style="color: #1c0f0a;">{{ $payment->muzakki->name }}</div>
                                 @if ($payment->muzakki->phone)
@@ -90,13 +90,13 @@
         <i class="bi bi-wallet2 text-4xl mb-2 block" style="color: #d1cbc4;"></i>
         <p class="text-sm font-semibold mb-0" style="color: #1c0f0a;">Tidak ada data pembayaran</p>
         <p class="text-xs mt-1 mb-4" style="color: #8b7e74;">
-            @if (auth()->user()->role === 'muzakki')
+            @if (auth()->user()->hasRole('muzakki'))
                 Belum ada pembayaran zakat yang tercatat
             @else
                 Tidak ada pembayaran zakat yang sesuai dengan kriteria pencarian
             @endif
         </p>
-        @if (auth()->user()->role === 'muzakki')
+        @if (auth()->user()->hasRole('muzakki'))
             <a href="{{ route('payments.create') }}"
                class="inline-flex items-center px-4 py-2 text-white font-medium rounded-xl transition-colors text-xs shadow-xs" style="background: #c2410c;">
                 <i class="bi bi-plus-circle-fill mr-1.5"></i> Bayar Zakat Sekarang

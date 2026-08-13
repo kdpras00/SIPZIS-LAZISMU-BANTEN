@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
 @section('title', $artikel->title . ' - SIPZIS')
+@section('meta_description', Str::limit(strip_tags($artikel->content), 150))
+@section('meta_image', $artikel->image ? asset('storage/' . $artikel->image) : asset('img/logo.png'))
 
 @section('navbar')
     @include('partials.navbarHome')

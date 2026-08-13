@@ -59,9 +59,9 @@ class DonationService
                     'name' => $data['name'],
                     'email' => $data['email'],
                     'password' => Hash::make(Str::random(16)),
-                    'role' => 'muzakki',
                     'is_active' => true,
                 ]);
+                $user->assignRole('muzakki');
             }
 
             $muzakki = Muzakki::create([

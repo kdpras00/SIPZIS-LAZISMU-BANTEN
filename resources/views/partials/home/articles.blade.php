@@ -32,7 +32,7 @@
                     <div id="artikel-slider"
                         class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 scrollbar-hide scroll-smooth cursor-grab">
                         @foreach (\App\Models\Artikel::published()->latest()->take(10)->get() as $artikel)
-                            <div class="flex-shrink-0 w-72 snap-start">
+                            <div class="flex-shrink-0 w-[70vw] md:w-72 snap-start">
                                 <div class="bg-white rounded-xl border border-gray-100 overflow-hidden transition-shadow duration-200 hover:shadow-md">
                                     @if ($artikel->image)
                                         <div class="h-40 overflow-hidden">
@@ -76,10 +76,6 @@
                         @endforeach
                     </div>
 
-                    
-                    <div class="flex justify-center mt-4 space-x-2 artikel-indicators">
-                        
-                    </div>
                 </div>
             </div>
 

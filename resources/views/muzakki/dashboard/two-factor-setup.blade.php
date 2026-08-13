@@ -7,7 +7,7 @@
     
     <div class="flex items-center gap-3 mb-6 pb-4 border-b border-[#f0ece6]">
         @php
-            $backRoute = auth()->user()->role === 'admin' ? route('dashboard') : route('dashboard.management');
+            $backRoute = auth()->user()->hasRole('admin') ? route('dashboard') : route('dashboard.management');
         @endphp
         <a href="{{ $backRoute }}" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white border border-[#e8e0d6] text-[#8b7e74] hover:text-[#1c0f0a] hover:bg-[#f0ece6] transition-all shadow-sm">
             <i class="bi bi-arrow-left text-lg"></i>

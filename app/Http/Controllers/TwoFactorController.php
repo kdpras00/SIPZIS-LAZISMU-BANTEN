@@ -84,7 +84,7 @@ class TwoFactorController extends Controller
         $user->two_factor_confirmed_at = now();
         $user->save();
 
-        $redirectRoute = $user->role === 'admin' ? 'dashboard' : 'dashboard.management';
+        $redirectRoute = $user->hasRole('admin') ? 'dashboard' : 'dashboard.management';
 
         return redirect()->route($redirectRoute)
             ->with('success', 'Autentikasi dua faktor berhasil diaktifkan!');
@@ -119,7 +119,7 @@ class TwoFactorController extends Controller
         $user->two_factor_confirmed_at = null;
         $user->save();
 
-        $redirectRoute = $user->role === 'admin' ? 'dashboard' : 'dashboard.management';
+        $redirectRoute = $user->hasRole('admin') ? 'dashboard' : 'dashboard.management';
 
         return redirect()->route($redirectRoute)
             ->with('success', 'Autentikasi dua faktor berhasil dinonaktifkan!');
@@ -171,7 +171,7 @@ class TwoFactorController extends Controller
         $request->session()->regenerate();
 
         
-        if ($user->role === 'admin') {
+        if ($user->hasRole('admin')) {
             return redirect()->route('dashboard');
         }
 

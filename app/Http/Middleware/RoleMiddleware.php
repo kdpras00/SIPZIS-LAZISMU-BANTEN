@@ -28,25 +28,16 @@ class RoleMiddleware
 
         // Check if user has any of the required roles
         if (!empty($roles)) {
-            // Normalize role comparison (case-insensitive and handle typos)
-            $userRole = strtolower(trim($user->role ?? ''));
-            $allowedRoles = array_map(function($role) {
-                return strtolower(trim($role));
-            }, $roles);
-            
-            // Also check for common typos
-            if ($userRole === 'muzzaki' && in_array('muzakki', $allowedRoles)) {
-                $userRole = 'muzakki';
-            }
-            
-            if (!in_array($userRole, $allowedRoles)) {
+            // Using Spatie's hasAnyRole
+            if (!$user->hasAnyRole($roles)) {
+                $userRoles = $user->roles->pluck('name')->join(', ');
                 \Log::warning('Role mismatch', [
                     'user_id' => $user->id,
-                    'user_role' => $user->role,
+                    'user_roles' => $userRoles,
                     'required_roles' => $roles,
                     'path' => $request->path()
                 ]);
-                abort(403, 'Anda tidak memiliki akses ke halaman ini. Role Anda: ' . $user->role);
+                abort(403, 'Anda tidak memiliki akses ke halaman ini. Role Anda: ' . ($userRoles ?: 'Tidak ada'));
             }
         }
 

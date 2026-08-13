@@ -29,7 +29,7 @@
             </a>
         </div>
 
-        @if ($user->role === 'admin')
+        @if ($user->hasRole('admin'))
         
         <div class="mb-6">
             <a href="{{ route('muzakki.index') }}"

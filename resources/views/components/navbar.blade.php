@@ -27,7 +27,7 @@
     $user = auth()->user();
     $unreadCount = 0;
     if ($user) {
-        if ($user->role === 'muzakki' && $user->muzakki) {
+        if ($user->hasRole('muzakki') && $user->muzakki) {
             $unreadCount = $user->muzakki->unread_notifications_count;
         } else {
             $unreadCount = $user->unread_notifications_count;
@@ -85,7 +85,7 @@
                             $notifications = collect();
                             $limit = 10;
                             if ($user) {
-                                if ($user->role === 'muzakki' && $user->muzakki) {
+                                if ($user->hasRole('muzakki') && $user->muzakki) {
                                     $notifications = $user->muzakki->notifications()->latest()->limit($limit)->get();
                                 } else {
                                     $notifications = $user->notifications()->latest()->limit($limit)->get();
@@ -142,7 +142,7 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-xl overflow-hidden" style="border: 1px solid #f0ece6; min-width: 200px;">
                 <li class="px-4 py-2.5" style="border-bottom: 1px solid #f0ece6;">
-                    <p class="text-xs font-semibold mb-0" style="color: #8b7e74;">{{ ucfirst($user->role) }}</p>
+                    <p class="text-xs font-semibold mb-0" style="color: #8b7e74;">{{ ucfirst($user->roles->first()?->name ?? 'User') }}</p>
                 <li>
                     <a class="flex items-center gap-2.5 px-4 py-2.5 text-sm no-underline transition-colors hover:bg-gray-50" href="{{ route('profile.show') }}" style="color: #1c0f0a;">
                         <i class="bi bi-person text-base" style="color: #8b7e74;"></i>

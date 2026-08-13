@@ -23,11 +23,11 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
+        if ($user->hasRole('admin')) {
             return $this->adminDashboard($request);
         }
 
-        if ($user->role === 'muzakki') {
+        if ($user->hasRole('muzakki')) {
             return $this->muzakkiDashboard();
         }
 
