@@ -1,144 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     <url>
-    <loc>http://lazismu-banten.test/</loc>
+    <loc>http://lazismu-banten.my.id/</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/tentang</loc>
+    <loc>http://lazismu-banten.my.id/login</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test</loc>
+    <loc>http://lazismu-banten.my.id/tentang</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program</loc>
+    <loc>http://lazismu-banten.my.id/register</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/artikel</loc>
+    <loc>http://lazismu-banten.my.id/artikel</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/berita</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/kesehatan/2</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/register</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/pendidikan/1</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/calculator</loc>
+    <loc>http://lazismu-banten.my.id/calculator</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/login</loc>
+    <loc>http://lazismu-banten.my.id</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/kesehatan/2</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/sosial-dakwah/6</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/ekonomi/3</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/kemanusiaan/4</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/pendidikan/1</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/ekonomi/3</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/lingkungan/5</loc>
+    <loc>http://lazismu-banten.my.id/program/program-pendidikan</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/kemanusiaan/4</loc>
+    <loc>http://lazismu-banten.my.id/program/program-kesehatan</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/sosial-dakwah/6</loc>
+    <loc>http://lazismu-banten.my.id/program/program-ekonomi</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program/program-kesehatan</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/lingkungan/5</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program/program-ekonomi</loc>
+    <loc>http://lazismu-banten.my.id/program/program-sosial-dakwah</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program/program-sosial-dakwah</loc>
+    <loc>http://lazismu-banten.my.id/program/zakat-fitrah</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program/zakat-mal</loc>
+    <loc>http://lazismu-banten.my.id/program/zakat-mal</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program/program-kemanusiaan</loc>
+    <loc>http://lazismu-banten.my.id/program/zakat-profesi</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program/program-lingkungan</loc>
+    <loc>http://lazismu-banten.my.id/program/program-kemanusiaan</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program/zakat-profesi</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/all</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program/zakat-fitrah</loc>
+    <loc>http://lazismu-banten.my.id/program/program-lingkungan</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program/infaq-masjid</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/kesehatan</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/all</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/pendidikan</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program?tab=infaq</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/sosial-dakwah</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program?tab=zakat</loc>
+    <loc>http://lazismu-banten.my.id/program?tab=infaq</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program/program-pendidikan</loc>
+    <loc>http://lazismu-banten.my.id/program?tab=pilar</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/password/reset</loc>
+    <loc>http://lazismu-banten.my.id/program?tab=zakat</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program?tab=shadaqah</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/lingkungan</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/kesehatan</loc>
+    <loc>http://lazismu-banten.my.id/donasi/create?program_id=4</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/ekonomi</loc>
+    <loc>http://lazismu-banten.my.id/password/reset</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/pendidikan</loc>
+    <loc>http://lazismu-banten.my.id/donasi/create?program_id=3</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/program?tab=pilar</loc>
+    <loc>http://lazismu-banten.my.id/berita</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/kemanusiaan</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/kemanusiaan</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/lingkungan</loc>
+    <loc>http://lazismu-banten.my.id/donasi/create?program_id=1</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/campaigns/sosial-dakwah</loc>
+    <loc>http://lazismu-banten.my.id/donasi/create?program_id=8</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/donasi/create?program_id=4</loc>
+    <loc>http://lazismu-banten.my.id/donasi/create?program_id=9</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/donasi/create?program_id=2</loc>
+    <loc>http://lazismu-banten.my.id/campaigns/ekonomi</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/donasi/create?program_id=7</loc>
+    <loc>http://lazismu-banten.my.id/donasi/create?program_id=5</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/donasi/create?program_id=6</loc>
+    <loc>http://lazismu-banten.my.id/donasi/create?program_id=6</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/donasi/create?program_id=5</loc>
+    <loc>http://lazismu-banten.my.id/donasi/create?program_id=7</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/donasi/create?program_id=9</loc>
+    <loc>http://lazismu-banten.my.id/program</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/donasi/create?program_id=8</loc>
+    <loc>http://lazismu-banten.my.id/donasi/create?program_id=2</loc>
             </url>
     <url>
-    <loc>http://lazismu-banten.test/donasi/create?program_id=10</loc>
-            </url>
-    <url>
-    <loc>http://lazismu-banten.test/donasi/create?program_id=3</loc>
-            </url>
-    <url>
-    <loc>http://lazismu-banten.test/donasi/create?program_id=1</loc>
+    <loc>http://lazismu-banten.my.id/program?tab=shadaqah</loc>
             </url>
 </urlset>
